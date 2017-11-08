@@ -1,0 +1,53 @@
+<div class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="userForm" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="close(false)" data-dismiss="modal"
+                            aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">&nbsp;{{modalTitle}}&nbsp;</h4>
+                </div>
+
+                <div class="modal-body">
+                        <div class="input-group pdb15">
+                            <label class="col-sm-4 control-label input-label">用户ID：</label>
+                            <div class="col-sm-8 input-width">
+                                <input type="text" name="id" class="form-control" ng-model="vm.user.id"  ng-disabled="isModify" required>
+                            </div>
+                            <label class="input-tips" ng-show="userForm.id.$error.required || userForm.id.$invalid">&nbsp;*&nbsp;必填项</label>
+
+                        </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label">密码：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="text" name="password" class="form-control" ng-model="vm.user.password"
+                                   required>
+                        </div>
+                        <label class="input-tips" ng-show="userForm.password.$error.required || userForm.password.$invalid">&nbsp;*&nbsp;必填项</label>
+
+                    </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label">姓名：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="text" name="name" class="form-control" ng-model="vm.user.name"  required>
+                        </div>
+                    </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label">角色：</label>
+                        <div class="col-sm-8 input-width">
+                            <select name="role" ng-model="vm.user.role" ng-options="role.value as role.role for role in roles" class="form-control" ng-selected=""></select>
+                        </div>
+                        <label class="input-tips" ng-show="userForm.role.$error.required || userForm.role.$invalid">&nbsp;*&nbsp;必填项</label>
+
+                    </div>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="submit" ng-click="submit(vm.user);" class="btn btn-primary" data-dismiss="modal">保存</button>
+                    <button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

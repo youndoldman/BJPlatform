@@ -1,0 +1,60 @@
+@import "compass/reset";
+@import "compass/utilities";
+
+$font-color: #333;
+
+$light-grey: #eeede8;
+$medium-grey: #a8a8a8;
+$grey: #ddd;
+
+$white: #fff;
+$dark: #333;
+
+$udc-green: #24bfbe;
+$udc-dark-green: #20afae;
+
+$udc-dark: #434a54;
+$udc-light-dark: #a8a8a8;
+$udc-blue: #3E9FF9;
+$udc-light-blue: #3281C9;
+$udc-lighter-blue: #ecf3f8;
+
+.mgb15{margin-bottom: 15px;}
+.mgt15{margin-top: 15px;}
+.mgl15{margin-left: 15px;}
+.mgr15{margin-right: 15px;}
+.pdb15{padding-bottom: 15px;}
+.pdt15{padding-top: 15px;}
+.pdl15{padding-left: 15px;}
+.pdr15{padding-right: 15px;}
+.pdt5{padding-top: 5px;}
+.pdt20{padding-top: 20px;}
+.pdl500{padding-left: 500px;}
+.f-fl{float: left;}
+.f-fr{float: right;}
+.f-tal{text-align: left;}
+.f-tac{text-align: center;}
+.f-tar{text-align: right;}
+.f-vat{vertical-align: top;}
+.f-vam{vertical-align: middle;}
+.f-vab{vertical-align: bottom;}
+.horizontal-center {
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+}
+
+@mixin clearfix() {
+  &:before,
+  &:after {
+    content: "";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+.clearfix {
+  @include clearfix();
+}

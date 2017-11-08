@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html ng-app="ThirdPartyApp" xmlns:ng="http://angularjs.org">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Basic Styles -->
+    <link rel="stylesheet" type="text/css" media="screen" href="../lib/bootstrap-3.3.5-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="../lib/font-awesome-4.6.3/css/font-awesome.min.css">
+
+    <!-- FAVICONS -->
+    <link rel="shortcut icon" href="../images/favicon/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../images/favicon/favicon.ico" type="image/x-icon">
+    <!-- Custom styles for this template -->
+    <link href="../styles/stylesheets/global.css" rel="stylesheet">
+    <link href="../styles/stylesheets/kapian.css" rel="stylesheet">
+    <script src="../scripts/util/browser-checker.js"></script>
+
+    <script src="../lib/jquery/jquery-2.0.2.min.js"></script>
+    <script src="../lib/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+    <script src="../lib/underscore/underscore-min.js"></script>
+    <script src="../lib/angular/angular.min.js"></script>
+    <script src="../lib/angular/angular-ui-router.min.js"></script>
+    <script src="../lib/angular-modal-service/dst/angular-modal-service.js"></script>
+
+    <script src="../scripts/common/common.js"></script>
+    <script src="../scripts/common/commonFilter.js"></script>
+    <script src="../scripts/common/config.js"></script>
+    <script src="../scripts/common/constant.js"></script>
+    <script src="../scripts/common/httpInterceptor.js"></script>
+    <script src="../scripts/common/pagerService.js"></script>
+    <script src="../scripts/common/njModal.js"></script>
+    <script src="../scripts/common/njPager.js"></script>
+    <script src="../scripts/common/njPartials.js"></script>
+    <script src="../scripts/common/component.js"></script>
+
+    <script src="../scripts/sys/thirdParty/thirdPartyApp.js"></script>
+
+</head>
+<body>
+
+<div nj-header></div>
+
+
+<div class="container main">
+    <div class="row">
+        <div class="col-xs-12 col-sm-4 col-md-2 col-lg-2" nj-menu></div>
+        <div class="col-xs-12 col-sm-8 col-md-10 col-lg-10">
+            <div class="content offset" ui-view></div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

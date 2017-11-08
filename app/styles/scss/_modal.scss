@@ -1,0 +1,41 @@
+
+@media (min-width: 768px) {
+  .modal-dialog {
+    width: 600px;
+    margin: 100px auto;
+  }
+  .modal-dialog .info {
+    width: 400px;
+    margin: 150px auto;
+  }
+}
+
+.modal-body {
+  margin: 25px 0;
+  padding: 0;
+
+  .message {
+    text-align: center;
+  }
+  .label {
+    text-align: right;
+  }
+  .input {
+    display: block;
+  }
+}
+
+//.modal.ng-enter {
+//  transition: opacity 0s ease-out;
+//  opacity: 0;
+//}
+//.modal.ng-enter.ng-enter-active {
+//  opacity: 1;
+//}
+//.modal.ng-leave {
+//  transition: opacity 0s ease-out;
+//  opacity: 1;
+//}
+//.modal.ng-leave.ng-leave-active {
+//  opacity: 0;
+//}

@@ -1,0 +1,260 @@
+$bg1: #434a54;
+$item_bg1: #a7b1c2;
+$item_focus: #c9c9c9;
+$item_hover: #fff;
+$active_bg1: #616161;
+$line: #7A7A7A;
+$line_active: #ACACAC;
+
+$second_bg: rgba(69, 69, 69, 0.6);
+$second_item_hover_bg: rgba(69, 69, 69, 0.8);
+
+$active: #fff;
+$active_triangle: #eeeeee;
+
+aside {
+  margin: 0px 40px 0px -15px;
+  padding-top: 30px;
+  position: relative;
+  height: auto;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  padding-bottom: 30px;
+  background-color: $bg1;
+}
+
+/* All levels */
+nav ul li a:active {
+  background: $active_bg1 ;
+}
+/* All levels */
+nav ul {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  font-size: 13px;
+  line-height: 0.5em;
+  list-style: none;
+  position: relative;
+}
+/* All levels */
+nav ul .active > a {
+  color: $active !important;
+  position: relative;
+}
+/* All levels */
+nav ul li.active > a:before {
+  content: "\f0d9";
+  font-family: FontAwesome;
+  display: block;
+  height: 27px;
+  line-height: normal;
+  width: 27px;
+  position: absolute;
+  right: -21px;
+  font-size: 20px;
+  color: $active_triangle;
+}
+nav ul li.active.open > a:before {
+  content: "";
+}
+nav > ul > li:last-child.open {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+/* All levels */
+nav ul li {
+  overflow: hidden;
+}
+/* All levels */
+nav ul li a {
+  line-height: normal;
+  font-size: 16px;
+  padding: 16px 10px 10px 11px;
+  color: $item_bg1;
+  display: block;
+  font-weight: normal;
+  text-decoration: none !important;
+  position: relative;
+}
+/* Second level */
+nav > ul > li > ul > li > a {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+/* Third Level */
+nav > ul > li > ul > li > ul > li > a {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+/* All levels */
+nav ul li a:focus {
+  color: $item_focus;
+}
+/* All levels */
+nav ul li a:hover {
+  color: $item_hover;
+  text-decoration: none;
+}
+/* All levels */
+nav ul b {
+  float: right;
+  font-size: 14px;
+  margin-top: -1px;
+}
+/* All levels */
+nav ul span.menu-item-parent {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+/* First level: A, Second level: LI Open */
+nav ul li.open > a,
+nav ul li.open > a b {
+  color: #fff !important;
+}
+/* First level: Icon */
+nav > ul > li > a b {
+  position: absolute !important;
+  right: 10px;
+  top: 10px;
+}
+nav > ul > li > a > i {
+  /*font-size: 121%; fa-lg overrides this so..  */
+  margin-right: 5px;
+  width: 15px;
+  display: inline-block;
+  text-align: center;
+  position: relative;
+}
+/* First level icon */
+nav > ul > li > a > i > em {
+  font-size: 9px;
+  display: block;
+  padding: 2px;
+  position: absolute;
+  top: -8px;
+  right: -6px;
+  text-decoration: none;
+  font-style: normal;
+  background: #ED1C24;
+  color: #ffffff;
+  min-width: 13px;
+  border-radius: 50%;
+  max-height: 13px;
+  line-height: 8px;
+  font-weight: bold;
+  vertical-align: baseline;
+  white-space: nowrap;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+/* Second level switched to relative */
+nav ul li li {
+  border-bottom: none;
+  position: relative;
+}
+/* Second level: UL */
+nav > ul > li > ul::before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: 1;
+  left: 23px;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid $line;
+}
+/* Second level: UL LI */
+nav > ul ul li::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 8px;
+  left: 23px;
+  top: 16px;
+  border-top: 1px solid $line;
+  z-index: 1;
+}
+/* Third level: UL LI */
+nav > ul ul ul li::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 18px;
+  left: 10px;
+  top: 17px;
+  border-top: 1px solid transparent;
+}
+/* Second level and onwards > */
+nav > ul ul li a i {
+  font-size: 14px !important;
+  width: 18px !important;
+  text-align: center !important;
+}
+/* Second and Third level line color */
+nav > ul > li:hover > ul::before,
+nav > ul > li:hover > ul > li::before {
+  border-color: $line_active !important;
+}
+/* Second Level: UL */
+nav ul ul {
+  margin: 0;
+  padding: 0;
+  background: $second_bg;
+}
+nav ul ul {
+  padding: 7px 0;
+}
+/* Third Level: UL */
+nav ul ul ul {
+  background: transparent;
+  padding: 0;
+}
+/* Third Level: LI */
+nav ul ul li {
+  margin: 0;
+  padding: 0;
+}
+/* Second Level: A */
+nav ul ul li > a {
+  padding-left: 42px;
+  font-size: 14px;
+  font-weight: normal;
+  outline: 0;
+}
+/* Second Level: A:hover */
+nav ul ul li > a:hover {
+  background-color: $second_item_hover_bg;
+  color: #ffffff;
+}
+/* Third Level: A */
+nav ul ul ul li a {
+  color: #bfbfbf;
+  padding: 8px 10px 8px 70px;
+  font-size: 14px;
+}
+/* Third Level: A:hover */
+nav ul ul ul li a:hover {
+  background-color: #4C4F53;
+  color: #ffffff;
+}
+/* Fourth Level: A */
+nav ul ul ul ul li a {
+  padding-left: 90px;
+}
+/* Fifth Level: A */
+nav ul ul ul ul ul li a {
+  padding-left: 110px;
+}
+/* Sixth Level: A */
+nav ul ul ul ul ul ul li a {
+  padding-left: 130px;
+}
+/* Second level: B */
+nav ul ul b {
+  color: #B3B3B3;
+}
+/* Second level: LI:hover B */
+nav ul ul > li:hover b {
+  color: #D5D9E2;
+}

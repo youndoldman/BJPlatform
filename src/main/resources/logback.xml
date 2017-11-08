@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+
+    <property name="LOG_HOME" value="${log_dir}"/>
+    <appender name="businessLogger" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/businessLogger.log</file>
+        <Encoding>UTF-8</Encoding>
+        <encoder>
+            <pattern>%d - [%-5p] : %c{1} - %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/businessLogger.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>100</maxHistory>
+        </rollingPolicy>
+    </appender>
+    <appender name="opLogger" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/opLogger.log</file>
+        <Encoding>UTF-8</Encoding>
+        <encoder>
+            <pattern>%d - [%-5p] : %c{1} - %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/opLogger.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>100</maxHistory>
+        </rollingPolicy>
+    </appender>
+    <appender name="debugLogger" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/debugLogger.log</file>
+        <Encoding>UTF-8</Encoding>
+        <encoder>
+            <pattern>%d - [%-5p] : %c{1} - %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/debugLogger.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+    </appender>
+    <appender name="infoAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <Encoding>UTF-8</Encoding>
+        <file>${LOG_HOME}/info.log</file>
+        <encoder>
+            <pattern>%d - [%-5p] : %c{1} - %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/info.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>100</maxHistory>
+        </rollingPolicy>
+    </appender>
+    <appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <Encoding>UTF-8</Encoding>
+        <file>${LOG_HOME}/error.log</file>
+        <encoder>
+            <pattern>%d - [%-5p] : %c{1} - %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/error.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>100</maxHistory>
+        </rollingPolicy>
+    </appender>
+    <logger name="com.donno.nj.logger.BusinessLogger" additivity="false" level="INFO">
+        <appender-ref ref="businessLogger"/>
+    </logger>
+     <logger name="com.donno.nj.logger.OpLogger" additivity="false" level="INFO">
+        <appender-ref ref="opLogger"/>
+    </logger>
+     <logger name="com.donno.nj.logger.DebugLogger" additivity="false" level="INFO">
+        <appender-ref ref="debugLogger"/>
+    </logger>
+
+ 
+    <!--<logger name="com.donno.nj.dao" additivity="false" level="DEBUG" >-->
+        <!--<appender-ref ref="debugLogger"/>-->
+    <!--</logger>-->
+
+    <root level="INFO">
+        <appender-ref ref="infoAppender"/>
+        <appender-ref ref="errorAppender"/>
+        <!-- <appender-ref ref="consoleAppender" /> -->
+    </root>
+</configuration>

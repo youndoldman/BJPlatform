@@ -1,0 +1,86 @@
+.navbar-brand {
+  height: 50px;
+  padding: 15px 10px 5px 10px;
+
+  img {
+    display: inline-block;
+    margin-right: 3px;
+    height: 100%;
+    border: 0;
+  }
+
+  span {
+    margin-left: 0px;
+    color: $white;
+    font-size: medium;
+  }
+}
+
+.navbar-default {
+  background-color: $udc-green;
+  border-color: $udc-green;
+}
+
+.navbar-default .navbar-nav>.active>a,
+.navbar-default .navbar-nav>.active>a:focus,
+.navbar-default .navbar-nav>.active>a:hover {
+  color: #555;
+  background-color: $udc-green;
+}
+
+.navbar-default .navbar-nav > li {
+  & > a {
+    color: $white;
+  }
+
+  &:hover {
+    background-color: $udc-green;
+    border-bottom: 5px solid $white;
+  }
+
+  &.active {
+    a {
+      color: $white;
+      background-color: $udc-green;
+      &:hover {
+        color: $white;
+        background-color: $udc-green;
+      }
+    }
+    margin: 0 2px;
+    background-color: $udc-green;
+    border-bottom: 5px solid $white;
+  }
+}
+
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:focus,
+.navbar-default .navbar-nav > .open > a:hover {
+  color: $white;
+  background-color: $udc-green;
+}
+
+.breadcrumb {
+  background-color: white;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+}
+
+.navbar-clock
+{
+  height: 50px;
+  padding: 17px 0px 5px 0px;
+
+  span {
+    margin-left: 0px;
+    color: $white;
+    font-size: medium;
+    text-align: center
+  }
+  a {
+    margin-left: 0px;
+    color: $white;
+    font-size: medium;
+    text-align: center
+  }
+}

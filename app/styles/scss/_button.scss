@@ -1,0 +1,105 @@
+//$btn_pri: #1ab394;
+//$btn_pri_hover: #16987e;
+$btn_pri: $udc-green;
+$btn_pri_hover: $udc-dark-green;
+
+$btn_success: #3e9ff9;
+$btn_success_hover: #1c84c6;
+
+$btn_info: #5bc0de;
+$btn_info_hover: #23c6c8;
+
+.btn-primary {
+  color: #fff;
+  background-color: $btn_pri;
+  border-color: $btn_pri;
+
+  &:hover, &.hover,
+  &:active, &.active,
+  &:active:hover, &:active:hover,
+  &:focus, &.focus {
+    background-color: $btn_pri_hover;
+    border-color: $btn_pri_hover;
+  }
+}
+
+.btn-success {
+  color: #fff;
+  background-color: $btn_success;
+  border-color: $btn_success;
+
+  &:hover, &.hover,
+  &:active, &.active,
+  &:active:hover, &.active:hover,
+  &:focus, &.focus  {
+    background-color: $btn_success_hover;
+    border-color: $btn_success_hover;
+  }
+}
+
+.btn-info {
+  color: #fff;
+  background-color: $btn_info;
+  border-color: $btn_info;
+
+  &:hover, &.hover,
+  &:active, &.active,
+  &:active:hover, &.active:hover,
+  &:focus, &.focus  {
+    background-color: $btn_info_hover;
+    border-color: $btn_info_hover;
+  }
+}
+
+.label-primary {
+  color: $white;
+  background-color: $btn_pri;
+}
+
+.label-success {
+  color: $white;
+  background-color: $btn_success;
+}
+
+.label-warning {
+  color: $white;
+}
+
+.label-info {
+  color: $white;
+  background-color: $btn_info;
+}
+
+.label-default {
+  color: $white;
+}
+
+.btn-outline {
+  color: inherit;
+  background-color: transparent;
+  -webkit-transition: all .5s;
+  transition: all .5s;
+
+  &:hover, &.hover,
+  &:active, &.active,
+  &:active:hover, &:active:hover,
+  &:focus, &.focus {
+    color: inherit;
+    background-color: transparent;
+  }
+}
+
+.open>.dropdown-toggle.btn-primary.focus,
+.open>.dropdown-toggle.btn-primary:focus,
+.open>.dropdown-toggle.btn-primary:hover {
+  color: #fff;
+  background-color: $btn_pri_hover;
+  border-color: $btn_pri_hover;
+}
+.btn-primary.active,
+.btn-primary:active,
+.open>.dropdown-toggle.btn-primary {
+  color: #fff;
+  background-color: $btn_pri_hover;
+  border-color: $btn_pri_hover;
+}

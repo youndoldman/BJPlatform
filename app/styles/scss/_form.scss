@@ -1,0 +1,144 @@
+
+.label {
+  display: inline-block;
+  margin-bottom: 6px;
+  line-height: 19px;
+  font-weight: 400;
+  font-size: 13px;
+  color: $dark;
+  text-align: left;
+}
+
+
+.inline-group {
+  label {
+    display: inline-block;
+
+    &.radio {
+      margin-left: 25px;
+    }
+
+    &.checkbox {
+      margin-left: 20px;
+    }
+  }
+  input {
+    display: inline-block;
+  }
+}
+
+form {
+  padding: 5px 8px 0 10px;
+
+  label {
+    vertical-align: middle;
+  }
+  button {
+    margin: 0 0 0 5px;
+  }
+  fieldset {
+    display: block;
+    padding: 25px 14px 5px;
+    border: 0;
+    background: rgba(255,255,255,.9);
+    position: relative;
+  }
+
+  section {
+    margin-bottom: 15px;
+  }
+
+  .input-label{
+    width: 100px;
+    margin-top: 10px;
+    margin-left: 10px;
+  }
+
+  .input-tips{
+    margin-top: 10px;
+    color: grey;
+    height: 10px;
+    font-size: smaller;
+    color:red;
+  }
+
+  .input-width{
+    width: 320px;
+  }
+
+  .checkbox-block{
+    width: 45%;
+    margin-left: 10px;
+    height: 25px;
+  }
+
+  .input-width-large{
+    width: 520px;
+  }
+
+  .input-width-xl{
+    width: 640px;
+  }
+
+  .input-group textarea{
+    height: 100px;
+  }
+
+  .star{
+    color: red;
+  }
+
+  .pull-right {
+    margin-right: 3px;
+  }
+  .row {
+    margin: 0 -15px;
+  }
+  .row:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+  .col {
+    float: left;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+  }
+  .col-1 {
+    width: 8.33%;
+  }
+  .col-2 {
+    width: 16.66%;
+  }
+  .col-3 {
+    width: 25%;
+  }
+  .col-4 {
+    width: 33.33%;
+  }
+  .col-5 {
+    width: 41.66%;
+  }
+  .col-6 {
+    width: 50%;
+  }
+  .col-8 {
+    width: 66.67%;
+  }
+  .col-9 {
+    width: 75%;
+  }
+  .col-10 {
+    width: 83.33%;
+  }
+  @media screen and (max-width: 600px) {
+    .col {
+      float: none;
+      width: 100%;
+    }
+  }
+
+}

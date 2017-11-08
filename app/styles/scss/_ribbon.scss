@@ -1,0 +1,44 @@
+$ribbon_active: #fff;
+$ribbon_slash: #a7b1c2;
+$ribbon_bg: $udc-dark;
+$ribbon_bg_blue:#337ab7;
+$ribbon_bg_color: #a7b1c2;
+
+.ribbon {
+  min-height: 20px;
+  background: $ribbon_bg_blue;
+  padding: 0 13px;
+  position: relative;
+
+  .home {
+    cursor: pointer;
+    margin: 9px 5px 0 0;
+    color: #fff;
+    font-size: large;
+  }
+
+  .breadcrumb {
+    display: inline-block;
+    margin: 0;
+    padding: 11px 18px 11px 0;
+    background: none;
+    vertical-align: top;
+    color: $ribbon_bg_color;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 14px;
+
+    li + li:before {
+      padding: 0 5px;
+      color: $ribbon_bg_color;
+      content: "/";
+    }
+    a {
+      cursor: pointer;
+      color: $ribbon_bg_color;
+    }
+    .active, li:last-child {
+      color: $ribbon_active;
+    }
+  }
+}
