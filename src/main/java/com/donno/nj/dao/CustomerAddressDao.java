@@ -6,6 +6,9 @@ import com.donno.nj.domain.CustomerAddress;
 
 public interface CustomerAddressDao extends BaseDao<CustomerAddress>
 {
-    void deleteByUserId(Integer userId);
+    void deleteByUserIdx(Integer userIdx);
     void deleteById(Integer id);
+
+    CustomerAddress findByCustomerIdx(Integer userIdx);
+
 }

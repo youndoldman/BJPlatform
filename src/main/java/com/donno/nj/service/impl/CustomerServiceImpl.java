@@ -3,7 +3,12 @@ package com.donno.nj.service.impl;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.dao.CustomerAddressDao;
 import com.donno.nj.dao.CustomerDao;
+import com.donno.nj.dao.UserDao;
+import com.donno.nj.dao.GroupDao;
 import com.donno.nj.domain.Customer;
+import com.donno.nj.domain.CustomerAddress;
+import com.donno.nj.domain.User;
+import com.donno.nj.domain.Group;
 import com.donno.nj.service.CustomerService;
 import com.google.common.base.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +19,13 @@ import java.util.Map;
 
 
 @Service
-public class CustomerServiceImpl implements CustomerService {
+public class CustomerServiceImpl extends UserServiceImpl implements CustomerService {
+
+    @Autowired
+    private GroupDao groupDao;
+
+    @Autowired
+    private UserDao userDao;
 
     @Autowired
     private CustomerDao customerDao;
@@ -24,21 +35,20 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     @Override
-    @OperationLog(desc = "根据用户编号查询客户信息")
-    public Optional<Customer> findByNumber(String number) {
-        return Optional.fromNullable(customerDao.findByNumber(number));
-    }
-
-    @Override
-    @OperationLog(desc = "根据用户ID查询客户信息")
-    public Optional<Customer> findByUserId(String userIdentity) {
-        return Optional.fromNullable(customerDao.findByUserId(userIdentity));
-    }
-
-    @Override
     @OperationLog(desc = "查询客户信息")
-    public List<Customer> retrieve(Map params) {
-        return customerDao.getList(params);
+    public List<Customer> retrieve(Map params)
+    {
+        List<Customer> customers = customerDao.getList(params);
+        for(int iCount = 0 ; iCount < customers.size(); iCount++)
+        {
+            CustomerAddress customerAddress =  customerAddressDao.findByCustomerIdx(customers.get(iCount).getId());
+
+            if (customerAddress != null)
+            {
+                customers.get(iCount).setAddress(customerAddress);
+            }
+        }
+        return customers;
     }
 
     @Override
@@ -52,32 +62,46 @@ public class CustomerServiceImpl implements CustomerService {
     public void create(Customer customer)
     {
 
-        long retCode = customerDao.insert(customer);//插入后自动返回id值到customer
+        User user = customer;
+        long retCode = userDao.insert(user);//插入用户基表数据，自动返回id值到user
 
         if (retCode > 0)
         {
-            if (customer.getAddress() != null)
+            retCode = customerDao.insert(customer);//插入客户表数据，
+
+            if (retCode > 0)
             {
-                customer.getAddress().setCustomerIdx(customer.getId());
-                customerAddressDao.insert(customer.getAddress());
+                if (customer.getAddress() != null)
+                {
+                    customer.getAddress().setCustomerIdx(customer.getId());
+                    customerAddressDao.insert(customer.getAddress());  //插入地址信息
+                }
             }
         }
     }
 
     @Override
     @OperationLog(desc = "修改客户信息")
-    public void update(Customer customer, Customer newCustomer) {
-        newCustomer.setId(customer.getId());
+    public void update(Integer id, Customer newCustomer)
+    {
+        newCustomer.setId(id);
+
+        /*更新基表数据*/
+        User newUser = newCustomer;
+        userDao.update(newUser);
+
+        /*更新客户表数据*/
         customerDao.update(newCustomer);
     }
 
     @Override
     @OperationLog(desc = "删除客户")
-    public void delete(Customer customer)
+    public void deleteById(Integer id)
     {
         /*删除关联子表：地址表*/
-        customerAddressDao.deleteByUserId(customer.getId());
-        customerDao.deleteByUserId(customer.getUserId());
+        customerAddressDao.deleteByUserIdx(id);
+        userDao.delete(id);
+        customerDao.deleteByUserIdx(id);
     }
 
 

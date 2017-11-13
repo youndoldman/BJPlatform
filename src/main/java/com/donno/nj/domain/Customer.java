@@ -12,8 +12,6 @@ import java.io.Serializable;
  */
 public class Customer extends User  implements Serializable
 {
-    private Integer id;
-    private String userId;
     private String number;
     private Integer status;
     private String  typeCode;
@@ -27,19 +25,14 @@ public class Customer extends User  implements Serializable
 
     public Customer()
     {
-        setUserType(UserType.UTCustomer);
+
     }
 
     /*
     * 属性读取
     * */
 
-    public Integer getId(){return id;}
 
-    public String getUserId()
-    {
-        return userId;
-    }
 
     public String getNumber()
     {
@@ -91,15 +84,6 @@ public class Customer extends User  implements Serializable
     * 属性设置
     * */
 
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
-
-    public void setUserId(String userId)
-    {
-        this.userId = userId;
-    }
 
     public void setNumber(String number)
     {

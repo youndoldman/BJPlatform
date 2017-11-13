@@ -13,9 +13,17 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <sql id="TableName">
+    <sql id="TblCustomerAddress">
         t_customer_address
     </sql>
+
+
+    <select id="findByCustomerIdx" resultMap="BaseResultMap">
+        SELECT *
+        FROM <include refid="TblCustomerAddress"/>
+        WHERE
+        customer_idx = #{customerIdx}
+    </select>
 
     <sql id="InsertColumnList">
         customer_idx,province , city, county,detail
@@ -23,7 +31,7 @@
 
 
     <insert id="insert">
-        INSERT IGNORE INTO <include refid="TableName"/>(<include refid="InsertColumnList"/>)
+        INSERT IGNORE INTO <include refid="TblCustomerAddress"/>(<include refid="InsertColumnList"/>)
         VALUES( #{customerIdx},#{province}, #{city},#{county},#{detail})
     </insert>
 
@@ -31,11 +39,11 @@
 
     <select id="count" resultType="Integer">
         SELECT COUNT(*)
-        FROM <include refid="TableName"/>
+        FROM <include refid="TblCustomerAddress"/>
     </select>
 
-    <delete id="deleteByUserId" parameterType="java.lang.Integer">
-        DELETE FROM <include refid="TableName"/> WHERE customer_idx= #{customerIdx}
+    <delete id="deleteByUserIdx" parameterType="java.lang.Integer">
+        DELETE FROM <include refid="TblCustomerAddress"/> WHERE customer_idx= #{customerIdx}
     </delete>
 
 

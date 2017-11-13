@@ -9,17 +9,15 @@ import java.util.Map;
 
 
 @Transactional
-public interface SysUserService
+public interface SysUserService extends UserService
 {
-    Optional<SysUser> findByUserId(String userId);
-
     List<SysUser> retrieve(Map params);
 
     Integer count(Map params);
 
-    SysUser create(SysUser user);
+    void create(SysUser user);
 
-    void update(SysUser user, SysUser newUser);
+    void update(Integer id, SysUser newUser);
 
-    void delete(String userId);
+    void delete(Integer id);
 }

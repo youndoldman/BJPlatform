@@ -10,13 +10,14 @@ import java.util.Date;
 public class User
 {
     protected Integer id;
+    protected String userId;
     protected String name;
     protected String password;
     protected String note;
     protected Date createTime;
     protected Date updateTime;
 
-    protected UserType userType; //用户类型，0 客户 1 系统用户
+    protected Group userGroup;
 
     public User()
     {
@@ -26,6 +27,11 @@ public class User
     public  Integer getId()
     {
             return id;
+    }
+
+    public String getUserId()
+    {
+        return userId;
     }
 
     public String getName()
@@ -53,14 +59,19 @@ public class User
         return updateTime;
     }
 
-    public UserType getUserType()
+    public Group getUserGroup()
     {
-        return  userType;
+        return  userGroup;
     }
 
     public void setId(Integer id)
     {
         this.id = id;
+    }
+
+    public void setUserId(String userId)
+    {
+        this.userId = userId;
     }
 
     public void setName(String name)
@@ -90,8 +101,8 @@ public class User
         this.updateTime = updateTime;
     }
 
-    public void setUserType(UserType userType)
+    public void setUserGroup(Group userGroup)
     {
-        this.userType = userType;
+        this.userGroup = userGroup;
     }
 }

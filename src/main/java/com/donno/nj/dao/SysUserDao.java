@@ -8,5 +8,5 @@ import com.google.common.base.Optional;
 public interface SysUserDao extends BaseDao<SysUser>
 {
     SysUser findByUserId(String userId);
-    void deleteByUserId(String userId);
+    void deleteByUserIdx(Integer userIdx);
 }

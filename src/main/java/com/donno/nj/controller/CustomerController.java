@@ -2,7 +2,7 @@ package com.donno.nj.controller;
 
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
-import com.donno.nj.domain.Customer;
+import com.donno.nj.domain.*;
 import com.donno.nj.service.*;
 
 
@@ -29,6 +29,9 @@ import static com.google.common.collect.Maps.newHashMap;
 @RestController
 public class CustomerController
 {
+    @Autowired
+    private GroupService groupService;
+
     @Autowired
     private CustomerService customerService;
 
@@ -57,7 +60,7 @@ public class CustomerController
     {
         ResponseEntity responseEntity;
 
-        Optional<Customer> validUser = customerService.findByUserId(userId);
+        Optional<User> validUser = customerService.findByUserId(userId);
 
         if (!validUser.isPresent())
         {
@@ -76,7 +79,7 @@ public class CustomerController
         return responseEntity;
     }
 
-    @RequestMapping(value = "/api/customer/logout", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/api/customers/logout", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity logout(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         AppUtil.clearCurrentLoginUser();
@@ -99,9 +102,8 @@ public class CustomerController
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
         List<Customer> customers = customerService.retrieve(params);
-        Integer total = customerService.count(params);
 
-        return ResponseEntity.ok(ListRep.assemble(customers, total));
+        return ResponseEntity.ok(ListRep.assemble(customers, customers.size()));
     }
 
     @OperationLog(desc = "创建客户")
@@ -119,32 +121,50 @@ public class CustomerController
             /*自动生成客户编号NUMBER*/
             customer.setNumber(customer.getUserId());
 
-            /*创建客户*/
-            customerService.create(customer);
+             /*查询组对应的ID*/
+            if (customer.getUserGroup() != null)
+            {
+                Optional<Group> group = groupService.findByCode(customer.getUserGroup().getCode());
+                if(group.isPresent())
+                {
+                    customer.setUserGroup(group.get());
+                    /*创建客户*/
+                    customerService.create(customer);
 
-            URI uri = ucBuilder.path("/api/customers/{number}").buildAndExpand(customer.getNumber()).toUri();
-            responseEntity = ResponseEntity.created(uri).build();
+                    URI uri = ucBuilder.path("/api/customers/{userId}").buildAndExpand(customer.getUserId()).toUri();
+                    responseEntity = ResponseEntity.created(uri).build();
+                }
+                else
+                {
+                    responseEntity =  ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+                }
+            }
+            else
+            {
+                responseEntity =  ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+            }
         }
+
         return responseEntity;
     }
 
-    @RequestMapping(value = "/api/customers/{number}", method = RequestMethod.GET)
-    public ResponseEntity<Customer> getCustomerByNumber(@PathVariable("number") String number)
-    {
-        ResponseEntity responseEntity;
-
-        Optional<Customer> curCustomer = customerService.findByNumber(number);
-        if (curCustomer.isPresent())
-        {
-            responseEntity = ResponseEntity.ok(curCustomer.get());
-        }
-        else
-        {
-            responseEntity = new ResponseEntity<Customer>(HttpStatus.NOT_FOUND);
-        }
-
-        return responseEntity;
-    }
+//    @RequestMapping(value = "/api/customers/{number}", method = RequestMethod.GET)
+//    public ResponseEntity<Customer> getCustomerByNumber(@PathVariable("number") String number)
+//    {
+//        ResponseEntity responseEntity;
+//
+////        Optional<Customer> curCustomer = customerService.findByNumber(number);
+////        if (curCustomer.isPresent())
+////        {
+////            responseEntity = ResponseEntity.ok(curCustomer.get());
+////        }
+////        else
+////        {
+////            responseEntity = new ResponseEntity<Customer>(HttpStatus.NOT_FOUND);
+////        }
+//
+//        return responseEntity;
+//    }
 
 
 
@@ -154,11 +174,29 @@ public class CustomerController
     {
         ResponseEntity responseEntity;
 
-        Optional<Customer> curCustomer = customerService.findByUserId(userId);
-        if (curCustomer.isPresent())
+        Optional<User> user = customerService.findByUserId(userId);
+        if (user.isPresent())
         {
-            customerService.update(curCustomer.get(), newCustomer);
-            responseEntity = ResponseEntity.ok().build();
+            if (newCustomer.getUserGroup() != null)//是否含有组信息
+            {
+                Optional<Group> group = groupService.findByCode(newCustomer.getUserGroup().getCode());//查询组信息是否合法
+                if (group.isPresent())
+                {
+                    newCustomer.setUserGroup(group.get());
+
+                    customerService.update(user.get().getId(), newCustomer);
+                    responseEntity = ResponseEntity.ok().build();
+                }
+                else
+                {
+                    responseEntity =  ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+                }
+            }
+            else
+            {
+                customerService.update(user.get().getId(), newCustomer);
+                responseEntity = ResponseEntity.ok().build();
+            }
         }
         else
         {
@@ -174,10 +212,10 @@ public class CustomerController
     {
         ResponseEntity responseEntity;
 
-        Optional<Customer> curCustomer = customerService.findByUserId(userId);
-        if (curCustomer.isPresent())
+        Optional<User> user = customerService.findByUserId(userId);
+        if (user.isPresent())
         {
-            customerService.delete(curCustomer.get());
+            customerService.deleteById(user.get().getId());
 
             responseEntity = ResponseEntity.noContent().build();
         }

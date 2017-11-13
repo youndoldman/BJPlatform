@@ -4,6 +4,7 @@ import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.Group;
 import com.donno.nj.domain.SysUser;
+import com.donno.nj.domain.User;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.*;
 import com.donno.nj.util.AppUtil;
@@ -41,7 +42,7 @@ public class SysUserController
     {
         ResponseEntity responseEntity;
 
-        Optional<SysUser> validUser = sysUserService.findByUserId(userId);
+        Optional<User> validUser = sysUserService.findByUserId(userId);
 
         if (!validUser.isPresent())
         {
@@ -74,7 +75,7 @@ public class SysUserController
                                             @RequestParam(value = "name", defaultValue = "") String userName,
                                             @RequestParam(value = "mobilePhone", defaultValue = "") String mobilePhone,
                                             @RequestParam(value = "officePhone", defaultValue = "") String officePhone,
-                                            @RequestParam(value = "orderBy", defaultValue = "userId") String orderBy,
+                                            @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                             @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                             @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
     {
@@ -82,9 +83,8 @@ public class SysUserController
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
         List<SysUser> users = sysUserService.retrieve(params);
-        Integer total = sysUserService.count(params);
 
-        return ResponseEntity.ok(ListRep.assemble(users, total));
+        return ResponseEntity.ok(ListRep.assemble(users, users.size()));
     }
 
     @OperationLog(desc = "创建客户")
@@ -99,12 +99,12 @@ public class SysUserController
         else
         {
             /*查询组对应的ID*/
-            Optional<Group> group = groupService.findByCode(sysUser.getGroup().getCode());
+            Optional<Group> group = groupService.findByCode(sysUser.getUserGroup().getCode());
             if(group.isPresent())
             {
-                sysUser.setGroup(group.get());
-                SysUser newUser = sysUserService.create(sysUser);
-                URI uri = ucBuilder.path("/api/sysusers/{userId}").buildAndExpand(newUser.getUserId()).toUri();
+                sysUser.setUserGroup(group.get());
+                sysUserService.create(sysUser);
+                URI uri = ucBuilder.path("/api/sysusers/{userId}").buildAndExpand(sysUser.getUserId()).toUri();
                 responseEntity = ResponseEntity.created(uri).build();
             }
             else //异常数据，返回错误信息
@@ -123,11 +123,29 @@ public class SysUserController
     {
         ResponseEntity responseEntity;
 
-        Optional<SysUser> curUser = sysUserService.findByUserId(userId);
-        if (curUser.isPresent())
+        Optional<User> user = sysUserService.findByUserId(userId);
+        if (user.isPresent())
         {
-            sysUserService.update(curUser.get(), newUser);
-            responseEntity = ResponseEntity.ok().build();
+            if (newUser.getUserGroup() != null)//是否含有组信息
+            {
+                Optional<Group> group = groupService.findByCode(newUser.getUserGroup().getCode());//查询组信息是否合法
+                if (group.isPresent())
+                {
+                    newUser.setUserGroup(group.get());
+
+                    sysUserService.update(user.get().getId(), newUser);
+                    responseEntity = ResponseEntity.ok().build();
+                }
+                else
+                {
+                    responseEntity =  ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+                }
+            }
+            else
+            {
+                sysUserService.update(user.get().getId(), newUser);
+                responseEntity = ResponseEntity.ok().build();
+            }
         }
         else
         {
@@ -143,16 +161,17 @@ public class SysUserController
     {
         ResponseEntity responseEntity;
 
-        Optional<SysUser> curUser = sysUserService.findByUserId(userId);
-        if (curUser.isPresent())
+        Optional<User> user = sysUserService.findByUserId(userId);
+        if (user.isPresent())
         {
-            sysUserService.delete(curUser.get().getUserId());
+            sysUserService.delete(user.get().getId());
             responseEntity = ResponseEntity.noContent().build();
         }
         else
         {
             responseEntity = ResponseEntity.notFound().build();
         }
+
 
         return responseEntity;
     }
