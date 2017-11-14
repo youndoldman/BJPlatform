@@ -5,3 +5,4 @@ node_modules/
 
 target/
 log_dir_IS_UNDEFINED/
+.idea/
