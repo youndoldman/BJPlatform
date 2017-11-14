@@ -6,8 +6,8 @@ commonModule.constant('URI', {
         'mainPage': '../pages/mainCenter.htm',
         'users': '../../../api/users',
         'bottoms': '../../../api/bottoms',
-        'login':'../../../api/login',
-        'logout':'../../../api/logout',
+        'login':'../../../api/sysusers/login',
+        'logout':'../../../api/sysusers/logout',
         'orders':'../../../api/orders'
 
     }
@@ -60,7 +60,7 @@ commonModule.constant('NavItem', {
     },
 
     'UserCenter': {
-        roles:["管理员"],
+        roles:["grc_0001"],
         name: "客户管理",
         href: "./userCenter.htm",
         menuItems: [{
@@ -77,7 +77,7 @@ commonModule.constant('NavItem', {
         }]
     },
     'OrderCenter': {
-        roles:["管理员"],
+        roles:[],
         name: "订单管理",
         href: "orderCenter.htm",
     },
@@ -88,7 +88,7 @@ commonModule.constant('NavItem', {
         menuItems: []
     },
     'RoutineCenter': {
-        roles:["客服","管理员","老板","财务","客户","配送"],
+        roles:[],
         name: "日常事务",
         href: "./routineCenter.htm",
         menuItems: [{
@@ -129,7 +129,7 @@ commonModule.constant('NavItem', {
         }]
     },
     'FinanceCenter': {
-        roles:["管理员", "财务"],
+        roles:[],
         name: "财务管理",
         href: "./financeCenter.htm",
         menuItems: [{
@@ -153,7 +153,7 @@ commonModule.constant('NavItem', {
             }]
     },
     'DecisionCenter': {
-        roles:["管理员", "老板"],
+        roles:[],
         name: "决策分析",
         href: "./decisionCenter.htm",
         menuItems: [{
@@ -176,7 +176,7 @@ commonModule.constant('NavItem', {
         }]
     },
     'GasCenter': {
-        roles:["管理员"],
+        roles:[],
         name: "钢瓶管理",
         href: "./gasCenter.htm",
         menuItems: [{
@@ -193,7 +193,7 @@ commonModule.constant('NavItem', {
         }]
     },
     'AppCenter': {
-        roles:["管理员"],
+        roles:[],
         name: "增值服务",
         href: "./appCenter.htm",
         menuItems: [{
@@ -203,24 +203,8 @@ commonModule.constant('NavItem', {
             icon: "fa-phone"
         }]
     },
-    'CustomerCenter': {
-        roles:["客户","管理员"],
-        name: "客户中心",
-        href: "./customerCenter.htm",
-        menuItems: [{
-            index: 0,
-            name: "我要订气",
-            href: "./customerCenter.htm#/customer/create",
-            icon: "fa-phone"
-        }, {
-            index: 1,
-            name: "我的订单",
-            href: "./customerCenter.htm#/customer/query",
-            icon: "fa-sitemap"
-        }]
-    },
     'HelpCenter': {
-        roles:["客户"],
+        roles:[],
         name: "帮助中心",
         href: "",
         target: "_blank"

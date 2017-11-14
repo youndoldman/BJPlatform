@@ -170,7 +170,7 @@ commonModule.controller('CommonModuleCtrl', ['$rootScope','$scope', '$interval',
             return true;
         }
         while (i--) {
-            if (roles[i] == curUser.role) {
+            if (roles[i] == curUser.userGroup.code) {
                 return true;
             }
         }
