@@ -26,6 +26,27 @@
         <property name="mailServerUsername" value="zhouy"/>
         <property name="mailServerPassword" value="000000"/>
         <property name="mailServerPort" value="2025"/>
+        <property name="deploymentResources">
+            <list>
+                <!-- value>classpath*:/net/xerllent/docflow/bpmn/*</value -->
+                <value>classpath:diagrams/**/*.bpmn</value>
+            </list>
+        </property>
+
+        <property name="customSessionFactories">
+            <list>
+                <bean class="com.donno.nj.activiti.CustomGroupEntityManagerFactory" >
+                    <property name="groupEntityManager">
+                        <bean class="com.donno.nj.activiti.CustomGroupEntityManager"></bean>
+                    </property>
+                </bean>
+                <bean class="com.donno.nj.activiti.CustomUserEntityManagerFactory" >
+                    <property  name="userEntityManager">
+                        <bean id="userEntityManager" class="com.donno.nj.activiti.CustomUserEntityManager"></bean>
+                    </property>
+                </bean>
+            </list>
+        </property>
 
 
 
@@ -33,7 +54,10 @@
 
     <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
         <property name="processEngineConfiguration" ref="processEngineConfiguration"/>
+
     </bean>
+
+
 
     <!-- 7大接口 -->
     <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService"/>

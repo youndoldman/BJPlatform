@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.UserDao">
+    <resultMap id="BaseResultMap" type="com.donno.nj.domain.User">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, name, createTime, updateTime
+    </sql>
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM user WHERE id = #{id}
+    </select>
+
+    <select id="findByName" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM user WHERE name = #{name}
+    </select>
+
+    <select id="getList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM user
+        <where>
+            <if test="name != ''">
+              name LIKE CONCAT('%',#{name},'%')
+            </if>
+        </where>
+        ORDER BY ${orderBy} ${order} limit #{limit} offset #{offset};
+    </select>
+
+    <select id="count" resultType="Integer">
+        SELECT COUNT(*)
+        FROM user
+        <where>
+            <if test="name != ''">
+                name LIKE CONCAT('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert">
+        INSERT IGNORE INTO user (name, createTime)
+        VALUES(#{name}, #{createTime})
+        <selectKey resultType="long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <delete id="delete" parameterType="Long">
+        DELETE FROM user WHERE id=#{id}
+    </delete>
+
+    <update id="update">
+        UPDATE user
+        <set>
+            <if test="name != null">name = #{name}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>

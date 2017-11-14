@@ -17,6 +17,7 @@ public class GroupServiceImpl implements GroupService
     @Autowired
     private GroupDao groupDao;
 
+
     @Override
     public Optional<Group> findByCode(String code) {
         return Optional.fromNullable(groupDao.findByCode(code));

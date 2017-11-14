@@ -9,6 +9,7 @@ import java.util.Map;
 
 public interface GroupService
 {
+
     Optional<Group> findByCode(String code);
 
     List<Group> retrieve(Map params);

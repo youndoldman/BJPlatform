@@ -42,7 +42,7 @@ public class CustomerAddressServiceImpl implements CustomerAddressService
     @Override
     public void deleteByUserId(Integer customerIdx)
     {
-        customerAddressDao.deleteByUserId(customerIdx);
+        customerAddressDao.deleteByUserIdx(customerIdx);
     }
 
 

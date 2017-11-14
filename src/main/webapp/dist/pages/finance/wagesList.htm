@@ -1,0 +1,15 @@
+<div class=ribbon><a><span class="home fa fa-home"></span></a><ol class=breadcrumb><li>工资报表</li></ol></div><div class=table-wrapper><div class=toolbar><form role=form><div class=inline-group><label class=input><input type=text class="form-control input-sm" placeholder=员工号></label> <button type=submit class="btn btn-sm btn-primary"><i class="fa fa-search"></i> 搜索</button> <button type=button class="btn btn-sm btn-success pull-right" onclick=showNotification()><i class="fa fa-plus"></i> 工资表打印</button></div></form></div><table class="table table-striped table-hover props table-sm table-bordered table-condensed"><thead><tr><th width=5%>序号</th><th width=10%>日期</th><th width=5%>员工号</th><th width=10%>姓名</th><th width=10%>基础工资</th><th width=10%>岗位工资</th><th width=10%>绩效工资</th><th width=10%>养老保险</th><th width=10%>医疗保险</th><th width=10%>公积金</th><th width=10%>个人所得税</th><th width=10%>实发</th></tr></thead><tbody><tr><td class=message>1</td><td class=message>2017-08-21</td><td class=message>1001</td><td class=message>王明</td><td class=message>+2000.00</td><td class=message>+1500.00</td><td class=message>+3000.00</td><td class=message>-500.00</td><td class=message>-100.00</td><td class=message>-500.00</td><td class=message>-200.00</td><td class=message>5200.00</td></tr><tr><td class=message>2</td><td class=message>2017-08-21</td><td class=message>1001</td><td class=message>黎明</td><td class=message>+3000.00</td><td class=message>+1500.00</td><td class=message>+3000.00</td><td class=message>-500.00</td><td class=message>-100.00</td><td class=message>-500.00</td><td class=message>-200.00</td><td class=message>6200.00</td></tr><tr><td class=message>3</td><td class=message>2017-08-21</td><td class=message>1001</td><td class=message>周明</td><td class=message>+2000.00</td><td class=message>+1500.00</td><td class=message>+3500.00</td><td class=message>-500.00</td><td class=message>-100.00</td><td class=message>-500.00</td><td class=message>-200.00</td><td class=message>5700.00</td></tr><tr><td class=message>4</td><td class=message>2017-08-21</td><td class=message>1001</td><td class=message>孙丽丽</td><td class=message>+2000.00</td><td class=message>+1500.00</td><td class=message>+2000.00</td><td class=message>-500.00</td><td class=message>-100.00</td><td class=message>-500.00</td><td class=message>-200.00</td><td class=message>4200.00</td></tr></tbody></table><div nj-pager pager=pager></div></div><script>
+    function showNotification() {
+        $.notify("工资明细打印成功！.", {
+            newest_on_top: true
+        });
+    }
+    var notify = $.notify('<strong>建立连接</strong>.', {
+        allow_dismiss: false,
+        showProgressbar: true
+    });
+
+    setTimeout(function() {
+        notify.update({'type': 'success', 'message': '<strong>同步数据</strong>', 'progress': 100});
+    }, 2000);
+</script>
