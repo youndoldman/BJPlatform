@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="nj:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="udcweb.war">
-      <element id="artifact" artifact-name="nj:war exploded" />
-    </root>
-  </artifact>
-</component>
