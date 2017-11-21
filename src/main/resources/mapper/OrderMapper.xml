@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.OrderDao">
+
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.Order">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="order_sn" property="orderSn" jdbcType="VARCHAR"/>
+        <result column="customer_id" property="customerId" jdbcType="VARCHAR"/>
+        <result column="customer_name" property="customerName" jdbcType="VARCHAR"/>
+        <result column="amount" property="orderSum" jdbcType="FLOAT"/>
+        <!--<result column="pay_type" property="payType" jdbcType="CHAR"/>-->
+        <!--<result column="access_type" property="accessType" jdbcType="CHAR"/>-->
+        <result column="status" property="orderStatus" jdbcType="INTEGER"/>
+        <result column="recv_address" property="recvAddr" jdbcType="VARCHAR"/>
+        <result column="recv_name" property="recvName" jdbcType="VARCHAR"/>
+        <result column="recv_phone" property="recvPhohe" jdbcType="VARCHAR"/>
+
+        <result column="comment" property="comment" jdbcType="VARCHAR"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="TblOrder">
+        t_order
+    </sql>
+
+
+    <sql id="InsertColumnList">
+        order_sn,customer_idx ,amount,pay_type,access_type,status,recv_address,recv_name,recv_phone,comment
+    </sql>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        INSERT IGNORE INTO <include refid="TblOrder"/>(<include refid="InsertColumnList"/>)
+        VALUES( #{orderSn},#{customerIdx},#{orderSum}, #{payType},  #{accessType},#{orderStatus} , #{recvAddr}, #{recvName}, #{recvPhohe},#{comment})
+    </insert>
+
+    <!--<delete id="deleteByIdx" parameterType="java.lang.Integer">-->
+    <!--DELETE FROM <include refid="TblGoods"/> WHERE id= #{id}-->
+    <!--</delete>-->
+
+
+    <!--<update id="update">-->
+    <!--UPDATE <include refid="TblGoods"/>-->
+    <!--<set>-->
+        <!--<if test="name != null">name = #{name},</if>-->
+        <!--<if test="price != null">price = #{price},</if>-->
+        <!--<if test="info != null">info = #{info},</if>-->
+        <!--<if test="note != null">note = #{note},</if>-->
+        <!--<if test="goodsType.id != null">type_idx = #{goodsType.id},</if>-->
+    <!--</set>-->
+    <!--WHERE id = #{id}-->
+    <!--</update>-->
+
+    <sql id="JoinSelectColumn">
+        t_order.*,
+        t_user.name as customer_name,t_user.user_id as customer_id
+    </sql>
+
+    <sql id="JoinWhereCondition">
+        t_user.id = t_order.customer_idx
+    </sql>
+
+    <sql id="JoinTableList">
+        t_user,t_order
+    </sql>
+
+
+    <select id="getList" resultMap="DetailResultMap">
+    SELECT <include refid="JoinSelectColumn"/>
+    FROM <include refid="JoinTableList"/>
+    WHERE
+    (<include refid="JoinWhereCondition"/>)
+    <if test="orderBy != ''">
+    ORDER BY   ${orderBy}
+    </if>
+    limit #{limit} offset #{offset};
+    </select>
+
+
+</mapper>

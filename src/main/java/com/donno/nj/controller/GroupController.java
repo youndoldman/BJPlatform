@@ -23,8 +23,6 @@ public class GroupController
     @Autowired
     private GroupService groupService;
 
-
-
     @RequestMapping(value = "/api/groups", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取群组信息列表")
     public ResponseEntity retrieve(@RequestParam(value = "code", defaultValue = "") String code,
