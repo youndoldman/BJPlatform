@@ -2,7 +2,7 @@ package com.donno.nj.activiti;
 
 
 public enum WorkFlowTypes {
-    GAS_ORDER_FLOW("订气流程", 1), GOOD_ORDER_FLOW("商城流程", 2), LEAVE_FLOW("请假流程", 3);
+    GAS_PHONE_ORDER_FLOW("电话订气流程", 1), GAS_WEIXIN_ORDER_FLOW("微信订气流程", 2);
 
     // 成员变量
     private String name;
@@ -23,6 +23,17 @@ public enum WorkFlowTypes {
         }
         return null;
     }
+
+    // 普通方法
+    public static WorkFlowTypes getByName(String name) {
+        for (WorkFlowTypes c : WorkFlowTypes.values()) {
+            if (c.getName().equals(name)) {
+                return c;
+            }
+        }
+        return null;
+    }
+
 
     // get set 方法
     public String getName() {

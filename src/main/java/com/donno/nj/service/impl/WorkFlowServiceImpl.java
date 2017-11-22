@@ -50,15 +50,13 @@ public class WorkFlowServiceImpl implements WorkFlowService
 
     //启动流程
     @Override
-    public String createWorkFlow(WorkFlowTypes wfType, String strUserID, String strBuinessKey) {
+    public String createWorkFlow(WorkFlowTypes wfType, String strUserID, Map<String, Object> variables,String strBuinessKey) {
         DebugLogger.log("启动流程:"+wfType.getName()+"   启动人:"+strUserID+"   流程表索引值:"+strBuinessKey);
         ProcessInstance processInstance = null;
         try {
             // 用来设置启动流程的人员ID，引擎会自动把用户ID保存到activiti:initiator中
             identityService.setAuthenticatedUserId(strUserID);
-            Map<String, Object> variables = new HashMap<String, Object>();
-            variables.put("UserID", strUserID);
-            processInstance = runtimeService.startProcessInstanceByKey(wfType.getName(), strBuinessKey,variables);
+            processInstance = runtimeService.startProcessInstanceByKey(wfType.getName(), strBuinessKey, variables);
         } finally {
             identityService.setAuthenticatedUserId(null);
         }
@@ -67,16 +65,22 @@ public class WorkFlowServiceImpl implements WorkFlowService
 
     //查询当前任务
     @Override
-    public List<String> getTasksByUserId(String strUserID) {
+    public List<com.donno.nj.domain.Task> getTasksByUserId(String strUserID) {
         // 根据当前人的ID查询
         TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(strUserID);
 
         List<Task> tasks = taskQuery.list();
-        List<String>currentTaskList = new ArrayList<String>();
+        List<com.donno.nj.domain.Task>currentTaskList = new ArrayList<com.donno.nj.domain.Task>();
 
         for (Task task : tasks) {
             //任务号
-            currentTaskList.add(task.getId());
+            com.donno.nj.domain.Task myTask = new com.donno.nj.domain.Task();
+            myTask.setId(task.getId());
+            myTask.setTaskName(task.getName());
+            //查询当前任务对应的流程
+            Process process = getProcessByTaskId(task.getId());
+            myTask.setProcess(process);
+            currentTaskList.add(myTask);
         }
         return currentTaskList;
     }
@@ -100,7 +104,7 @@ public class WorkFlowServiceImpl implements WorkFlowService
 
             //对应的流程类型
             String WorkFlowName = processInstance.getProcessDefinitionName();
-            curProcess.setWorkFlowType(WorkFlowTypes.valueOf(WorkFlowName));
+            curProcess.setWorkFlowType(WorkFlowTypes.getByName(WorkFlowName));
 
             return curProcess;
 
@@ -113,11 +117,11 @@ public class WorkFlowServiceImpl implements WorkFlowService
     }
 
 
-    //办理任务
+    //办理任务 strTaskId－任务ID,variables-同意还是不同意等审批结论
     @Override
-    public boolean completeTask(String strTaskId) {
+    public boolean completeTask(String strTaskId, Map<String, Object> variables) {
         try {
-            taskService.complete(strTaskId);
+            taskService.complete(strTaskId, variables);
             return true;
         } catch (Exception e) {
             return false;

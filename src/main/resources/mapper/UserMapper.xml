@@ -8,6 +8,7 @@
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="group_id" property="userGroup.id" jdbcType="INTEGER"/>
         <result column="group_code" property="userGroup.code" jdbcType="VARCHAR"/>
         <result column="group_name" property="userGroup.name" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
@@ -19,7 +20,7 @@
     </sql>
 
     <select id="findByUserId" resultMap="BaseResultMap">
-        SELECT t_user.*,t_group.code as group_code,t_group.name as group_name
+        SELECT t_user.*,t_group.id as group_id,t_group.code as group_code,t_group.name as group_name
         FROM t_user,t_group
         WHERE
         user_id = #{userId}
