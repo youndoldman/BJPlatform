@@ -21,21 +21,21 @@ public class WorkflowServiceTest {
 
 
 
-    //创建流程
-    @Test
-    public void testcreateWorkFlow() throws Exception {
-        String workFlowId = workFlowService.createWorkFlow(WorkFlowTypes.GAS_ORDER_FLOW, "kehu-1", "005");
-        System.out.println("创建流程： " + workFlowId);
-
-    }
-
-
-    //查询当前任务
-    @Test
-    public void testTasksByUserId() throws Exception {
-        List<Task> taskIdList = workFlowService.getTasksByUserId("kefu-1");
-        System.out.println("查询当前任务： "+taskIdList.toString());
-
-    }
+//    //创建流程
+//    @Test
+//    public void testcreateWorkFlow() throws Exception {
+//        String workFlowId = workFlowService.createWorkFlow(WorkFlowTypes.GAS_PHONE_ORDER_FLOW, "kehu-1", "005");
+//        System.out.println("创建流程： " + workFlowId);
+//
+//    }
+//
+//
+//    //查询当前任务
+//    @Test
+//    public void testTasksByUserId() throws Exception {
+//        List<Task> taskIdList = workFlowService.getTasksByUserId("kefu-1");
+//        System.out.println("查询当前任务： "+taskIdList.toString());
+//
+//    }
 
 }
