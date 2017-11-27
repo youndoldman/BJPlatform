@@ -26,12 +26,17 @@ public class WeiXinPayServiceTest {
     //获取openid
     @Test
     public void testgetOpenId() throws Exception {
-        String openId = weiXinPayService.getOpenId("071V1pxP1p4IK31k1sxP1GqsxP1V1pxm");
+        String openId = weiXinPayService.getOpenId("021KctkW0oIYwV1bWHjW0MrkkW0KctkB");
         System.out.println("获取openid： " + openId);
 
     }
 
-
-
+    //获取code_url
+    @Test
+    public void testdoUnifiedOrderForScan() throws Exception {
+        String code_url = weiXinPayService.doUnifiedOrderForScan(
+                "111", "2");
+        System.out.println("获取code_url： " + code_url);
+    }
 
 }

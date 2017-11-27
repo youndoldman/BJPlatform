@@ -1,12 +1,10 @@
 package com.donno.nj.service.impl;
 
-import com.donno.nj.domain.pay.OrderInfo;
-import com.donno.nj.domain.pay.OrderReturnInfo;
-import com.donno.nj.domain.pay.SignInfo;
-import com.donno.nj.util.RandomStringGenerator;
-import com.donno.nj.util.Signature;
-import com.donno.nj.util.HttpRequest;
+import com.donno.nj.util.WeiXinPaySdk.WXPay;
+import com.donno.nj.util.WeiXinPaySdk.WXPayConfigImpl;
+import com.donno.nj.util.WeiXinPaySdk.WXPayConstants;
 
+import com.donno.nj.util.WeiXinPaySdk.WXPayUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.donno.nj.service.WeiXinPayService;
@@ -18,22 +16,36 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.donno.nj.util.Configure;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Service
 public class WeiXinPayServiceImpl implements WeiXinPayService
 {
+
+    private WXPay wxpay;
+
+
+    private WXPayConfigImpl wxPayConfigImpl;
+
+
+    public WeiXinPayServiceImpl() throws java.lang.Exception {
+        wxPayConfigImpl =  WXPayConfigImpl.getInstance();
+        wxpay = new WXPay(wxPayConfigImpl);
+    }
+
     //获取用户的OpenID
     @Override
     public String getOpenId(String userCode)throws IOException
     {
         try {
-            HttpGet httpGet = new HttpGet("https://api.weixin.qq.com/sns/jscode2session?appid=" + Configure.getAppID() + "&secret=" + Configure.getSecret() + "&js_code=" + userCode + "&grant_type=authorization_code");
+            HttpGet httpGet = new HttpGet("https://api.weixin.qq.com/sns/jscode2session?appid=" + wxPayConfigImpl.getAppID() + "&secret=" + wxPayConfigImpl.getAppSecret() + "&js_code=" + userCode + "&grant_type=authorization_code");
             //设置请求器的配置
             HttpClient httpClient = HttpClients.createDefault();
             HttpResponse res = httpClient.execute(httpGet);
@@ -48,70 +60,111 @@ public class WeiXinPayServiceImpl implements WeiXinPayService
         }
     }
 
-    //统一下单接口,获取PrepayId
-
+    //小程序 统一下单接口,返回wx.requestPayment接口所需的5个参数
+    // timeStamp、nonceStr、package（prepay_id）、signType、paySign
     @Override
-    public String getPrepayId(String openId)throws IOException
+    public Map<String, String> doUnifiedOrderForMicroApp(String openId, String orderIndex,
+                                                         String totalFee, String remoteIpAddress)throws IOException
     {
+        System.out.println("小程序支付");
+        HashMap<String, String> data = new HashMap<String, String>();
+        data.put("appid", wxPayConfigImpl.getAppID());
+        data.put("body", "云南百江燃气公司订气业务");
+        data.put("out_trade_no", orderIndex);
+        data.put("device_info", "");
+        data.put("fee_type", "CNY");
+        data.put("total_fee", totalFee);
+        data.put("spbill_create_ip", remoteIpAddress);
+        data.put("trade_type", "JSAPI");
+        data.put("notify_url", wxPayConfigImpl.getNotifyUrl());
+        //data.put("product_id", "12");
+        // data.put("time_expire", "20170112104120");
+        HashMap<String, String> result = new HashMap<String, String>();
         try {
-            OrderInfo order = new OrderInfo();
-            order.setAppid(Configure.getAppID());
-            order.setMch_id(Configure.getMch_id());
-            order.setNonce_str(RandomStringGenerator.getRandomStringByLength(32));
-            order.setBody("dfdfdf");
-            order.setOut_trade_no(RandomStringGenerator.getRandomStringByLength(32));
-            order.setTotal_fee(10);
-            order.setSpbill_create_ip(Configure.getServerIp());
-            order.setNotify_url("https://www.see-source.com/weixinpay/PayResult");
-            order.setTrade_type("JSAPI");
-            order.setOpenid(openId);
-            order.setSign_type("MD5");
-            //生成签名
-            String sign = Signature.getSign(order);
-            order.setSign(sign);
+            Map<String, String> response = wxpay.unifiedOrder(data);
+            if (response.containsKey("prepay_id")) {
+                result.put("timeStamp", String.valueOf(WXPayUtil.getCurrentTimestamp()));
+                result.put("nonce_str", WXPayUtil.generateUUID());
+                result.put("package", response.get("prepay_id"));
+                result.put("signType", WXPayConstants.MD5);
+                result.put("paySign", WXPayUtil.generateSignature(response,wxPayConfigImpl.getKey()));
 
-
-            String result = HttpRequest.sendPost("https://api.mch.weixin.qq.com/pay/unifiedorder", order);
-            System.out.println(result);
-
-            XStream xStream = new XStream();
-            xStream.alias("xml", OrderReturnInfo.class);
-
-            OrderReturnInfo returnInfo = (OrderReturnInfo)xStream.fromXML(result);
-            return returnInfo.getPrepay_id();
-
+            }else {
+                //统一下单失败
+                if (response.containsKey("err_code_des")) {
+                    System.out.println("err_code_des");
+                }
+            }
+            return result;
         } catch (java.lang.Exception e) {
             e.printStackTrace();
-            return null;
+            result.clear();
+            return result;
         }
     }
 
-    //生成签名
+    //扫码支付 统一下单接口,返回code_url
     @Override
-    public String getSign(String prepayId)throws IOException {
-        try {
-            SignInfo signInfo = new SignInfo();
-            signInfo.setAppId(Configure.getAppID());
-            long time = System.currentTimeMillis()/1000;
-            signInfo.setTimeStamp(String.valueOf(time));
-            signInfo.setNonceStr(RandomStringGenerator.getRandomStringByLength(32));
-            signInfo.setRepay_id("prepay_id="+prepayId);
-            signInfo.setSignType("MD5");
-            //生成签名
-            String sign = Signature.getSign(signInfo);
+    public String doUnifiedOrderForScan(String orderIndex, String totalFee)throws IOException
+    {
+        System.out.println("扫码支付 ");
+        HashMap<String, String> data = new HashMap<String, String>();
+        data.put("appid", wxPayConfigImpl.getOfficialID());
+        data.put("body", "云南百江燃气公司订气业务");
+        //加上系统时间
+        orderIndex = orderIndex+"aaa"+WXPayUtil.getCurrentTimestamp();
+        data.put("out_trade_no", orderIndex);
+        data.put("device_info", "");
+        data.put("fee_type", "CNY");
+        data.put("total_fee", totalFee);
+        data.put("spbill_create_ip", wxPayConfigImpl.getSeverIP());
+        data.put("trade_type", "NATIVE");
+        data.put("product_id", "12");
+        data.put("notify_url", wxPayConfigImpl.getNotifyUrl());
+        // data.put("time_expire", "20170112104120");
 
-            JSONObject json = new JSONObject();
-            json.put("timeStamp", signInfo.getTimeStamp());
-            json.put("nonceStr", signInfo.getNonceStr());
-            json.put("package", signInfo.getRepay_id());
-            json.put("signType", signInfo.getSignType());
-            json.put("paySign", sign);
-            System.out.print("-------再签名:"+json.toString());
-            return json.toString();
+        try {
+            Map<String, String> response = wxpay.unifiedOrder(data);
+            if (response.containsKey("code_url")) {
+                String code_url = response.get("code_url");
+                return code_url;
+            }else {
+                //统一下单失败
+                if (response.containsKey("err_code_des")) {
+                    System.out.println("err_code_des");
+                }
+                return null;
+            }
         } catch (java.lang.Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return null;
         }
     }
+
+    //退款 out_trade_no-退款订单号 total_fee-退款金额
+    @Override
+    public boolean doRefund(String out_trade_no, String total_fee) {
+        HashMap<String, String> data = new HashMap<String, String>();
+        data.put("out_trade_no", out_trade_no);
+        data.put("out_refund_no", out_trade_no);
+        data.put("total_fee", total_fee);
+        data.put("refund_fee", total_fee);
+        data.put("refund_fee_type", "CNY");
+        data.put("op_user_id", wxPayConfigImpl.getMchID());
+
+        try {
+            Map<String, String> r = wxpay.refund(data);
+            if(r.containsKey("result_code")) {
+                if (r.get("result_code").equals("SUCCESS")) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (java.lang.Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 }

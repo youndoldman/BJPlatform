@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/testm1511502438375" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1511502438375" name="" targetNamespace="http://www.activiti.org/testm1511502438375" typeLanguage="http://www.w3.org/2001/XMLSchema">
+  <process id="订气流程" isClosed="false" isExecutable="true" name="订气流程" processType="None">
+    <startEvent id="开始" name="开始"/>
+    <userTask activiti:exclusive="true" id="等待接单" name="等待接单"/>
+    <userTask activiti:exclusive="true" id="配送完成" name="配送完成"/>
+    <userTask activiti:exclusive="true" id="门店确认" name="门店确认"/>
+    <endEvent id="结束" name="结束"/>
+    <sequenceFlow id="_8" sourceRef="开始" targetRef="等待接单"/>
+    <sequenceFlow id="_9" sourceRef="等待接单" targetRef="配送完成"/>
+    <sequenceFlow id="_10" sourceRef="配送完成" targetRef="门店确认"/>
+    <sequenceFlow id="_11" sourceRef="门店确认" targetRef="结束"/>
+  </process>
+  <bpmndi:BPMNDiagram documentation="background=#3C3F41;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
+    <bpmndi:BPMNPlane bpmnElement="订气流程">
+      <bpmndi:BPMNShape bpmnElement="开始" id="Shape-开始">
+        <dc:Bounds height="32.0" width="32.0" x="415.0" y="45.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="等待接单" id="Shape-等待接单">
+        <dc:Bounds height="55.0" width="85.0" x="390.0" y="140.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="配送完成" id="Shape-配送完成">
+        <dc:Bounds height="55.0" width="85.0" x="390.0" y="255.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="门店确认" id="Shape-门店确认">
+        <dc:Bounds height="55.0" width="85.0" x="390.0" y="375.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="结束" id="Shape-结束">
+        <dc:Bounds height="32.0" width="32.0" x="415.0" y="490.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_8" id="BPMNEdge__8" sourceElement="开始" targetElement="等待接单">
+        <di:waypoint x="431.0" y="77.0"/>
+        <di:waypoint x="431.0" y="140.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9" id="BPMNEdge__9" sourceElement="等待接单" targetElement="配送完成">
+        <di:waypoint x="432.5" y="195.0"/>
+        <di:waypoint x="432.5" y="255.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_11" id="BPMNEdge__11" sourceElement="门店确认" targetElement="结束">
+        <di:waypoint x="431.0" y="430.0"/>
+        <di:waypoint x="431.0" y="490.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10" id="BPMNEdge__10" sourceElement="配送完成" targetElement="门店确认">
+        <di:waypoint x="432.5" y="310.0"/>
+        <di:waypoint x="432.5" y="375.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
