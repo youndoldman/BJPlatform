@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,22 +37,11 @@ public class CustomerController
     private CustomerService customerService;
 
     @Autowired
-    CustomerTypeService customerTypeService;
-
-    @Autowired
-    CustomerCharacterService customerCharacterService;
-
-    @Autowired
-    CustomerSourceService customerSourceService  ;
-
-    @Autowired
     CustomerDistrictService customerDistrictService ;
 
     @Autowired
     GasStoreService gasStoreService ;
 
-    @Autowired
-    private CustomerAddressService customerAddressService;
 
 
     @RequestMapping(value = "/api/customers/login", method = RequestMethod.GET, produces = "application/json")
@@ -89,16 +79,101 @@ public class CustomerController
     @RequestMapping(value = "/api/customers", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取客户列表")
     public ResponseEntity retrieveCustomers(@RequestParam(value = "userId", defaultValue = "") String userId,
+                                            @RequestParam(value = "userName", defaultValue = "") String userName,
+                                            @RequestParam(value = "identity", defaultValue = "") String identity,
                                             @RequestParam(value = "number", defaultValue = "") String number,
-                                            @RequestParam(value = "name", defaultValue = "") String userName,
-                                            @RequestParam(value = "phone1", defaultValue = "") String phone1,
+                                            @RequestParam(value = "groupCode", defaultValue = "") String groupCode,
+                                            @RequestParam(value = "status", defaultValue = "") String status,
+                                            @RequestParam(value = "customerTypeCode", defaultValue = "") String customerTypeCode,
+                                            @RequestParam(value = "customerLevelCode", defaultValue = "") String customerLevelCode,
+                                            @RequestParam(value = "customerSourceCode", defaultValue = "") String customerSourceCode,
+                                            @RequestParam(value = "phone", defaultValue = "") String phone,
+                                            @RequestParam(value = "companyName", defaultValue = "") String companyName,
+                                            @RequestParam(value = "addrProvince", defaultValue = "") String addrProvince,
+                                            @RequestParam(value = "addrCity", defaultValue = "") String addrCity,
+                                            @RequestParam(value = "addrCounty", defaultValue = "") String addrCounty,
+                                            @RequestParam(value = "addrDetail", defaultValue = "") String addrDetail,
                                             @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                             @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                             @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
     {
+        Map params = new HashMap<String,String>();
+        if (userId.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("userId", userId));
+        }
+
+        if (userName.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("userName", userName));
+        }
+
+        if (identity.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("identity", identity));
+        }
+
+        if (number.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("number", number));
+        }
+
+        if (groupCode.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("groupCode", groupCode));
+        }
+
+        if (status.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("status", status));
+        }
+
+        if (customerTypeCode.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("customerTypeCode", customerTypeCode));
+        }
+
+        if (customerLevelCode.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("customerLevelCode", customerLevelCode));
+        }
+
+        if (customerSourceCode.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("customerSourceCode", customerSourceCode));
+        }
+
+        if (companyName.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("companyName", companyName));
+        }
+
+        if (phone.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("phone", number));
+        }
+
+        if (addrProvince.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("addrProvince", addrProvince));
+        }
+
+        if (addrCity.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("addrCity", addrCity));
+        }
+
+        if (addrCounty.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("addrCounty", addrCounty));
+        }
+
+        if (addrDetail.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("addrDetail", addrDetail));
+        }
 
 
-        Map params = newHashMap(ImmutableMap.of("name", userName));
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
         List<Customer> customers = customerService.retrieve(params);
@@ -110,40 +185,13 @@ public class CustomerController
     @RequestMapping(value = "/api/customers", method = RequestMethod.POST)
     public ResponseEntity createCustomer(@RequestBody Customer customer, UriComponentsBuilder ucBuilder)
     {
-
         ResponseEntity responseEntity;
-        if (customerService.findByUserId(customer.getUserId()).isPresent())
-        {
-            responseEntity =  ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-        else
-        {
-            /*自动生成客户编号NUMBER*/
-            customer.setNumber(customer.getUserId());
 
-             /*查询组对应的ID*/
-            if (customer.getUserGroup() != null)
-            {
-                Optional<Group> group = groupService.findByCode(customer.getUserGroup().getCode());
-                if(group.isPresent())
-                {
-                    customer.setUserGroup(group.get());
-                    /*创建客户*/
-                    customerService.create(customer);
+        /*创建客户*/
+        customerService.create(customer);
 
-                    URI uri = ucBuilder.path("/api/customers/{userId}").buildAndExpand(customer.getUserId()).toUri();
-                    responseEntity = ResponseEntity.created(uri).build();
-                }
-                else
-                {
-                    responseEntity =  ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-                }
-            }
-            else
-            {
-                responseEntity =  ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-            }
-        }
+        URI uri = ucBuilder.path("/api/customers/{userId}").buildAndExpand(customer.getUserId()).toUri();
+        responseEntity = ResponseEntity.created(uri).build();
 
         return responseEntity;
     }

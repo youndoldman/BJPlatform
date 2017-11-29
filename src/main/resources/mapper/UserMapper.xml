@@ -27,13 +27,21 @@
         and t_user.group_idx = t_group.id
     </select>
 
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT t_user.*,t_group.id as group_id,t_group.code as group_code,t_group.name as group_name
+        FROM t_user,t_group
+        WHERE
+        t_user.id = #{id}
+        and t_user.group_idx = t_group.id
+    </select>
+
     <sql id="InsertColumnList">
-        user_id, name, password,group_idx,note
+        user_id, name, identity,password,group_idx,note
     </sql>
 
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         INSERT IGNORE INTO <include refid="TblUser"/>(<include refid="InsertColumnList"/>)
-        VALUES( #{userId},#{name},#{password},#{userGroup.id},#{note})
+        VALUES( #{userId},#{name},#{identity},#{password},#{userGroup.id},#{note})
     </insert>
 
     <delete id="delete" parameterType="java.lang.Integer">

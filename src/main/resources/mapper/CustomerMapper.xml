@@ -7,15 +7,39 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="user_id" property="userId" jdbcType="VARCHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="identity" property="identity" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
+
         <result column="cst_number" property="number" jdbcType="VARCHAR"/>
+        <result column="have_cylinder" property="haveCylinder" jdbcType="BOOLEAN"/>
         <result column="status" property="status" jdbcType="INTEGER"/>
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
+
+        <result column="addr_province" property="address.province" jdbcType="VARCHAR"/>
+        <result column="addr_city" property="address.city" jdbcType="VARCHAR"/>
+        <result column="addr_county" property="address.county" jdbcType="VARCHAR"/>
+        <result column="addr_detail" property="address.detail" jdbcType="VARCHAR"/>
+
         <result column="note" property="note" jdbcType="VARCHAR"/>
-        <result column="group_code" property="userGroup.code" jdbcType="VARCHAR"/>
-        <result column="group_name" property="userGroup.name" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+
+        <association property="userGroup" column="group_idx" select="com.donno.nj.dao.GroupDao.selectById">
+        </association>
+
+        <association property="customerType" column="customer_type_idx" select="com.donno.nj.dao.CustomerTypeDao.selectById">
+        </association>
+
+        <association property="customerLevel" column="customer_level_idx" select="com.donno.nj.dao.CustomerLevelDao.selectById">
+        </association>
+
+        <association property="customerSource" column="customer_source_idx" select="com.donno.nj.dao.CustomerSourceDao.selectById">
+        </association>
+
+        <association property="customerCompany" column="customer_company_idx" select="com.donno.nj.dao.CustomerCompanyDao.selectById">
+        </association>
+
+
     </resultMap>
 
 
@@ -24,12 +48,13 @@
     </sql>
 
     <sql id="InsertColumnList">
-        user_idx,cst_number ,status,phone1
+        user_idx,cst_number,have_cylinder,status,cst_type,cst_source,cst_level,cst_company_name,phone,addr_province,addr_city,addr_county,addr_detail,note
     </sql>
+
 
     <insert id="insert">
         INSERT IGNORE INTO <include refid="TblCustomer"/>(<include refid="InsertColumnList"/>)
-        VALUES( #{id},#{number},#{phone1}, #{phone1})
+        VALUES( #{id},#{number},#{haveCylinder},#{status},#{customerType.id}, #{customerSource.id}, #{customerLevel.id},#{customerCompany.id}, #{phone}, #{address.province},#{address.city},#{address.county},#{address.detail},#{note})
     </insert>
 
     <delete id="deleteByUserIdx" parameterType="java.lang.Integer">
@@ -40,38 +65,121 @@
     <update id="update">
     UPDATE <include refid="TblCustomer"/>
     <set>
-    <if test="number != null">cst_number = #{number},</if>
-    <if test="status != null">status = #{status},</if>
-    <if test="phone1 != null">phone1 = #{phone1},</if>
+        <if test="number != null">cst_number = #{number},</if>
+        <if test="haveCylinder != null">have_cylinder = #{haveCylinder},</if>
+        <if test="status != null">status = #{status},</if>
+
+        <if test="customerType != null">
+            cst_type = #{customerType.id},
+        </if>
+
+        <if test="customerLevel != null">
+            cst_level = #{customerLevel.id},
+        </if>
+
+        <if test="customerSource != null">
+            cst_source = #{customerSource.id},
+        </if>
+
+        <if test="customerCompany != null">
+            cst_company_name = #{customerCompany.id},
+        </if>
+
+        <if test="phone != null">phone = #{phone},</if>
+
+        <if test="address != null">addr_province = #{address.province},addr_city = #{address.city},addr_county = #{address.county},addr_detail = #{address.detail}</if>
+
     </set>
     WHERE user_idx = #{id}
     </update>
 
+
     <sql id="JoinSelectColumn">
-        t_user.id, t_user.user_id,t_user.name,t_user.password,t_user.note,t_user.create_time,t_user.update_time,
-        t_customer.cst_number,t_customer.status,t_customer.phone1,
-        t_group.code as group_code,t_group.name as  group_name
+        t_user.id, t_user.user_id,t_user.name,t_user.identity,t_user.group_idx,  t_user.password,t_user.note,t_user.create_time,t_user.update_time,
+        t_customer.cst_number,t_customer.have_cylinder,t_customer.status,t_customer.cst_type as customer_type_idx,t_customer.cst_source as customer_source_idx,t_customer.cst_level as customer_level_idx,
+         t_customer.cst_company_name as customer_company_idx,t_customer.phone,t_customer.addr_province,t_customer.addr_city,t_customer.addr_county,t_customer.addr_detail
     </sql>
 
     <sql id="JoinWhereCondition">
-        t_user.id = t_customer.user_idx and
-        t_user.group_idx = t_group.id
+        t_user.id = t_customer.user_idx
     </sql>
 
     <sql id="JoinTableList">
-        t_user,t_customer,t_group
+        t_user,t_customer
     </sql>
 
     <select id="getList" resultMap="DetailResultMap">
     SELECT <include refid="JoinSelectColumn"/>
     FROM <include refid="JoinTableList"/>
-    WHERE
-    (<include refid="JoinWhereCondition"/>)
+        WHERE
+        (<include refid="JoinWhereCondition"/>)
+
+        <if test="userId != null">
+            AND  t_user.user_id = #{userId}
+        </if>
+
+        <if test="userName != null">
+            AND  t_user.name = #{userName}
+        </if>
+
+        <if test="identity != null">
+            AND  t_user.identity = #{identity}
+        </if>
+
+        <if test="number != null">
+          AND  cst_number = #{number}
+        </if>
+
+        <if test="groupCode != null">
+            AND  t_user.group_idx = ( select id from t_group where code =#{groupCode} )
+        </if>
+
+        <if test="status != null">
+            AND  status = #{status}
+        </if>
+
+        <if test="customerTypeCode != null">
+            AND  cst_type = ( select id from t_customer_type where code =#{customerTypeCode} )
+        </if>
+
+        <if test="customerLevelCode != null">
+            AND  cst_level = ( select id from t_customer_level where code =#{customerLevelCode} )
+        </if>
+
+        <if test="customerSourceCode != null">
+            AND  cst_source = ( select id from t_customer_source where code =#{customerSourceCode} )
+        </if>
+
+        <if test="companyName != null">
+            AND  cst_company_name = ( select id from t_customer_company where name =#{companyName} )
+        </if>
+
+        <if test="phone != null">
+            AND  phone = #{phone}
+        </if>
+
+        <if test="addrProvince != null">
+            AND  addr_province = #{addrProvince}
+        </if>
+
+        <if test="addrCity != null">
+            AND  addr_city = #{addrCity}
+        </if>
+
+        <if test="addrCounty != null">
+            AND  addr_county = #{addrCounty}
+        </if>
+
+        <if test="addrDetail != null">
+            AND  addr_detail = #{addrDetail}
+        </if>
+
     <if test="orderBy != ''">
     ORDER BY   ${orderBy}
     </if>
     limit #{limit} offset #{offset};
     </select>
+
 
 
 

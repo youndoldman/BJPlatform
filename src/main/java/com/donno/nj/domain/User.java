@@ -1,10 +1,7 @@
 package com.donno.nj.domain;
 
-/**
- * Created by wyb on 2017/10/24.
- */
-import java.util.Date;
 
+import java.util.Date;
 
 
 public class User
@@ -12,6 +9,7 @@ public class User
     protected Integer id;
     protected String userId;
     protected String name;
+    protected String identity;
     protected String password;
     protected String note;
     protected Date createTime;
@@ -37,6 +35,11 @@ public class User
     public String getName()
     {
         return name;
+    }
+
+    public String getIdentity()
+    {
+        return identity;
     }
 
     public String getPassword()
@@ -77,6 +80,11 @@ public class User
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public void setIdentity(String identity)
+    {
+        this.identity = identity;
     }
 
     public void setPassword(String password)

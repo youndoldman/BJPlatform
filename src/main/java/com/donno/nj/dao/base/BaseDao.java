@@ -19,4 +19,6 @@ public interface BaseDao<T> {
 
 	void update(T object);
 
+	void delete(Map params);
+
 }
