@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.CustomerCallInDao">
+
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.CustomerCallIn">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="addr_province" property="province" jdbcType="VARCHAR"/>
+        <result column="addr_city" property="city" jdbcType="VARCHAR"/>
+        <result column="addr_county" property="county" jdbcType="VARCHAR"/>
+        <result column="addr_detail" property="detail" jdbcType="VARCHAR"/>
+
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+
+
+    </resultMap>
+
+
+    <sql id="TblCustomerCallIn">
+        t_customer_callin
+    </sql>
+
+
+    <insert id="insert">
+        INSERT  INTO <include refid="TblCustomerCallIn"/>
+        (phone,addr_province,addr_city,addr_county,addr_detail)
+        VALUES( #{phone}, #{province},#{city},#{county},#{detail})
+    </insert>
+
+    <select id="getList" resultMap="DetailResultMap">
+    SELECT *
+    FROM <include refid="TblCustomerCallIn"/>
+        WHERE
+         id > 0
+        <if test="phone != null">
+            AND  phone = #{phone}
+        </if>
+
+        <if test="province != null">
+            AND  addr_province = #{province}
+        </if>
+
+        <if test="city != null">
+            AND  addr_city = #{city}
+        </if>
+
+        <if test="county != null">
+            AND  addr_county = #{county}
+        </if>
+
+        <if test="detail != null">
+            AND  addr_detail = #{detail}
+        </if>
+
+    <if test="orderBy != ''">
+         ORDER BY   ${orderBy}
+    </if>
+    limit #{limit} offset #{offset};
+    </select>
+
+
+    <delete id="delete"  >
+        DELETE
+        FROM <include refid="TblCustomerCallIn"/>
+        <choose>
+            <when test="id != null">
+                where  id = #{id}
+            </when>
+            <when test="phone != null">
+                where  phone = #{phone}
+            </when>
+        </choose>
+
+    </delete>
+
+
+
+</mapper>

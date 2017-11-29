@@ -1,6 +1,6 @@
 package com.donno.nj.service;
 
-import com.donno.nj.domain.CustomerSource;
+import com.donno.nj.domain.CustomerLevel;
 import com.google.common.base.Optional;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,17 +12,17 @@ import java.util.Map;
  */
 
 @Transactional
-public interface CustomerSourceService
+public interface CustomerLevelService
 {
-    Optional<CustomerSource> findByCode(String code);
+    Optional<CustomerLevel> findByCode(String code);
 
-    List<CustomerSource> retrieve(Map params);
+    List<CustomerLevel> retrieve(Map params);
 
     Integer count(Map params);
 
-    CustomerSource create(CustomerSource customerSource);
+    CustomerLevel create(CustomerLevel customerLevel);
 
-    void update(Integer id,CustomerSource newCustomerSource);
+    void update(Integer id, CustomerLevel customerLevel);
 
     void delete(Map params);
 }

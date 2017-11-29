@@ -11,23 +11,31 @@ import com.donno.nj.service.UserService;
 import com.google.common.base.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.http.HttpStatus;
+import com.donno.nj.exception.ServerSideBusinessException;
 import java.util.List;
 import java.util.Map;
 
 
 @Service
-public class UserServiceImpl  implements UserService {
+public class UserServiceImpl  implements UserService
+{
 
     @Autowired
     private UserDao userDao;
 
 
     @Override
-    @OperationLog(desc = "根据用户ID查询客户信息")
-    public Optional<User> findByUserId(String userId) {
-        return Optional.fromNullable(userDao.findByUserId(userId));
-    }
+@OperationLog(desc = "根据用户ID查询客户信息")
+public Optional<User> findByUserId(String userId)
+    {
+    return Optional.fromNullable(userDao.findByUserId(userId));
+}
 
+    @Override
+    @OperationLog(desc = "根据用户ID查询客户信息")
+    public Optional<User> findById(Integer id) {
+        return Optional.fromNullable(userDao.findById(id));
+    }
 
 }

@@ -18,7 +18,7 @@ public interface CustomerTypeService
 
     CustomerType create(CustomerType customerType);
 
-    void update(CustomerType customerType, CustomerType newCustomerType);
+    void update(Integer id, CustomerType newCustomerType);
 
-    void delete(CustomerType customerType);
+    void delete(Map params);
 }

@@ -11,6 +11,8 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+
+
     <sql id="TableName">
         t_group
     </sql>
@@ -36,6 +38,13 @@
         FROM <include refid="TableName"/>
         WHERE
         code = #{code}
+    </select>
+
+    <select id="selectById"
+            parameterType="java.lang.String"
+            resultMap="BaseResultMap" >
+        select * from <include refid="TableName"/>
+          where id=#{id}
     </select>
 
     <select id="getList" resultMap="BaseResultMap">
