@@ -62,7 +62,7 @@ public class TestController {
     public ResponseEntity testQRCode(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "totalFree") String totalFree,
                                      @RequestParam(value = "orderIndex") String orderIndex,
                                      @RequestParam(value = "userCode") String userCode) throws IOException {
-        response.setContentType("image/png;charset=UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
 
         String openId = weiXinPayService.getOpenId(userCode);
         if (openId == null)
@@ -77,5 +77,35 @@ public class TestController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return ResponseEntity.ok(result);
+    }
+
+    @RequestMapping(value = "/api/test/Pay/Scan", method = RequestMethod.GET)
+    public ResponseEntity testQRCode(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "totalFree") String totalFee,
+                                     @RequestParam(value = "orderIndex") String orderIndex) throws IOException {
+        response.setContentType("image/png;charset=UTF-8");
+
+        try {
+
+
+            String codeUrl = weiXinPayService.doUnifiedOrderForScan(orderIndex, totalFee);
+
+            if (codeUrl == null)
+            {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+            InputStream imageStream = QRCodeUtil.zxingCodeCreate(codeUrl, 500, 500);
+
+            if (imageStream != null) {
+                int len = 0;
+                byte[] b = new byte[1024];
+                while ((len = imageStream.read(b, 0, 1024)) != -1) {
+                    response.getOutputStream().write(b, 0, len);
+                }
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (IOException e){
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+        }
     }
 }

@@ -2,7 +2,7 @@ package com.donno.nj.activiti;
 
 
 public enum WorkFlowTypes {
-    GAS_PHONE_ORDER_FLOW("电话订气流程", 1), GAS_WEIXIN_ORDER_FLOW("微信订气流程", 2);
+    GAS_ORDER_FLOW("订气流程", 1), LEAVE_FLOW("请假流程", 2);
 
     // 成员变量
     private String name;

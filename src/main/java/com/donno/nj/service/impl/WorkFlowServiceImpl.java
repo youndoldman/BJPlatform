@@ -4,6 +4,7 @@ import com.donno.nj.service.WorkFlowService;
 import com.donno.nj.logger.DebugLogger;
 import com.donno.nj.domain.Process;
 import com.donno.nj.exception.ServerSideBusinessException;
+import com.donno.nj.logger.DebugLogger;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricProcessInstance;
@@ -24,6 +25,9 @@ import java.util.*;
 @Service
 public class WorkFlowServiceImpl implements WorkFlowService
 {
+    @Autowired
+    DebugLogger debugLogger;
+
     @Autowired
     ProcessEngine processEngine;
 
@@ -50,17 +54,21 @@ public class WorkFlowServiceImpl implements WorkFlowService
 
     //启动流程
     @Override
-    public String createWorkFlow(WorkFlowTypes wfType, String strUserID, Map<String, Object> variables,String strBuinessKey) {
+    public int createWorkFlow(WorkFlowTypes wfType, String strUserID, Map<String, Object> variables,String strBuinessKey) {
         DebugLogger.log("启动流程:"+wfType.getName()+"   启动人:"+strUserID+"   流程表索引值:"+strBuinessKey);
         ProcessInstance processInstance = null;
         try {
             // 用来设置启动流程的人员ID，引擎会自动把用户ID保存到activiti:initiator中
             identityService.setAuthenticatedUserId(strUserID);
             processInstance = runtimeService.startProcessInstanceByKey(wfType.getName(), strBuinessKey, variables);
-        } finally {
             identityService.setAuthenticatedUserId(null);
+        }catch (Exception e)
+        {
+            debugLogger.log(e.getMessage());
+            return -1;
         }
-        return processInstance.getProcessDefinitionId();
+        //return processInstance.getProcessDefinitionId();
+        return 0;
     }
 
     //查询当前任务
@@ -105,11 +113,11 @@ public class WorkFlowServiceImpl implements WorkFlowService
             //对应的流程类型
             String WorkFlowName = processInstance.getProcessDefinitionName();
             curProcess.setWorkFlowType(WorkFlowTypes.getByName(WorkFlowName));
-
             return curProcess;
 
         } catch (Exception e)
         {
+            debugLogger.log(e.getMessage());
             throw new ServerSideBusinessException("查询当前任务对应的流程 异常错误");
         }
 
@@ -119,12 +127,13 @@ public class WorkFlowServiceImpl implements WorkFlowService
 
     //办理任务 strTaskId－任务ID,variables-同意还是不同意等审批结论
     @Override
-    public boolean completeTask(String strTaskId, Map<String, Object> variables) {
+    public int completeTask(String strTaskId, Map<String, Object> variables) {
         try {
             taskService.complete(strTaskId, variables);
-            return true;
+            return 0;
         } catch (Exception e) {
-            return false;
+            debugLogger.log(e.getMessage());
+            return -1;
         }
     }
 
@@ -161,6 +170,7 @@ public class WorkFlowServiceImpl implements WorkFlowService
 
         } catch (Exception e)
         {
+            debugLogger.log(e.getMessage());
             throw new ServerSideBusinessException("查询对应用户启动的历史流程 异常错误");
         }
     }
@@ -175,8 +185,6 @@ public class WorkFlowServiceImpl implements WorkFlowService
             List<String> activeActivityIds = runtimeService.getActiveActivityIds(strProcessID);
 
             // 使用spring注入引擎请使用下面的这行代码
-
-
             ProcessDiagramGenerator diagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
             InputStream imageStream = diagramGenerator.generateDiagram(bpmnModel, "png", activeActivityIds,
                     Collections.<String>emptyList(), this.processEngine.getProcessEngineConfiguration().getActivityFontName(),
@@ -196,8 +204,9 @@ public class WorkFlowServiceImpl implements WorkFlowService
             return  image;
         }catch (Exception e)
         {
+
+            debugLogger.log(e.getMessage());
             throw new ServerSideBusinessException("查询流程图 异常错误");
         }
     }
-
 }
