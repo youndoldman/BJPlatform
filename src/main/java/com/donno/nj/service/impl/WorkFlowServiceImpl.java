@@ -25,8 +25,7 @@ import java.util.*;
 @Service
 public class WorkFlowServiceImpl implements WorkFlowService
 {
-    @Autowired
-    DebugLogger debugLogger;
+
 
     @Autowired
     ProcessEngine processEngine;
@@ -64,7 +63,7 @@ public class WorkFlowServiceImpl implements WorkFlowService
             identityService.setAuthenticatedUserId(null);
         }catch (Exception e)
         {
-            debugLogger.log(e.getMessage());
+            DebugLogger.log(e.getMessage());
             return -1;
         }
         //return processInstance.getProcessDefinitionId();
@@ -117,7 +116,7 @@ public class WorkFlowServiceImpl implements WorkFlowService
 
         } catch (Exception e)
         {
-            debugLogger.log(e.getMessage());
+            DebugLogger.log(e.getMessage());
             throw new ServerSideBusinessException("查询当前任务对应的流程 异常错误");
         }
 
@@ -132,7 +131,7 @@ public class WorkFlowServiceImpl implements WorkFlowService
             taskService.complete(strTaskId, variables);
             return 0;
         } catch (Exception e) {
-            debugLogger.log(e.getMessage());
+            DebugLogger.log(e.getMessage());
             return -1;
         }
     }
@@ -170,7 +169,7 @@ public class WorkFlowServiceImpl implements WorkFlowService
 
         } catch (Exception e)
         {
-            debugLogger.log(e.getMessage());
+            DebugLogger.log(e.getMessage());
             throw new ServerSideBusinessException("查询对应用户启动的历史流程 异常错误");
         }
     }
@@ -205,7 +204,7 @@ public class WorkFlowServiceImpl implements WorkFlowService
         }catch (Exception e)
         {
 
-            debugLogger.log(e.getMessage());
+            DebugLogger.log(e.getMessage());
             throw new ServerSideBusinessException("查询流程图 异常错误");
         }
     }
