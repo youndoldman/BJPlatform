@@ -16,11 +16,6 @@ import java.util.Map;
 @Service
 public class CustomerServiceImpl extends UserServiceImpl implements CustomerService
 {
-    @Autowired
-    private GroupDao groupDao;
-
-    @Autowired
-    private UserDao userDao;
 
     @Autowired
     private CustomerDao customerDao;
@@ -61,7 +56,7 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
         checkUserExist(customer.getUserId());
 
         /*用户组信息校验*/
-        checkUserGroup(customer);
+        setCustomerGroup(customer);
 
         /*客户地址信息*/
         checkAddress(customer);
@@ -113,10 +108,10 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
         }
 
 
-        /*用户组信息校验*/
+        /*用户组不允许修改*/
         if (newCustomer.getUserGroup() != null)
         {
-            checkUserGroup(newCustomer);
+            newCustomer.setUserGroup(null);
         }
 
 
@@ -171,41 +166,6 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
         customerDao.deleteByUserIdx(id);
     }
 
-    @OperationLog(desc = "检查目标用户是否存在")
-    public void checkUserExist(String userId)
-    {
-        if (userDao.findByUserId(userId) != null)
-        {
-            throw new ServerSideBusinessException("用户"+userId+"已经存在",HttpStatus.CONFLICT);
-        }
-    }
-
-    public void checkUserGroup(Customer customer)
-    {
-        Group group;
-        if (customer.getUserGroup() != null)
-        {
-            if ((customer.getUserGroup().getCode() != null) && (customer.getUserGroup().getCode().trim().length() != 0) )
-            {
-                 /*用户组信息校验*/
-                group = groupDao.findByCode(customer.getUserGroup().getCode());
-                if (group == null)//用户组不存在
-                {
-                    throw new ServerSideBusinessException("用户组信息错误，不存在用户组"+customer.getUserGroup().getCode(),HttpStatus.NOT_ACCEPTABLE);
-                }
-            }
-            else
-            {
-                throw new ServerSideBusinessException("请填写用户组信息",HttpStatus.NOT_ACCEPTABLE);
-            }
-        }
-        else
-        {
-            throw new ServerSideBusinessException("请填写用户组信息",HttpStatus.NOT_ACCEPTABLE);
-        }
-
-        customer.setUserGroup(group);
-    }
 
     public void checkAddress(Customer customer)
     {
@@ -489,6 +449,23 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
             customer.setCustomerCompany(customerCompany);
         }
     }
+
+    public void setCustomerGroup(Customer customer)
+    {
+        //查找客户组
+       Group group = groupDao.findByCode("00004");
+        if (group != null)
+        {
+            customer.setUserGroup(group);
+        }
+        else
+        {
+            throw new ServerSideBusinessException("系统缺少客户组信息，无法创建客户",HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
+
+
 
 }
 

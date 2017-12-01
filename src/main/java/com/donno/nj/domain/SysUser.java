@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 public class SysUser extends User implements Serializable
 {
-
+    private Department department;
     private String jobNumber;
     private String mobilePhone;
     private String officePhone;
@@ -19,6 +19,11 @@ public class SysUser extends User implements Serializable
     public SysUser()
     {
 
+    }
+
+    public Department getDepartment()
+    {
+        return  department;
     }
 
     public String getJobNumber()
@@ -41,6 +46,10 @@ public class SysUser extends User implements Serializable
         return email;
     }
 
+    public void setDepartment(Department department)
+    {
+        this.department = department;
+    }
 
     public void setJobNumber(String jobNumber)
     {

@@ -38,12 +38,10 @@ public class GoodsController
     @RequestMapping(value = "/api/goods", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取商品列表")
     public ResponseEntity retrieve(@RequestParam(value = "name", defaultValue = "") String name,
-                                            @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
-                                            @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
-                                            @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
+                                   @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
+                                   @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
+                                   @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
     {
-
-
         Map params = newHashMap(ImmutableMap.of("name", name));
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 

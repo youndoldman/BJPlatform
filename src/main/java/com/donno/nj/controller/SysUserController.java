@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,8 +55,20 @@ public class SysUserController
         }
         else
         {
-            AppUtil.setCurrentLoginUser(validUser.get());
-            responseEntity = ResponseEntity.ok(validUser.get());
+            Map params = new HashMap<String,String>();
+            params.putAll(ImmutableMap.of("userId", userId));
+            params.putAll(paginationParams(1, 1, ""));
+
+            List<SysUser> sysUserList = sysUserService.retrieve(params);
+            if (sysUserList.size() > 0)
+            {
+                AppUtil.setCurrentLoginUser(validUser.get());
+                responseEntity = ResponseEntity.ok(sysUserList.get(0));
+            }
+            else
+            {
+                responseEntity =  ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
         }
 
         return responseEntity;
@@ -71,15 +84,58 @@ public class SysUserController
     @RequestMapping(value = "/api/sysusers", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取客户列表")
     public ResponseEntity retrieve(@RequestParam(value = "userId", defaultValue = "") String userId,
-                                            @RequestParam(value = "jobNumber", defaultValue = "") String jobNumber,
-                                            @RequestParam(value = "name", defaultValue = "") String userName,
-                                            @RequestParam(value = "mobilePhone", defaultValue = "") String mobilePhone,
-                                            @RequestParam(value = "officePhone", defaultValue = "") String officePhone,
-                                            @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
-                                            @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
-                                            @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
+                                   @RequestParam(value = "userName", defaultValue = "") String userName,
+                                   @RequestParam(value = "jobNumber", defaultValue = "") String jobNumber,
+                                   @RequestParam(value = "identity", defaultValue = "") String identity,
+                                   @RequestParam(value = "groupCode", defaultValue = "") Integer groupCode,
+                                   @RequestParam(value = "departmentCode", defaultValue = "") Integer departmentCode,
+                                   @RequestParam(value = "mobilePhone", defaultValue = "") String mobilePhone,
+                                   @RequestParam(value = "officePhone", defaultValue = "") String officePhone,
+                                   @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
+                                   @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
+                                   @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
     {
-        Map params = newHashMap(ImmutableMap.of("userId", userId));
+        Map params = new HashMap<String,String>();
+        if (userId.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("userId", userId));
+        }
+
+        if (userName.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("userName", userName));
+        }
+
+        if (jobNumber.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("jobNumber", jobNumber));
+        }
+
+        if (identity.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("identity", identity));
+        }
+
+        if (departmentCode != null)
+        {
+            params.putAll(ImmutableMap.of("departmentCode", departmentCode));
+        }
+
+        if (groupCode != null)
+        {
+            params.putAll(ImmutableMap.of("groupCode", groupCode));
+        }
+
+        if (mobilePhone.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("mobilePhone", mobilePhone));
+        }
+
+        if (officePhone.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("officePhone", officePhone));
+        }
+
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
         List<SysUser> users = sysUserService.retrieve(params);
@@ -87,65 +143,31 @@ public class SysUserController
         return ResponseEntity.ok(ListRep.assemble(users, users.size()));
     }
 
-    @OperationLog(desc = "创建客户")
+    @OperationLog(desc = "创建用户")
     @RequestMapping(value = "/api/sysusers", method = RequestMethod.POST)
-    public ResponseEntity createCustomer(@RequestBody SysUser sysUser, UriComponentsBuilder ucBuilder)
+    public ResponseEntity create(@RequestBody SysUser sysUser, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
-        if (sysUserService.findByUserId(sysUser.getUserId()).isPresent())
-        {
-            responseEntity =  ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-        else
-        {
-            /*查询组对应的ID*/
-            Optional<Group> group = groupService.findByCode(sysUser.getUserGroup().getCode());
-            if(group.isPresent())
-            {
-                sysUser.setUserGroup(group.get());
-                sysUserService.create(sysUser);
-                URI uri = ucBuilder.path("/api/sysusers/{userId}").buildAndExpand(sysUser.getUserId()).toUri();
-                responseEntity = ResponseEntity.created(uri).build();
-            }
-            else //异常数据，返回错误信息
-            {
-                responseEntity =  ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-            }
-        }
+        sysUserService.create(sysUser);
+        URI uri = ucBuilder.path("/api/sysusers/{userId}").buildAndExpand(sysUser.getUserId()).toUri();
+        responseEntity = ResponseEntity.created(uri).build();
+
         return responseEntity;
     }
 
 
     @OperationLog(desc = "修改用户信息")
-    @RequestMapping(value = "/api/sysusers/{userId}", method = RequestMethod.PUT)
-    public ResponseEntity updateCustomer(@PathVariable("userId") String userId, @RequestBody SysUser newUser)
+    @RequestMapping(value = "/api/sysusers", method = RequestMethod.PUT)
+    public ResponseEntity update(@RequestParam(value = "userId", defaultValue = "",required = true) String userId, @RequestBody SysUser newUser)
     {
         ResponseEntity responseEntity;
 
         Optional<User> user = sysUserService.findByUserId(userId);
         if (user.isPresent())
         {
-            if (newUser.getUserGroup() != null)//是否含有组信息
-            {
-                Optional<Group> group = groupService.findByCode(newUser.getUserGroup().getCode());//查询组信息是否合法
-                if (group.isPresent())
-                {
-                    newUser.setUserGroup(group.get());
-
-                    sysUserService.update(user.get().getId(), newUser);
-                    responseEntity = ResponseEntity.ok().build();
-                }
-                else
-                {
-                    responseEntity =  ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-                }
-            }
-            else
-            {
-                sysUserService.update(user.get().getId(), newUser);
-                responseEntity = ResponseEntity.ok().build();
-            }
+            sysUserService.update(user.get().getId(), newUser);
+            responseEntity = ResponseEntity.ok().build();
         }
         else
         {
@@ -156,8 +178,16 @@ public class SysUserController
     }
 
     @OperationLog(desc = "删除用户信息")
-    @RequestMapping(value = "/api/sysusers/{userId}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteCustomer(@PathVariable("userId") String userId)
+    @RequestMapping(value = "/api/sysusers", method = RequestMethod.DELETE)
+    public ResponseEntity delete(
+            //@RequestParam(value = "id", required = false) Integer id,
+                                         @RequestParam(value = "userId", defaultValue = "") String userId
+//                                         @RequestParam(value = "userName", defaultValue = "") String userName,
+//                                         @RequestParam(value = "jobNumber", defaultValue = "") String jobNumber,
+//                                         @RequestParam(value = "identity", defaultValue = "") String identity,
+//                                         @RequestParam(value = "groupIdx", required = false) Integer groupIdx,
+//                                         @RequestParam(value = "departmentIdx", required = false) Integer departmentIdx
+                                         )
     {
         ResponseEntity responseEntity;
 
@@ -171,7 +201,6 @@ public class SysUserController
         {
             responseEntity = ResponseEntity.notFound().build();
         }
-
 
         return responseEntity;
     }

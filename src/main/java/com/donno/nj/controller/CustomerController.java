@@ -62,8 +62,22 @@ public class CustomerController
         }
         else
         {
-            AppUtil.setCurrentLoginUser(validUser.get());
-            responseEntity = ResponseEntity.ok(validUser.get());
+            Map params = new HashMap<String,String>();
+            params.putAll(ImmutableMap.of("userId", userId));
+            params.putAll(paginationParams(1, 1, ""));
+
+            List<Customer> customerList = customerService.retrieve(params);
+            if (customerList.size() > 0)
+            {
+                responseEntity = ResponseEntity.ok(customerList.get(0));
+                AppUtil.setCurrentLoginUser(customerList.get(0));
+            }
+            else
+            {
+                responseEntity =  ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
+
         }
 
         return responseEntity;
