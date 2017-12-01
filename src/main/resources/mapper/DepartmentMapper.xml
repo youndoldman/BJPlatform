@@ -40,41 +40,81 @@
         code = #{code}
     </select>
 
-    <!--<select id="findByCode" resultMap="BaseResultMap">-->
-        <!--SELECT <include refid="QueryColumnList"/>-->
-        <!--FROM <include refid="TableName"/>-->
-        <!--WHERE-->
-        <!--code = #{code}-->
-    <!--</select>-->
-
     <select id="getList" resultMap="BaseResultMap">
         SELECT <include refid="QueryColumnList"/>
         FROM <include refid="TableName"/>
         <where>
-            <if test="name != ''">
-                name LIKE CONCAT('%',#{name},'%')
+            id > 0
+            <if test="code != null">
+              and  code = #{code}
             </if>
-            <if test="orderBy != ''">
-                ORDER BY   ${orderBy}
+
+            <if test="name != null">
+                and  name LIKE CONCAT('%',#{name},'%')
+            </if>
+            <if test="orderBy != null">
+                <if test="orderBy != ''">
+                    ORDER BY   ${orderBy}
+                </if>
             </if>
         </where>
-        limit #{limit} offset #{offset};
+
+        <if test="limit != null"  >
+            <if test="offset != null"  >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+    <select id="count" resultType="Integer">
+        SELECT COUNT(*)
+        FROM <include refid="TableName"/>
+        <where>
+            id > 0
+            <if test="code != null">
+                and  code = #{code}
+            </if>
+
+            <if test="parentDepartment != null">
+                and  parent_idx = #{parentDepartment.id}
+            </if>
+
+            <if test="name != null">
+                and  name LIKE CONCAT('%',#{name},'%')
+            </if>
+        </where>
     </select>
 
 
     <insert id="insert">
         INSERT IGNORE INTO <include refid="TableName"/>(<include refid="InsertColumnList"/>)
-        VALUES(  #{name},#{code},#{parentIdx},#{note})
+        VALUES( #{code}, #{name},#{parentDepartment.id},#{note})
     </insert>
 
-    <delete id="delete" parameterType="Integer">
-        DELETE FROM <include refid="TableName"/> WHERE id=#{id}
+    <!--<delete id="delete" parameterType="Integer">-->
+        <!--DELETE FROM <include refid="TableName"/>-->
+        <!--WHERE id=#{id}-->
+    <!--</delete>-->
+
+    <delete id="delete" >
+        DELETE FROM <include refid="TableName"/>
+        <where>
+            id > 0
+            <if test="code != null">
+                and  code = #{code}
+            </if>
+
+            <if test="id != null">
+                and  id = #{id}
+            </if>
+
+        </where>
     </delete>
 
     <update id="update">
         UPDATE <include refid="TableName"/>
         <set>
-            <if test="parentIdx != null">paren = #{parentIdx},</if>
+            <if test="code != null">code = #{code},</if>
             <if test="name != null">name = #{name},</if>
             <if test="note != null">note = #{note}</if>
         </set>

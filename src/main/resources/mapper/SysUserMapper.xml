@@ -104,7 +104,7 @@
         </if>
 
         <if test="departmentCode != null">
-            AND  t_user.department_idx = ( select id from t_department where code =#{departmentCode} )
+            AND  t_sysuser.department_idx = ( select id from t_department where code =#{departmentCode} )
         </if>
 
         <if test="mobilePhone != null">
@@ -115,14 +115,51 @@
             and (t_sysuser.office_phone = '${officePhone}')
         </if>
 
-
         <if test="orderBy != ''">
             ORDER BY   ${orderBy}
         </if>
         limit #{limit} offset #{offset};
     </select>
 
+    <select id="count" resultType="Integer">
+        SELECT COUNT(*)
+        FROM <include refid="JoinTableList"/>
+        WHERE
+        (<include refid="JoinWhereCondition"/>)
 
+        <if test="userId != null">
+            and (t_user.user_id = '${userId}')
+        </if>
+
+        <if test="userName != null">
+            and (t_user.name = '${userName}')
+        </if>
+
+        <if test="identity != null">
+            and (t_user.identity = '${identity}')
+        </if>
+
+        <if test="jobNumber != null">
+            and (t_sysuser.job_number = '${jobNumber}')
+        </if>
+
+        <if test="groupCode != null">
+            AND  t_user.group_idx = ( select id from t_group where code =#{groupCode} )
+        </if>
+
+        <if test="departmentCode != null">
+            AND  t_sysuser.department_idx = ( select id from t_department where code =#{departmentCode} )
+        </if>
+
+        <if test="mobilePhone != null">
+            and (t_sysuser.mobile_phone = '${mobilePhone}')
+        </if>
+
+        <if test="officePhone != null">
+            and (t_sysuser.office_phone = '${officePhone}')
+        </if>
+
+    </select>
 
     <select id="findByUserId" resultMap="DetailResultMap">
         SELECT <include refid="JoinSelectColumn"/>
@@ -137,10 +174,7 @@
 
 
 
-    <select id="count" resultType="Integer">
-        SELECT COUNT(*)
-        FROM <include refid="TblSysUser"/>
-    </select>
+
 
     <!--<update id="update">-->
         <!--UPDATE <include refid="TblSysUser"/>-->

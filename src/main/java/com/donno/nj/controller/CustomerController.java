@@ -39,11 +39,6 @@ public class CustomerController
     @Autowired
     CustomerDistrictService customerDistrictService ;
 
-    @Autowired
-    GasStoreService gasStoreService ;
-
-
-
     @RequestMapping(value = "/api/customers/login", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity login(@RequestParam(value = "userId", defaultValue = "") String userId,
                                 @RequestParam(value = "password", defaultValue = "") String password)
