@@ -1,0 +1,181 @@
+<div class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="userForm" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="close(false)" data-dismiss="modal"
+                            aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">&nbsp;{{modalTitle}}&nbsp;</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-2 text-left">
+                                <label>客户编号</label>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
+                                <input type="text" class="form-control input-sm">
+                            </div>
+                            <div style="margin-left: 20px;" class="col-xs-2 text-left">
+                                <label>客户姓名</label>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
+                                <input type="text" class="form-control input-sm" placeholder="12345678912">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-xs-2 text-left">
+                                <label>客户级别</label>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">
+                                <input type="text" class="form-control input-sm" placeholder="李小龙">
+                            </div>
+                            <div style="margin-left: 20px;" class="col-xs-2 text-left">
+                                <label>联系电话</label>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">
+                                <input type="text" class="form-control input-sm" placeholder="12345678913">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div  class="col-xs-2 text-left">
+                                <label>客户类型</label>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">
+                                <select class="form-control  input-sm">
+                                    <option>个人用户</option>
+                                    <option>公司用户</option>
+                                    <option>工业用户</option>
+                                </select>
+                            </div>
+                            <div style="margin-left: 20px;" class="col-xs-2 text-left">
+                                <label>客户公司</label>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
+                                <input type="text" class="form-control  input-sm">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-xs-2 text-left">
+                                <label>身份证号</label>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-10">
+                                <input type="text" class="form-control input-sm">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-xs-2 text-left">
+                                <label>客户地址</label>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-10">
+                                <input type="text" class="form-control input-sm">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-xs-2 text-left">
+                                <label>客户状态</label>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
+                                <input type="text" class="form-control input-sm" placeholder="10">
+                            </div>
+                            <div style="margin-left: 20px;" class="col-xs-2 text-left">
+                                <label>客户类型</label>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
+                                <select class="form-control input-sm">
+                                    <option>云南百江燃气</option>
+                                    <option>昆明燃气</option>
+                                    <option>丽江燃气</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-xs-2 text-left">
+                                <label>客户来源</label>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
+                                <select class="form-control input-sm">
+                                    <option>报纸广告</option>
+                                    <option>朋友介绍</option>
+                                    <option>随机</option>
+                                </select>
+                            </div>
+                            <div style="margin-left: 20px;" class="col-xs-2 text-left">
+                                <label>是否携瓶</label>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
+                                <select class="form-control input-sm">
+                                    <option>云南百江燃气</option>
+                                    <option>昆明燃气</option>
+                                    <option>丽江燃气</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-xs-2 text-left">
+                                <label>开户时间</label>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
+                                <input type="text" class="form-control  input-sm">
+                            </div>
+                            <div style="margin-left: 20px;" class="col-xs-2 text-left">
+                                <label>客户备注</label>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
+                                <input type="text" class="form-control  input-sm">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-xs-2 text-left">
+                                <label>客户备注</label>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-10">
+                                <input type="text" class="form-control input-sm">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-xs-2 text-left">
+                                <label>客户查询</label>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;"class="col-xs-4">
+                                <select class="form-control input-sm">
+                                    <option>客户地址</option>
+                                    <option>客户名称</option>
+                                    <option>客户电话</option>
+                                </select>
+                            </div>
+                            <div style=" margin-top: -8px;" class="col-xs-6">
+                                <div class="box-tools">
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" name="table_search" class="form-control" placeholder="江苏省南京市秦淮区苜蓿园大街">
+
+                                        <div class="input-group-btn">
+                                            <button type="search" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="submit" ng-click="submit(vm.user);" class="btn btn-primary" data-dismiss="modal">保存</button>
+                    <button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

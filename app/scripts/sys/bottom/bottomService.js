@@ -82,7 +82,7 @@ bottomApp.service('BottomService', ['$http', 'URI', 'promiseWrapper', function (
         for (var i=0;i<bottoms.length;i++)
         {
             var pt = new BMap.Point(bottoms[i].longitude, bottoms[i].latitude);
-            var myIcon = new BMap.Icon("../../images/icon/bottom.ico", new BMap.Size(50,50));
+            var myIcon = new BMap.Icon("../images/icon/bottom.ico", new BMap.Size(50,50));
             var marker2 = new BMap.Marker(pt,{icon:myIcon});  // 创建标注
             map.addOverlay(marker2);              // 将标注添加到地图中
             marker2.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
@@ -106,7 +106,7 @@ bottomApp.service('BottomService', ['$http', 'URI', 'promiseWrapper', function (
         for (var i=0;i<cars.length;i++)
         {
             var pt = new BMap.Point(cars[i].longitude, cars[i].latitude);
-            var myIcon = new BMap.Icon("../../images/icon/delivery.ico", new BMap.Size(50,50));
+            var myIcon = new BMap.Icon("../images/icon/delivery.ico", new BMap.Size(50,50));
             var marker2 = new BMap.Marker(pt,{icon:myIcon});  // 创建标注
             map.addOverlay(marker2);              // 将标注添加到地图中
         }
@@ -114,7 +114,7 @@ bottomApp.service('BottomService', ['$http', 'URI', 'promiseWrapper', function (
 
         var myP1 = new BMap.Point(102.721,25.047);    //起点
         var myP2 = new BMap.Point(102.740,25.044);      //终点
-        var myIcon = new BMap.Icon("../../images/icon/delivery.ico", new BMap.Size(50, 50), {    //小车图片
+        var myIcon = new BMap.Icon("../images/icon/delivery.ico", new BMap.Size(50, 50), {    //小车图片
             //offset: new BMap.Size(0, -5),    //相当于CSS精灵
             imageOffset: new BMap.Size(0, 0)    //图片的偏移量。为了是图片底部中心对准坐标点。
         });
@@ -140,6 +140,7 @@ bottomApp.service('BottomService', ['$http', 'URI', 'promiseWrapper', function (
                         },100);
                     }
                 }
+
                 setTimeout(function(){
                     resetMkPoint(1);
                 },10)

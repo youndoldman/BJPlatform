@@ -3,16 +3,16 @@
 loginApp.controller('LoginCtrl', ['$scope', '$rootScope', '$http', 'URI', 'promiseWrapper','$window','sessionStorage', function ($scope, $rootScope, $http, URI, promise, $window, sessionStorage) {
     var loginUri = URI.resources.login;
     $scope.userInfo = {
-        userId: "",
+        id: "",
         password:""
     };
 
     $scope.login = function () {
         var loginParams = {
-            userId: $scope.userInfo.userId,
+            id: $scope.userInfo.id,
             password: $scope.userInfo.password
         };
-        if(loginParams.userId==""||loginParams.password=="")
+        if(loginParams.id==""||loginParams.password=="")
         {
             return;
         }
@@ -22,7 +22,7 @@ loginApp.controller('LoginCtrl', ['$scope', '$rootScope', '$http', 'URI', 'promi
             sessionStorage.setCurUser(value);
         }, function(value) {
             // failure
-            alert("用户名|密码错误");
+            alert("用户名密码错误");
         });
     };
 

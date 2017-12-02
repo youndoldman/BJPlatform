@@ -5,10 +5,13 @@ commonModule.constant('URI', {
         'loginPage': '../pages/login.htm',
         'mainPage': '../pages/mainCenter.htm',
         'users': '../../../api/users',
+        'customers': '../../../api/customers',
         'bottoms': '../../../api/bottoms',
-        'login':'../../../api/sysusers/login',
-        'logout':'../../../api/sysusers/logout',
-        'orders':'../../../api/orders'
+        'login':'../../../api/login',
+        'logout':'../../../api/logout',
+        'orders':'../../../api/orders',
+        'goods': '../../../api/goods',
+
 
     }
 });
@@ -59,36 +62,60 @@ commonModule.constant('NavItem', {
         ]
     },
 
-    'UserCenter': {
-        roles:["grc_0001"],
-        name: "客户管理",
-        href: "./userCenter.htm",
+    'ManageCenter': {
+        roles:["管理员"],
+        name: "系统管理",
+        href: "./manageCenter.htm",
         menuItems: [{
             index: 0,
-            name: "用户列表",
-            href: "./userCenter.htm",
+            name: "用户管理",
+            href: "./manageCenter.htm#/manage/users",
             icon: "fa-group"
         }, {
             index: 1,
-            name: "权限管理",
+            name: "商城管理",
             target: "_blank",
-            href: "",
+            href: "./manageCenter.htm#/manage/goods",
             icon: "fa-gears"
         }]
     },
     'OrderCenter': {
-        roles:[],
+        roles:["管理员"],
         name: "订单管理",
         href: "orderCenter.htm",
     },
-    'PhoneCenter': {
+    'CustomService': {
         roles:["管理员","客服"],
-        name: "呼叫中心",
-        href: "./phoneCenter.htm",
-        menuItems: []
+        name: "客户业务",
+        href: "./CustomService.htm",
+        menuItems: [{
+            index: 0,
+            name: "呼叫中心",
+            href: "./CustomService.htm#/CustomService/callCenter",
+            icon: "fa-group"
+        },
+            {
+            index: 1,
+            name: "客户管理",
+            target: "_blank",
+            href: "./CustomService.htm#/CustomService/customerManage",
+            icon: "fa-plane"
+        }, {
+            index: 2,
+            name: "订单管理",
+            target: "_blank",
+            href: "",
+            icon: "fa-gears"
+        }, {
+            index: 3,
+            name: "统计报表",
+            target: "_blank",
+            href: "",
+            icon: "fa-plane"
+        }]
     },
     'RoutineCenter': {
-        roles:[],
+        roles:["客服","管理员","老板","财务","客户","配送"],
         name: "日常事务",
         href: "./routineCenter.htm",
         menuItems: [{
@@ -129,7 +156,7 @@ commonModule.constant('NavItem', {
         }]
     },
     'FinanceCenter': {
-        roles:[],
+        roles:["管理员", "财务"],
         name: "财务管理",
         href: "./financeCenter.htm",
         menuItems: [{
@@ -153,7 +180,7 @@ commonModule.constant('NavItem', {
             }]
     },
     'DecisionCenter': {
-        roles:[],
+        roles:["管理员", "老板"],
         name: "决策分析",
         href: "./decisionCenter.htm",
         menuItems: [{
@@ -176,7 +203,7 @@ commonModule.constant('NavItem', {
         }]
     },
     'GasCenter': {
-        roles:[],
+        roles:["管理员"],
         name: "钢瓶管理",
         href: "./gasCenter.htm",
         menuItems: [{
@@ -193,7 +220,7 @@ commonModule.constant('NavItem', {
         }]
     },
     'AppCenter': {
-        roles:[],
+        roles:["管理员"],
         name: "增值服务",
         href: "./appCenter.htm",
         menuItems: [{
@@ -203,8 +230,24 @@ commonModule.constant('NavItem', {
             icon: "fa-phone"
         }]
     },
+    'CustomerCenter': {
+        roles:["客户","管理员"],
+        name: "客户中心",
+        href: "./customerCenter.htm",
+        menuItems: [{
+            index: 0,
+            name: "我要订气",
+            href: "./customerCenter.htm#/customer/create",
+            icon: "fa-phone"
+        }, {
+            index: 1,
+            name: "我的订单",
+            href: "./customerCenter.htm#/customer/query",
+            icon: "fa-sitemap"
+        }]
+    },
     'HelpCenter': {
-        roles:[],
+        roles:["客户"],
         name: "帮助中心",
         href: "",
         target: "_blank"
