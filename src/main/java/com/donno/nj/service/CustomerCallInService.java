@@ -13,7 +13,7 @@ public interface CustomerCallInService
 
     Integer count(Map params);
 
-    void create(CustomerCallIn user);
+    void create(String userId,CustomerCallIn user);
 
     void delete(Map params);
 

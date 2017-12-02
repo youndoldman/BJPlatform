@@ -35,6 +35,7 @@ public class CustomerCallInController
     @RequestMapping(value = "/api/CustomerCallIn", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取客户呼入信息列表")
     public ResponseEntity retrieve(@RequestParam(value = "phone", defaultValue = "") String phone,
+                                   @RequestParam(value = "userId", defaultValue = "") String userId,
                                             @RequestParam(value = "province", defaultValue = "") String province,
                                             @RequestParam(value = "city", defaultValue = "") String city,
                                             @RequestParam(value = "county", defaultValue = "") String county,
@@ -48,6 +49,11 @@ public class CustomerCallInController
         if (phone.trim().length() > 0)
         {
             params.putAll(ImmutableMap.of("phone", phone));
+        }
+
+        if (userId.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("userId", userId));
         }
 
         if (province.trim().length() > 0)
@@ -73,18 +79,20 @@ public class CustomerCallInController
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
         List<CustomerCallIn> customerCallIns = customerCallInService.retrieve(params);
+        Integer count = customerCallInService.count(params);
 
-        return ResponseEntity.ok(ListRep.assemble(customerCallIns, customerCallIns.size()));
+        return ResponseEntity.ok(ListRep.assemble(customerCallIns, count));
     }
 
     @OperationLog(desc = "创建客户呼入信息")
     @RequestMapping(value = "/api/CustomerCallIn", method = RequestMethod.POST)
-    public ResponseEntity create(@RequestBody CustomerCallIn customerCallIn, UriComponentsBuilder ucBuilder)
+    public ResponseEntity create(@RequestParam(value = "userId", defaultValue = "") String userId,
+                                @RequestBody CustomerCallIn customerCallIn, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
 
         /*创建*/
-        customerCallInService.create(customerCallIn);
+        customerCallInService.create(userId,customerCallIn);
 
         URI uri = ucBuilder.path("/api/CustomerCallIn/{phone}").buildAndExpand(customerCallIn.getPhone()).toUri();
         responseEntity = ResponseEntity.created(uri).build();
@@ -97,6 +105,7 @@ public class CustomerCallInController
     @OperationLog(desc = "删除用户呼入信息")
     @RequestMapping(value = "/api/CustomerCallIn", method = RequestMethod.DELETE)
     public ResponseEntity delete(@RequestParam(value = "id",required=false) Integer id,
+                                 @RequestParam(value = "userId", defaultValue = "" ) String userId,
                                  @RequestParam(value = "phone", defaultValue = "") String phone
                                 )
     {
@@ -112,6 +121,11 @@ public class CustomerCallInController
         if (phone.trim().length() > 0)
         {
             params.putAll(ImmutableMap.of("phone", phone));
+        }
+
+        if (userId.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("userId", userId));
         }
 
         customerCallInService.delete(params);

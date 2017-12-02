@@ -5,19 +5,20 @@ package com.donno.nj.service.impl;
 import com.donno.nj.dao.SysUserDao;
 import com.donno.nj.dao.UserDao;
 import com.donno.nj.dao.DepartmentDao;
+import com.donno.nj.dao.UserPositionDao;
 import com.donno.nj.domain.Department;
-import com.donno.nj.domain.Group;
 import com.donno.nj.domain.SysUser;
 import com.donno.nj.domain.User;
+import com.donno.nj.domain.UserPosition;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.service.SysUserService;
 
-
-import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,10 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
 
     @Autowired
     private DepartmentDao departmentDao;
+
+    @Autowired
+    private UserPositionDao userPositionDao;
+
 
     @Override
     public List<SysUser> retrieve(Map params) {
@@ -75,7 +80,7 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
         User oldCustomer = userDao.findById(id);
         if ( oldCustomer == null)
         {
-            throw new ServerSideBusinessException("用户不存在，不能进行修改操作！",HttpStatus.CONFLICT);
+            throw new ServerSideBusinessException("用户不存在，不能进行修改操作！",HttpStatus.NOT_FOUND);
         }
 
         /*校验目的用户是否已经存在*/
@@ -106,6 +111,43 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
         /*更新基表数据*/
         userDao.update(newUser);
         sysUserDao.update(newUser);
+    }
+
+    @Override
+    public void updatePosition(String userId, UserPosition userPosition)
+    {
+        /*用户校验，参数不能为空，内容不能为空，用户应存在*/
+        if (userId != null && userId.trim().length() > 0 )
+        {
+            SysUser user = sysUserDao.findByUserId(userId);
+            if (user != null)
+            {
+                /*位置信息如果存在则更新，如果不存在则添加*/
+                Map params = new HashMap<String,String>();
+                params.putAll(ImmutableMap.of("userId", userId));
+                List<UserPosition> targetPosition = userPositionDao.getList(params);
+                if (targetPosition.size() == 0)
+                {
+                    userPosition.setUserIdx(user.getId());
+                    userPositionDao.insert(userPosition);
+                }
+                else //更新位置信息
+                {
+                    userPosition.setId(targetPosition.get(0).getId());
+                    userPositionDao.update(userPosition);
+                }
+            }
+            else
+            {
+                throw new ServerSideBusinessException("用户不存在",HttpStatus.NOT_FOUND);
+            }
+        }
+        else
+        {
+            throw new ServerSideBusinessException("用户信息不能为空！",HttpStatus.NOT_ACCEPTABLE);
+        }
+
+
     }
 
     @Override

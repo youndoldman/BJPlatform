@@ -55,8 +55,9 @@ public class CustomerTypeController
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
         List<CustomerType> customerTypes = customerTypeService.retrieve(params);
+        Integer count = customerTypeService.count(params);
 
-        return ResponseEntity.ok(ListRep.assemble(customerTypes, customerTypes.size()));
+        return ResponseEntity.ok(ListRep.assemble(customerTypes, count));
     }
 
 

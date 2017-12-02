@@ -51,8 +51,9 @@ public class CustomerSourceController
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
         List<CustomerSource> customerTypes = customerSourceService.retrieve(params);
+        Integer count = customerSourceService.count(params);
 
-        return ResponseEntity.ok(ListRep.assemble(customerTypes, customerTypes.size()));
+        return ResponseEntity.ok(ListRep.assemble(customerTypes, count));
     }
 
 

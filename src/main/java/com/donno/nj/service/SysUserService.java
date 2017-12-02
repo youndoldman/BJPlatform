@@ -1,6 +1,7 @@
 package com.donno.nj.service;
 
 import com.donno.nj.domain.SysUser;
+import com.donno.nj.domain.UserPosition;
 import com.google.common.base.Optional;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,8 @@ public interface SysUserService extends UserService
     void create(SysUser user);
 
     void update(Integer id, SysUser newUser);
+
+    void updatePosition(String userId, UserPosition userPosition);
 
     void delete(Integer id);
 }

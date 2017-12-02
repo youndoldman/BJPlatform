@@ -13,6 +13,7 @@ public class CustomerCallIn implements Serializable
 
     private Integer id;
     private  String phone;
+    private  Customer customer;
     private String province;  //省
     private String city;      //市
     private String county;   //区县
@@ -28,6 +29,11 @@ public class CustomerCallIn implements Serializable
     public String getPhone()
     {
         return  phone;
+    }
+
+    public Customer getCustomer()
+    {
+        return customer;
     }
 
     public String getProvince()
@@ -69,6 +75,11 @@ public class CustomerCallIn implements Serializable
     public void setPhone(String phone)
     {
         this.phone = phone;
+    }
+
+    public void setCustomer(Customer customer)
+    {
+        this.customer = customer;
     }
 
     public void setProvince(String province)

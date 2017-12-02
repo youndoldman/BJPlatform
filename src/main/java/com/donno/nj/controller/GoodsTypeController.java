@@ -44,8 +44,9 @@ public class GoodsTypeController
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
         List<GoodsType> customers = goodsTypeService.retrieve(params);
+        Integer count = goodsTypeService.count(params);
 
-        return ResponseEntity.ok(ListRep.assemble(customers, customers.size()));
+        return ResponseEntity.ok(ListRep.assemble(customers, count));
     }
 
     @OperationLog(desc = "创建商品类型")

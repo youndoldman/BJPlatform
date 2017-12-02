@@ -38,8 +38,6 @@
 
         <association property="customerCompany" column="customer_company_idx" select="com.donno.nj.dao.CustomerCompanyDao.selectById">
         </association>
-
-
     </resultMap>
 
 
@@ -108,6 +106,24 @@
         t_user,t_customer
     </sql>
 
+    <select id="selectById" resultMap="DetailResultMap">
+    SELECT <include refid="JoinSelectColumn"/>
+    FROM <include refid="JoinTableList"/>
+    WHERE
+        (<include refid="JoinWhereCondition"/>)
+        AND
+        t_user.id = #{id}
+    </select>
+
+    <select id="findByUserId" resultMap="DetailResultMap">
+        SELECT <include refid="JoinSelectColumn"/>
+        FROM <include refid="JoinTableList"/>
+        WHERE
+        (<include refid="JoinWhereCondition"/>)
+        AND
+        t_user.user_id = #{userId}
+    </select>
+
     <select id="getList" resultMap="DetailResultMap">
     SELECT <include refid="JoinSelectColumn"/>
     FROM <include refid="JoinTableList"/>
@@ -174,10 +190,87 @@
             AND  addr_detail = #{addrDetail}
         </if>
 
-    <if test="orderBy != ''">
-    ORDER BY   ${orderBy}
-    </if>
-    limit #{limit} offset #{offset};
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+
+    <select id="count" resultType="Integer">
+        SELECT count(*)
+        FROM <include refid="JoinTableList"/>
+        WHERE
+        (<include refid="JoinWhereCondition"/>)
+
+        <if test="userId != null">
+            AND  t_user.user_id = #{userId}
+        </if>
+
+        <if test="userName != null">
+            AND  t_user.name = #{userName}
+        </if>
+
+        <if test="identity != null">
+            AND  t_user.identity = #{identity}
+        </if>
+
+        <if test="number != null">
+            AND  cst_number = #{number}
+        </if>
+
+        <if test="groupCode != null">
+            AND  t_user.group_idx = ( select id from t_group where code =#{groupCode} )
+        </if>
+
+        <if test="status != null">
+            AND  status = #{status}
+        </if>
+
+        <if test="customerTypeCode != null">
+            AND  cst_type = ( select id from t_customer_type where code =#{customerTypeCode} )
+        </if>
+
+        <if test="customerLevelCode != null">
+            AND  cst_level = ( select id from t_customer_level where code =#{customerLevelCode} )
+        </if>
+
+        <if test="customerSourceCode != null">
+            AND  cst_source = ( select id from t_customer_source where code =#{customerSourceCode} )
+        </if>
+
+        <if test="companyName != null">
+            AND  cst_company_name = ( select id from t_customer_company where name =#{companyName} )
+        </if>
+
+        <if test="phone != null">
+            AND  phone = #{phone}
+        </if>
+
+        <if test="addrProvince != null">
+            AND  addr_province = #{addrProvince}
+        </if>
+
+        <if test="addrCity != null">
+            AND  addr_city = #{addrCity}
+        </if>
+
+        <if test="addrCounty != null">
+            AND  addr_county = #{addrCounty}
+        </if>
+
+        <if test="addrDetail != null">
+            AND  addr_detail = #{addrDetail}
+        </if>
+
+
     </select>
 
 

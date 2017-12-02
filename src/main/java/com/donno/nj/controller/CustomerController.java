@@ -187,7 +187,9 @@ public class CustomerController
 
         List<Customer> customers = customerService.retrieve(params);
 
-        return ResponseEntity.ok(ListRep.assemble(customers, customers.size()));
+        Integer customerCount = customerService.count(params);
+
+        return ResponseEntity.ok(ListRep.assemble(customers, customerCount));
     }
 
     @OperationLog(desc = "创建客户")

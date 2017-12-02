@@ -54,6 +54,7 @@
         <set>
             <if test="userId != null">user_id = #{userId},</if>
             <if test="name != null">name = #{name},</if>
+            <if test="identity != null">identity = #{identity},</if>
             <if test="password != null">password = #{password},</if>
             <if test="userGroup != null">
                 <if test="userGroup.id != null">group_idx = #{userGroup.id},</if>

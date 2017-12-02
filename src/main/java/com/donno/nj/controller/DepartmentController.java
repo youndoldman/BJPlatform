@@ -52,8 +52,9 @@ public class DepartmentController
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
         List<Department> departments = departmentService.retrieve(params);
+        Integer count = departmentService.count(params);
 
-        return ResponseEntity.ok(ListRep.assemble(departments, departments.size()));
+        return ResponseEntity.ok(ListRep.assemble(departments, count));
     }
 
 

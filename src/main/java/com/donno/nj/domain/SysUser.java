@@ -2,15 +2,12 @@ package com.donno.nj.domain;
 
 import java.io.Serializable;
 
-/**
- * Created by T470P on 2017/10/24.
- */
 import com.google.common.base.MoreObjects;
-import java.io.Serializable;
-import java.util.Date;
+
 public class SysUser extends User implements Serializable
 {
     private Department department;
+    private UserPosition userPosition;
     private String jobNumber;
     private String mobilePhone;
     private String officePhone;
@@ -24,6 +21,11 @@ public class SysUser extends User implements Serializable
     public Department getDepartment()
     {
         return  department;
+    }
+
+    public UserPosition getUserPosition()
+    {
+        return userPosition;
     }
 
     public String getJobNumber()
@@ -49,6 +51,11 @@ public class SysUser extends User implements Serializable
     public void setDepartment(Department department)
     {
         this.department = department;
+    }
+
+    public void setUserPosition(UserPosition userPosition)
+    {
+        this.userPosition = userPosition;
     }
 
     public void setJobNumber(String jobNumber)
