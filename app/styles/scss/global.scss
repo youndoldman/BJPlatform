@@ -13,6 +13,12 @@
 
 $body-bg: #f3f3f4;
 
+//主页面的DIV向左移动100px
+
+.div-offset-left{
+
+}
+
 body {
   background-color: $body-bg;
   padding-top: 55px;
@@ -78,4 +84,6 @@ html, body {
 
 
 .div-bordered{border:2px solid #337ab7;}
+
+
 

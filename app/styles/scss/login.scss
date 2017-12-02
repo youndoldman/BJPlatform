@@ -94,6 +94,7 @@ p {
   color:#fff;
   font-size:50px;
   line-height: 125px;
+  width:100%;
 }
 
 #login form span.fa {
@@ -153,7 +154,7 @@ fieldset{
 }
 .middle {
   display: flex;
-  width: 600px;
+  width: 700px;
 }
 
 .star{
@@ -165,4 +166,7 @@ fieldset{
   color: red;
   height: 20px;
   font-size: smaller;
+}
+.tiny-code{
+  margin-top: 125px;
 }

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html ng-app="PhoneApp" xmlns:ng="http://angularjs.org">
+<html ng-app="ManageApp" xmlns:ng="http://angularjs.org">
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -22,6 +21,8 @@
     <script src="../lib/angular/angular.min.js"></script>
     <script src="../lib/angular/angular-ui-router.min.js"></script>
     <script src="../lib/angular-modal-service/dst/angular-modal-service.js"></script>
+    <script src="../lib/ng-file-upload/ng-file-upload-shim.min.js"></script>
+    <script src="../lib/ng-file-upload/ng-file-upload.min.js"></script>
 
     <script src="../scripts/common/common.js"></script>
     <script src="../scripts/common/commonFilter.js"></script>
@@ -34,15 +35,24 @@
     <script src="../scripts/common/njPartials.js"></script>
     <script src="../scripts/common/component.js"></script>
 
-    <script src="../scripts/sys/phone/phoneApp.js"></script>
-
+    <script src="../scripts/sys/manage/manageApp.js"></script>
+    <script src="../scripts/sys/manage/userService.js"></script>
+    <script src="../scripts/sys/manage/userListCtrl.js"></script>
+    <script src="../scripts/sys/manage/userDetailsCtrl.js"></script>
+    <script src="../scripts/sys/manage/goodsService.js"></script>
+    <script src="../scripts/sys/manage/goodsListCtrl.js"></script>
 </head>
 <body>
 
 <div nj-header></div>
-<div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div style="margin-top:15px" ui-view></div>
+
+
+<div class="container main">
+    <div class="row">
+        <div class="col-xs-12 col-sm-2 col-md-1 col-lg-1" nj-menu></div>
+        <div class="col-xs-12 col-sm-10 col-md-11 col-lg-11 ">
+            <div ui-view></div>
+        </div>
     </div>
 </div>
 </body>

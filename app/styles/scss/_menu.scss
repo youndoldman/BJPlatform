@@ -13,9 +13,10 @@ $active: #fff;
 $active_triangle: #eeeeee;
 
 aside {
-  margin: 0px 40px 0px -15px;
+  margin: 0px 0px 0px -15px;
+  padding-right: 13px;
   padding-top: 30px;
-  position: relative;
+  position: fixed;
   height: auto;
   overflow-y: hidden;
   overflow-x: hidden;

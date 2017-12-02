@@ -1,6 +1,6 @@
 'use strict';
 
-userApp.service('UserService', ['$http', 'URI', 'promiseWrapper', function ($http, URI, promise) {
+manageApp.service('UserService', ['$http', 'URI', 'promiseWrapper', function ($http, URI, promise) {
 
     var usersUri = URI.resources.users;
 

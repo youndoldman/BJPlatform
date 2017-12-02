@@ -27,6 +27,7 @@
     <script src="../scripts/sys/login/loginCtrl.js"></script>
 </head>
 <body>
+
 <div class="main" ng-controller="LoginCtrl">
     <div class="container">
         <center>
@@ -37,7 +38,7 @@
 
                         <fieldset class="clearfix">
 
-                            <p><span class="fa fa-user"></span><input type="text" name="userId" Placeholder="Username" ng-model="userInfo.userId" required></p>
+                            <p><span class="fa fa-user"></span><input type="text" name="id" Placeholder="Username" ng-model="userInfo.id" required></p>
                             <p><span class="fa fa-lock"></span><input type="password" name="password" Placeholder="Password" ng-keyup="myKeyup($event)" ng-model="userInfo.password" required></p>
                             <!-- JS because of IE support; better: placeholder="Password" -->
                             <div class="input-tips">
@@ -61,10 +62,17 @@
                 <div class="logo">
                     <p>百江燃气</p>
                     <img src="../images/icon/gas.ico" style="margin-top: -50px;width: 100px;height: 100px;"></img>
+
                 </div>
+                <div class="tiny-code">
+                    <img src="../images/首页二维码.png" style="margin-top: -50px;width: 100px;height: 100px;"></img>
+                </div>
+
+
             </div>
         </center>
     </div>
+
 
 </div>
 </body>

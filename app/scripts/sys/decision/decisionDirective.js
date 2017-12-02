@@ -1095,14 +1095,14 @@ decisionApp.directive('chart8', function() {
                 },
                 backgroundColor: '#000',
                 globe: {
-                    baseTexture: '../../images/data-1491890179041-Hkj-elqpe.jpg',
-                    heightTexture: '../../images/data-1491889019097-rJQYikcpl.jpg',
+                    baseTexture: '../images/data-1491890179041-Hkj-elqpe.jpg',
+                    heightTexture: '../images/data-1491889019097-rJQYikcpl.jpg',
 
                     displacementScale: 0.1,
 
                     shading: 'lambert',
 
-                    environment: '../../images/data-1491837999815-H1_44Qtal.jpg',
+                    environment: '../images/data-1491837999815-H1_44Qtal.jpg',
 
                     light: {
                         ambient: {
@@ -1116,10 +1116,10 @@ decisionApp.directive('chart8', function() {
                     layers: [{
                         type: 'blend',
                         blendTo: 'emission',
-                        texture: '../../images/data-1491890291849-rJ2uee5ag.jpg'
+                        texture: '../images/data-1491890291849-rJ2uee5ag.jpg'
                     }, {
                         type: 'overlay',
-                        texture: '../../images/data-1491890092270-BJEhJg96l.png',
+                        texture: '../images/data-1491890092270-BJEhJg96l.png',
                         shading: 'lambert',
 
                         distance: 5

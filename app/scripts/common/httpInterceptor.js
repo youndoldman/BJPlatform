@@ -14,7 +14,7 @@ commonModule.factory('HttpInterceptor', ["$q", "$rootScope", '$window', 'URI', f
                 case 400:
                     alert("请求参数错误。");
                     break;
-                case 401://认证错误
+                case 401:
                     $window.location.href = URI.resources.loginPage;
                     break;
                 case 403:
@@ -25,9 +25,6 @@ commonModule.factory('HttpInterceptor', ["$q", "$rootScope", '$window', 'URI', f
                     break;
                 case 500:
                     alert("对不起，访问出错了。");
-                    break;
-                case 504:
-                    alert("请求服务超时间。");
                     break;
                 default :
                     break;

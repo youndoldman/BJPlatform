@@ -1,6 +1,6 @@
 'use strict';
 
-userApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
+manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
     'rootService', 'pager', 'udcModal', 'UserService', function ($scope, $rootScope, $filter, $location, Constants,
                                                           rootService, pager, udcModal, UserService) {
         var gotoPage = function (pageNo) {
@@ -89,7 +89,7 @@ userApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locatio
 
     }]);
 
-userApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title', 'initVal', function ($scope, close, UserService, title, initVal) {
+manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title', 'initVal', function ($scope, close, UserService, title, initVal) {
     $scope.modalTitle = title;
     $scope.vm = {
         user: {
