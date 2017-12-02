@@ -161,7 +161,11 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
     @OperationLog(desc = "删除客户")
     public void deleteById(Integer id)
     {
-        /*删除关联表*/
+        /*检查，如果有订单记录，则不允许删除*/
+
+        /*删除位置信息表*/
+
+        /*删除主表*/
         userDao.delete(id);
         customerDao.deleteByUserIdx(id);
     }

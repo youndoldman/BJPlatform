@@ -45,7 +45,8 @@ public class OrderController
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
         List<Order> orders = orderService.retrieve(params);
-        return ResponseEntity.ok(ListRep.assemble(orders, orders.size()));
+        Integer count = orderService.count(params);
+        return ResponseEntity.ok(ListRep.assemble(orders, count));
     }
 
     @OperationLog(desc = "创建订单")

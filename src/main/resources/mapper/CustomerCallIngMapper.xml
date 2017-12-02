@@ -14,7 +14,8 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
 
-
+        <association property="customer" column="user_idx" select="com.donno.nj.dao.CustomerDao.selectById">
+        </association>
     </resultMap>
 
 
@@ -25,8 +26,8 @@
 
     <insert id="insert">
         INSERT  INTO <include refid="TblCustomerCallIn"/>
-        (phone,addr_province,addr_city,addr_county,addr_detail)
-        VALUES( #{phone}, #{province},#{city},#{county},#{detail})
+        (phone,user_idx,addr_province,addr_city,addr_county,addr_detail)
+        VALUES( #{phone},#{customer.id}, #{province},#{city},#{county},#{detail})
     </insert>
 
     <select id="getList" resultMap="DetailResultMap">
@@ -34,6 +35,51 @@
     FROM <include refid="TblCustomerCallIn"/>
         WHERE
          id > 0
+
+        <if test="phone != null">
+            AND  phone = #{phone}
+        </if>
+
+        <if test="userId != null">
+            AND  user_idx = (select id from t_user where user_id = #{userId})
+        </if>
+
+        <if test="province != null">
+            AND  addr_province = #{province}
+        </if>
+
+        <if test="city != null">
+            AND  addr_city = #{city}
+        </if>
+
+        <if test="county != null">
+            AND  addr_county = #{county}
+        </if>
+
+        <if test="detail != null">
+            AND  addr_detail = #{detail}
+        </if>
+
+      <if test="orderBy != null">
+        <if test="orderBy != ''">
+         ORDER BY   ${orderBy}
+         </if>
+      </if>
+
+      <if test="limit != null" >
+        <if test="offset != null" >
+            limit #{limit} offset #{offset};
+        </if>
+      </if>
+
+    </select>
+
+
+    <select id="count" resultType="Integer">
+        SELECT  COUNT(id)
+        FROM <include refid="TblCustomerCallIn"/>
+        WHERE
+        id > 0
         <if test="phone != null">
             AND  phone = #{phone}
         </if>
@@ -53,11 +99,6 @@
         <if test="detail != null">
             AND  addr_detail = #{detail}
         </if>
-
-    <if test="orderBy != ''">
-         ORDER BY   ${orderBy}
-    </if>
-    limit #{limit} offset #{offset};
     </select>
 
 
@@ -70,6 +111,9 @@
             </when>
             <when test="phone != null">
                 where  phone = #{phone}
+            </when>
+            <when test="userId != null">
+                where  user_idx = (select id from t_user where user_id= #{userId})
             </when>
         </choose>
 

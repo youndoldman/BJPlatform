@@ -53,8 +53,9 @@ public class CustomerLevelController
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
         List<CustomerLevel> customerLevels = customerLevelService.retrieve(params);
+        Integer count = customerLevelService.count(params);
 
-        return ResponseEntity.ok(ListRep.assemble(customerLevels, customerLevels.size()));
+        return ResponseEntity.ok(ListRep.assemble(customerLevels,count));
     }
 
 

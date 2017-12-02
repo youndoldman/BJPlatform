@@ -23,6 +23,9 @@
         <association property="department" column="department_idx" select="com.donno.nj.dao.DepartmentDao.findById">
         </association>
 
+        <association property="userPosition" column="id" select="com.donno.nj.dao.UserPositionDao.findByUserIdx">
+        </association>
+
     </resultMap>
 
     <sql id="TblSysUser">
@@ -115,10 +118,17 @@
             and (t_sysuser.office_phone = '${officePhone}')
         </if>
 
-        <if test="orderBy != ''">
-            ORDER BY   ${orderBy}
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
         </if>
-        limit #{limit} offset #{offset};
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
     </select>
 
     <select id="count" resultType="Integer">

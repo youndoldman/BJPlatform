@@ -2,7 +2,7 @@ package com.donno.nj.controller;
 
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
-import com.donno.nj.domain.Group;
+import com.donno.nj.domain.UserPosition;
 import com.donno.nj.domain.SysUser;
 import com.donno.nj.domain.User;
 import com.donno.nj.representation.ListRep;
@@ -139,8 +139,9 @@ public class SysUserController
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
         List<SysUser> users = sysUserService.retrieve(params);
+        Integer count = sysUserService.count(params);
 
-        return ResponseEntity.ok(ListRep.assemble(users, users.size()));
+        return ResponseEntity.ok(ListRep.assemble(users, count));
     }
 
     @OperationLog(desc = "创建用户")
@@ -204,4 +205,19 @@ public class SysUserController
 
         return responseEntity;
     }
+
+
+    @OperationLog(desc = "更新位置信息")
+    @RequestMapping(value = "/api/sysusers/position", method = RequestMethod.POST)
+    public ResponseEntity updatePostion(@RequestParam(value = "userId", defaultValue = "",required = true) String userId,
+                                        @RequestBody UserPosition userPosition )
+    {
+        ResponseEntity responseEntity;
+        sysUserService.updatePosition(userId,userPosition);
+        responseEntity = ResponseEntity.ok().build();
+
+        return responseEntity;
+    }
+
+
 }

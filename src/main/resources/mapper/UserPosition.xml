@@ -1,63 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.donno.nj.dao.GroupDao">
-    <resultMap id="BaseResultMap" type="com.donno.nj.domain.Group">
+<mapper namespace="com.donno.nj.dao.UserPositionDao">
+    <resultMap id="BaseResultMap" type="com.donno.nj.domain.UserPosition">
         <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="code" property="code" jdbcType="VARCHAR"/>
-        <result column="name" property="name" jdbcType="VARCHAR"/>
-        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <id column="user_idx" property="userIdx" jdbcType="INTEGER"/>
+        <result column="longitude" property="longitude" jdbcType="DOUBLE"/>
+        <result column="latitude" property="latitude" jdbcType="DOUBLE"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-
-
     <sql id="TableName">
-        t_group
+        t_user_position
     </sql>
 
     <sql id="QueryColumnList">
-        id,code,name, note,create_time,update_time
+        id,user_idx,longitude,latitude,create_time,update_time
     </sql>
 
     <sql id="InsertColumnList">
-        code,name, note
+      user_idx,longitude,latitude
     </sql>
-
 
     <select id="findById" resultMap="BaseResultMap">
         SELECT <include refid="QueryColumnList"/>
         FROM <include refid="TableName"/>
         WHERE
-        id = #{id}
+          id = #{id}
     </select>
 
-    <select id="findByCode" resultMap="BaseResultMap">
+    <select id="findByUserIdx" resultMap="BaseResultMap">
         SELECT <include refid="QueryColumnList"/>
         FROM <include refid="TableName"/>
         WHERE
-        code = #{code}
+        user_idx = #{id}
     </select>
 
-    <select id="selectById"
-            parameterType="java.lang.String"
-            resultMap="BaseResultMap" >
-        select * from <include refid="TableName"/>
-          where id=#{id}
-    </select>
 
     <select id="getList" resultMap="BaseResultMap">
         SELECT <include refid="QueryColumnList"/>
         FROM <include refid="TableName"/>
-
         <where>
             id > 0
-            <if test="code != null">
-                and code = #{code}
-            </if>
-            <if test="name != null">
-                and  name LIKE CONCAT('%',#{name},'%')
+            <if test="userId != null">
+              and  user_idx = (select id from t_user where user_id  = #{userId} )
             </if>
         </where>
 
@@ -67,42 +54,49 @@
             </if>
         </if>
 
-        <if test="limit != null" >
-            <if test="offset != null" >
+        <if test="limit != null"  >
+            <if test="offset != null"  >
                 limit #{limit} offset #{offset};
             </if>
         </if>
     </select>
 
+
+
     <select id="count" resultType="Integer">
-        SELECT COUNT(*)
-        FROM  <include refid="TableName"/>
+        SELECT count(id)
+        FROM <include refid="TableName"/>
         <where>
             id > 0
-            <if test="code != null">
-                and code = #{code}
-            </if>
-            <if test="name != null">
-                and  name LIKE CONCAT('%',#{name},'%')
+            <if test="userId != null">
+                and  user_idx = (select id from t_user where user_id  = #{userId} )
             </if>
         </where>
+
     </select>
+
 
     <insert id="insert">
         INSERT IGNORE INTO <include refid="TableName"/>(<include refid="InsertColumnList"/>)
-        VALUES( #{code}, #{name},#{note})
+        VALUES( #{userIdx}, #{longitude},#{latitude})
     </insert>
 
-    <delete id="delete" parameterType="Integer">
-        DELETE FROM <include refid="TableName"/> WHERE id=#{id}
+
+    <delete id="delete" >
+        DELETE FROM <include refid="TableName"/>
+        <where>
+            id > 0
+            <if test="id != null">
+                and  id = #{id}
+            </if>
+        </where>
     </delete>
 
     <update id="update">
         UPDATE <include refid="TableName"/>
         <set>
-            <if test="code != null">code = #{code},</if>
-            <if test="name != null">name = #{name},</if>
-            <if test="note != null">note = #{note}</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="latitude != null">latitude = #{latitude}</if>
         </set>
         WHERE id = #{id}
     </update>
