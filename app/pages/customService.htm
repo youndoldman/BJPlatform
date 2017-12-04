@@ -33,11 +33,64 @@
     <script src="../scripts/common/njPager.js"></script>
     <script src="../scripts/common/njPartials.js"></script>
     <script src="../scripts/common/component.js"></script>
+    <script src="../scripts/sys/customService/webPhone.js"></script>
 
     <script src="../scripts/sys/customService/customServiceApp.js"></script>
     <script src="../scripts/sys/customService/customerManageService.js"></script>
     <script src="../scripts/sys/customService/callCenterCtrl.js"></script>
     <script src="../scripts/sys/customService/customerManageCtrl.js"></script>
+
+    <script src="../lib/web-phone/callhelper.min.js"></script>
+
+    <style>
+        table  button{width:40px;height:55px;border:none;}
+
+        .label-title{min-width: 70px; font-size: 14px; font-weight: bold; height: 22px; text-align: center;
+            display: inline-block;width: 100%;}
+        .label-content{min-width: 70px; font-size: 14px; text-align: center; height: 22px; padding: 2px 5px;
+            box-shadow: inset 2px 2px 2px #4DFFFF; border-radius: 4px; background: #00FFFF;display: inline-block;}
+
+        .register{background: url(../images/web-phone/register.png) no-repeat;}
+        .register-disabled{background: url(../images/web-phone/register1.png) no-repeat;}
+        .register:hover{border:1px solid #b1defd;background-color:#e6f3fc;}
+
+        .unregister{background: url(../images/web-phone/unregister.png) no-repeat;}
+        .unregister-disabled{background: url(../images/web-phone/unregister1.png) no-repeat;}
+        .unregister:hover{border:1px solid #b1defd;background-color:#e6f3fc;}
+
+        .ready{background: url(../images/web-phone/changeStatusFree.png) no-repeat;}
+        .ready-disabled{background: url(../images/web-phone/changeStatusFree1.png) no-repeat;}
+        .ready:hover{border:1px solid #b1defd;background-color:#e6f3fc;}
+
+        .notready{background: url(../images/web-phone/unset.png) no-repeat;}
+        .notready-disabled{background: url(../images/web-phone/unset1.png) no-repeat;}
+        .notready:hover{border:1px solid #b1defd;background-color:#e6f3fc;}
+
+        .busy{background: url(../images/web-phone/changeStatusBusy.png) no-repeat;}
+        .busy-disabled{background: url(../images/web-phone/changeStatusBusy1.png) no-repeat;}
+        .busy:hover{border:1px solid #b1defd;background-color:#e6f3fc;}
+
+        .makecall{background: url(../images/web-phone/makeCall.png) no-repeat;}
+        .makecall-disabled{background: url(../images/web-phone/makeCall1.png) no-repeat;}
+        .makecall:hover{border:1px solid #b1defd;background-color:#e6f3fc;}
+
+        .answer{background: url(../images/web-phone/answer.png) no-repeat;}
+        .answer-disabled{background: url(../images/web-phone/answer1.png) no-repeat;}
+        .answer:hover{border:1px solid #b1defd;background-color:#e6f3fc;}
+
+        .hold{background: url(../images/web-phone/hold.png) no-repeat;}
+        .hold-disabled{background: url(../images/web-phone/hold1.png) no-repeat;}
+        .hold:hover{border:1px solid #b1defd;background-color:#e6f3fc;}
+
+        .unhold{background: url(../images/web-phone/unhold.png) no-repeat}
+        .unhold-disabled{background: url(../images/web-phone/unhold1.png) no-repeat}
+        .unhold:hover{border:1px solid #b1defd;background-color:#e6f3fc;}
+
+        .hangup{background: url(../images/web-phone/hangup.png) no-repeat}
+        .hangup-disabled{background: url(../images/web-phone/hangup1.png) no-repeat}
+        .hangup:hover{border:1px solid #b1defd;background-color:#e6f3fc;}
+
+    </style>
 
 </head>
 <body>

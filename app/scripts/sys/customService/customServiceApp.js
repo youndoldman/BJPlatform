@@ -19,6 +19,11 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
             .state('CustomService.callCenter',{
                 url:'/callCenter',
                 views: {
+                    "head@CustomService": {
+                        templateUrl: '../pages/customService/webPhone.htm',
+                        controller: '',
+                        resolve: {}
+                    },
                     "content@CustomService": {
                         templateUrl: '../pages/customService/callCenter.htm',
                         controller: 'CallCenterCtrl',
