@@ -42,6 +42,7 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                     rootService.updateActiveNavL2(NavItem.CustomService.menuItems[1]);
                 }
             });
+
         $httpProvider.interceptors.push('HttpInterceptor');
     }]).run(['$rootScope', 'rootService', 'NavItem', function ($rootScope, rootService, NavItem) {
         rootService.updateActiveNavLv1(NavItem.CustomService);

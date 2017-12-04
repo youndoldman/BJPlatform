@@ -4,11 +4,16 @@ commonModule.constant('URI', {
     'resources': {
         'loginPage': '../pages/login.htm',
         'mainPage': '../pages/mainCenter.htm',
-        'users': '../../../api/users',
+        'users': '../../../api/sysusers',
+        'department': '../../../api/Department',
+        'groups': '../../../api/groups',
         'customers': '../../../api/customers',
+        'customerSource': '../../../api/CustomerSource',
+        'customerLevel': '../../../api/CustomerLevel',
+        'customerType': '../../../api/CustomerType',
         'bottoms': '../../../api/bottoms',
-        'login':'../../../api/login',
-        'logout':'../../../api/logout',
+        'login':'../../../api/sysusers/login',
+        'logout':'../../../api/sysusers/logout',
         'orders':'../../../api/orders',
         'goods': '../../../api/goods',
 
@@ -63,7 +68,7 @@ commonModule.constant('NavItem', {
     },
 
     'ManageCenter': {
-        roles:["管理员"],
+        roles:[1],
         name: "系统管理",
         href: "./manageCenter.htm",
         menuItems: [{
@@ -80,13 +85,13 @@ commonModule.constant('NavItem', {
         }]
     },
     'OrderCenter': {
-        roles:["管理员"],
+        roles:[],
         name: "订单管理",
         href: "orderCenter.htm",
     },
     'CustomService': {
-        roles:["管理员","客服"],
-        name: "客户业务",
+        roles:[],
+        name: "客服业务",
         href: "./CustomService.htm",
         menuItems: [{
             index: 0,
@@ -115,7 +120,7 @@ commonModule.constant('NavItem', {
         }]
     },
     'RoutineCenter': {
-        roles:["客服","管理员","老板","财务","客户","配送"],
+        roles:[],
         name: "日常事务",
         href: "./routineCenter.htm",
         menuItems: [{
@@ -156,7 +161,7 @@ commonModule.constant('NavItem', {
         }]
     },
     'FinanceCenter': {
-        roles:["管理员", "财务"],
+        roles:[],
         name: "财务管理",
         href: "./financeCenter.htm",
         menuItems: [{
@@ -180,7 +185,7 @@ commonModule.constant('NavItem', {
             }]
     },
     'DecisionCenter': {
-        roles:["管理员", "老板"],
+        roles:[],
         name: "决策分析",
         href: "./decisionCenter.htm",
         menuItems: [{
@@ -203,7 +208,7 @@ commonModule.constant('NavItem', {
         }]
     },
     'GasCenter': {
-        roles:["管理员"],
+        roles:[],
         name: "钢瓶管理",
         href: "./gasCenter.htm",
         menuItems: [{
@@ -220,7 +225,7 @@ commonModule.constant('NavItem', {
         }]
     },
     'AppCenter': {
-        roles:["管理员"],
+        roles:[],
         name: "增值服务",
         href: "./appCenter.htm",
         menuItems: [{
@@ -231,7 +236,7 @@ commonModule.constant('NavItem', {
         }]
     },
     'CustomerCenter': {
-        roles:["客户","管理员"],
+        roles:[],
         name: "客户中心",
         href: "./customerCenter.htm",
         menuItems: [{
@@ -246,12 +251,6 @@ commonModule.constant('NavItem', {
             icon: "fa-sitemap"
         }]
     },
-    'HelpCenter': {
-        roles:["客户"],
-        name: "帮助中心",
-        href: "",
-        target: "_blank"
-    }
 });
 
 

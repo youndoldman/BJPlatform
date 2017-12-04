@@ -25,7 +25,7 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
 
         $scope.initPopUp = function () {
             udcModal.show({
-                templateUrl: "./customer/customerModal.htm",
+                templateUrl: "./customService/customerModal.htm",
                 controller: "CustomerModalCtrl",
                 inputs: {
                     title: '新增客户',
@@ -44,7 +44,7 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
 
         $scope.modify = function (customer) {
             udcModal.show({
-                templateUrl: "./customer/customerModal.htm",
+                templateUrl: "./customService/customerModal.htm",
                 controller: "CustomerModalCtrl",
                 inputs: {
                     title: '修改客户',
@@ -88,39 +88,3 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
         init();
 
     }]);
-
-customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerManageService', 'title', 'initVal', function ($scope, close, CustomerManageService, title, initVal) {
-    $scope.modalTitle = title;
-    $scope.vm = {
-        user: {
-        }
-    };
-    $scope.isModify = false;
-
-
-
-    $scope.close = function (result) {
-        close(result, 500);
-    };
-
-    $scope.submit = function (customer) {
-        if (customer.name != "" && title == "新增客户") {
-            CustomerManageService.createCustomer(customer).then(function () {
-                $scope.close(true);
-            })
-        } else if (customer.name != "" && title == "修改客户") {
-            CustomerManageService.modifyCustomer(customer).then(function () {
-                $scope.close(true);
-            })
-        }
-    };
-
-    var init = function () {
-        $scope.vm.user = _.clone(initVal);
-        if(title == "修改客户") {
-            $scope.isModify = true;
-        }
-    };
-
-    init();
-}]);

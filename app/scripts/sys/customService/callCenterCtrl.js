@@ -8,6 +8,11 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             searchCustomer();
         };
 
+        $scope.searchType = "客户姓名";
+        $scope.searchParam = "";
+
+
+
         $scope.pager = pager.init('CustomerListCtrl', gotoPage);
         var historyQ = $scope.pager.getQ();
 
@@ -72,17 +77,24 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         };
 
         var searchCustomer = function () {
-            var queryParams = {
-                name: $scope.q.CustomerName,
-                pageNo: $scope.pager.getCurPageNo(),
-                pageSize: $scope.pager.pageSize
-            };
-
+            var queryParams = {};
+            if($scope.searchType=="客户姓名"){
+                queryParams = {
+                    userName: $scope.searchParam,
+                    pageNo: $scope.pager.getCurPageNo(),
+                    pageSize: $scope.pager.pageSize
+                };
+            }
             CustomerManageService.retrieveCustomers(queryParams).then(function (customers) {
                 $scope.pager.update($scope.q, customers.total, queryParams.pageNo);
                 $scope.vm.customerList = _.map(customers.items, CustomerManageService.toViewModel);
             });
         };
+        //将列表中的客户信息显示到详情
+        $scope.showDetail = function (customer) {
+            $scope.vm.currentCustomer = customer;
+        };
+
 
         var init = function () {
             searchCustomer();
@@ -95,12 +107,23 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerManageService', 'title', 'initVal', function ($scope, close, CustomerManageService, title, initVal) {
     $scope.modalTitle = title;
     $scope.vm = {
-        user: {
-        }
+        currentCustomer: {}
     };
+
+
+    $scope.config = {
+        customerSources: [],
+        customerLevels: [],
+        customerTypes: [],
+        haveCylinders:[true, false]
+    };
+
+
+
+    $scope.userGroups = [];
+    $scope.departments = [];
+
     $scope.isModify = false;
-
-
 
     $scope.close = function (result) {
         close(result, 500);
@@ -110,20 +133,74 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
         if (customer.name != "" && title == "新增客户") {
             CustomerManageService.createCustomer(customer).then(function () {
                 $scope.close(true);
+            }, function(value) {
+                // failure
+                console.log(value);
+                alert("新建用户失败： "+value.message);
             })
         } else if (customer.name != "" && title == "修改客户") {
             CustomerManageService.modifyCustomer(customer).then(function () {
                 $scope.close(true);
+            }, function(value) {
+                // failure
+                console.log(value);
+                alert("修改用户失败： "+value.message);
             })
         }
     };
 
     var init = function () {
-        $scope.vm.user = _.clone(initVal);
+        $scope.vm.currentCustomer = _.clone(initVal);
         if(title == "修改客户") {
             $scope.isModify = true;
         }
-    };
+        if(title == "新增客户") {
+            $scope.vm.currentCustomer.haveCylinder = false;
+        }else {
+        }
+        CustomerManageService.retrieveCustomerSource().then(function (customerSources) {
+            $scope.config.customerSources = _.map(customerSources.items, CustomerManageService.toViewModelCustomSource);
+            if(title == "新增客户") {
+                $scope.vm.currentCustomer.customerSource = $scope.config.customerSources[1];
+                console.log($scope.vm.currentCustomer);
+            }else {
+                for(var i=0; i<$scope.config.customerSources.length; i++){
+                    if($scope.vm.currentCustomer.customerSource.id == $scope.config.customerSources[i].id){
+                        $scope.vm.currentCustomer.customerSource = $scope.config.customerSources[i];
+                        break;
+                    }
+                }
+            }
 
+        });
+        CustomerManageService.retrieveCustomerLevel().then(function (customerLevels) {
+            $scope.config.customerLevels = _.map(customerLevels.items, CustomerManageService.toViewModelCustomLevel);
+            if(title == "新增客户") {
+                $scope.vm.currentCustomer.customerLevel = $scope.config.customerLevels[0];
+            }else {
+                for(var i=0; i<$scope.config.customerLevels.length; i++){
+                    if($scope.vm.currentCustomer.customerLevel.id == $scope.config.customerLevels[i].id){
+                        $scope.vm.currentCustomer.customerLevel = $scope.config.customerLevels[i];
+                        break;
+                    }
+                }
+            }
+
+        });
+        CustomerManageService.retrieveCustomerType().then(function (customerTypes) {
+            $scope.config.customerTypes = _.map(customerTypes.items, CustomerManageService.toViewModelCustomType);
+            if(title == "新增客户") {
+                $scope.vm.currentCustomer.customerType = $scope.config.customerTypes[0];
+            }else {
+                for(var i=0; i<$scope.config.customerTypes.length; i++){
+                    if($scope.vm.currentCustomer.customerType.id == $scope.config.customerTypes[i].id){
+                        $scope.vm.currentCustomer.customerType = $scope.config.customerTypes[i];
+                        break;
+                    }
+                }
+            }
+
+        });
+    };
     init();
 }]);
