@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +32,17 @@ public class GroupController
                                             @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                             @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
     {
-        Map params = newHashMap(ImmutableMap.of("code", code));
+        Map params = new HashMap<String,String>();
+        if (code.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("code", code));
+        }
+
+        if (name.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("name", name));
+        }
+
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
         List<Group> groups = groupService.retrieve(params);
