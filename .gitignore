@@ -6,4 +6,4 @@ node_modules/
 target/
 log_dir_IS_UNDEFINED/
 .idea/
-/app/pages/customer/customerList.htm
+src/main/webapp/dist

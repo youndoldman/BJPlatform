@@ -77,18 +77,23 @@
                             <div class="col-xs-2 text-left">
                                 <label>客户地址</label>
                             </div>
-                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-2">
-                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.address.province">
+                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-3">
+                                <select name="province" ng-model="vm.currentCustomer.address.province" ng-options="province for province in config.provinces" class="form-control" ng-selected="" ng-change="provincesChange()"></select>
                             </div>
-                            <div style="margin-left: -15px;margin-top: -8px;" class="col-xs-2">
-                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.address.city">
+                            <div style="margin-left: 0px;margin-top: -8px;" class="col-xs-3">
+                                <select name="city" ng-model="vm.currentCustomer.address.city" ng-options="city for city in config.citys" class="form-control" ng-selected="" ng-change="citysChange()"></select>
                             </div>
-                            <div style="margin-left: -15px;margin-top: -8px;" class="col-xs-2">
-                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.address.county">
+                            <div style="margin-left: 0px;margin-top: -8px;" class="col-xs-4">
+                                <select name="county" ng-model="vm.currentCustomer.address.county" ng-options="county for county in config.countys" class="form-control" ng-selected=""></select>
                             </div>
-                            <div style="margin-left: -15px;margin-top: -8px;" class="col-xs-5">
-                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.address.detail">
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-xs-2 text-left">
                             </div>
+                        <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-10">
+                            <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.address.detail">
+                        </div>
                         </div>
                         <br>
                         <div class="row">

@@ -42,9 +42,7 @@
             <td class="message">{{customer.customerLevel.name}}</td>
             <td class="message">{{customer.phone}}</td>
             <td class="message">{{customer.customerType.name}}</td>
-            <td class="message">{{customer.customerType.address.province}}{{customer.customerType.address.city}}
-                {{customer.customerType.address.county}}
-                {{customer.customerType.address.detail}}</td>
+            <td class="message">{{customer.address.province}}{{customer.address.city}}{{customer.address.county}}{{customer.address.detail}}</td>
             <td class="operate">
                 <button title="详情" ng-click="viewDetails(customer)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="fa fa-info-circle"></i>
@@ -52,7 +50,7 @@
                 <button title="修改" ng-click="modify(customer)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="fa fa-edit"></i>
                 </button>
-                <button title="删除" ng-click="delete(user)" type="button" class="btn btn-primary btn-outline btn-xs">
+                <button title="删除" ng-click="delete(customer)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="fa fa-trash-o"></i>
                 </button>
             </td>

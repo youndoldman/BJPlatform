@@ -1,5 +1,12 @@
 'use strict';
 
+
+commonModule.constant('MISC', {
+    'keys': {
+        'gaodeKey': 'a44d27e0bf7b64770dad4664e3ba92b1',
+    }
+});
+
 commonModule.constant('URI', {
     'resources': {
         'loginPage': '../pages/login.htm',
@@ -16,6 +23,8 @@ commonModule.constant('URI', {
         'logout':'../../../api/sysusers/logout',
         'orders':'../../../api/orders',
         'goods': '../../../api/goods',
+
+        'subdistrict':'http://restapi.amap.com/v3/config/district',
 
 
     }
