@@ -3,16 +3,16 @@
 loginApp.controller('LoginCtrl', ['$scope', '$rootScope', '$http', 'URI', 'promiseWrapper','$window','sessionStorage', function ($scope, $rootScope, $http, URI, promise, $window, sessionStorage) {
     var loginUri = URI.resources.login;
     $scope.userInfo = {
-        id: "",
+        userId: "",
         password:""
     };
 
     $scope.login = function () {
         var loginParams = {
-            id: $scope.userInfo.id,
+            userId: $scope.userInfo.userId,
             password: $scope.userInfo.password
         };
-        if(loginParams.id==""||loginParams.password=="")
+        if(loginParams.userId==""||loginParams.password=="")
         {
             return;
         }

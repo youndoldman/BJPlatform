@@ -1,4 +1,4 @@
-<div class="modal" tabindex="-1">
+﻿<div class="modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <form name="userForm" novalidate>
@@ -15,28 +15,37 @@
                                 <label>客户编号</label>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <input type="text" class="form-control input-sm">
+                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.userId">
                             </div>
                             <div style="margin-left: 20px;" class="col-xs-2 text-left">
                                 <label>客户姓名</label>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <input type="text" class="form-control input-sm" placeholder="12345678912">
+                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.name">
                             </div>
                         </div>
                         <br>
+                        <div class="row"  ng-if="!isModify">
+                            <div class="col-xs-2 text-left">
+                                <label>账号密码</label>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-10">
+                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.password">
+                            </div>
+                        </div>
+                        <br  ng-if="!isModify">
                         <div class="row">
                             <div class="col-xs-2 text-left">
                                 <label>客户级别</label>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">
-                                <input type="text" class="form-control input-sm" placeholder="李小龙">
+                                <select name="customerLevel" ng-model="vm.currentCustomer.customerLevel" ng-options="customerLevel.name for customerLevel in config.customerLevels" class="form-control" ng-selected=""></select>
                             </div>
                             <div style="margin-left: 20px;" class="col-xs-2 text-left">
                                 <label>联系电话</label>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">
-                                <input type="text" class="form-control input-sm" placeholder="12345678913">
+                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.phone">
                             </div>
                         </div>
                         <br>
@@ -45,17 +54,13 @@
                                 <label>客户类型</label>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">
-                                <select class="form-control  input-sm">
-                                    <option>个人用户</option>
-                                    <option>公司用户</option>
-                                    <option>工业用户</option>
-                                </select>
+                                <select name="customerType" ng-model="vm.currentCustomer.customerType" ng-options="customerType.name for customerType in config.customerTypes" class="form-control" ng-selected=""></select>
                             </div>
                             <div style="margin-left: 20px;" class="col-xs-2 text-left">
                                 <label>客户公司</label>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <input type="text" class="form-control  input-sm">
+                                <input type="text" class="form-control  input-sm" ng-model="vm.currentCustomer.customerCompany.name">
                             </div>
                         </div>
                         <br>
@@ -64,7 +69,7 @@
                                 <label>身份证号</label>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-10">
-                                <input type="text" class="form-control input-sm">
+                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.identity">
                             </div>
                         </div>
                         <br>
@@ -72,8 +77,17 @@
                             <div class="col-xs-2 text-left">
                                 <label>客户地址</label>
                             </div>
-                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-10">
-                                <input type="text" class="form-control input-sm">
+                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-2">
+                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.address.province">
+                            </div>
+                            <div style="margin-left: -15px;margin-top: -8px;" class="col-xs-2">
+                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.address.city">
+                            </div>
+                            <div style="margin-left: -15px;margin-top: -8px;" class="col-xs-2">
+                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.address.county">
+                            </div>
+                            <div style="margin-left: -15px;margin-top: -8px;" class="col-xs-5">
+                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.address.detail">
                             </div>
                         </div>
                         <br>
@@ -82,17 +96,7 @@
                                 <label>客户状态</label>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <input type="text" class="form-control input-sm" placeholder="10">
-                            </div>
-                            <div style="margin-left: 20px;" class="col-xs-2 text-left">
-                                <label>客户类型</label>
-                            </div>
-                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <select class="form-control input-sm">
-                                    <option>云南百江燃气</option>
-                                    <option>昆明燃气</option>
-                                    <option>丽江燃气</option>
-                                </select>
+                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.status">
                             </div>
                         </div>
                         <br>
@@ -101,78 +105,33 @@
                                 <label>客户来源</label>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <select class="form-control input-sm">
-                                    <option>报纸广告</option>
-                                    <option>朋友介绍</option>
-                                    <option>随机</option>
-                                </select>
+                                <select name="customerSource" ng-model="vm.currentCustomer.customerSource" ng-options="customerSource.name for customerSource in config.customerSources" class="form-control" ng-selected=""></select>
                             </div>
                             <div style="margin-left: 20px;" class="col-xs-2 text-left">
                                 <label>是否携瓶</label>
+
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <select class="form-control input-sm">
-                                    <option>云南百江燃气</option>
-                                    <option>昆明燃气</option>
-                                    <option>丽江燃气</option>
-                                </select>
+                                <select name="haveCylinder" ng-model="vm.currentCustomer.haveCylinder" ng-options="haveCylinder for haveCylinder in config.haveCylinders" class="form-control" ng-selected=""></select>
                             </div>
                         </div>
                         <br>
                         <div class="row">
-                            <div class="col-xs-2 text-left">
-                                <label>开户时间</label>
-                            </div>
-                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <input type="text" class="form-control  input-sm">
-                            </div>
-                            <div style="margin-left: 20px;" class="col-xs-2 text-left">
-                                <label>客户备注</label>
-                            </div>
-                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <input type="text" class="form-control  input-sm">
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-xs-2 text-left">
+                            <div  class="col-xs-2 text-left">
                                 <label>客户备注</label>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-10">
-                                <input type="text" class="form-control input-sm">
+                                <input type="text" class="form-control  input-sm" ng-model="vm.currentCustomer.note">
                             </div>
                         </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-2 text-left">
-                                <label>客户查询</label>
-                            </div>
-                            <div style="margin-left: -20px;margin-top: -8px;"class="col-xs-4">
-                                <select class="form-control input-sm">
-                                    <option>客户地址</option>
-                                    <option>客户名称</option>
-                                    <option>客户电话</option>
-                                </select>
-                            </div>
-                            <div style=" margin-top: -8px;" class="col-xs-6">
-                                <div class="box-tools">
-                                    <div class="input-group input-group-sm">
-                                        <input type="text" name="table_search" class="form-control" placeholder="江苏省南京市秦淮区苜蓿园大街">
 
-                                        <div class="input-group-btn">
-                                            <button type="search" class="btn btn-flat"><i class="fa fa-search"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                     </div>
                 </div>
 
 
                 <div class="modal-footer">
-                    <button type="submit" ng-click="submit(vm.user);" class="btn btn-primary" data-dismiss="modal">保存</button>
+                    <button type="submit" ng-click="submit(vm.currentCustomer);" class="btn btn-primary" data-dismiss="modal">保存</button>
                     <button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </form>

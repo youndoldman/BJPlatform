@@ -31,7 +31,7 @@ commonModule.directive('njPager', [function () {
         replace: true,
         link: function ($scope, $element, attrs) {
 
-            $scope.pageSizeOptions = [10, 25, 50, 100];
+            $scope.pageSizeOptions = [3, 10, 25, 50];
             $scope.hidePageSizeOptions = attrs.hidePageSizeOptions;
 
             function updateRangeCount() {

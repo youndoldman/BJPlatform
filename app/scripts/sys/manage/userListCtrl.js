@@ -2,7 +2,7 @@
 
 manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
     'rootService', 'pager', 'udcModal', 'UserService', function ($scope, $rootScope, $filter, $location, Constants,
-                                                          rootService, pager, udcModal, UserService) {
+                                                                 rootService, pager, udcModal, UserService) {
         var gotoPage = function (pageNo) {
             $scope.pager.setCurPageNo(pageNo);
             searchUsers();
@@ -25,7 +25,7 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
 
         $scope.initPopUp = function () {
             udcModal.show({
-                templateUrl: "./user/userModal.htm",
+                templateUrl: "./manage/userModal.htm",
                 controller: "UserModalCtrl",
                 inputs: {
                     title: '新增用户',
@@ -44,7 +44,7 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
 
         $scope.modify = function (user) {
             udcModal.show({
-                templateUrl: "./user/userModal.htm",
+                templateUrl: "./manage/userModal.htm",
                 controller: "UserModalCtrl",
                 inputs: {
                     title: '修改用户',
@@ -78,6 +78,7 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
             UserService.retrieveUsers(queryParams).then(function (users) {
                 $scope.pager.update($scope.q, users.total, queryParams.pageNo);
                 $scope.vm.userList = _.map(users.items, UserService.toViewModel);
+                console.log($scope.vm.userList);
             });
         };
 
@@ -97,14 +98,8 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
     };
     $scope.isModify = false;
 
-    $scope.roles = [
-        {role : "客户", value : "客户"},
-        {role : "配送", value : "配送"},
-        {role : "客服", value : "客服"},
-        {role : "财务", value : "财务"},
-        {role : "老板", value : "老板"},
-        {role : "管理员", value : "管理员"}
-    ];
+    $scope.userGroups = [];
+    $scope.departments = [];
 
     $scope.close = function (result) {
         close(result, 500);
@@ -124,12 +119,38 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
 
     var init = function () {
         $scope.vm.user = _.clone(initVal);
+        console.log($scope.vm.user);
         if(title == "修改用户") {
             $scope.isModify = true;
         }
-        else {
-            $scope.vm.user.role = "管理员";
-        }
+        UserService.retrieveGroups().then(function (userGroups) {
+            $scope.userGroups = _.map(userGroups.items, UserService.toViewModelGroup);
+            console.log($scope.userGroups);
+            if(title == "新增用户") {
+                $scope.vm.user.userGroup = $scope.userGroups[0];
+            }else {
+                for(var i=0; i<$scope.userGroups.length; i++){
+                    if($scope.vm.user.userGroup.id == $scope.userGroups[i].id){
+                        $scope.vm.user.userGroup = $scope.userGroups[i];
+                        break;
+                    }
+                }
+            }
+
+        });
+        UserService.retrieveDepartment().then(function (departments) {
+            $scope.departments = _.map(departments.items, UserService.toViewModelDepartment);
+            if(title == "新增用户") {
+                $scope.vm.user.department = $scope.departments[0];
+            }else {
+                for(var i=0; i<$scope.departments.length; i++){
+                    if($scope.vm.user.department.id == $scope.departments[i].id) {
+                        $scope.vm.user.department = $scope.departments[i];
+                        break;
+                    }
+                }
+            }
+        });
     };
 
     init();

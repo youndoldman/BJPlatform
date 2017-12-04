@@ -21,22 +21,30 @@
         <thead>
         <tr>
             <th width="1%"></th>
-            <th width="9%">ID</th>
+            <th width="5%">ID</th>
+            <th width="9%">客户编号</th>
             <th width="10%">客户名称</th>
             <th width="10%">密码</th>
-            <th width="20%">创建时间</th>
-            <th width="20%">更新时间</th>
-            <th width="20%">操作</th>
+            <th width="10%">客户级别</th>
+            <th width="10%">联系电话</th>
+            <th width="10%">客户类型</th>
+            <th width="20%">客户地址</th>
+            <th width="15%">操作</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="customer in vm.customerList">
             <td></td>
             <td class="message">{{customer.id}}</td>
+            <td class="message">{{customer.userId}}</td>
             <td class="message">{{customer.name}}</td>
             <td class="message">{{customer.password}}</td>
-            <td class="message">{{customer.createTime}}</td>
-            <td class="message">{{customer.updateTime}}</td>
+            <td class="message">{{customer.customerLevel.name}}</td>
+            <td class="message">{{customer.phone}}</td>
+            <td class="message">{{customer.customerType.name}}</td>
+            <td class="message">{{customer.customerType.address.province}}{{customer.customerType.address.city}}
+                {{customer.customerType.address.county}}
+                {{customer.customerType.address.detail}}</td>
             <td class="operate">
                 <button title="详情" ng-click="viewDetails(customer)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="fa fa-info-circle"></i>
