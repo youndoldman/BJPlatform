@@ -85,7 +85,7 @@
 
         <if test="phone != null">phone = #{phone},</if>
 
-        <if test="address != null">addr_province = #{address.province},addr_city = #{address.city},addr_county = #{address.county},addr_detail = #{address.detail}</if>
+        <if test="address != null">addr_province = #{address.province},addr_city = #{address.city},addr_county = #{address.county},addr_detail =  #{address.detail}</if>
 
     </set>
     WHERE user_idx = #{id}
@@ -187,7 +187,7 @@
         </if>
 
         <if test="addrDetail != null">
-            AND  addr_detail = #{addrDetail}
+            AND  addr_detail like CONCAT(CONCAT('%', #{addrDetail}), '%')
         </if>
 
         <if test="orderBy != null">
@@ -267,7 +267,7 @@
         </if>
 
         <if test="addrDetail != null">
-            AND  addr_detail = #{addrDetail}
+            AND  addr_detail like CONCAT(CONCAT('%', #{addrDetail}), '%')
         </if>
 
 

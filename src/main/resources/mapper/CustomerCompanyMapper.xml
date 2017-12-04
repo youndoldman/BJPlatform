@@ -52,7 +52,7 @@
     </select>
 
     <select id="getNextCode"  resultType="String">
-        select max(code)+1 from <include refid="TableName"/>
+        select max(CAST(code AS SIGNED))+1  from <include refid="TableName"/>
     </select>
 
     <select id="getList" resultMap="BaseResultMap">
