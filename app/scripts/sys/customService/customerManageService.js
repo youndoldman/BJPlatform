@@ -8,7 +8,7 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     var customerTypeUri = URI.resources.customerType;
 
     var subdistrictUri = URI.resources.subdistrict;
-
+    var customerCallinUri = URI.resources.customerCallin;
     var key = MISC.keys.gaodeKey;
 
 
@@ -101,6 +101,11 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
 
     this.retrieveSubdistrict = function (keyWords) {
         return promise.wrap($http.get(subdistrictUri+"?key="+key+"&keywords="+keyWords));
+    };
+
+    //请求呼叫记录关联的用户
+    this.retrieveCustomerCallin = function (params) {
+        return promise.wrap($http.get(customerCallinUri,{params: params}));
     };
 
 

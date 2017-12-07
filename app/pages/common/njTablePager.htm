@@ -22,8 +22,8 @@
                     <a href=""><i class="fa fa-angle-double-right"></i></a>
                 </li>
             </ul>
-            <div class="paginator-total">总<strong> {{pager.totalCount || 0}} </strong>项</div>
-            <div class="paginator-total">第<strong> {{pager.curPageNo || 1}} / {{pageCount}} </strong>页</div>
+            <div class="paginator-total" ng-show="!hidePageSizeOptions">总<strong> {{pager.totalCount || 0}} </strong>项</div>
+            <div class="paginator-total" ng-show="!hidePageSizeOptions">第<strong> {{pager.curPageNo || 1}} / {{pageCount}} </strong>页</div>
         </div>
     </div>
 </div>

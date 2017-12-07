@@ -18,6 +18,7 @@ commonModule.constant('URI', {
         'customerSource': '../../../api/CustomerSource',
         'customerLevel': '../../../api/CustomerLevel',
         'customerType': '../../../api/CustomerType',
+        'customerCallin':'../../../api/CustomerCallIn',
         'bottoms': '../../../api/bottoms',
         'login':'../../../api/sysusers/login',
         'logout':'../../../api/sysusers/logout',
