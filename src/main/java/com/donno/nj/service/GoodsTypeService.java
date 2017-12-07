@@ -18,7 +18,7 @@ public interface GoodsTypeService
 
     GoodsType create(GoodsType customerType);
 
-    void update(Integer id, GoodsType newCustomerType);
+    void update(String code, GoodsType newCustomerType);
 
     void deleteById(Integer id);
 }

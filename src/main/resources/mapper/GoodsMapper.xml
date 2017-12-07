@@ -5,15 +5,20 @@
 
     <resultMap id="DetailResultMap" type="com.donno.nj.domain.Goods">
         <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="specifications" property="specifications" jdbcType="VARCHAR"/>
+        <result column="unit" property="specifications" jdbcType="VARCHAR"/>
+        <result column="weight" property="weight" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
         <result column="price" property="price" jdbcType="FLOAT"/>
-        <result column="phone" property="phone" jdbcType="VARCHAR"/>
-        <result column="info" property="info" jdbcType="VARCHAR"/>
+        <result column="life_expectancy" property="lifeExpectancy" jdbcType="INTEGER"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
-        <result column="goods_type_code" property="goodsType.code" jdbcType="VARCHAR"/>
-        <result column="goods_type_name" property="goodsType.name" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+
+        <association property="goodsType" column="type_idx" select="com.donno.nj.dao.GoodsTypeDao.findById">
+        </association>
     </resultMap>
 
     <sql id="TblGoods">
@@ -21,12 +26,12 @@
     </sql>
 
     <sql id="InsertColumnList">
-        type_idx,name ,price,info,note
+       code, name ,type_idx,specifications,unit,weight,life_expectancy,price,status,note
     </sql>
 
     <insert id="insert">
         INSERT IGNORE INTO <include refid="TblGoods"/>(<include refid="InsertColumnList"/>)
-        VALUES( #{goodsType.id},#{name},#{price}, #{info}, #{note})
+        VALUES( #{code}, #{name} , #{goodsType.id},#{specifications},#{unit},#{weight},#{lifeExpectancy},#{price}, #{status}, #{note})
     </insert>
 
     <delete id="deleteByIdx" parameterType="java.lang.Integer">
@@ -37,42 +42,62 @@
     <update id="update">
     UPDATE <include refid="TblGoods"/>
     <set>
+        <if test="code != null">code = #{code},</if>
         <if test="name != null">name = #{name},</if>
+        <if test="specifications != null">specifications = #{specifications},</if>
+        <if test="unit != null">unit = #{unit},</if>
+        <if test="weight != null">weight = #{weight},</if>
+        <if test="lifeExpectancy != null">life_expectancy = #{lifeExpectancy},</if>
         <if test="price != null">price = #{price},</if>
-        <if test="info != null">info = #{info},</if>
+        <if test="status != null">status = #{status},</if>
         <if test="note != null">note = #{note},</if>
-        <if test="goodsType.id != null">type_idx = #{goodsType.id},</if>
+
+        <if test="goodsType != null">
+          <if test="goodsType.id != null">type_idx = #{goodsType.id},</if>
+        </if>
     </set>
     WHERE id = #{id}
     </update>
 
-    <sql id="JoinSelectColumn">
-        t_goods.id, t_goods.name,t_goods.price,t_goods.info,t_goods.note,t_goods.create_time,t_goods.update_time,
-        t_goods_type.code as goods_type_code,t_goods_type.name as goods_type_name
-    </sql>
 
-    <sql id="JoinWhereCondition">
-        t_goods_type.id = t_goods.type_idx
-    </sql>
 
-    <sql id="JoinTableList">
-        t_goods,t_goods_type
-    </sql>
-
-    <select id="findByName" resultMap="DetailResultMap">
-        SELECT <include refid="JoinSelectColumn"/>
-        FROM <include refid="JoinTableList"/>
+    <select id="findByCode" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblGoods"/>
         WHERE
-        (<include refid="JoinWhereCondition"/>)
-        and t_goods.name =  #{name}
+        code =  #{code}
+    </select>
+
+    <select id="findById" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblGoods"/>
+        WHERE
+        id =  #{id}
     </select>
 
 
     <select id="getList" resultMap="DetailResultMap">
-    SELECT <include refid="JoinSelectColumn"/>
-    FROM <include refid="JoinTableList"/>
+    SELECT *
+    FROM <include refid="TblGoods"/>
     WHERE
-    (<include refid="JoinWhereCondition"/>)
+        id > 0
+        <if test="code != null">AND  code = #{code}</if>
+
+        <if test="name != name">
+            AND  name = like CONCAT(CONCAT('%', #{name}), '%')
+        </if>
+
+        <if test="specifications != null">AND  specifications = #{specifications}</if>
+
+        <if test="weight != null">AND  weight = #{weight}</if>
+
+        <if test="life_expectancy != null">AND  life_expectancy = #{life_expectancy}</if>
+
+        <if test="price != null">AND  price = #{price}</if>
+
+        <if test="status != null">AND  status = #{status}</if>
+
+        <if test="typeCode != null">AND  type_id = ( select id from t_goods_type where code = #{typeCode})</if>
 
         <if test="orderBy != null">
             <if test="orderBy != ''">
@@ -90,10 +115,26 @@
 
     <select id="count" resultType="Integer">
         SELECT COUNT(*)
-        SELECT <include refid="JoinSelectColumn"/>
-        <where>
-            (<include refid="JoinWhereCondition"/>)
-        </where>
+        FROM <include refid="TblGoods"/>
+        WHERE
+        id > 0
+        <if test="code != null">AND  code = #{code}</if>
+
+        <if test="name != name">
+            AND  name = like CONCAT(CONCAT('%', #{name}), '%')
+        </if>
+
+        <if test="specifications != null">AND  specifications = #{specifications}</if>
+
+        <if test="weight != null">AND  weight = #{weight}</if>
+
+        <if test="life_expectancy != null">AND  life_expectancy = #{life_expectancy}</if>
+
+        <if test="price != null">AND  price = #{price}</if>
+
+        <if test="status != null">AND  status = #{status}</if>
+
+        <if test="typeCode != null">AND  type_idx = ( select id from t_goods_type where code = #{typeCode})</if>
 
     </select>
 

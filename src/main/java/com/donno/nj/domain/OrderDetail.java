@@ -8,17 +8,20 @@ import java.util.Date;
 public class OrderDetail implements Serializable
 {
     private Integer id;
-    private Integer goodsIdx;
     private Integer orderIdx;
-    private String goodsName;
+//    private Integer goodsIdx;
+
+//    private String  goodsName;
     private Float   originalPrice;//原单价
+
+    private Goods goods;
+
     private Float   dealPrice;//成交单价
     private Integer quantity;//数量
     private Integer subtotal;//金额小计
 
     private Date createTime;
     private Date updateTime;
-
 
     public OrderDetail()
     {
@@ -33,9 +36,24 @@ public class OrderDetail implements Serializable
         return id;
     }
 
-    public Integer getGoodsIdx()
+//    public Integer getGoodsIdx()
+//    {
+//        return goodsIdx;
+//    }
+//
+//    public Integer getOrderIdx()
+//    {
+//        return orderIdx;
+//    }
+//
+//    public String getGoodsName()
+//    {
+//        return goodsName;
+//    }
+//
+    public Float getOriginalPrice()
     {
-        return goodsIdx;
+        return originalPrice;
     }
 
     public Integer getOrderIdx()
@@ -43,14 +61,9 @@ public class OrderDetail implements Serializable
         return orderIdx;
     }
 
-    public String getGoodsName()
+    public Goods getGoods()
     {
-        return goodsName;
-    }
-
-    public Float getOriginalPrice()
-    {
-        return originalPrice;
+        return goods;
     }
 
     public Float getDealPrice()
@@ -87,21 +100,31 @@ public class OrderDetail implements Serializable
         this.id = id;
     }
 
-    public void setGoodsIdx(Integer goodsIdx)
-    {
-        this.goodsIdx = goodsIdx;
-    }
-
     public void setOrderIdx(Integer orderIdx)
     {
         this.orderIdx = orderIdx;
     }
 
-    public  void setGoodsName(String goodsName)
+    public void setGoods(Goods goods)
     {
-        this.goodsName = goodsName;
+        this.goods = goods;
     }
 
+//    public void setGoodsIdx(Integer goodsIdx)
+//    {
+//        this.goodsIdx = goodsIdx;
+//    }
+//
+//    public void setOrderIdx(Integer orderIdx)
+//    {
+//        this.orderIdx = orderIdx;
+//    }
+//
+//    public  void setGoodsName(String goodsName)
+//    {
+//        this.goodsName = goodsName;
+//    }
+//
     public void setOriginalPrice(Float originalPrice)
     {
         this.originalPrice = originalPrice;
@@ -140,7 +163,6 @@ public class OrderDetail implements Serializable
     {
         return MoreObjects.toStringHelper(this)
                 .add("id", id)
-                .add("goodsName", goodsName)
                 .add("dealPrice",dealPrice)
                 .add("quantity",quantity)
                 .add("subtotal",subtotal)

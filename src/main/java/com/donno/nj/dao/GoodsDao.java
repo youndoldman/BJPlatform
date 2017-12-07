@@ -6,7 +6,7 @@ import com.donno.nj.domain.Goods;
 
 public interface GoodsDao extends BaseDao<Goods>
 {
-    Goods findByName(String name);
+    Goods findByCode(String code);
 
     void deleteByIdx(Integer id);
 }

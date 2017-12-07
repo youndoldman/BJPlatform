@@ -11,18 +11,18 @@ public class Order implements Serializable
     private Integer id;
     private String  orderSn;//订单编号
 
-    private Integer customerIdx;//客户IDx
-    private String  customerId;//客户ID
-    private String  customerName;//客户名称
+    String callInPhone;
+    Customer customer;
 
-    private Float   orderSum;//订单金额
+    private Float  orderAmount;//订单金额
     private PayType payType;//支付方式
-    private String orderStatus;//订单状态
+    private Integer orderStatus;//订单状态
     private AccessType accessType;//订单接入类型
 
-    private String recvAddr; //收货地址
+    private CustomerAddress recvAddr; //收货地址
     private String recvName;//收货人名称
     private String recvPhohe;//收货人电话
+    private Date reserveTime;
     private String comment; //订单附言
 
     private String  note;
@@ -35,10 +35,6 @@ public class Order implements Serializable
     {
     }
 
-    /*
-    * 属性读取
-    * */
-
     public Integer getId()
     {
         return id;
@@ -50,25 +46,25 @@ public class Order implements Serializable
         return  orderSn;
     }
 
-    public Integer getCustomerIdx()
+    public Integer orderStatus()
     {
-        return customerIdx;
+        return orderStatus;
+    }
+
+    public String getCallInPhone()
+    {
+        return callInPhone;
+    }
+
+    public Customer getCustomer()
+    {
+        return customer;
     }
 
 
-    public String getCustomerId()
+    public Float getOrderAmount()
     {
-        return customerId;
-    }
-
-    public String getCustomerName()
-    {
-        return customerName;
-    }
-
-    public Float getOrderSum()
-    {
-        return orderSum;
+        return orderAmount;
     }
 
     public PayType getPayType()
@@ -76,7 +72,7 @@ public class Order implements Serializable
         return payType;
     }
 
-    public String getOrderStatus()
+    public Integer getOrderStatus()
     {
         return orderStatus;
     }
@@ -86,7 +82,7 @@ public class Order implements Serializable
         return accessType;
     }
 
-    public String getRecvAddr()
+    public CustomerAddress getRecvAddr()
     {
         return recvAddr;
     }
@@ -101,15 +97,22 @@ public class Order implements Serializable
         return recvPhohe;
     }
 
-    public List<OrderDetail> getOrderDetailList()
+    public Date getReserveTime()
     {
-        return orderDetailList;
+        return reserveTime;
     }
 
     public String getComment()
     {
         return comment;
     }
+
+    public List<OrderDetail> getOrderDetailList()
+    {
+        return orderDetailList;
+    }
+
+
 
     public String getNote()
     {
@@ -127,9 +130,6 @@ public class Order implements Serializable
         return  updateTime;
     }
 
-    /*
-    * 属性设置
-    * */
 
 
     public void setId(Integer id)
@@ -142,24 +142,24 @@ public class Order implements Serializable
         this.orderSn = orderSn;
     }
 
-    public void setCustomerId(String customerId)
+    public void setCallInPhone(String callInPhone)
     {
-        this.customerId = customerId;
+        this.callInPhone = callInPhone;
     }
 
-    public void setCustomerIdx(Integer customerIdx)
+    public  void setOrderStatus(Integer orderStatus)
     {
-        this.customerIdx = customerIdx;
+        this.orderStatus = orderStatus;
     }
 
-    public void setCustomerName(String customerName)
+    public void setCustomer(Customer customer)
     {
-        this.customerName = customerName;
+        this.customer = customer;
     }
 
-    public void setOrderSum(Float orderSum)
+    public void setOrderAmount(Float orderAmount)
     {
-        this.orderSum = orderSum;
+        this.orderAmount = orderAmount;
     }
 
     public void setPayType(PayType payType)
@@ -167,7 +167,12 @@ public class Order implements Serializable
         this.payType = payType;
     }
 
-    public void setRecvAddr(String recvAddr)
+    public void setAccessType(AccessType accessType)
+    {
+        this.accessType = accessType;
+    }
+
+    public void setRecvAddr(CustomerAddress recvAddr)
     {
         this.recvAddr = recvAddr;
     }
@@ -180,6 +185,16 @@ public class Order implements Serializable
     public void setRecvPhohe(String recvPhohe)
     {
         this.recvPhohe = recvPhohe;
+    }
+
+    public void setReserveTime(Date reserveTime)
+    {
+        this.reserveTime = reserveTime;
+    }
+
+    public void setOrderDetailList(List<OrderDetail> orderDetailList)
+    {
+        this.orderDetailList = orderDetailList;
     }
 
     public void setComment(String comment)
@@ -203,14 +218,11 @@ public class Order implements Serializable
     }
 
 
-
     @Override
     public String toString()
     {
         return MoreObjects.toStringHelper(this)
                 .add("orderSn", orderSn)
-                .add("customerId", customerId)
-                .add("orderSum",orderSum)
                 .add("payType",payType)
                 .add("accessType",accessType)
                 .add("recvAddr",recvAddr)

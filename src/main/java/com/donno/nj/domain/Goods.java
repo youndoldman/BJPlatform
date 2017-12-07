@@ -1,7 +1,6 @@
 package com.donno.nj.domain;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.net.InetAddresses;
 import java.util.Date;
 
 import java.io.Serializable;
@@ -9,15 +8,19 @@ import java.io.Serializable;
 public class Goods implements Serializable
 {
     private Integer id;
+    private String code;
     private String name;
-    private float price;
-    private String  info;
+    private String specifications;
+    private String unit;
+    private Float  weight;
+    private Float price;
+    private Integer status;
+    private Integer lifeExpectancy;
 
+    private GoodsType goodsType;
     private String  note;
     private Date createTime;
     private Date updateTime;
-
-    private GoodsType goodsType;
 
     public Goods()
     {
@@ -32,9 +35,39 @@ public class Goods implements Serializable
         return id;
     }
 
+    public String getCode()
+    {
+        return code;
+    }
+
     public String getName()
     {
         return name;
+    }
+
+    public String getSpecifications()
+    {
+        return specifications;
+    }
+
+    public String getUnit()
+    {
+        return unit;
+    }
+
+    public Float getWeight()
+    {
+        return weight;
+    }
+
+    public Integer getStatus()
+    {
+        return status;
+    }
+
+    public Integer getLifeExpectancy()
+    {
+        return lifeExpectancy;
     }
 
     public GoodsType getGoodsType()
@@ -42,15 +75,11 @@ public class Goods implements Serializable
         return goodsType;
     }
 
-    public float getPrice()
+    public Float getPrice()
     {
         return price;
     }
 
-    public  String getInfo()
-    {
-        return  info;
-    }
 
     public  String getNote()
     {
@@ -77,12 +106,42 @@ public class Goods implements Serializable
         this.id = id;
     }
 
+    public void setCode(String code)
+    {
+        this.code = code;
+    }
+
     public  void setName(String name)
     {
         this.name = name;
     }
 
-    public void setPrice(float price)
+    public void setSpecifications(String specifications)
+    {
+        this.specifications = specifications;
+    }
+
+    public void setUnit(String unit)
+    {
+        this.unit = unit;
+    }
+
+    public void setStatus(Integer status)
+    {
+        this.status = status;
+    }
+
+    public  void  setWeight(Float weight)
+    {
+        this.weight = weight;
+    }
+
+    public void setLifeExpectancy(Integer lifeExpectancy)
+    {
+        this.lifeExpectancy = lifeExpectancy;
+    }
+
+    public void setPrice(Float price)
     {
         this.price = price;
     }
@@ -90,11 +149,6 @@ public class Goods implements Serializable
     public void setGoodsType(GoodsType goodsType)
     {
         this.goodsType = goodsType;
-    }
-
-    public void setInfo(String info)
-    {
-        this.info = info;
     }
 
     public void setNote(String note)

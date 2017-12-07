@@ -10,7 +10,7 @@ import java.util.Map;
 @Transactional
 public interface GoodsService
 {
-    Optional<Goods> findByName(String name);
+    Optional<Goods> findByCode(String code);
 
     List<Goods> retrieve(Map params);
 
@@ -18,7 +18,7 @@ public interface GoodsService
 
     void create(Goods goods);
 
-    void update(Integer id, Goods newGoods);
+    void update(String code, Goods newGoods);
 
     void deleteById(Integer id);
 }

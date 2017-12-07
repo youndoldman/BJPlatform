@@ -6,5 +6,5 @@ import com.donno.nj.domain.OrderDetail;
 
 public interface OrderDetailDao extends BaseDao<OrderDetail>
 {
-    void deleteByIdx(Integer id);
+    void deleteByOrderIdx(Integer id);
 }

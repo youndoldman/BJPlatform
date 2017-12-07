@@ -1,7 +1,8 @@
 package com.donno.nj.domain;
 
 
-public enum AccessType {
+public enum AccessType
+{
     ATWeixin("微信接入", 0), ATCustomService("客服接入", 1);
 
     // 成员变量

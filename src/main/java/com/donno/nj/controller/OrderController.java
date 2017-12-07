@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,14 +35,74 @@ public class OrderController
     @Autowired
     private CustomerService customerService;
 
-    @RequestMapping(value = "/api/orders", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/api/Orders", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取订单列表")
-    public ResponseEntity retrieve(@RequestParam(value = "", defaultValue = "") String customerId,
+    public ResponseEntity retrieve(@RequestParam(value = "orderSn", defaultValue = "") String orderSn,
+                                   @RequestParam(value = "callInPhone", defaultValue = "") String callInPhone,
+                                   @RequestParam(value = "userId", defaultValue = "") String userId,
+                                   @RequestParam(value = "orderStatus", required = false) Integer orderStatus,
+                                   @RequestParam(value = "addrProvince", defaultValue = "") String addrProvince,
+                                   @RequestParam(value = "addrCity", defaultValue = "") String addrCity,
+                                   @RequestParam(value = "addrCounty", defaultValue = "") String addrCounty,
+                                   @RequestParam(value = "addrDetail", defaultValue = "") String addrDetail,
+                                   @RequestParam(value = "recvName", defaultValue = "") String recvName,
+                                   @RequestParam(value = "recvPhohe", defaultValue = "") String recvPhohe,
                                             @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                             @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                             @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
     {
-        Map params = newHashMap(ImmutableMap.of("customerId", customerId));
+        Map params = new HashMap<String,String>();
+        if (orderSn.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("orderSn", orderSn));
+        }
+
+        if (callInPhone.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("callInPhone", callInPhone));
+        }
+
+        if (userId.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("userId", userId));
+        }
+
+        if (orderStatus != null)
+        {
+            params.putAll(ImmutableMap.of("orderStatus", orderStatus));
+        }
+
+        if (addrProvince.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("addrProvince", addrProvince));
+        }
+
+        if (addrCity.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("addrCity", addrCity));
+        }
+
+        if (addrCounty.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("addrCounty", addrCounty));
+        }
+
+        if (addrDetail.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("addrDetail", addrDetail));
+        }
+
+        if (recvName.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("recvName", recvName));
+        }
+
+        if (recvPhohe.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("recvPhohe", recvPhohe));
+        }
+
+
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
         List<Order> orders = orderService.retrieve(params);
@@ -50,98 +111,54 @@ public class OrderController
     }
 
     @OperationLog(desc = "创建订单")
-    @RequestMapping(value = "/api/orders", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/Orders", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody Order order, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
+        orderService.create(order);
+        URI uri = ucBuilder.path("/api/Orders/{id}").buildAndExpand(order.getId()).toUri();
+        responseEntity = ResponseEntity.created(uri).build();
 
-        /*校验客户信息*/
-        if(order.getCustomerId() != null)
+        return responseEntity;
+    }
+
+    @OperationLog(desc = "修改订单信息")
+    @RequestMapping(value = "/api/Orders/{orderSn}", method = RequestMethod.PUT)
+    public ResponseEntity update(@PathVariable("orderSn") String orderSn, @RequestBody Order newOrder)
+    {
+        ResponseEntity responseEntity;
+
+        Optional<Order> orderOptional = orderService.findBySn(orderSn);
+        if (orderOptional.isPresent())
         {
-            User customer = customerService.findByUserId(order.getCustomerId()).get();
-            if ( customer != null)
-            {
-                order.setCustomerIdx (customer.getId());
-
-                /*校验商品信息*/
-                if(order.getOrderDetailList().size() > 0)
-                {
-                    orderService.create(order);
-                    URI uri = ucBuilder.path("/api/orders/{id}").buildAndExpand(order.getId()).toUri();
-                    responseEntity = ResponseEntity.created(uri).build();
-                }
-                else
-                {
-                    responseEntity =  ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();//没有商品信息
-                }
-            }
-            else
-            {
-                responseEntity =  ResponseEntity.status(HttpStatus.NOT_FOUND).build();//没有客户信息
-            }
+            orderService.update(orderOptional.get().getId(),newOrder);
+            responseEntity = ResponseEntity.ok().build();
         }
         else
         {
-            responseEntity =  ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+            responseEntity = ResponseEntity.notFound().build();
         }
 
         return responseEntity;
     }
 
-//    @OperationLog(desc = "修改商品信息")
-//    @RequestMapping(value = "/api/goods/{name}", method = RequestMethod.PUT)
-//    public ResponseEntity update(@PathVariable("name") String name, @RequestBody Goods newGoods)
-//    {
-//        ResponseEntity responseEntity;
-//
-//        Optional<Goods> goods = goodsService.findByName(name);
-//        if (goods.isPresent())
-//        {
-//            /*产品类型信息校验*/
-//            if (newGoods.getGoodsType() != null)
-//            {
-//                Optional<GoodsType> goodsType =  goodsTypeService.findByCode(newGoods.getGoodsType().getCode()) ;
-//                if(!goodsType.isPresent())
-//                {
-//                    responseEntity =  ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-//                }
-//                else
-//                {
-//                    newGoods.setGoodsType(goodsType.get());
-//                    goodsService.update(goods.get().getId(),newGoods);
-//                    responseEntity = ResponseEntity.ok().build();
-//                }
-//            }
-//            else
-//            {
-//                responseEntity =  ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-//            }
-//        }
-//        else
-//        {
-//            responseEntity = ResponseEntity.notFound().build();
-//        }
-//
-//        return responseEntity;
-//    }
-//
-//    @OperationLog(desc = "删除商品信息")
-//    @RequestMapping(value = "/api/goods/{name}", method = RequestMethod.DELETE)
-//    public ResponseEntity delete(@PathVariable("name") String name)
-//    {
-//        ResponseEntity responseEntity;
-//
-//        Optional<Goods> goods = goodsService.findByName(name);
-//        if (goods.isPresent())
-//        {
-//            goodsService.deleteById(goods.get().getId());
-//            responseEntity = ResponseEntity.noContent().build();
-//        }
-//        else
-//        {
-//            responseEntity = ResponseEntity.notFound().build();
-//        }
-//
-//        return responseEntity;
-//    }
+    @OperationLog(desc = "删除商品信息")
+    @RequestMapping(value = "/api/Orders/{orderSn}", method = RequestMethod.DELETE)
+    public ResponseEntity delete(@PathVariable("orderSn") String orderSn)
+    {
+        ResponseEntity responseEntity;
+
+        Optional<Order> orderOptional = orderService.findBySn(orderSn);
+        if (orderOptional.isPresent())
+        {
+            orderService.deleteById(orderOptional.get().getId());
+            responseEntity = ResponseEntity.noContent().build();
+        }
+        else
+        {
+            responseEntity = ResponseEntity.notFound().build();
+        }
+
+        return responseEntity;
+    }
 }

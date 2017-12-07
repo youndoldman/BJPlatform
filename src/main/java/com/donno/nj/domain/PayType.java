@@ -1,7 +1,8 @@
 package com.donno.nj.domain;
 
 
-public enum PayType {
+public enum PayType
+{
     PTOnLine("在线支付", 0), PTOffline("线下支付", 1);
 
     // 成员变量

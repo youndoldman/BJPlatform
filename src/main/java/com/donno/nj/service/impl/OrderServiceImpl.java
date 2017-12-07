@@ -1,16 +1,19 @@
 package com.donno.nj.service.impl;
 
 import com.donno.nj.aspect.OperationLog;
+import com.donno.nj.dao.CustomerDao;
 import com.donno.nj.dao.GoodsDao;
 import com.donno.nj.dao.OrderDao;
 import com.donno.nj.dao.OrderDetailDao;
-import com.donno.nj.domain.Order;
-import com.donno.nj.domain.Goods;
-import com.donno.nj.domain.OrderDetail;
+import com.donno.nj.domain.*;
+import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.service.OrderService;
 import com.google.common.base.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +31,9 @@ public class OrderServiceImpl implements OrderService
 
     @Autowired
     private GoodsDao goodsDao;
+
+    @Autowired
+    private CustomerDao customerDao;
 
     @Override
     public Optional<Order> findBySn(String sn) {
@@ -52,27 +58,72 @@ public class OrderServiceImpl implements OrderService
     @OperationLog(desc = "创建订单信息")
     public void create(Order order)
     {
-        //插入订单表
-        order.setOrderSn("test");
-
-        orderDao.insert(order);
-
-        //遍历订单详单信息，插入详单表
-        for(OrderDetail orderDetail : order.getOrderDetailList())
+         /*参数校验*/
+        if (order == null  ||
+                order.getOrderStatus() == null ||
+                order.getOrderDetailList() == null || order.getOrderDetailList().size() == 0
+                )
         {
-            /*查询对应的商品idx*/
-            Goods good = goodsDao.findByName(orderDetail.getGoodsName());
-            if ( good != null)
+            throw new ServerSideBusinessException("订单信息不全，请补充订单信息！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (order.getPayType() == null)
+        {
+            //order.setPayType(PayType.PTOnLine);
+            throw new ServerSideBusinessException("订单信息不全，请补充支付类型信息！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (order.getAccessType() == null)
+        {
+            //order.setAccessType(AccessType.ATWeixin);
+            throw new ServerSideBusinessException("订单信息不全，请补充接入类型信息！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        /*校验用户是否存在*/
+        if (order.getCustomer() == null || order.getCustomer().getUserId() == null )
+        {
+            throw new ServerSideBusinessException("订单信息不全，请补充订单客户信息！", HttpStatus.NOT_ACCEPTABLE);
+        }
+        else
+        {
+            Customer customer = customerDao.findByUserId(order.getCustomer().getUserId());
+            if ( customer == null)
             {
-                orderDetail.setOrderIdx(order.getId());
-                orderDetail.setGoodsIdx(good.getId());
-                orderDetailDao.insert(orderDetail);
+                throw new ServerSideBusinessException("客户信息不正确！", HttpStatus.NOT_ACCEPTABLE);
             }
             else
             {
-                //抛出异常
-                throw new RuntimeException();
+                order.setCustomer(customer);
             }
+        }
+
+
+        //生成点单编号
+        Date curDate = new Date();
+        String dateFmt =  new SimpleDateFormat("yyyyMMddHHmmssSSS").format(curDate);
+        order.setOrderSn(dateFmt);
+
+        /*插入订单总表*/
+        orderDao.insert(order);
+
+        /*插入详单表*/
+        for(OrderDetail orderDetail : order.getOrderDetailList())
+        {
+            /*校验商品信息是否存在*/
+            if (orderDetail.getGoods() == null || orderDetail.getGoods().getCode() == null || orderDetail.getGoods().getCode().trim().length() == 0)
+            {
+                throw new ServerSideBusinessException("商品信息不正确！", HttpStatus.NOT_ACCEPTABLE);
+            }
+            Goods good = goodsDao.findByCode(orderDetail.getGoods().getCode());
+            if (good == null)
+            {
+                throw new ServerSideBusinessException("商品信息不存在！", HttpStatus.NOT_ACCEPTABLE);
+            }
+
+            orderDetail.setOrderIdx(order.getId());
+            orderDetail.setGoods(good);
+
+            orderDetailDao.insert(orderDetail);//插入数据库订单详情表
         }
     }
 
@@ -92,9 +143,10 @@ public class OrderServiceImpl implements OrderService
     @OperationLog(desc = "删除订单信息")
     public void deleteById(Integer id)
     {
-        /*删除子表*/
+        /*删除订单总表*/
+        orderDao.delete(id);
 
-        /*删除订单表*/
-        orderDao.deleteByIdx(id);
+        /*删除订单详细表*/
+        orderDetailDao.deleteByOrderIdx(id);
     }
 }
