@@ -1,11 +1,15 @@
 'use strict';
 
-customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapper', function ($http, URI, promise) {
+customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapper','MISC', function ($http, URI, promise,MISC) {
 
     var customersUri = URI.resources.customers;
     var customerSourceUri = URI.resources.customerSource;
     var customerLevelUri = URI.resources.customerLevel;
     var customerTypeUri = URI.resources.customerType;
+
+    var subdistrictUri = URI.resources.subdistrict;
+
+    var key = MISC.keys.gaodeKey;
 
 
 
@@ -93,6 +97,10 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
 
     this.retrieveCustomerType = function (params) {
         return promise.wrap($http.get(customerTypeUri, {params: params}));
+    };
+
+    this.retrieveSubdistrict = function (keyWords) {
+        return promise.wrap($http.get(subdistrictUri+"?key="+key+"&keywords="+keyWords));
     };
 
 
