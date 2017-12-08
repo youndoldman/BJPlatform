@@ -19,13 +19,13 @@ commonModule.constant('URI', {
         'customerLevel': '../../../api/CustomerLevel',
         'customerType': '../../../api/CustomerType',
         'customerCallin':'../../../api/CustomerCallIn',
-        'bottoms': '../../../api/bottoms',
         'login':'../../../api/sysusers/login',
         'logout':'../../../api/sysusers/logout',
-        'orders':'../../../api/orders',
-        'goods': '../../../api/goods',
-
-        'subdistrict':'http://restapi.amap.com/v3/config/district',
+        'orders':'../../../api/orders',　　　　　//订气订单接口
+        'goods': '../../../api/Goods',//商品
+        'goodsTypes': '../../../api/GoodsTypes',//商品类型
+        'subdistrict':'http://restapi.amap.com/v3/config/district',//高德地图行政区域接口
+        'geocode':'http://restapi.amap.com/v3/geocode/geo',//高德地图逆地址解码接口
 
 
     }

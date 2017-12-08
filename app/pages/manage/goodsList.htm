@@ -10,7 +10,7 @@
         <div class="toolbar">
             <form role="form">
                 <div class="inline-group">
-                    <button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUp()"><i class="fa fa-plus"></i> 新增商品类型 </button>
+                    <button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUpGoodsType()"><i class="fa fa-plus"></i> 新增商品类型 </button>
                 </div>
             </form>
         </div>
@@ -27,19 +27,17 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="good in vm.goodsList">
+            <tr ng-repeat="goodsType in vm.goodsTypesList">
                 <td></td>
-                <td class="message">{{good.id}}</td>
-                <td class="message">{{good.goodName}}</td>
-                <td class="message">{{good.picture}}</td>
-                <td class="message">{{good.price}}</td>
-                <td class="message">{{good.createTime}}</td>
-                <td class="message">{{good.updateTime}}</td>
+                <td class="message">{{goodsType.id}}</td>
+                <td class="message">{{goodsType.code}}</td>
+                <td class="message">{{goodsType.name}}</td>
+                <td class="message">{{goodsType.note}}</td>
                 <td class="operate">
-                    <button title="修改" ng-click="modify(good)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <button title="修改" ng-click="modifyGoodsType(goodsType)" type="button" class="btn btn-primary btn-outline btn-xs">
                         <i class="fa fa-edit"></i>
                     </button>
-                    <button title="删除" ng-click="delete(good)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <button title="删除" ng-click="deleteGoodsType(goodsType)" type="button" class="btn btn-primary btn-outline btn-xs">
                         <i class="fa fa-trash-o"></i>
                     </button>
                 </td>
@@ -47,7 +45,8 @@
 
             </tbody>
         </table>
-
+        <div ng-if="vm.userList.length == 0" nj-table-no-data></div>
+        <div nj-pager pager="pagerGoodsTypes"></div>
 
 
     </div>
@@ -64,9 +63,9 @@
         <div class="toolbar">
             <form role="form">
                 <div class="inline-group">
-                    <label class="input"><input type="text" class="form-control input-sm" placeholder="输入商品类型"> </label>
-                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-user"></i>搜索商品类型</button>
-                    <button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUp()"><i class="fa fa-plus"></i> 新增商品 </button>
+                    <label class="input"><input type="text" class="form-control input-sm" placeholder="输入商品类型" ng-model="q.goodsType" ng-change="search()"> </label>
+                    <button type="submit" class="btn btn-sm btn-primary" ng-click="search()"><i class="fa fa-user"></i>搜索商品类型</button>
+                    <button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUpGoods()"><i class="fa fa-plus"></i> 新增商品 </button>
                 </div>
             </form>
         </div>
@@ -76,14 +75,14 @@
             <tr>
                 <th width="1%"></th>
                 <td width="5%">ID</td>
-                <td width="10%">商品号</td>
-                <td width="10%">商品名称</td>
+                <td width="8%">商品号</td>
+                <td width="12%">商品名称</td>
                 <td width="10%">商品类型</td>
                 <td width="10%">商品规格</td>
                 <td width="5%">单位</td>
                 <td width="5%">重量</td>
-                <th width="10%">有效期</th>
                 <td width="9%">价格</td>
+                <td width="10%">有效期</td>
                 <td width="5%">状态</td>
                 <td width="10%">说明</td>
                 <td width="10%">操 作</td>
@@ -93,16 +92,21 @@
             <tr ng-repeat="good in vm.goodsList">
                 <td></td>
                 <td class="message">{{good.id}}</td>
-                <td class="message">{{good.goodName}}</td>
-                <td class="message">{{good.picture}}</td>
+                <td class="message">{{good.code}}</td>
+                <td class="message">{{good.name}}</td>
+                <td class="message">{{good.goodsType.name}}</td>
+                <td class="message">{{good.specifications}}</td>
+                <td class="message">{{good.unit}}</td>
+                <td class="message">{{good.weight}}</td>
                 <td class="message">{{good.price}}</td>
-                <td class="message">{{good.createTime}}</td>
-                <td class="message">{{good.updateTime}}</td>
+                <td class="message">{{good.lifeExpectancy}}</td>
+                <td class="message">{{good.status}}</td>
+                <td class="message">{{good.note}}</td>
                 <td class="operate">
-                    <button title="修改" ng-click="modify(good)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <button title="修改" ng-click="modifyGoods(good)" type="button" class="btn btn-primary btn-outline btn-xs">
                         <i class="fa fa-edit"></i>
                     </button>
-                    <button title="删除" ng-click="delete(good)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <button title="删除" ng-click="deleteGoods(good)" type="button" class="btn btn-primary btn-outline btn-xs">
                         <i class="fa fa-trash-o"></i>
                     </button>
                 </td>
@@ -110,7 +114,8 @@
 
             </tbody>
         </table>
-
+        <div ng-if="vm.userList.length == 0" nj-table-no-data></div>
+        <div nj-pager pager="pagerGoods"></div>
 
 
     </div>

@@ -12,36 +12,62 @@
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label">商品号：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="id" class="form-control" ng-model="vm.goods.id" ng-disabled="isModify" required>
+                            <input type="text" name="code" class="form-control" ng-model="vm.goods.code" required>
                         </div>
-                        <label class="input-tips" ng-show="userForm.id.$error.required || userForm.id.$invalid">&nbsp;*&nbsp;必填项</label>
-
                     </div>
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label">商品名称：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="goodName" class="form-control" ng-model="vm.goods.goodName"  ng-disabled="isModify" required>
+                            <input type="text" name="name" class="form-control" ng-model="vm.goods.name"  required>
                         </div>
-                        <label class="input-tips" ng-show="userForm.id.$error.required || userForm.id.$invalid">&nbsp;*&nbsp;必填项</label>
-
                     </div>
                     <div class="input-group pdb15">
-                        <label class="col-sm-4 control-label input-label">商品图片：</label>
+                        <label class="col-sm-4 control-label input-label">商品类型：</label>
 
                         <div class="col-sm-8 input-width">
-                            <img ngf-src="data.file || data.defaultImage" class="img-responsive" style="width:200px; height: 200px; max-width:500px;"/>
-                            <div class="button btn " ngf-select="" ngf-pattern="'image/*'" ngf-multiple="false" ng-model="data.file">
-                                选 择 图 片
-                            </div>
-
+                            <select name="goodsType" ng-model="vm.goods.goodsType" ng-options="goodsType.name for goodsType in vm.goodsTypesList" class="form-control" ng-selected=""></select>
                         </div>
-                        <label class="input-tips" ng-show="userForm.password.$error.required || userForm.password.$invalid">&nbsp;*&nbsp;必填项</label>
-
                     </div>
                     <div class="input-group pdb15">
-                        <label class="col-sm-4 control-label input-label">商品单价：</label>
+                        <label class="col-sm-4 control-label input-label">商品规格：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="price" class="form-control" ng-model="vm.goods.price"  required>
+                            <input type="text" name="specifications" class="form-control" ng-model="vm.goods.specifications"  required>
+                        </div>
+                    </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label">单位：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="text" name="unit" class="form-control" ng-model="vm.goods.unit"  required>
+                        </div>
+                    </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label">重量：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="number" name="weight" class="form-control" ng-model="vm.goods.weight"  required>
+                        </div>
+                    </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label">价格：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="number" name="price" class="form-control" ng-model="vm.goods.price"  required>
+                        </div>
+                    </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label">有效期：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="number" name="lifeExpectancy" class="form-control" ng-model="vm.goods.lifeExpectancy"  required>
+                        </div>
+                    </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label">状态：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="number" name="status" class="form-control" ng-model="vm.goods.status"  required>
+                        </div>
+                    </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label">说明：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="text" name="note" class="form-control" ng-model="vm.goods.note"  required>
                         </div>
                     </div>
 

@@ -6,8 +6,9 @@
 manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper', function ($http, URI, promise) {
 
     var goodsUri = URI.resources.goods;
+    var goodsTypesUri = URI.resources.goodsTypes;
 
-    this.toViewModel = function (goodsFromApi) {
+    this.toViewModelGoods = function (goodsFromApi) {
         return {
             id: goodsFromApi.id,
             goodName: goodsFromApi.goodName,
@@ -19,13 +20,51 @@ manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper', function ($
         }
     };
 
+    this.toViewModelGoodsTypes = function (goodsTypesFromApi) {
+        return {
+            id: goodsTypesFromApi.id,
+            code: goodsTypesFromApi.code,
+            name: goodsTypesFromApi.name,
+            note: goodsTypesFromApi.note,
+            createTime: goodsTypesFromApi.createTime,
+            updateTime: goodsTypesFromApi.updateTime,
+
+        }
+    };
+
+
     this.retrieveGoods = function (params) {
         return promise.wrap($http.get(goodsUri, {params: params}));
     };
 
+    this.retrieveGoodsTypes = function (params) {
+        return promise.wrap($http.get(goodsTypesUri, {params: params}));
+    };
+
+
 
     this.deleteGoods = function (goods) {
-        return promise.wrap($http.delete(goodsUri + "/" + goods.id));
+        return promise.wrap($http.delete(goodsUri + "/" + goods.code));
+    };
+
+    this.deleteGoodsType = function (goodsType) {
+        return promise.wrap($http.delete(goodsTypesUri + "/" + goodsType.code));
+    };
+
+    this.createGoodsType = function (goodsType) {
+        return promise.wrap($http.post(goodsTypesUri, goodsType));
+    };
+
+    this.modifyGoodsType = function (goodsType) {
+        return promise.wrap($http.put(goodsTypesUri + "/" + goodsType.code, goodsType));
+    };
+
+    this.createGoods = function (goods) {
+        return promise.wrap($http.post(goodsUri, goods));
+    };
+
+    this.modifyGoods = function (goods) {
+        return promise.wrap($http.put(goodsUri + "/" + goods.code, goods));
     };
 
 }]);

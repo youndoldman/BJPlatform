@@ -7,6 +7,11 @@ loginApp.controller('LoginCtrl', ['$scope', '$rootScope', '$http', 'URI', 'promi
         password:""
     };
 
+
+    var getMethod = function (params) {
+        return promise.wrap($http.get(loginUri, {params: params}));
+    };
+
     $scope.login = function () {
         var loginParams = {
             userId: $scope.userInfo.userId,
@@ -17,11 +22,12 @@ loginApp.controller('LoginCtrl', ['$scope', '$rootScope', '$http', 'URI', 'promi
             return;
         }
 
-        promise.wrap($http.get(loginUri, {params: loginParams})).then(function(value){
+        getMethod(loginParams).then(function(value){
             $window.location.href = URI.resources.mainPage;
             sessionStorage.setCurUser(value);
         }, function(value) {
             // failure
+            console.log(value);
             alert("用户名密码错误");
         });
     };
