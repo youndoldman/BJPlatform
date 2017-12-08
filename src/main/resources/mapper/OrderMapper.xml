@@ -12,6 +12,7 @@
         <!--<result column="access_type" property="accessType" jdbcType="com.donno.nj.domain.AccessType"/>-->
 
         <result column="status" property="orderStatus" jdbcType="INTEGER"/>
+        <result column="urgent" property="urgent" jdbcType="BOOLEAN"/>
         <result column="addr_province" property="recvAddr.province" jdbcType="VARCHAR"/>
         <result column="addr_city" property="recvAddr.city" jdbcType="VARCHAR"/>
         <result column="addr_county" property="recvAddr.county" jdbcType="VARCHAR"/>
@@ -41,13 +42,13 @@
 
 
     <sql id="InsertColumnList">
-        order_sn,call_in_phone,customer_idx ,amount,pay_type,access_type,status,reserve_time,
+        order_sn,call_in_phone,customer_idx ,amount,pay_type,access_type,status,urgent,reserve_time,
         addr_province,addr_city,addr_county,addr_detail, longitude,latitude,recv_name,recv_phone,comment,note
     </sql>
 
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO <include refid="TblOrder"/>(<include refid="InsertColumnList"/>)
-        VALUES( #{orderSn},#{callInPhone},#{customer.id},#{orderAmount}, #{payType.index},  #{accessType.index},#{orderStatus} ,#{reserveTime} ,
+        VALUES( #{orderSn},#{callInPhone},#{customer.id},#{orderAmount}, #{payType.index},  #{accessType.index},#{orderStatus} ,#{urgent} , #{reserveTime} ,
         #{recvAddr.province}, #{recvAddr.city},#{recvAddr.county},#{recvAddr.detail},#{recvLongitude},#{recvLatitude},
         #{recvName}, #{recvPhohe},#{comment},#{note} )
     </insert>
@@ -198,7 +199,8 @@
             </if>
         </if>
         <if test="recvName != null">recv_name = #{recvName},</if>
-        <if test="recvPhohe != null">recv_phone = #{recvPhohe}</if>
+        <if test="recvPhohe != null">recv_phone = #{recvPhohe},</if>
+        <if test="urgent != null">urgent = #{urgent}</if>
     </set>
     WHERE id = #{id}
     </update>

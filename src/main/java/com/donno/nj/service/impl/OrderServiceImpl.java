@@ -67,6 +67,11 @@ public class OrderServiceImpl implements OrderService
             throw new ServerSideBusinessException("订单信息不全，请补充订单信息！", HttpStatus.NOT_ACCEPTABLE);
         }
 
+        if (order.getUrgent() == null)
+        {
+            order.setUrgent(Boolean.FALSE);
+        }
+
         if (order.getPayType() == null)
         {
             throw new ServerSideBusinessException("订单信息不全，请补充支付类型信息！", HttpStatus.NOT_ACCEPTABLE);
@@ -75,6 +80,16 @@ public class OrderServiceImpl implements OrderService
         if (order.getAccessType() == null)
         {
             throw new ServerSideBusinessException("订单信息不全，请补充接入类型信息！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (order.getRecvLongitude() == null)
+        {
+            throw new ServerSideBusinessException("订单信息不全，请补充位置经度信息！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (order.getRecvLatitude() == null)
+        {
+            throw new ServerSideBusinessException("订单信息不全，请补充位置纬度信息！", HttpStatus.NOT_ACCEPTABLE);
         }
 
         /*校验用户是否存在*/
