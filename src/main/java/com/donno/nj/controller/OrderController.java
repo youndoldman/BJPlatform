@@ -6,10 +6,12 @@ import com.donno.nj.domain.*;
 import com.donno.nj.activiti.WorkFlowTypes;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.representation.ListRep;
+import com.donno.nj.representation.MapRep;
 import com.donno.nj.util.DistanceHelper;
 import com.donno.nj.service.*;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Interner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import static com.donno.nj.util.ParamMapBuilder.paginationParams;
 
 @RestController
@@ -36,6 +39,33 @@ public class OrderController
 
     @Autowired
     private GroupService groupService;
+
+
+    @RequestMapping(value = "/api/Orders/{userId}", method = RequestMethod.GET, produces = "application/json")
+    @OperationLog(desc = "获取任务订单列表")
+    public ResponseEntity retrieveTaskOrder(@PathVariable("userId") String userId,
+                                   @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
+                                   @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
+                                   @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
+    {
+        Map params = new HashMap<String,String>();
+        params.putAll(ImmutableMap.of("userId", userId));
+
+        Map mapOrder = new HashMap<Interner,Order>();//taskid+order
+
+        List<Task> taskList = workFlowService.getTasksByUserId(userId);
+        for (Task task:taskList)
+        {
+            Optional<Order> order = orderService.findBySn(task.getProcess().getBuinessKey());
+            if (!order.isPresent())
+            {
+                mapOrder.put(task.getProcess().getBuinessKey(),order);
+            }
+        }
+
+        Integer count = orderService.count(params);
+        return ResponseEntity.ok(MapRep.assemble(mapOrder, mapOrder.size()));
+    }
 
 
 
@@ -136,20 +166,27 @@ public class OrderController
             Map findDispatchParams = new HashMap<String,String>();
             findDispatchParams.putAll(ImmutableMap.of("groupCode", ServerConstantValue.GP_DISPATCH));
             List<SysUser> sysUsersList = sysUserService.retrieve(findDispatchParams);
-//            if (sysUsersList.size() > 0)
-//            {
-//                for (SysUser sysUser:sysUsersList)
-//                {
-//                    if (sysUser.getUserPosition() != null)
-//                    {
-//                        Double distance = DistanceHelper.Distance(order.getRecvLatitude(),order.getRecvLongitude(),sysUser.getUserPosition().getLatitude(),sysUser.getUserPosition().getLongitude());
-//
-//                    }
-//
-//                }
-//                Double distance = DistanceHelper.Distance(order.getRecvLatitude(),order.getRecvLongitude(),);
-//                variables.put(ServerConstantValue.ACT_FW_STG_CANDI_USERS,"user1, user2，user3");
-//            }
+            if (sysUsersList.size() > 0)
+            {
+                String candUser = "";
+                for (SysUser sysUser:sysUsersList)
+                {
+                    if (sysUser.getUserPosition() != null)
+                    {
+                        Double distance = DistanceHelper.Distance(order.getRecvLatitude(),order.getRecvLongitude(),sysUser.getUserPosition().getLatitude(),sysUser.getUserPosition().getLongitude());
+                        if ( distance < 5)
+                        {
+                            if (candUser.trim().length() > 0 )
+                            {
+                                candUser.concat(",");
+                            }
+                            candUser.concat(sysUser.getUserId());
+                        }
+                    }
+                }
+
+                variables.put(ServerConstantValue.ACT_FW_STG_CANDI_USERS,candUser);
+            }
 
             workFlowService.createWorkFlow(WorkFlowTypes.GAS_ORDER_FLOW,order.getCustomer().getUserId(),variables,order.getOrderSn());
         }

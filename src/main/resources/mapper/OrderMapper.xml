@@ -20,7 +20,7 @@
         <result column="longitude" property="recvLongitude" jdbcType="DOUBLE"/>
         <result column="latitude" property="recvLatitude" jdbcType="DOUBLE"/>
         <result column="recv_name" property="recvName" jdbcType="VARCHAR"/>
-        <result column="recv_phone" property="recvPhohe" jdbcType="VARCHAR"/>
+        <result column="recv_phone" property="recvPhone" jdbcType="VARCHAR"/>
 
         <result column="comment" property="comment" jdbcType="VARCHAR"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
@@ -50,7 +50,7 @@
         INSERT INTO <include refid="TblOrder"/>(<include refid="InsertColumnList"/>)
         VALUES( #{orderSn},#{callInPhone},#{customer.id},#{orderAmount}, #{payType.index},  #{accessType.index},#{orderStatus} ,#{urgent} , #{reserveTime} ,
         #{recvAddr.province}, #{recvAddr.city},#{recvAddr.county},#{recvAddr.detail},#{recvLongitude},#{recvLatitude},
-        #{recvName}, #{recvPhohe},#{comment},#{note} )
+        #{recvName}, #{recvPhone},#{comment},#{note} )
     </insert>
 
     <delete id="delete" parameterType="java.lang.Integer">
@@ -90,8 +90,8 @@
             AND  recv_name = #{recvName}
         </if>
 
-        <if test="recvPhohe != null">
-            AND  recv_phone = #{recvPhohe}
+        <if test="recvPhone != null">
+            AND  recv_phone = #{recvPhone}
         </if>
 
         <if test="addrProvince != null">
@@ -149,8 +149,8 @@
             AND  recv_name = #{recvName}
         </if>
 
-        <if test="recvPhohe != null">
-            AND  recv_phone = #{recvPhohe}
+        <if test="recvPhone != null">
+            AND  recv_phone = #{recvPhone}
         </if>
 
         <if test="addrProvince != null">
@@ -199,7 +199,7 @@
             </if>
         </if>
         <if test="recvName != null">recv_name = #{recvName},</if>
-        <if test="recvPhohe != null">recv_phone = #{recvPhohe},</if>
+        <if test="recvPhone != null">recv_phone = #{recvPhone},</if>
         <if test="urgent != null">urgent = #{urgent}</if>
     </set>
     WHERE id = #{id}

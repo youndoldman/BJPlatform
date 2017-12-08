@@ -27,7 +27,7 @@ public class Order implements Serializable
     private Double recvLatitude;
 
     private String recvName;//收货人名称
-    private String recvPhohe;//收货人电话
+    private String recvPhone;//收货人电话
     private Date reserveTime;
     private String comment; //订单附言
 
@@ -113,9 +113,9 @@ public class Order implements Serializable
         return recvName;
     }
 
-    public String getRecvPhohe()
+    public String getRecvPhone()
     {
-        return recvPhohe;
+        return recvPhone;
     }
 
     public Date getReserveTime()
@@ -216,9 +216,9 @@ public class Order implements Serializable
         this.recvName = recvName;
     }
 
-    public void setRecvPhohe(String recvPhohe)
+    public void setRecvPhone(String recvPhone)
     {
-        this.recvPhohe = recvPhohe;
+        this.recvPhone = recvPhone;
     }
 
     public void setReserveTime(Date reserveTime)
@@ -261,7 +261,7 @@ public class Order implements Serializable
                 .add("accessType",accessType)
                 .add("recvAddr",recvAddr)
                 .add("recvName",recvName)
-                .add("recvPhohe",recvPhohe)
+                .add("recvPhohe",recvPhone)
                 .add("note", note)
                 .add("createTime", createTime)
                 .add("updateTime", updateTime)

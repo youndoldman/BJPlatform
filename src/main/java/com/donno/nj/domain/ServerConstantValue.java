@@ -17,6 +17,6 @@ public interface ServerConstantValue
 
     /*用户组code*/
     public String GP_CUSTOMER_SERVICE = "00002";
-    public String GP_DISPATCH = "0003";
+    public String GP_DISPATCH = "00003";
 
 }
