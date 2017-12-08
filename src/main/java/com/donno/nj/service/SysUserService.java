@@ -23,4 +23,6 @@ public interface SysUserService extends UserService
     void updatePosition(String userId, UserPosition userPosition);
 
     void delete(Integer id);
+
+
 }

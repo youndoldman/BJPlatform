@@ -6,10 +6,8 @@ import com.donno.nj.domain.*;
 import com.donno.nj.activiti.WorkFlowTypes;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.representation.ListRep;
-import com.donno.nj.service.CustomerService;
-import com.donno.nj.service.GroupService;
-import com.donno.nj.service.OrderService;
-import com.donno.nj.service.WorkFlowService;
+import com.donno.nj.util.DistanceHelper;
+import com.donno.nj.service.*;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +20,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import static com.donno.nj.util.ParamMapBuilder.paginationParams;
-import static com.google.common.collect.Maps.newHashMap;
 
 @RestController
 public class OrderController
@@ -33,13 +29,15 @@ public class OrderController
     private OrderService orderService;
 
     @Autowired
-    private CustomerService customerService;
+    private SysUserService sysUserService;
 
     @Autowired
     private WorkFlowService workFlowService;
 
     @Autowired
     private GroupService groupService;
+
+
 
     @RequestMapping(value = "/api/Orders", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取订单列表")
@@ -53,9 +51,9 @@ public class OrderController
                                    @RequestParam(value = "addrDetail", defaultValue = "") String addrDetail,
                                    @RequestParam(value = "recvName", defaultValue = "") String recvName,
                                    @RequestParam(value = "recvPhohe", defaultValue = "") String recvPhohe,
-                                            @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
-                                            @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
-                                            @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
+                                   @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
+                                   @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
+                                   @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
     {
         Map params = new HashMap<String,String>();
         if (orderSn.trim().length() > 0)
@@ -135,8 +133,23 @@ public class OrderController
             variables.put(ServerConstantValue.ACT_FW_STG_CANDI_GROUPS,group.get().getName());
 
             /*指定可办理该流程用户,根据经纬度寻找合适的派送工*/
-
-            variables.put(ServerConstantValue.ACT_FW_STG_CANDI_USERS,"user1, user2，user3");
+            Map findDispatchParams = new HashMap<String,String>();
+            findDispatchParams.putAll(ImmutableMap.of("groupCode", ServerConstantValue.GP_DISPATCH));
+            List<SysUser> sysUsersList = sysUserService.retrieve(findDispatchParams);
+//            if (sysUsersList.size() > 0)
+//            {
+//                for (SysUser sysUser:sysUsersList)
+//                {
+//                    if (sysUser.getUserPosition() != null)
+//                    {
+//                        Double distance = DistanceHelper.Distance(order.getRecvLatitude(),order.getRecvLongitude(),sysUser.getUserPosition().getLatitude(),sysUser.getUserPosition().getLongitude());
+//
+//                    }
+//
+//                }
+//                Double distance = DistanceHelper.Distance(order.getRecvLatitude(),order.getRecvLongitude(),);
+//                variables.put(ServerConstantValue.ACT_FW_STG_CANDI_USERS,"user1, user2，user3");
+//            }
 
             workFlowService.createWorkFlow(WorkFlowTypes.GAS_ORDER_FLOW,order.getCustomer().getUserId(),variables,order.getOrderSn());
         }

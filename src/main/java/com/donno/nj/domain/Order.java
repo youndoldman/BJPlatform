@@ -16,7 +16,10 @@ public class Order implements Serializable
 
     private Float  orderAmount;//订单金额
     private PayType payType;//支付方式
+
     private Integer orderStatus;//订单状态
+    private Boolean urgent;//是否加急
+
     private AccessType accessType;//订单接入类型
 
     private CustomerAddress recvAddr; //收货地址
@@ -80,6 +83,11 @@ public class Order implements Serializable
         return orderStatus;
     }
 
+    public Boolean getUrgent()
+    {
+        return  urgent;
+    }
+
     public AccessType getAccessType()
     {
         return accessType;
@@ -126,7 +134,6 @@ public class Order implements Serializable
     }
 
 
-
     public String getNote()
     {
         return note;
@@ -142,7 +149,6 @@ public class Order implements Serializable
     {
         return  updateTime;
     }
-
 
 
     public void setId(Integer id)
@@ -163,6 +169,11 @@ public class Order implements Serializable
     public  void setOrderStatus(Integer orderStatus)
     {
         this.orderStatus = orderStatus;
+    }
+
+    public void setUrgent(Boolean urgent)
+    {
+        this.urgent = urgent;
     }
 
     public void setCustomer(Customer customer)
