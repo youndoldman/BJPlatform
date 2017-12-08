@@ -69,13 +69,11 @@ public class OrderServiceImpl implements OrderService
 
         if (order.getPayType() == null)
         {
-            //order.setPayType(PayType.PTOnLine);
             throw new ServerSideBusinessException("订单信息不全，请补充支付类型信息！", HttpStatus.NOT_ACCEPTABLE);
         }
 
         if (order.getAccessType() == null)
         {
-            //order.setAccessType(AccessType.ATWeixin);
             throw new ServerSideBusinessException("订单信息不全，请补充接入类型信息！", HttpStatus.NOT_ACCEPTABLE);
         }
 

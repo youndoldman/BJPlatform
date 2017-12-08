@@ -20,6 +20,9 @@ public class Order implements Serializable
     private AccessType accessType;//订单接入类型
 
     private CustomerAddress recvAddr; //收货地址
+    private Double recvLongitude;
+    private Double recvLatitude;
+
     private String recvName;//收货人名称
     private String recvPhohe;//收货人电话
     private Date reserveTime;
@@ -85,6 +88,16 @@ public class Order implements Serializable
     public CustomerAddress getRecvAddr()
     {
         return recvAddr;
+    }
+
+    public Double getRecvLongitude()
+    {
+        return recvLongitude;
+    }
+
+    public Double getRecvLatitude()
+    {
+        return recvLatitude;
     }
 
     public String getRecvName()
@@ -175,6 +188,16 @@ public class Order implements Serializable
     public void setRecvAddr(CustomerAddress recvAddr)
     {
         this.recvAddr = recvAddr;
+    }
+
+    private void setRecvLongitude(Double recvLongitude)
+    {
+        this.recvLongitude = recvLongitude;
+    }
+
+    private  void setRecvLatitude(Double recvLatitude)
+    {
+        this.recvLatitude = recvLatitude;
     }
 
     public void setRecvName(String recvName)
