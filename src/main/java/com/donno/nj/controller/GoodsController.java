@@ -50,7 +50,7 @@ public class GoodsController
             params.putAll(ImmutableMap.of("typeCode", typeCode));
         }
 
-        if (typeCode.trim().length() > 0)
+        if (typeName.trim().length() > 0)
         {
             params.putAll(ImmutableMap.of("typeName", typeName));
         }
