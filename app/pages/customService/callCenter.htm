@@ -369,67 +369,107 @@
   </ul>
   <div class="tab-content" >
     <div class="tab-pane fade in active" id="tab1">
+      <div class="row col-md-12" style="margin-top: 20px">
+        <div class="col-md-3" style="margin-top: 20px">
+          <div class="input-group">
+            <span class="input-group-addon">商品类型</span>
+            <select name="goodsType" ng-model="temp.selectedGoodsType" ng-options="goodsType.name for goodsType in temp.goodsTypesList" class="form-control" ng-selected="" ng-change="goodsTypeChange()"></select>
+          </div>
+        </div>
+        <div class="col-md-3" style="margin-top: 20px">
+          <div class="input-group">
+            <span class="input-group-addon">商品</span>
+            <select name="goods" ng-model="temp.selectedGoods" ng-options="goods.name for goods in temp.goodsList" class="form-control" ng-selected=""></select>
+          </div>
+        </div>
+        <div class="col-md-2" style="margin-top: 20px">
+          <div class="input-group pull-right" >
+            <span class="input-group-addon">数量</span>
+            <input type="number"  class="form-control" ng-model="temp.selectedQuantity" ></input>
+          </div>
+        </div>
+        <div class="col-md-2" style="margin-top: 20px">
+          <div class="input-group">
+            <button type="button" class="btn btn-sm btn-success pull-right" ng-click="addToCart()"><i class="fa fa-plus"></i> 添加购物车 </button>
+          </div>
+        </div>
+        <div class="col-md-2" style="margin-top: 20px">
+          <div class="input-group has-success">
+            <span class="input-group-addon ">订单总额</span>
+            <input type="number"  class="form-control" ng-model="currentOrder.orderAmount" ></input>
+          </div>
+        </div>
+      </div>
       <div class="panel panel-primary" style="min-height: 300px;">
         <div class="panel-body">
-          <div class="row col-md-7" style="margin-top: 20px">
-            <div class="col-md-5" style="margin-top: 20px">
-              <div class="input-group">
-                <span class="input-group-addon">商品类型</span>
-                <select  class="form-control">
-                  <option>15公斤液化气</option>
-                  <option>25公斤液化气</option>
-                  <option>50公斤液化气</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3" style="margin-top: 20px">
-              <div class="input-group">
-                <span class="input-group-addon">数量</span>
-                <input type="number"  class="form-control" value="1"></input>
-              </div>
-            </div>
-            <div class="col-md-3" style="margin-top: 20px">
-              <div class="input-group">
-                <button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUp()"><i class="fa fa-plus"></i> 添加购物车 </button>
-              </div>
-            </div>
-          </div>
+
           <div class="row" >
-            <div class="col-md-7" style="margin-top: 20px;min-height: 200px">
+            <div class="col-md-8" style="margin-top: 20px;min-height: 200px">
               <table class="table table-bordered table-hover .table-condensed">
-                <tr>
-                  <th  style="background: lightblue;text-align: center">商品规格</th>
-                  <th  style="background: lightblue;text-align: center">单价</th>
-                  <th  style="background: lightblue;text-align: center">信息</th>
-                  <th  style="background: lightblue;text-align: center">数量</th>
-                </tr>
-                <tr ng-repeat="customer in vm.customerList" ng-click="showDetail(customer)" class="active">
-                  <td>{{customer.userId}}</td>
-                  <td>{{customer.name}}</td>
-                  <td>{{customer.phone}}</td>
-                  <td>{{customer.address.province}}{{customer.address.city}}{{customer.address.county}}{{customer.address.detail}}</td>
-                </tr>
+
+              <thead>
+              <tr>
+                <td style="background: lightblue;text-align: center" width="8%">商品号</td>
+                <td style="background: lightblue;text-align: center" width="12%">商品名称</td>
+                <td style="background: lightblue;text-align: center" width="10%">商品类型</td>
+                <td style="background: lightblue;text-align: center" width="10%">商品规格</td>
+                <td style="background: lightblue;text-align: center" width="5%">单位</td>
+                <td style="background: lightblue;text-align: center" width="5%">重量</td>
+                <td style="background: lightblue;text-align: center" width="9%">价格</td>
+                <td style="background: lightblue;text-align: center" width="10%">有效期</td>
+                <td style="background: lightblue;text-align: center" width="5%">状态</td>
+                <td style="background: lightblue;text-align: center" width="10%">说明</td>
+                <td style="background: lightblue;text-align: center" width="10%">原始价格</td>
+                <td style="background: lightblue;text-align: center" width="10%">成交价格</td>
+                <td style="background: lightblue;text-align: center" width="10%">数量</td>
+                <td style="background: lightblue;text-align: center" width="10%">小计</td>
+                <td style="background: lightblue;text-align: center" width="10%">删除</td>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="orderDetail in currentOrder.orderDetailList">
+                <td class="message">{{orderDetail.goods.code}}</td>
+                <td class="message">{{orderDetail.goods.name}}</td>
+                <td class="message">{{orderDetail.goods.goodsType.name}}</td>
+                <td class="message">{{orderDetail.goods.specifications}}</td>
+                <td class="message">{{orderDetail.goods.unit}}</td>
+                <td class="message">{{orderDetail.goods.weight}}</td>
+                <td class="message">{{orderDetail.goods.price}}</td>
+                <td class="message">{{orderDetail.goods.lifeExpectancy}}</td>
+                <td class="message">{{orderDetail.goods.status}}</td>
+                <td class="message">{{orderDetail.goods.note}}</td>
+                <td class="message">{{orderDetail.originalPrice}}</td>
+                <td class="message">{{orderDetail.dealPrice}}</td>
+                <td class="message">{{orderDetail.quantity}}</td>
+                <td class="message">{{orderDetail.subtotal}}</td>
+                <td class="operate">
+                  <button title="删除" ng-click="deleteGoodsFromCart(orderDetail)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <i class="fa fa-trash-o"></i>
+                  </button>
+                </td>
+              </tr>
+
+              </tbody>
               </table>
             </div>
             <div class="col-md-2" style="margin-top: 20px">
               <div class="input-group">
                 <span class="input-group-addon">联系人</span>
-                <input type="text" class="form-control" ng-model="vm.currentCustomer.name">
+                <input type="text" class="form-control" ng-model="currentOrder.recvName">
               </div>
             </div>
             <div class="col-md-2" style="margin-top: 20px">
               <div class="input-group">
-                <span class="input-group-addon">联系电话</span>
-                <input type="text" class="form-control" ng-model="vm.currentCustomer.phone">
+                <span class="input-group-addon">电话</span>
+                <input type="text" class="form-control" ng-model="currentOrder.recvPhone">
               </div>
             </div>
             <div class="col-md-4" style="margin-top: 20px">
               <div class="input-group">
                 <span class="input-group-addon">送气地址</span>
-                <input type="text" class="form-control" value={{vm.currentCustomer.address.province}}{{vm.currentCustomer.address.city}}{{vm.currentCustomer.address.country}}{{vm.currentCustomer.address.detail}}>
+                <input type="text" class="form-control" value={{currentOrder.recvAddr.province}}{{currentOrder.recvAddr.city}}{{currentOrder.recvAddr.country}}{{currentOrder.recvAddr.detail}}>
               </div>
             </div>
-
             <div class="col-md-4" style="margin-top: 20px">
               <div class="form-group">
                 <div class='input-group date' id='datetimepickerOrder'>

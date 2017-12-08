@@ -3,27 +3,36 @@
 manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
     'rootService', 'pager', 'udcModal', 'GoodsService','Upload','URI', function ($scope, $rootScope, $filter, $location, Constants,
                                                                  rootService, pager, udcModal, GoodsService,Upload,URI) {
-        var gotoPage = function (pageNo) {
-            $scope.pager.setCurPageNo(pageNo);
+        var gotoPageGoodsType = function (pageNo) {
+            $scope.pagerGoodsTypes.setCurPageNo(pageNo);
+            searchGoodsTypes();
+        };
+        var gotoPageGoods = function (pageNo) {
+            $scope.pagerGoods.setCurPageNo(pageNo);
             searchGoods();
         };
 
-        $scope.pager = pager.init('GoodsListCtrl', gotoPage);
-        var historyQ = $scope.pager.getQ();
+        $scope.pagerGoodsTypes = pager.init('GoodsListCtrl', gotoPageGoodsType);
+
+        $scope.pagerGoods = pager.init('GoodsListCtrl', gotoPageGoods);
+
+        var historyQ = $scope.pagerGoodsTypes.getQ();
 
         $scope.q = {
-            goodName: historyQ.goodName || ""
+            goodsType:""
         };
 
+
         $scope.vm = {
+            goodsTypesList: [],
             goodsList: []
         };
         $scope.search = function () {
-            $scope.pager.setCurPageNo(1);
+            $scope.pagerGoods.setCurPageNo(1);
             searchGoods();
         };
 
-        $scope.initPopUp = function () {
+        $scope.initPopUpGoods = function () {
             udcModal.show({
                 templateUrl: "./manage/goodsModal.html",
                 controller: "GoodsModalCtrl",
@@ -39,11 +48,8 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
             })
         };
 
-        $scope.data = {
-            file: null
-        };
 
-        $scope.modify = function (goods) {
+        $scope.modifyGoods = function (goods) {
             udcModal.show({
                 templateUrl: "./manage/goodsModal.html",
                 controller:  "GoodsModalCtrl",
@@ -54,121 +60,100 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
             }).then(function (result) {
                 if (result) {
                     console.log("修改商品");
-                        searchGoods();
+                    searchGoods();
                 }
             })
         };
 
-        $scope.delete = function (goods) {
-            udcModal.confirm({"title": "删除商品", "message": "是否永久删除商品信息 " + goods.goodName})
+        $scope.initPopUpGoodsType = function () {
+            udcModal.show({
+                templateUrl: "./manage/goodsTypeModal.html",
+                controller: "GoodsTypeModalCtrl",
+                inputs: {
+                    title: '新增商品类型',
+                    initVal: {}
+                }
+            }).then(function (result) {
+                if (result) {
+                    console.log("新增商品类型");
+                    searchGoodsTypes();
+                }
+            })
+        };
+
+        $scope.modifyGoodsType = function (goods) {
+            udcModal.show({
+                templateUrl: "./manage/goodsTypeModal.html",
+                controller:  "GoodsTypeModalCtrl",
+                inputs: {
+                    title: '修改商品类型',
+                    initVal: goods
+                }
+            }).then(function (result) {
+                if (result) {
+                    console.log("修改商品类型");
+                        searchGoodsTypes();
+                }
+            })
+        };
+
+        $scope.deleteGoods = function (goods) {
+            udcModal.confirm({"title": "删除商品", "message": "是否永久删除商品信息 " + goods.name})
                 .then(function (result) {
                     if (result) {
                         GoodsService.deleteGoods(goods).then(function () {
+                            udcModal.info({"title": "处理结果", "message": "删除商品信息成功 "});
                             searchGoods();
                         });
                     }
                 })
         };
 
+        $scope.deleteGoodsType = function (goodsType) {
+            udcModal.confirm({"title": "删除商品类型", "message": "是否永久删除商品类型信息 " + goodsType.name})
+                .then(function (result) {
+                    if (result) {
+                        GoodsService.deleteGoodsType(goodsType).then(function () {
+                            udcModal.info({"title": "处理结果", "message": "删除商品类型成功 "});
+                            searchGoodsTypes();
+                        });
+                    }
+                })
+        };
+
+
+
         var searchGoods = function () {
             var queryParams = {
-                name: $scope.q.goodName,
-                pageNo: $scope.pager.getCurPageNo(),
-                pageSize: $scope.pager.pageSize
+                goodType: $scope.q.goodsType,
+                pageNo: $scope.pagerGoods.getCurPageNo(),
+                pageSize: $scope.pagerGoods.pageSize
             };
 
             GoodsService.retrieveGoods(queryParams).then(function (goods) {
-                $scope.pager.update($scope.q, goods.total, queryParams.pageNo);
+                $scope.pagerGoods.update($scope.q, goods.total, queryParams.pageNo);
                 $scope.vm.goodsList = _.map(goods.items, GoodsService.toViewModel);
             });
         };
+
+        var searchGoodsTypes = function () {
+            var queryParams = {
+                pageNo: $scope.pagerGoodsTypes.getCurPageNo(),
+                pageSize: $scope.pagerGoodsTypes.pageSize
+            };
+
+            GoodsService.retrieveGoodsTypes(queryParams).then(function (goodsTypes) {
+                $scope.pagerGoodsTypes.update($scope.q, goodsTypes.total, queryParams.pageNo);
+                $scope.vm.goodsTypesList = _.map(goodsTypes.items, GoodsService.toViewModelGoodsTypes);
+            });
+        };
+
+
         var init = function () {
+            searchGoodsTypes();
             searchGoods();
         };
 
         init();
 
     }]);
-
-manageApp.controller('GoodsModalCtrl', ['$scope', 'close', 'GoodsService', 'title', 'initVal','Upload','URI', function ($scope, close, GoodsService, title, initVal,Upload,URI) {
-    $scope.modalTitle = title;
-    $scope.vm = {
-        goods: {
-        }
-    };
-    $scope.onFileSelect = function($files) {    //$files:是已选文件的名称、大小和类型的数组
-        console.log($files);
-        for (var i = 0; i < $files.length; i++) {
-            $scope.data.file = $files[i];
-        }
-
-    };
-    $scope.isModify = false;
-
-    $scope.close = function (result) {
-        close(result, 500);
-    };
-
-    $scope.submit = function (goods) {
-        if (goods.goodName != "" && title == "新增商品") {
-            $scope.upload(goods);
-            $scope.close(true);
-        } else if (goods.name != "" && title == "修改商品") {
-            $scope.modify(goods);
-            $scope.close(true);
-        }
-    };
-
-    $scope.data = {
-        file: null
-    };
-    $scope.upload = function (goods) {
-        if (!$scope.data.file) {
-            console.log("error data.file! ");
-            return;
-        }
-        console.log($scope.data.file);
-
-        var url = URI.resources.goods;  //params是model传的参数，图片上传接口的url
-
-        Upload.upload({
-            data: $scope.vm.goods,
-            url: url,
-            file: $scope.data.file
-    }).success(function (goods) {
-        }).error(function () {
-            logger.log('error');
-        });
-    };
-
-    $scope.modify = function (goods) {
-        console.log($scope.data.file);
-
-        var url = URI.resources.goods;  //params是model传的参数，图片上传接口的url
-
-        Upload.upload({
-            data: $scope.vm.goods,
-            method: 'PUT',
-            url: url,
-            file: $scope.data.file
-        }).success(function (goods) {
-        }).error(function () {
-            logger.log('error');
-        });
-    };
-
-    var init = function () {
-        $scope.vm.goods = _.clone(initVal);
-        $scope.data.file = $scope.vm.goods.picture;
-        if(title == "修改商品") {
-            $scope.isModify = true;
-        }
-        else {
-            $scope.isModify = false;
-        }
-    };
-
-    init();
-}]);/**
- * Created by Administrator on 2017/10/10.
- */

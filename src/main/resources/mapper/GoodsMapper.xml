@@ -8,7 +8,7 @@
         <result column="code" property="code" jdbcType="VARCHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="specifications" property="specifications" jdbcType="VARCHAR"/>
-        <result column="unit" property="specifications" jdbcType="VARCHAR"/>
+        <result column="unit" property="unit" jdbcType="VARCHAR"/>
         <result column="weight" property="weight" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="INTEGER"/>
         <result column="price" property="price" jdbcType="FLOAT"/>

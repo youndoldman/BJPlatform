@@ -1,0 +1,46 @@
+<div class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="goodsForm" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="close(false)" data-dismiss="modal"
+                            aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">&nbsp;{{modalTitle}}&nbsp;</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label">类型编码：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="text" name="code" class="form-control" ng-model="vm.goodsType.code" ng-disabled="isModify" required>
+                        </div>
+                        <label class="input-tips" ng-show="goodsForm.code.$error.required || goodsForm.code.$invalid">&nbsp;*&nbsp;必填项</label>
+
+                    </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label">类型名称：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="text" name="name" class="form-control" ng-model="vm.goodsType.name"  ng-disabled="isModify" required>
+                        </div>
+                        <label class="input-tips" ng-show="goodsForm.name.$error.required || goodsForm.name.$invalid">&nbsp;*&nbsp;必填项</label>
+
+                    </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label">类型说明：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="text" name="note" class="form-control" ng-model="vm.goodsType.note"  required>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="submit" ng-click="submit(vm.goodsType)" class="btn btn-primary" data-dismiss="modal">上传</button>
+                    <button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

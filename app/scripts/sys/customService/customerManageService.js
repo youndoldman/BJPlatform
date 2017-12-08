@@ -6,8 +6,10 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     var customerSourceUri = URI.resources.customerSource;
     var customerLevelUri = URI.resources.customerLevel;
     var customerTypeUri = URI.resources.customerType;
-
+    var goodsTypesUri = URI.resources.goodsTypes;
+    var goodsUri = URI.resources.goods;
     var subdistrictUri = URI.resources.subdistrict;
+    var geocodeUri = URI.resources.geocode;
     var customerCallinUri = URI.resources.customerCallin;
     var key = MISC.keys.gaodeKey;
 
@@ -99,14 +101,32 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
         return promise.wrap($http.get(customerTypeUri, {params: params}));
     };
 
+    //行政区域查询
     this.retrieveSubdistrict = function (keyWords) {
         return promise.wrap($http.get(subdistrictUri+"?key="+key+"&keywords="+keyWords));
+    };
+
+    //地理编码经纬度查询
+    this.retrieveSubdistrict = function (address) {
+        return promise.wrap($http.get(geocodeUri+"?key="+key+"&keywords="+address));
     };
 
     //请求呼叫记录关联的用户
     this.retrieveCustomerCallin = function (params) {
         return promise.wrap($http.get(customerCallinUri,{params: params}));
     };
+
+    //请求商品的类型
+    this.retrieveGoodsTypes = function (params) {
+        return promise.wrap($http.get(goodsTypesUri, {params: params}));
+    };
+
+    //请求商品
+    this.retrieveGoods = function (params) {
+        return promise.wrap($http.get(goodsUri, {params: params}));
+    };
+
+    //
 
 
 }]);
