@@ -2,16 +2,16 @@ package com.donno.nj.controller;
 
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
-import com.donno.nj.domain.Order;
-import com.donno.nj.domain.Customer;
-import com.donno.nj.domain.User;
-import com.donno.nj.domain.OrderDetail;
+import com.donno.nj.domain.*;
+import com.donno.nj.activiti.WorkFlowTypes;
+import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.CustomerService;
+import com.donno.nj.service.GroupService;
 import com.donno.nj.service.OrderService;
+import com.donno.nj.service.WorkFlowService;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +34,12 @@ public class OrderController
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private WorkFlowService workFlowService;
+
+    @Autowired
+    private GroupService groupService;
 
     @RequestMapping(value = "/api/Orders", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取订单列表")
@@ -115,7 +121,32 @@ public class OrderController
     public ResponseEntity create(@RequestBody Order order, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
+
+        /*创建订单入库*/
         orderService.create(order);
+
+        /*启动流程*/
+        Map<String, Object> variables = new HashMap<String, Object>();
+
+        Optional<Group>  group = groupService.findByCode(ServerConstantValue.GP_CUSTOMER_SERVICE);
+        if(group.isPresent())
+        {
+            /*指定可办理的组*/
+            variables.put(ServerConstantValue.ACT_FW_STG_CANDI_GROUPS,group.get().getName());
+
+            /*指定可办理该流程用户,根据经纬度寻找合适的派送工*/
+
+            variables.put(ServerConstantValue.ACT_FW_STG_CANDI_USERS,"user1, user2，user3");
+
+            workFlowService.createWorkFlow(WorkFlowTypes.GAS_ORDER_FLOW,order.getCustomer().getUserId(),variables,order.getOrderSn());
+        }
+        else
+        {
+            orderService.deleteById(order.getId());
+            throw new ServerSideBusinessException("派单失败！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+
         URI uri = ucBuilder.path("/api/Orders/{id}").buildAndExpand(order.getId()).toUri();
         responseEntity = ResponseEntity.created(uri).build();
 
@@ -161,4 +192,5 @@ public class OrderController
 
         return responseEntity;
     }
+
 }

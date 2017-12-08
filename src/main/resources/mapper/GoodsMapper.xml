@@ -97,7 +97,7 @@
 
         <if test="status != null">AND  status = #{status}</if>
 
-        <if test="typeCode != null">AND  type_id = ( select id from t_goods_type where code = #{typeCode})</if>
+        <if test="typeCode != null">AND  type_idx = ( select id from t_goods_type where code = #{typeCode})</if>
 
         <if test="orderBy != null">
             <if test="orderBy != ''">
@@ -105,8 +105,8 @@
             </if>
         </if>
 
-        <if test="limit != null">
-            <if test="offset != ''">
+        <if test="limit != null" >
+            <if test="offset != null" >
                 limit #{limit} offset #{offset};
             </if>
         </if>
