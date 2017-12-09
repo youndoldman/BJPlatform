@@ -7,3 +7,4 @@ target/
 log_dir_IS_UNDEFINED/
 .idea/
 src/main/webapp/dist
+/conf/local/config.properties
