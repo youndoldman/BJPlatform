@@ -80,7 +80,7 @@ public class OrderController
                                    @RequestParam(value = "addrCounty", defaultValue = "") String addrCounty,
                                    @RequestParam(value = "addrDetail", defaultValue = "") String addrDetail,
                                    @RequestParam(value = "recvName", defaultValue = "") String recvName,
-                                   @RequestParam(value = "recvPhohe", defaultValue = "") String recvPhohe,
+                                   @RequestParam(value = "recvPhone", defaultValue = "") String recvPhone,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
@@ -131,9 +131,9 @@ public class OrderController
             params.putAll(ImmutableMap.of("recvName", recvName));
         }
 
-        if (recvPhohe.trim().length() > 0)
+        if (recvPhone.trim().length() > 0)
         {
-            params.putAll(ImmutableMap.of("recvPhohe", recvPhohe));
+            params.putAll(ImmutableMap.of("recvPhone", recvPhone));
         }
 
 

@@ -59,9 +59,7 @@ public class OrderServiceImpl implements OrderService
     public void create(Order order)
     {
          /*参数校验*/
-        if (order == null  ||
-                order.getOrderStatus() == null ||
-                order.getOrderDetailList() == null || order.getOrderDetailList().size() == 0
+        if (order == null || order.getOrderDetailList() == null || order.getOrderDetailList().size() == 0
                 )
         {
             throw new ServerSideBusinessException("订单信息不全，请补充订单信息！", HttpStatus.NOT_ACCEPTABLE);
