@@ -57,9 +57,9 @@ public class OrderController
         for (Task task:taskList)
         {
             Optional<Order> order = orderService.findBySn(task.getProcess().getBuinessKey());
-            if (!order.isPresent())
+            if (order.isPresent())
             {
-                mapOrder.put(task.getProcess().getBuinessKey(),order);
+                mapOrder.put(task.getId(),order.get());
             }
         }
 
@@ -159,8 +159,10 @@ public class OrderController
         Optional<Group>  group = groupService.findByCode(ServerConstantValue.GP_CUSTOMER_SERVICE);
         if(group.isPresent())
         {
+            //variables.put(ServerConstantValue.ACT_FW_STG_ASSIGN_USERS,"");
+
             /*指定可办理的组*/
-            variables.put(ServerConstantValue.ACT_FW_STG_CANDI_GROUPS,group.get().getName());
+            variables.put(ServerConstantValue.ACT_FW_STG_CANDI_GROUPS,String.valueOf(group.get().getId()));
 
             /*指定可办理该流程用户,根据经纬度寻找合适的派送工*/
             Map findDispatchParams = new HashMap<String,String>();
@@ -178,9 +180,9 @@ public class OrderController
                         {
                             if (candUser.trim().length() > 0 )
                             {
-                                candUser.concat(",");
+                                candUser = candUser + ",";
                             }
-                            candUser.concat(sysUser.getUserId());
+                            candUser = candUser + sysUser.getUserId();
                         }
                     }
                 }

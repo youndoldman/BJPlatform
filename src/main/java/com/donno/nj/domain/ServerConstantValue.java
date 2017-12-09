@@ -16,7 +16,7 @@ public interface ServerConstantValue
     public String ACT_FW_STG_CANDI_USERS = "stage1CandiUsers";
 
     /*用户组code*/
-    public String GP_CUSTOMER_SERVICE = "00002";
-    public String GP_DISPATCH = "00003";
+    public String GP_CUSTOMER_SERVICE = "2";
+    public String GP_DISPATCH = "3";
 
 }

@@ -10,6 +10,7 @@ public class MapRep {
     public static MapRep assemble(Map items, Integer total) {
         MapRep rep = new MapRep();
         rep.setItems(items);
+
         rep.setTotal(total != null ? total : items.size());
         return rep;
     }
