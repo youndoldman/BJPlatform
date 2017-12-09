@@ -48,24 +48,38 @@ public class OrderController
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
     {
-        Map params = new HashMap<String,String>();
-        params.putAll(ImmutableMap.of("userId", userId));
-
-        Map mapOrder = new HashMap<Interner,Order>();//taskid+order
-
         List<Task> taskList = workFlowService.getTasksByUserId(userId);
+
         for (Task task:taskList)
         {
             Optional<Order> order = orderService.findBySn(task.getProcess().getBuinessKey());
             if (order.isPresent())
             {
-                mapOrder.put(task.getId(),order.get());
+                task.setObject(order.get());
             }
         }
 
-        Integer count = orderService.count(params);
-        return ResponseEntity.ok(MapRep.assemble(mapOrder, mapOrder.size()));
+        return ResponseEntity.ok(ListRep.assemble(taskList, taskList.size()));
     }
+
+//    @RequestMapping(value = "/api/Orders/Process/{userId}", method = RequestMethod.GET, produces = "application/json")
+//    @OperationLog(desc = "任务订单处理")
+//    public ResponseEntity taskOrderProcess(@PathVariable("userId") String userId,
+//                                            @RequestParam(value = "orderStatus", required = true) Integer orderStatus)
+//    {
+//        List<Task> taskList = workFlowService.getTasksByUserId(userId);
+//
+//        for (Task task:taskList)
+//        {
+//            Optional<Order> order = orderService.findBySn(task.getProcess().getBuinessKey());
+//            if (order.isPresent())
+//            {
+//                task.setObject(order.get());
+//            }
+//        }
+//
+//        return ResponseEntity.ok();
+//    }
 
 
 
