@@ -261,7 +261,7 @@ public class Order implements Serializable
                 .add("accessType",accessType)
                 .add("recvAddr",recvAddr)
                 .add("recvName",recvName)
-                .add("recvPhohe",recvPhone)
+                .add("recvPhone",recvPhone)
                 .add("note", note)
                 .add("createTime", createTime)
                 .add("updateTime", updateTime)
