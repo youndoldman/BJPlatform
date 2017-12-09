@@ -1,19 +1,12 @@
 package com.donno.nj.domain;
 
-/**
- * Created by wyb on 2017/10/24.
- */
-import com.donno.nj.domain.Process;
-
-
 public class Task
 {
     protected String id;                   //任务ID
     protected String taskName;             //任务节点名称
     protected Process process;             //对应的流程
 
-
-
+    protected  Object object;
 
     public Task()
     {
@@ -35,6 +28,11 @@ public class Task
         return taskName;
     }
 
+    public Object getObject()
+    {
+        return object;
+    }
+
 
 
     public void setId(String id)
@@ -50,6 +48,11 @@ public class Task
     public void setTaskName(String taskName)
     {
         this.taskName = taskName;
+    }
+
+    public void setObject(Object object)
+    {
+        this.object = object;
     }
 
 
