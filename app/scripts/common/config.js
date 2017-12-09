@@ -21,7 +21,7 @@ commonModule.constant('URI', {
         'customerCallin':'../../../api/CustomerCallIn',
         'login':'../../../api/sysusers/login',
         'logout':'../../../api/sysusers/logout',
-        'orders':'../../../api/orders',　　　　　//订气订单接口
+        'orders':'../../../api/Orders',　　　　　//订气订单接口
         'goods': '../../../api/Goods',//商品
         'goodsTypes': '../../../api/GoodsTypes',//商品类型
         'subdistrict':'http://restapi.amap.com/v3/config/district',//高德地图行政区域接口

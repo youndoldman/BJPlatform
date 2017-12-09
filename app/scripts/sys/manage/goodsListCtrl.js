@@ -125,7 +125,7 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
 
         var searchGoods = function () {
             var queryParams = {
-                goodType: $scope.q.goodsType,
+                typeName: $scope.q.goodsType,
                 pageNo: $scope.pagerGoods.getCurPageNo(),
                 pageSize: $scope.pagerGoods.pageSize
             };

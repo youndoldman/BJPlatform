@@ -117,6 +117,16 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             $scope.currentOrder.recvAddr = $scope.vm.currentCustomer.address;
             $scope.currentOrder.recvName = $scope.vm.currentCustomer.name;
             $scope.currentOrder.recvPhone = $scope.vm.currentCustomer.phone;
+
+            //查询经纬度
+            var address = $scope.vm.currentCustomer.address.province+$scope.vm.currentCustomer.address.city
+                +$scope.vm.currentCustomer.address.county+$scope.vm.currentCustomer.address.detail;
+
+            CustomerManageService.retrieveLocation(address).then(function (value) {
+                var location = value.geocodes[0].location;
+                $scope.currentOrder.recvLongitude = parseFloat(location.split(',')[0]);
+                $scope.currentOrder.recvLatitude = parseFloat(location.split(',')[1]);
+            })
         };
 
         //创建订单
@@ -130,15 +140,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             tempCustomer.userId = $scope.vm.currentCustomer.userId;
             $scope.currentOrder.customer = tempCustomer;
 
-            //查询经纬度
-            var address = $scope.vm.currentCustomer.address.province+$scope.vm.currentCustomer.address.city
-                +$scope.vm.currentCustomer.address.county+$scope.vm.currentCustomer.address.detail;
 
-            CustomerManageService.retrieveSubdistrict(address).then(function (value) {
-                var location = value.geocodes[0].location;
-                $scope.currentOrder.recvLongitude = location.split(',')[0];
-                $scope.currentOrder.recvLatitude = location.split(',')[1];
-            })
 
             //将订单数据提交到后台
             CallCenterService.createOrder($scope.currentOrder).then(function () {

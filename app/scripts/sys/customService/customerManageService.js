@@ -107,8 +107,8 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     };
 
     //地理编码经纬度查询
-    this.retrieveSubdistrict = function (address) {
-        return promise.wrap($http.get(geocodeUri+"?key="+key+"&keywords="+address));
+    this.retrieveLocation = function (address) {
+        return promise.wrap($http.get(geocodeUri+"?key="+key+"&address="+address));
     };
 
     //请求呼叫记录关联的用户
