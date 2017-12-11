@@ -390,21 +390,22 @@
         </div>
         <div class="col-md-2" style="margin-top: 20px">
           <div class="input-group">
-            <button type="button" class="btn btn-sm btn-success pull-right" ng-click="addToCart()"><i class="fa fa-plus"></i> 添加购物车 </button>
+            <button type="button" class="btn btn-sm btn-success" ng-click="addToCart()"><i class="fa fa-plus"></i> 添加购物车 </button>
           </div>
         </div>
-        <div class="col-md-2" style="margin-top: 20px">
-          <div class="input-group has-success">
-            <span class="input-group-addon ">订单总额</span>
-            <input type="number"  class="form-control" ng-model="currentOrder.orderAmount" ></input>
+        <div class="col-md-1 col-md-offset-1" style="margin-top: 20px">
+          <div class="input-group">
+            <button class="btn btn-primary"  ng-click="createOrder()">生成订单</button>
           </div>
+
         </div>
+
       </div>
       <div class="panel panel-primary" style="min-height: 300px;">
         <div class="panel-body">
 
           <div class="row" >
-            <div class="col-md-8" style="margin-top: 20px;min-height: 200px">
+            <div class="col-md-8" style="margin-top: 20px;min-height: 250px">
               <table class="table table-bordered table-hover .table-condensed">
 
               <thead>
@@ -489,10 +490,19 @@
                 <input type="text" class="form-control lead" style="color: red" value="加急配送" disabled　>
               </div>
             </div>
-
-            <div class="col-md-2 col-md-offset-1" style="margin-top: 20px">
-              <button class="btn btn-primary"  ng-click="createOrder()">生成订单</button>
+            <div class="col-md-2" style="margin-top: 20px">
+              <div class="input-group">
+                <span class="input-group-addon">备注</span>
+                <input type="text" class="form-control" ng-model="currentOrder.comment">
+              </div>
             </div>
+            <div class="col-md-4" style="margin-top: 20px">
+              <div class="input-group has-success">
+                <span class="input-group-addon ">订单总额</span>
+                <input type="number"  class="form-control" ng-model="currentOrder.orderAmount" ></input>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
