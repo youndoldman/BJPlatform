@@ -1,10 +1,7 @@
 package com.donno.nj.service.impl;
 
 import com.donno.nj.aspect.OperationLog;
-import com.donno.nj.dao.CustomerDao;
-import com.donno.nj.dao.GoodsDao;
-import com.donno.nj.dao.OrderDao;
-import com.donno.nj.dao.OrderDetailDao;
+import com.donno.nj.dao.*;
 import com.donno.nj.domain.*;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.service.OrderService;
@@ -34,6 +31,9 @@ public class OrderServiceImpl implements OrderService
 
     @Autowired
     private CustomerDao customerDao;
+
+    @Autowired
+    private OrderOpHistoryDao orderOpHistoryDao;
 
     @Override
     public Optional<Order> findBySn(String sn) {
@@ -70,9 +70,16 @@ public class OrderServiceImpl implements OrderService
             order.setUrgent(Boolean.FALSE);
         }
 
+        /*默认为0*/
         if (order.getOrderStatus() == null)
         {
             order.setOrderStatus(0);
+        }
+
+        /*默认为待支付*/
+        if (order.getPayStatus() == null)
+        {
+            order.setPayStatus(PayStatus.PSUnpaid);
         }
 
         if (order.getPayType() == null)
@@ -140,6 +147,9 @@ public class OrderServiceImpl implements OrderService
             orderDetail.setGoods(good);
 
             orderDetailDao.insert(orderDetail);//插入数据库订单详情表
+
+            /*订单变更历史记录*/
+            //orderOpHistoryDao.insert()
         }
     }
 
@@ -152,7 +162,6 @@ public class OrderServiceImpl implements OrderService
         /*更新数据*/
         orderDao.update(newOrder);
 
-        /*订单详情表修改*/
     }
 
     @Override
