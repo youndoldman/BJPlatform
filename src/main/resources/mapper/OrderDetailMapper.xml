@@ -48,6 +48,19 @@
         order_idx =  #{orderIdx}
     </select>
 
+    <select id="count" resultType="Integer">
+        SELECT COUNT(*)
+        FROM  <include refid="TblOrderDetail"/>
+        <where>
+            id > 0
+            <if test="goods != null">
+              <if test="goods.code != null">
+                and goods_idx = ( select id from t_goods where code = #{goods.code})
+              </if>
+            </if>
+        </where>
+    </select>
+
     <!--<delete id="deleteByIdx" parameterType="java.lang.Integer">-->
     <!--DELETE FROM <include refid="TblGoods"/> WHERE id= #{id}-->
     <!--</delete>-->

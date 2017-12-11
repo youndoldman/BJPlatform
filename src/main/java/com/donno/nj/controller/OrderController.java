@@ -6,12 +6,11 @@ import com.donno.nj.domain.*;
 import com.donno.nj.activiti.WorkFlowTypes;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.representation.ListRep;
-import com.donno.nj.representation.MapRep;
 import com.donno.nj.util.DistanceHelper;
 import com.donno.nj.service.*;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Interner;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -107,12 +106,17 @@ public class OrderController
                                    @RequestParam(value = "callInPhone", defaultValue = "") String callInPhone,
                                    @RequestParam(value = "userId", defaultValue = "") String userId,
                                    @RequestParam(value = "orderStatus", required = false) Integer orderStatus,
+                                   @RequestParam(value = "payStatus", required = false) PayStatus payStatus,
+                                   @RequestParam(value = "payType", required = false) PayType payType,
+                                   @RequestParam(value = "accessType", required = false) AccessType accessType,
                                    @RequestParam(value = "addrProvince", defaultValue = "") String addrProvince,
                                    @RequestParam(value = "addrCity", defaultValue = "") String addrCity,
                                    @RequestParam(value = "addrCounty", defaultValue = "") String addrCounty,
                                    @RequestParam(value = "addrDetail", defaultValue = "") String addrDetail,
                                    @RequestParam(value = "recvName", defaultValue = "") String recvName,
                                    @RequestParam(value = "recvPhone", defaultValue = "") String recvPhone,
+                                   @RequestParam(value = "startTime", defaultValue = "") String startTime,
+                                   @RequestParam(value = "endTime", defaultValue = "") String endTime,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
@@ -136,6 +140,21 @@ public class OrderController
         if (orderStatus != null)
         {
             params.putAll(ImmutableMap.of("orderStatus", orderStatus));
+        }
+
+        if (payStatus != null)
+        {
+            params.putAll(ImmutableMap.of("payStatus", payStatus));
+        }
+
+        if (payType != null)
+        {
+            params.putAll(ImmutableMap.of("payType", payType));
+        }
+
+        if (accessType != null)
+        {
+            params.putAll(ImmutableMap.of("accessType", accessType));
         }
 
         if (addrProvince.trim().length() > 0)
@@ -168,6 +187,15 @@ public class OrderController
             params.putAll(ImmutableMap.of("recvPhone", recvPhone));
         }
 
+        if ( startTime != null && startTime.trim().length() > 0 )
+        {
+            params.putAll(ImmutableMap.of("startTime", startTime));
+        }
+
+        if ( endTime != null && endTime.trim().length() > 0 )
+        {
+            params.putAll(ImmutableMap.of("endTime", endTime));
+        }
 
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 

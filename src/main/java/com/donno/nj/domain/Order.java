@@ -18,6 +18,7 @@ public class Order implements Serializable
     private PayType payType;//支付方式
 
     private Integer orderStatus;//订单状态
+    private PayStatus payStatus;
     private Boolean urgent;//是否加急
 
     private AccessType accessType;//订单接入类型
@@ -45,7 +46,6 @@ public class Order implements Serializable
     {
         return id;
     }
-
 
     public  String getOrderSn()
     {
@@ -81,6 +81,11 @@ public class Order implements Serializable
     public Integer getOrderStatus()
     {
         return orderStatus;
+    }
+
+    public PayStatus getPayStatus()
+    {
+        return payStatus;
     }
 
     public Boolean getUrgent()
@@ -169,6 +174,11 @@ public class Order implements Serializable
     public  void setOrderStatus(Integer orderStatus)
     {
         this.orderStatus = orderStatus;
+    }
+
+    public void setPayStatus(PayStatus payStatus)
+    {
+        this.payStatus = payStatus;
     }
 
     public void setUrgent(Boolean urgent)

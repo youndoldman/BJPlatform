@@ -3,15 +3,20 @@ package com.donno.nj.service.impl;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.dao.GoodsDao;
 import com.donno.nj.dao.GoodsTypeDao;
+import com.donno.nj.dao.OrderDao;
+import com.donno.nj.dao.OrderDetailDao;
 import com.donno.nj.domain.Goods;
 import com.donno.nj.domain.GoodsType;
+import com.donno.nj.domain.Group;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.service.GoodsService;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +30,10 @@ public class GoodsServiceImpl implements GoodsService
 
     @Autowired
     private GoodsTypeDao goodsTypeDao;
+
+    @Autowired
+    private OrderDetailDao orderDetailDao;
+
 
     @Override
     public Optional<Goods> findByCode(String code) {
@@ -156,7 +165,19 @@ public class GoodsServiceImpl implements GoodsService
     @OperationLog(desc = "删除商品信息")
     public void deleteById(Integer id)
     {
-        /*如果商品已经有销售记录，则不允许删除*/
+        Goods goods = goodsDao.findById(id);
+        if (goods == null)
+        {
+            throw new ServerSideBusinessException("商品信息不存在！",HttpStatus.NOT_FOUND);
+        }
+
+        /*检查，如果有订单记录，则不允许删除*/
+        Map params = new HashMap<String,String>();
+        params.putAll(ImmutableMap.of("goods", goods));
+        if (orderDetailDao.count(params) > 0)
+        {
+            throw new ServerSideBusinessException("商品已有销售记录，不能删除商品信息！",HttpStatus.FORBIDDEN);
+        }
 
         goodsDao.deleteByIdx(id);
     }
