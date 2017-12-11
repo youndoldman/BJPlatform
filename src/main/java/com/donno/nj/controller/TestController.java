@@ -59,7 +59,7 @@ public class TestController {
     }
 
     @RequestMapping(value = "/api/test/Pay/MicroApp", method = RequestMethod.GET)
-    public ResponseEntity testQRCode(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "totalFree") String totalFree,
+        public ResponseEntity testQRCode(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "totalFree") String totalFree,
                                      @RequestParam(value = "orderIndex") String orderIndex,
                                      @RequestParam(value = "userCode") String userCode) throws IOException {
         response.setContentType("application/json;charset=UTF-8");

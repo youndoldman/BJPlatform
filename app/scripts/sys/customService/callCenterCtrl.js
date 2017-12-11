@@ -1,8 +1,8 @@
 'use strict';
 
 customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
-    'rootService', 'pager', 'udcModal', 'CustomerManageService', 'CallCenterService',function ($scope, $rootScope, $filter, $location, Constants,
-                                                                           rootService, pager, udcModal, CustomerManageService,CallCenterService) {
+    'rootService', 'pager', 'udcModal', 'CustomerManageService', 'OrderService',function ($scope, $rootScope, $filter, $location, Constants,
+                                                                           rootService, pager, udcModal, CustomerManageService,OrderService) {
         var gotoPage = function (pageNo) {
             $scope.pager.setCurPageNo(pageNo);
             searchCustomer();
@@ -143,12 +143,12 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
 
             //将订单数据提交到后台
-            CallCenterService.createOrder($scope.currentOrder).then(function () {
+            OrderService.createOrder($scope.currentOrder).then(function () {
                 udcModal.info({"title": "处理结果", "message": "创建订单成功 "});
-                $scope.close(true);
+            }, function(value) {
+                udcModal.info({"title": "处理结果", "message": "创建订单失败 "+value.message});
             })
         };
-
 
         $scope.search = function () {
             $scope.pager.setCurPageNo(1);
@@ -262,7 +262,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 return;
             };
             var queryParams = {
-                goodsType: $scope.temp.selectedGoodsType,
+                typeName: $scope.temp.selectedGoodsType.name,
             };
             CustomerManageService.retrieveGoods(queryParams).then(function (goods) {
                 $scope.temp.goodsList = goods.items;
@@ -281,8 +281,9 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             CustomerManageService.retrieveGoodsTypes(queryParams).then(function (goodsTypes) {
                 $scope.temp.goodsTypesList = goodsTypes.items;
                 $scope.temp.selectedGoodsType = $scope.temp.goodsTypesList[0];
+                $scope.goodsTypeChange();
             });
-            $scope.goodsTypeChange();
+
         };
 
         init();

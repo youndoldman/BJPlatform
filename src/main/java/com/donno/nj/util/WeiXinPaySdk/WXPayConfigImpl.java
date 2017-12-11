@@ -29,26 +29,26 @@ public class WXPayConfigImpl extends WXPayConfig{
     }
 
     public String getAppID() {
-        return "wxb137ebfa3dc90901";
-    }
+        return "wxba30d188da9e1764";
+    }//用户端小程序APPID
     public String getAppSecret() {
-        return "528cdadaae30ffa95070230e1557c58f";
-    }
+        return "c1c9b7a09f220ecd9ebc0babc8472406";
+    }//用户端小程序Secret
     public String getOfficialID() {
-        return "wxab8acb865bb1637e";
-    }
+        return "wxa0520852c6131227";
+    }//公众号APPID
     public String getMchID() {
-        return "11473623";
-    }
+        return "1313996901";
+    }//商户号
     public String getKey() {
-        return "2ab9071b06b9f739b950ddb41db2690d";
-    }
+        return "panva95007panva95007panva95007PA";
+    }//商户号秘钥
     public String getSeverIP() {
         return "118.31.77.228";
-    }
+    }//服务器IP
     public String getNotifyUrl() {
-        return "https://www.baidu.com";
-    }
+        return "https://www.yunnanbaijiang.com/api/payCallBack";
+    }//服务器回调地址
 
     public InputStream getCertStream() {
         ByteArrayInputStream certBis;

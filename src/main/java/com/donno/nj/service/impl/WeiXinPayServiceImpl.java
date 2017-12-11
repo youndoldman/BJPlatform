@@ -68,6 +68,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService
     {
         System.out.println("小程序支付");
         HashMap<String, String> data = new HashMap<String, String>();
+        data.put("openid", openId);
         data.put("appid", wxPayConfigImpl.getAppID());
         data.put("body", "云南百江燃气公司订气业务");
         data.put("out_trade_no", orderIndex);

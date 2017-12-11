@@ -1,6 +1,6 @@
 'use strict';
 
-customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerManageService', 'title', 'initVal','udcModal', 'GoodsService',function ($scope, close, CustomerManageService, title, initVal, udcModal,GoodsService) {
+customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerManageService', 'title', 'initVal','udcModal',function ($scope, close, CustomerManageService, title, initVal, udcModal) {
     $scope.modalTitle = title;
 
 

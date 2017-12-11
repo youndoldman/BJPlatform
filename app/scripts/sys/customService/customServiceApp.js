@@ -34,6 +34,19 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                     rootService.updateActiveNavL2(NavItem.CustomService.menuItems[0]);
                 }
             })
+            .state('CustomService.orderManage',{
+                url:'/orderManage',
+                views: {
+                    "content@CustomService": {
+                        templateUrl: '../pages/CustomService/orderList.htm',
+                        controller: 'OrderCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[1]);
+                }
+            })
             .state('CustomService.customerManage',{
                 url:'/customerManage',
                 views: {
@@ -44,7 +57,7 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[1]);
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[2]);
                 }
             });
 
