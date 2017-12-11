@@ -41,12 +41,13 @@ public class OrderController
     private GroupService groupService;
 
 
-    @RequestMapping(value = "/api/Orders/{userId}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/api/TaskOrders/{userId}", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取任务订单列表")
     public ResponseEntity retrieveTaskOrder(@PathVariable("userId") String userId,
-                                   @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
-                                   @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
-                                   @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
+                                            @RequestParam(value = "orderStatus", defaultValue = "") Integer orderStatus,
+                                            @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
+                                            @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
+                                            @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
     {
         List<Task> taskList = workFlowService.getTasksByUserId(userId);
 
@@ -55,32 +56,49 @@ public class OrderController
             Optional<Order> order = orderService.findBySn(task.getProcess().getBuinessKey());
             if (order.isPresent())
             {
-                task.setObject(order.get());
+                if(orderStatus != null )
+                {
+                    if (order.get().getOrderStatus() == orderStatus)
+                    {
+                        task.setObject(order.get());
+                    }
+                }
+                else
+                {
+                    task.setObject(order.get());
+                }
             }
         }
 
         return ResponseEntity.ok(ListRep.assemble(taskList, taskList.size()));
     }
 
-//    @RequestMapping(value = "/api/Orders/Process/{userId}", method = RequestMethod.GET, produces = "application/json")
-//    @OperationLog(desc = "任务订单处理")
-//    public ResponseEntity taskOrderProcess(@PathVariable("userId") String userId,
-//                                            @RequestParam(value = "orderStatus", required = true) Integer orderStatus)
-//    {
-//        List<Task> taskList = workFlowService.getTasksByUserId(userId);
-//
-//        for (Task task:taskList)
-//        {
-//            Optional<Order> order = orderService.findBySn(task.getProcess().getBuinessKey());
-//            if (order.isPresent())
-//            {
-//                task.setObject(order.get());
-//            }
-//        }
-//
-//        return ResponseEntity.ok();
-//    }
+    @RequestMapping(value = "/api/TaskOrders/Process/{taskId}", method = RequestMethod.GET, produces = "application/json")
+    @OperationLog(desc = "任务订单处理")
+    public ResponseEntity taskOrderProcess( @PathVariable("taskId") String taskId,
+                                            @RequestParam(value = "businessKey", required = true) String businessKey,
+                                            @RequestParam(value = "candiUser", required = true) String candiUser,
+                                            @RequestParam(value = "orderStatus", required = true) Integer orderStatus)
+    {
+        /*检查订单是否存在，更新订单状态*/
+        Optional<Order> orderOptional=  orderService.findBySn(businessKey);
+        if (!orderOptional.isPresent())
+        {
+            throw new ServerSideBusinessException("定单不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
+        else
+        {
+            orderOptional.get().setOrderStatus(orderStatus);
+            orderService.update(orderOptional.get().getId(),orderOptional.get());
+        }
 
+        /*检查任务是否存在，处理订单*/
+        Map<String, Object> variables = new HashMap<String, Object>();
+        variables.put(ServerConstantValue.ACT_FW_STG_CANDI_USERS,candiUser);
+        workFlowService.completeTask(taskId,variables);
+
+        return ResponseEntity.ok().build();
+    }
 
 
     @RequestMapping(value = "/api/Orders", method = RequestMethod.GET, produces = "application/json")
@@ -164,9 +182,6 @@ public class OrderController
     {
         ResponseEntity responseEntity;
 
-        /*创建订单入库*/
-        orderService.create(order);
-
         /*启动流程*/
         Map<String, Object> variables = new HashMap<String, Object>();
 
@@ -174,6 +189,9 @@ public class OrderController
         if(group.isPresent())
         {
             //variables.put(ServerConstantValue.ACT_FW_STG_ASSIGN_USERS,"");
+
+            /*创建订单入库*/
+            orderService.create(order);
 
             /*指定可办理的组*/
             variables.put(ServerConstantValue.ACT_FW_STG_CANDI_GROUPS,String.valueOf(group.get().getId()));
@@ -208,10 +226,8 @@ public class OrderController
         }
         else
         {
-            orderService.deleteById(order.getId());
-            throw new ServerSideBusinessException("派单失败！", HttpStatus.NOT_ACCEPTABLE);
+            throw new ServerSideBusinessException("创建定单失败，系统用户组信息错误！", HttpStatus.NOT_ACCEPTABLE);
         }
-
 
         URI uri = ucBuilder.path("/api/Orders/{id}").buildAndExpand(order.getId()).toUri();
         responseEntity = ResponseEntity.created(uri).build();

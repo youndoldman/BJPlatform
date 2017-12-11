@@ -5,10 +5,13 @@ import com.donno.nj.dao.*;
 import com.donno.nj.domain.*;
 import com.donno.nj.service.CustomerService;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.donno.nj.exception.ServerSideBusinessException;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +34,13 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
 
     @Autowired
     private CustomerCompanyDao customerCompanyDao;
+
+    @Autowired
+    private OrderDao orderDao;
+
+
+    @Autowired
+    private UserPositionDao userPositionDao;
 
     @Override
     @OperationLog(desc = "查询客户信息")
@@ -107,13 +117,11 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
             }
         }
 
-
         /*用户组不允许修改*/
         if (newCustomer.getUserGroup() != null)
         {
             newCustomer.setUserGroup(null);
         }
-
 
        /*客户地址信息*/
         if (newCustomer.getAddress() != null)
@@ -161,9 +169,22 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
     @OperationLog(desc = "删除客户")
     public void deleteById(Integer id)
     {
+        Customer customer = customerDao.findById(id);
+        if (customer == null)
+        {
+            throw new ServerSideBusinessException("用户不存在，不能进行删除操作！",HttpStatus.NOT_FOUND);
+        }
+
         /*检查，如果有订单记录，则不允许删除*/
+        Map params = new HashMap<String,String>();
+        params.putAll(ImmutableMap.of("userId", customer.getUserId()));
+        if (orderDao.count(params) > 0)
+        {
+            throw new ServerSideBusinessException("客户已有订单记录，不能删除客户信息！",HttpStatus.FORBIDDEN);
+        }
 
         /*删除位置信息表*/
+        userPositionDao.deleteByUserId(customer.getUserId());
 
         /*删除主表*/
         userDao.delete(id);

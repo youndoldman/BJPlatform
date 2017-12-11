@@ -8,8 +8,8 @@
         <result column="order_sn" property="orderSn" jdbcType="VARCHAR"/>
         <result column="call_in_phone" property="callInPhone" jdbcType="VARCHAR"/>
         <result column="amount" property="orderAmount" jdbcType="FLOAT"/>
-        <!--<result column="pay_type" property="payType" jdbcType="com.donno.nj.domain.PayType"/>-->
-        <!--<result column="access_type" property="accessType" jdbcType="com.donno.nj.domain.AccessType"/>-->
+        <result column="pay_type" property="payType"  typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+        <result column="access_type" property="accessType" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
 
         <result column="status" property="orderStatus" jdbcType="INTEGER"/>
         <result column="urgent" property="urgent" jdbcType="BOOLEAN"/>
@@ -21,7 +21,7 @@
         <result column="latitude" property="recvLatitude" jdbcType="DOUBLE"/>
         <result column="recv_name" property="recvName" jdbcType="VARCHAR"/>
         <result column="recv_phone" property="recvPhone" jdbcType="VARCHAR"/>
-
+        <result column="reserve_time" property="reserveTime" jdbcType="DATE"/>
         <result column="comment" property="comment" jdbcType="VARCHAR"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
@@ -201,6 +201,8 @@
         <if test="recvName != null">recv_name = #{recvName},</if>
         <if test="recvPhone != null">recv_phone = #{recvPhone},</if>
         <if test="urgent != null">urgent = #{urgent}</if>
+        <if test="comment != null">comment = #{comment}</if>
+        <if test="note != null">note = #{note}</if>
     </set>
     WHERE id = #{id}
     </update>

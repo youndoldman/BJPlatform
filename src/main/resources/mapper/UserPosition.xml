@@ -85,10 +85,15 @@
     <delete id="delete" >
         DELETE FROM <include refid="TableName"/>
         <where>
-            id > 0
-            <if test="id != null">
-                and  id = #{id}
-            </if>
+            id = #{id}
+        </where>
+    </delete>
+
+
+    <delete id="deleteByUserId" >
+        DELETE FROM <include refid="TableName"/>
+        <where>
+            user_idx = (select id from t_user where user_id = #{userId})
         </where>
     </delete>
 

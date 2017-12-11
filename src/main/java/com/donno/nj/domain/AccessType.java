@@ -1,7 +1,7 @@
 package com.donno.nj.domain;
 
 
-public enum AccessType
+public enum AccessType implements IEnum
 {
     ATWeixin("微信接入", 0), ATCustomService("客服接入", 1);
 

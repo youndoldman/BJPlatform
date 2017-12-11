@@ -7,4 +7,5 @@ import com.donno.nj.domain.UserPosition;
 
 public interface UserPositionDao extends BaseDao<UserPosition>
 {
+    void  deleteByUserId(String userId);
 }

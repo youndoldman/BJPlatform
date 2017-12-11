@@ -70,6 +70,11 @@ public class OrderServiceImpl implements OrderService
             order.setUrgent(Boolean.FALSE);
         }
 
+        if (order.getOrderStatus() == null)
+        {
+            order.setOrderStatus(0);
+        }
+
         if (order.getPayType() == null)
         {
             throw new ServerSideBusinessException("订单信息不全，请补充支付类型信息！", HttpStatus.NOT_ACCEPTABLE);
