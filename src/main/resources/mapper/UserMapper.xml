@@ -61,6 +61,8 @@
             </if>
 
             <if test="note != null">note = #{note}</if>
+
+            <if test="updateTime != null">update_time = #{updateTime}</if>
         </set>
         WHERE id = #{id}
     </update>

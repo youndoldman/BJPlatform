@@ -81,9 +81,12 @@ public class SysUserController
                 responseEntity = ResponseEntity.ok(sysUserList.get(0));
 
                 /*设置用户在线*/
-                sysUserList.get(0).setAliveStatus(AliveStatus.ASOnline);
-                sysUserList.get(0).setAliveUpdateTime(new Date());
-                sysUserService.update(sysUserList.get(0).getId(),sysUserList.get(0));
+                SysUser sysUser = new SysUser();
+                sysUser.setId(sysUserList.get(0).getId());
+                sysUser.setAliveStatus(AliveStatus.ASOnline);
+                sysUser.setUpdateTime(new Date());
+                sysUser.setAliveUpdateTime(new Date());
+                sysUserService.update(sysUser.getId(),sysUser);
             }
             else
             {
