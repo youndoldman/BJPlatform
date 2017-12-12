@@ -5,8 +5,10 @@ import java.util.Date;
 public class OrderOpHistory
 {
     private Integer id;
-    private Integer orderIdx;
-    private Integer operIdx;
+
+    private String orderSn;
+    private String userId;
+
     private String opLog;
     private Date updateTime;
 
@@ -15,14 +17,14 @@ public class OrderOpHistory
         return id;
     }
 
-    public Integer getOrderIdx()
+    public String getOrderSn()
     {
-        return  orderIdx;
+        return  orderSn;
     }
 
-    public Integer getOperIdx()
+    public String getUserId()
     {
-        return operIdx;
+        return userId;
     }
 
     public String getOpLog()
@@ -40,14 +42,14 @@ public class OrderOpHistory
         this.id = id;
     }
 
-    public void setOrderIdx(Integer orderIdx)
+    public void setOrderSn(String orderSn)
     {
-        this.orderIdx = orderIdx;
+        this.orderSn = orderSn;
     }
 
-    public void setOperIdx(Integer operIdx)
+    public void setUserId(String userId)
     {
-        this.orderIdx = operIdx;
+        this.userId = userId;
     }
 
     public void setOpLog(String opLog)
@@ -59,5 +61,4 @@ public class OrderOpHistory
     {
         this.updateTime = updateTime;
     }
-
 }

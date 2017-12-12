@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.SystemParamDao">
+    <resultMap id="BaseResultMap" type="com.donno.nj.domain.SystemParam">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <id column="alive_expire_time" property="aliveExpireTime" jdbcType="INTEGER"/>
+        <id column="alive_check_time" property="aliveCheckTime" jdbcType="INTEGER"/>
+        <id column="push_order_range" property="pushOrderRange" jdbcType="INTEGER"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="TableName">
+        t_system_param
+    </sql>
+
+    <select id="getList" resultMap="BaseResultMap">
+        SELECT  *
+        FROM <include refid="TableName"/>
+    </select>
+    <select id="getDispatchRange" resultType="Integer">
+        SELECT  push_order_range
+        FROM <include refid="TableName"/>
+    </select>
+
+
+
+</mapper>

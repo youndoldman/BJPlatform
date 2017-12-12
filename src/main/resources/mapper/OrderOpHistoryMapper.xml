@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.OrderOpHistoryDao">
+    <resultMap id="BaseResultMap" type="com.donno.nj.domain.OrderOpHistory">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <id column="order_idx" property="aliveExpireTime" jdbcType="INTEGER"/>
+        <id column="oper_idx" property="aliveCheckTime" jdbcType="INTEGER"/>
+        <id column="oper_log" property="pushOrderRange" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="TableName">
+        t_order_op_his
+    </sql>
+
+    <select id="getList" resultMap="BaseResultMap">
+        SELECT  *
+        FROM <include refid="TableName"/>
+    </select>
+
+
+    <sql id="InsertColumnList">
+        order_idx, oper_idx, oper_log
+    </sql>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO <include refid="TableName"/>(<include refid="InsertColumnList"/>)
+        VALUES(
+        (select id from t_order where order_sn = #{orderSn}),
+        (select id from t_user where user_id = #{userId}),
+        #{opLog})
+    </insert>
+
+
+
+</mapper>

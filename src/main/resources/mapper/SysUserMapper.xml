@@ -12,6 +12,8 @@
         <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR"/>
         <result column="office_phone" property="officePhone" jdbcType="VARCHAR"/>
         <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="alive_status" property="aliveStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+        <result column="alive_update_time" property="aliveUpdateTime" jdbcType="TIMESTAMP"/>
 
         <result column="note" property="note" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
@@ -60,6 +62,8 @@
             <if test="mobilePhone != null">mobile_phone = #{mobilePhone},</if>
             <if test="officePhone != null">office_phone = #{officePhone},</if>
             <if test="email != null">email = #{email},</if>
+            <if test="aliveStatus != null">alive_status = #{aliveStatus.index},</if>
+            <if test="aliveUpdateTime != null">alive_update_time = #{aliveUpdateTime},</if>
         </set>
         WHERE user_idx = #{id}
     </update>
@@ -77,7 +81,7 @@
 
     <sql id="JoinSelectColumn">
         t_user.id, t_user.user_id,t_user.name,t_user.identity,t_user.group_idx,  t_user.password,t_user.note,t_user.create_time,t_user.update_time,
-        t_sysuser.department_idx,t_sysuser.job_number,t_sysuser.mobile_phone,t_sysuser.office_phone,t_sysuser.email
+        t_sysuser.department_idx,t_sysuser.job_number,t_sysuser.mobile_phone,t_sysuser.office_phone,t_sysuser.email,t_sysuser.alive_status,t_sysuser.alive_update_time
         </sql>
 
     <select id="getList" resultMap="DetailResultMap">
@@ -96,6 +100,10 @@
 
         <if test="identity != null">
             and (t_user.identity = '${identity}')
+        </if>
+
+        <if test="aliveStatus != null">
+            and (t_user.alive_status = '${aliveStatus}')
         </if>
 
         <if test="jobNumber != null">
@@ -169,6 +177,10 @@
             and (t_sysuser.office_phone = '${officePhone}')
         </if>
 
+        <if test="aliveStatus != null">
+            and (t_user.alive_status = '${aliveStatus}')
+        </if>
+
     </select>
 
     <select id="findByUserId" resultMap="DetailResultMap">
@@ -177,11 +189,21 @@
         WHERE
         (<include refid="JoinWhereCondition"/>)
         and
-        user_id = #{userId}
+        t_user.user_id = #{userId}
     </select>
 
 
 
+    <update id="checkAlive">
+        UPDATE <include refid="TblSysUser"/>
+        <set>
+            alive_status = 0
+        </set>
+        WHERE
+        (select  TIMESTAMPDIFF(MINUTE,alive_update_time, now()) >
+        (select alive_expire_time from t_system_param )
+        )
+    </update>
 
 
 

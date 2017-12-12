@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
 
 @Service
 public class SysUserServiceImpl extends UserServiceImpl implements SysUserService
@@ -48,6 +49,11 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
         return sysUserDao.count(params);
     }
 
+    public void checkAlive()
+    {
+        sysUserDao.checkAlive(new Date());
+    }
+
     @Override
     public void create(SysUser sysUser)
     {
@@ -62,12 +68,9 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
         /*部门信息校验*/
         checkDepartment(sysUser);
 
-        long retCode = userDao.insert(sysUser);//插入用户基表数据，自动返回id值到user
+        userDao.insert(sysUser);//插入用户基表数据，自动返回id值到user
+        sysUserDao.insert(sysUser);//插入用户表数据
 
-        if (retCode > 0)
-        {
-            sysUserDao.insert(sysUser);//插入用户表数据
-        }
     }
 
 

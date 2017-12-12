@@ -3,14 +3,13 @@ package com.donno.nj.controller;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.*;
-import com.donno.nj.activiti.WorkFlowTypes;
+
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.representation.ListRep;
-import com.donno.nj.util.DistanceHelper;
 import com.donno.nj.service.*;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
-import org.joda.time.DateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +37,12 @@ public class OrderController
 
     @Autowired
     private GroupService groupService;
+
+    @Autowired
+    private SystemParamService systemParamService;
+
+    @Autowired
+    private OrderOpHistoryService orderOpHistoryService;
 
 
     @RequestMapping(value = "/api/TaskOrders/{userId}", method = RequestMethod.GET, produces = "application/json")
@@ -79,6 +84,12 @@ public class OrderController
                                             @RequestParam(value = "candiUser", required = true) String candiUser,
                                             @RequestParam(value = "orderStatus", required = true) Integer orderStatus)
     {
+        /*orderStatus校验*/
+        if(OrderStatus.getName(orderStatus) == null)
+        {
+            throw new ServerSideBusinessException("定单不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
         /*检查订单是否存在，更新订单状态*/
         Optional<Order> orderOptional=  orderService.findBySn(businessKey);
         if (!orderOptional.isPresent())
@@ -88,16 +99,14 @@ public class OrderController
         else
         {
             orderOptional.get().setOrderStatus(orderStatus);
-            orderService.update(orderOptional.get().getId(),orderOptional.get());
+            Map<String, Object> variables = new HashMap<String, Object>();
+            variables.put(ServerConstantValue.ACT_FW_STG_CANDI_USERS,candiUser);
+            orderService.update(taskId,variables,orderOptional.get().getId(),orderOptional.get());
         }
-
-        /*检查任务是否存在，处理订单*/
-        Map<String, Object> variables = new HashMap<String, Object>();
-        variables.put(ServerConstantValue.ACT_FW_STG_CANDI_USERS,candiUser);
-        workFlowService.completeTask(taskId,variables);
 
         return ResponseEntity.ok().build();
     }
+
 
 
     @RequestMapping(value = "/api/Orders", method = RequestMethod.GET, produces = "application/json")
@@ -210,52 +219,8 @@ public class OrderController
     {
         ResponseEntity responseEntity;
 
-        /*启动流程*/
-        Map<String, Object> variables = new HashMap<String, Object>();
-
-        Optional<Group>  group = groupService.findByCode(ServerConstantValue.GP_CUSTOMER_SERVICE);
-        if(group.isPresent())
-        {
-            //variables.put(ServerConstantValue.ACT_FW_STG_ASSIGN_USERS,"");
-
-            /*创建订单入库*/
-            orderService.create(order);
-
-            /*指定可办理的组*/
-            variables.put(ServerConstantValue.ACT_FW_STG_CANDI_GROUPS,String.valueOf(group.get().getId()));
-
-            /*指定可办理该流程用户,根据经纬度寻找合适的派送工*/
-            Map findDispatchParams = new HashMap<String,String>();
-            findDispatchParams.putAll(ImmutableMap.of("groupCode", ServerConstantValue.GP_DISPATCH));
-            List<SysUser> sysUsersList = sysUserService.retrieve(findDispatchParams);
-            if (sysUsersList.size() > 0)
-            {
-                String candUser = "";
-                for (SysUser sysUser:sysUsersList)
-                {
-                    if (sysUser.getUserPosition() != null)
-                    {
-                        Double distance = DistanceHelper.Distance(order.getRecvLatitude(),order.getRecvLongitude(),sysUser.getUserPosition().getLatitude(),sysUser.getUserPosition().getLongitude());
-                        if ( distance < 5)
-                        {
-                            if (candUser.trim().length() > 0 )
-                            {
-                                candUser = candUser + ",";
-                            }
-                            candUser = candUser + sysUser.getUserId();
-                        }
-                    }
-                }
-
-                variables.put(ServerConstantValue.ACT_FW_STG_CANDI_USERS,candUser);
-            }
-
-            workFlowService.createWorkFlow(WorkFlowTypes.GAS_ORDER_FLOW,order.getCustomer().getUserId(),variables,order.getOrderSn());
-        }
-        else
-        {
-            throw new ServerSideBusinessException("创建定单失败，系统用户组信息错误！", HttpStatus.NOT_ACCEPTABLE);
-        }
+        /*创建订单入库*/
+        orderService.create(order);
 
         URI uri = ucBuilder.path("/api/Orders/{id}").buildAndExpand(order.getId()).toUri();
         responseEntity = ResponseEntity.created(uri).build();
@@ -302,5 +267,7 @@ public class OrderController
 
         return responseEntity;
     }
+
+
 
 }

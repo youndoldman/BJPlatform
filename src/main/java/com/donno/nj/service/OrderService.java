@@ -20,5 +20,9 @@ public interface OrderService
 
     void update(Integer id, Order newOrder);
 
+    void update(String taskId,Map<String, Object> variables,Integer id, Order newOrder);//订单任务更新
+
     void deleteById(Integer id);
+
+    void OrderOperHistory(String orderSn,Integer orderStatus) ;
 }

@@ -2,6 +2,7 @@ package com.donno.nj.controller;
 
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
+import com.donno.nj.domain.AliveStatus;
 import com.donno.nj.domain.UserPosition;
 import com.donno.nj.domain.SysUser;
 import com.donno.nj.domain.User;
@@ -23,18 +24,33 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Timer;
+import java.util.TimerTask;
 import static com.donno.nj.util.ParamMapBuilder.paginationParams;
-import static com.google.common.collect.Maps.newHashMap;
-
+import java.util.Date;
 @RestController
 public class SysUserController
 {
     @Autowired
     private SysUserService sysUserService;
 
-    @Autowired
-    private GroupService groupService;
+    private static Timer timer;
+
+    public  SysUserController()
+    {
+        timer = new Timer();
+        timer.schedule(new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                if (sysUserService != null)
+                {
+                    sysUserService.checkAlive();
+                }
+            }
+        }, 0, 20000);
+    }
 
 
     @RequestMapping(value = "/api/sysusers/login", method = RequestMethod.GET, produces = "application/json")
@@ -57,13 +73,17 @@ public class SysUserController
         {
             Map params = new HashMap<String,String>();
             params.putAll(ImmutableMap.of("userId", userId));
-            params.putAll(paginationParams(1, 1, ""));
 
             List<SysUser> sysUserList = sysUserService.retrieve(params);
-            if (sysUserList.size() > 0)
+            if (sysUserList.size() == 1)
             {
                 AppUtil.setCurrentLoginUser(validUser.get());
                 responseEntity = ResponseEntity.ok(sysUserList.get(0));
+
+                /*设置用户在线*/
+                sysUserList.get(0).setAliveStatus(AliveStatus.ASOnline);
+                sysUserList.get(0).setAliveUpdateTime(new Date());
+                sysUserService.update(sysUserList.get(0).getId(),sysUserList.get(0));
             }
             else
             {
@@ -74,12 +94,43 @@ public class SysUserController
         return responseEntity;
     }
 
-    @RequestMapping(value = "/api/sysusers/logout", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity logout(HttpServletRequest request, HttpServletResponse response) throws IOException
+
+    @RequestMapping(value = "/api/sysusers/KeepAlive/{userId}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity keepAlive(@PathVariable("userId") String userId)
     {
-        AppUtil.clearCurrentLoginUser();
+        /*设置用户在线*/
+        Map params = new HashMap<String,String>();
+        params.putAll(ImmutableMap.of("userId", userId));
+        List<SysUser> sysUserList = sysUserService.retrieve(params);
+        if (sysUserList.size() == 1)
+        {
+            sysUserList.get(0).setAliveStatus(AliveStatus.ASOnline);
+            sysUserList.get(0).setAliveUpdateTime(new Date());
+            sysUserService.update(sysUserList.get(0).getId(),sysUserList.get(0));
+        }
+
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+    @RequestMapping(value = "/api/sysusers/logout/{userId}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity logout(@PathVariable("userId") String userId,HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        AppUtil.clearCurrentLoginUser();
+
+        /*设置用户离线*/
+        Map params = new HashMap<String,String>();
+        params.putAll(ImmutableMap.of("userId", userId));
+        List<SysUser> sysUserList = sysUserService.retrieve(params);
+        if (sysUserList.size() == 1)
+        {
+            sysUserList.get(0).setAliveStatus(AliveStatus.ASOffline);
+            sysUserService.update(sysUserList.get(0).getId(),sysUserList.get(0));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+
 
     @RequestMapping(value = "/api/sysusers", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取客户列表")
@@ -91,6 +142,7 @@ public class SysUserController
                                    @RequestParam(value = "departmentCode", defaultValue = "") Integer departmentCode,
                                    @RequestParam(value = "mobilePhone", defaultValue = "") String mobilePhone,
                                    @RequestParam(value = "officePhone", defaultValue = "") String officePhone,
+                                   @RequestParam(value = "aliveStatus", required = false) AliveStatus aliveStatus,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
@@ -135,6 +187,12 @@ public class SysUserController
         {
             params.putAll(ImmutableMap.of("officePhone", officePhone));
         }
+
+        if (aliveStatus != null)
+        {
+            params.putAll(ImmutableMap.of("aliveStatus", aliveStatus));
+        }
+
 
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
