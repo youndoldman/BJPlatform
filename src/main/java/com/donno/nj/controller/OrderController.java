@@ -29,17 +29,10 @@ public class OrderController
     @Autowired
     private OrderService orderService;
 
-    @Autowired
-    private SysUserService sysUserService;
 
     @Autowired
     private WorkFlowService workFlowService;
 
-    @Autowired
-    private GroupService groupService;
-
-    @Autowired
-    private SystemParamService systemParamService;
 
     @Autowired
     private OrderOpHistoryService orderOpHistoryService;
@@ -107,6 +100,32 @@ public class OrderController
         return ResponseEntity.ok().build();
     }
 
+
+    @RequestMapping(value = "/api/TaskOrders/OpHistory", method = RequestMethod.GET, produces = "application/json")
+    @OperationLog(desc = "获取任务订单更改历史")
+    public ResponseEntity retrieveTaskOrderOpHis(@RequestParam(value = "orderSn", defaultValue = "") String orderSn,
+                                                 @RequestParam(value = "userId", defaultValue = "") String userId,
+                                                 @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
+                                                 @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
+                                                 @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
+    {
+        Map params = new HashMap<String,String>();
+        if (orderSn.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("orderSn", orderSn));
+        }
+
+        if (userId.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("userId", userId));
+        }
+
+        params.putAll(paginationParams(pageNo, pageSize, orderBy));
+
+        List<OrderOpHistory> orders = orderOpHistoryService.retrieve(params);
+        Integer count = orderOpHistoryService.count(params);
+        return ResponseEntity.ok(ListRep.assemble(orders, count));
+    }
 
 
     @RequestMapping(value = "/api/Orders", method = RequestMethod.GET, produces = "application/json")
@@ -267,6 +286,7 @@ public class OrderController
 
         return responseEntity;
     }
+
 
 
 

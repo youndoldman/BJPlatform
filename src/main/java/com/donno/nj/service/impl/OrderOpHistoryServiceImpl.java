@@ -8,6 +8,9 @@ import com.donno.nj.service.OrderOpHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class OrderOpHistoryServiceImpl implements OrderOpHistoryService
 {
@@ -21,4 +24,19 @@ public class OrderOpHistoryServiceImpl implements OrderOpHistoryService
         orderOpHistoryDao.insert(orderOpHistory);
     }
 
+
+
+    @Override
+    @OperationLog(desc = "查询订单更改记录信息")
+    public List<OrderOpHistory> retrieve(Map params)
+    {
+        List<OrderOpHistory> orderOpHistories = orderOpHistoryDao.getList(params);
+        return orderOpHistories;
+    }
+
+    @Override
+    @OperationLog(desc = "查询订单更改记录数量")
+    public Integer count(Map params) {
+        return orderOpHistoryDao.count(params);
+    }
 }

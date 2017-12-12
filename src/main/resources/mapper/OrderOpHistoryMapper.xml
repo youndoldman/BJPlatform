@@ -4,19 +4,59 @@
 <mapper namespace="com.donno.nj.dao.OrderOpHistoryDao">
     <resultMap id="BaseResultMap" type="com.donno.nj.domain.OrderOpHistory">
         <id column="id" property="id" jdbcType="INTEGER"/>
-        <id column="order_idx" property="aliveExpireTime" jdbcType="INTEGER"/>
-        <id column="oper_idx" property="aliveCheckTime" jdbcType="INTEGER"/>
-        <id column="oper_log" property="pushOrderRange" jdbcType="VARCHAR"/>
+        <id column="order_sn" property="orderSn" jdbcType="INTEGER"/>
+        <id column="user_id" property="userId" jdbcType="INTEGER"/>
+        <id column="oper_log" property="opLog" jdbcType="VARCHAR"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="TableName">
-        t_order_op_his
+        t_order_op_his,t_order,t_user
     </sql>
 
+
     <select id="getList" resultMap="BaseResultMap">
-        SELECT  *
+        SELECT t_order_op_his.id, t_order_op_his.oper_log,t_order.order_sn as order_sn,t_user.user_id as user_id,t_order_op_his.update_time
         FROM <include refid="TableName"/>
+        WHERE
+        (t_order_op_his.order_idx = t_order.id and t_order_op_his.oper_idx = t_user.id)
+
+        <if test="orderSn != null">
+            AND  t_order_op_his.order_idx = (select id from t_order where order_sn = #{orderSn})
+        </if>
+
+        <if test="userId != null">
+            AND  t_order_op_his.oper_idx = (select id from t_user where user_id = #{userId})
+        </if>
+
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+
+    <select id="count" resultType="Integer">
+        SELECT count(*)
+        FROM  t_order_op_his
+        WHERE
+        id > 0
+
+        <if test="orderSn != null">
+            AND  order_idx = (select id from t_order where order_sn = #{orderSn})
+        </if>
+
+        <if test="userId != null">
+            AND  oper_idx = (select id from t_user where user_id = #{userId})
+        </if>
+
     </select>
 
 
