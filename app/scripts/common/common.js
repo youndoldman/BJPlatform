@@ -184,8 +184,9 @@ commonModule.controller('CommonModuleCtrl', ['$rootScope','$scope', '$interval',
     };
     $scope.logout = function ()
     {
+        var curUser = sessionStorage.getCurUser();
         var logoutUri = URI.resources.logout;
-        promise.wrap($http.get(logoutUri)).then(function(value){
+        promise.wrap($http.get(logoutUri+"/"+curUser.userId)).then(function(value){
             sessionStorage.clearCurUser();
             $window.location.href = URI.resources.loginPage;
         }, function(value) {

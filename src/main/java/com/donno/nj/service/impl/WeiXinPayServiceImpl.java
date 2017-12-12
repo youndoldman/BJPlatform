@@ -92,8 +92,8 @@ public class WeiXinPayServiceImpl implements WeiXinPayService
                 result.put("timeStamp", String.valueOf(WXPayUtil.getCurrentTimestamp()));
                 result.put("nonceStr", WXPayUtil.generateUUID());
                 result.put("package", "prepay_id="+response.get("prepay_id"));
-                result.put("signType", WXPayConstants.MD5);
-                result.put("paySign", WXPayUtil.generateSignature(result,wxPayConfigImpl.getKey()));
+                result.put("signType", WXPayConstants.HMACSHA256);
+                result.put("paySign", WXPayUtil.generateSignature(result,wxPayConfigImpl.getKey(), WXPayConstants.SignType.HMACSHA256));
 
             }else {
                 //统一下单失败
