@@ -1,8 +1,8 @@
 'use strict';
 
 customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
-    'rootService', 'pager', 'udcModal', 'CustomerManageService', 'OrderService',function ($scope, $rootScope, $filter, $location, Constants,
-                                                                           rootService, pager, udcModal, CustomerManageService,OrderService) {
+    'rootService', 'pager', 'udcModal', 'CustomerManageService', 'OrderService','sessionStorage',function ($scope, $rootScope, $filter, $location, Constants,
+                                                                           rootService, pager, udcModal, CustomerManageService,OrderService,sessionStorage) {
         var gotoPage = function (pageNo) {
             $scope.pager.setCurPageNo(pageNo);
             searchCustomer();

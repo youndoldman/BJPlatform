@@ -1,0 +1,82 @@
+﻿
+<div class="modal" tabindex="-1">
+    <div class="modal-dialog"  style=" width: 1200px;">
+        <div class="modal-content">
+            <form name="userForm" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="close(false)" data-dismiss="modal"
+                            aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">&nbsp;{{modalTitle}}&nbsp;</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="panel-body">
+                        <div id="mapContainer" class="col-md-7" style="height:500px"></div>
+                        <div class="col-md-5">
+                            <div class="ribbon">
+                                <a href=""><span class="home fa fa-home"></span></a>
+                                <ol class="breadcrumb">
+                                    <li>订单信息</li>
+                                </ol>
+                            </div>
+                            <div class="input-group pdb15" style="margin-top: 20px">
+                                <label class="col-md-2 control-label input-label">收货人：</label>
+                                <div class="col-md-2 input-width">
+                                    <input type="text"  class="form-control" ng-model="vm.currentOrder.recvName"  required>
+                                </div>
+
+                            </div>
+                            <div class="input-group pdb15">
+                                <label class="col-md-2 control-label input-label">联系电话：</label>
+                                <div class="col-md-1 input-width">
+                                    <input type="text"  class="form-control" ng-model="vm.currentOrder.recvPhone"  required>
+                                </div>
+                            </div>
+                            <div class="input-group pdb15">
+                                <label class="col-md-2 control-label input-label">收货地址：</label>
+                                <div class="col-md-3 input-width">
+                                    <input type="text"  class="form-control" value={{vm.currentOrder.recvAddr.province}}{{vm.currentOrder.recvAddr.city}}{{vm.currentOrder.recvAddr.county}}{{vm.currentOrder.recvAddr.detail}} required>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="ribbon">
+                                <a href=""><span class="home fa fa-home"></span></a>
+                                <ol class="breadcrumb">
+                                    <li>配送工信息</li>
+                                </ol>
+                            </div>
+                            <div class="input-group pdb15" style="margin-top: 20px">
+                                <label class="col-md-2 control-label input-label">用户名：</label>
+                                <div class="col-md-3 input-width">
+                                    <input type="text"  class="form-control" ng-model="vm.selectedWorker.userId" required>
+                                </div>
+                            </div>
+                            <div class="input-group pdb15">
+                                <label class="col-md-2 control-label input-label">工号：</label>
+                                <div class="col-md-3 input-width">
+                                    <input type="text"  class="form-control" ng-model="vm.selectedWorker.jobNumber" required>
+                                </div>
+                            </div>
+                            <div class="input-group pdb15">
+                                <label class="col-md-2 control-label input-label">姓名：</label>
+                                <div class="col-md-3 input-width">
+                                    <input type="text"  class="form-control" ng-model="vm.selectedWorker.name" required>
+                                </div>
+                            </div>
+                            <div class="input-group pdb15">
+                                <label class="col-md-2 control-label input-label">联系方式：</label>
+                                <div class="col-md-3 input-width">
+                                    <input type="text"  class="form-control" ng-model="vm.selectedWorker.mobilePhone" required>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" ng-click="submit(vm.currentCustomer);" class="btn btn-primary" data-dismiss="modal">派单</button>
+                    <button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+        </div>
+    </div>
+</div>
+</div>
