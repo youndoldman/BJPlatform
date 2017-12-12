@@ -1,8 +1,8 @@
 'use strict';
 
 customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
-    'rootService', 'pager', 'udcModal', 'OrderService', function ($scope, $rootScope, $filter, $location, Constants,
-                                                          rootService, pager, udcModal, OrderService) {
+    'rootService', 'pager', 'udcModal', 'OrderService', 'sessionStorage',function ($scope, $rootScope, $filter, $location, Constants,
+                                                          rootService, pager, udcModal, OrderService,sessionStorage) {
         var gotoPage = function (pageNo) {
             $scope.pager.setCurPageNo(pageNo);
             searchOrder();
@@ -50,6 +50,7 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
 
 
         $scope.vm = {
+            taskList:[],
             orderList: [],
             orderStatus:[{key:999,value:"全部订单"},{key:0,value:"待派送"},{key:1,value:"派送中"},{key:2,value:"已签收"},
                 {key:3,value:"已完成"},{key:4,value:"已作废"}],
@@ -99,6 +100,22 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
             })
         };
 
+        //指派订单
+        $scope.assign = function (order) {
+            udcModal.show({
+                templateUrl: "./customService/assignModal.htm",
+                controller: "AssignModalCtrl",
+                inputs: {
+                    title: '指派订单',
+                    initVal: order
+                }
+            }).then(function (result) {
+                if (result) {
+                    searchOrder();
+                }
+            })
+        };
+
         $scope.delete = function (order) {
             udcModal.confirm({"title": "作废", "message": "是否作废该订单信息,订单编号: " + order.orderSn})
                 .then(function (result) {
@@ -134,5 +151,31 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
         };
 
         init();
+
+        //订单状态查询改变
+        $scope.orderStatusSearchChange = function () {
+            if ($scope.q.orderStatus==null) {
+                return;
+            };
+            if($scope.q.orderStatus.key==0){
+            //查询需要进行强制派单的订单
+                var queryParams = {
+                    pageNo: $scope.pager.getCurPageNo(),
+                    pageSize: $scope.pager.pageSize
+                };
+                var curUser = sessionStorage.getCurUser();
+                OrderService.retrieveTaskOrders(curUser.userId).then(function (tasks) {
+                    $scope.pager.update($scope.q, tasks.total, queryParams.pageNo);
+                    $scope.vm.taskList = tasks.items;
+                    //任务到订单数组的结构转换
+                    $scope.vm.orderList= _.map(tasks.items, OrderService.toViewModelTaskOrders);;
+
+                });
+
+            } else{
+                searchOrder();
+            }
+
+        }
 
     }]);

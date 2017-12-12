@@ -63,10 +63,13 @@ commonModule.service('sessionStorage', ['$window', function ($window) {
     };
 
     self.getCurUser = function () {
-        return angular.fromJson($window.sessionStorage.getItem("curUser")) || {};
+        return angular.fromJson($window.sessionStorage.getItem("curUser"));
     }
     self.setCurUser = function (data) {
         $window.sessionStorage.setItem("curUser", angular.toJson(data));
+    }
+    self.clearCurUser = function () {
+        $window.sessionStorage.setItem("curUser", null);
     }
 }]);
 
@@ -156,14 +159,17 @@ commonModule.controller('CommonModuleCtrl', ['$rootScope','$scope', '$interval',
         $scope.currentTime = year + "-" + month + "-" + day + " " + hh + ":" + mm + ":" + ss;
     }
     var init = function () {
-        $scope.timer = $interval( function(){
-            getDate();
-        }, 1000);
+        //$scope.timer = $interval( function(){
+        //    getDate();
+        //}, 100000);
 
     };
     $scope.inRoles = function(roles)
     {
         var curUser = sessionStorage.getCurUser();
+        if(curUser==null){
+            return false;;
+        }
         var i = roles.length;
         if(i == 0)
         {
@@ -180,6 +186,7 @@ commonModule.controller('CommonModuleCtrl', ['$rootScope','$scope', '$interval',
     {
         var logoutUri = URI.resources.logout;
         promise.wrap($http.get(logoutUri)).then(function(value){
+            sessionStorage.clearCurUser();
             $window.location.href = URI.resources.loginPage;
         }, function(value) {
             alert("连接超时");
