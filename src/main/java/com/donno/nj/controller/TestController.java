@@ -1,5 +1,6 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.service.WeiXinPayService;
 import com.donno.nj.aspect.OperationLog;
 import org.activiti.bpmn.model.BpmnModel;
@@ -67,14 +68,14 @@ public class TestController {
         String openId = weiXinPayService.getOpenId(userCode);
         if (openId == null)
         {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new ServerSideBusinessException("openId获取失败！", HttpStatus.NOT_ACCEPTABLE);
         }
 
         Map<String, String> result = weiXinPayService.doUnifiedOrderForMicroApp(openId, orderIndex, totalFree, request.getRemoteAddr());
 
         if (result.size()==0)
         {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
         return ResponseEntity.ok(result);
     }

@@ -1,5 +1,6 @@
 package com.donno.nj.service.impl;
 
+import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.util.WeiXinPaySdk.WXPay;
 import com.donno.nj.util.WeiXinPaySdk.WXPayConfigImpl;
 import com.donno.nj.util.WeiXinPaySdk.WXPayConstants;
@@ -17,6 +18,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 
@@ -71,6 +73,8 @@ public class WeiXinPayServiceImpl implements WeiXinPayService
         data.put("openid", openId);
         data.put("appid", wxPayConfigImpl.getAppID());
         data.put("body", "云南百江燃气公司订气业务");
+        //加上系统时间
+        orderIndex = orderIndex+"aaa"+WXPayUtil.getCurrentTimestamp();
         data.put("out_trade_no", orderIndex);
         data.put("device_info", "");
         data.put("fee_type", "CNY");
@@ -84,16 +88,18 @@ public class WeiXinPayServiceImpl implements WeiXinPayService
         try {
             Map<String, String> response = wxpay.unifiedOrder(data);
             if (response.containsKey("prepay_id")) {
+                result.put("appId", wxPayConfigImpl.getAppID());
                 result.put("timeStamp", String.valueOf(WXPayUtil.getCurrentTimestamp()));
-                result.put("nonce_str", WXPayUtil.generateUUID());
-                result.put("package", response.get("prepay_id"));
+                result.put("nonceStr", WXPayUtil.generateUUID());
+                result.put("package", "prepay_id="+response.get("prepay_id"));
                 result.put("signType", WXPayConstants.MD5);
-                result.put("paySign", WXPayUtil.generateSignature(response,wxPayConfigImpl.getKey()));
+                result.put("paySign", WXPayUtil.generateSignature(result,wxPayConfigImpl.getKey()));
 
             }else {
                 //统一下单失败
                 if (response.containsKey("err_code_des")) {
                     System.out.println("err_code_des");
+                    throw new ServerSideBusinessException("统一下单失败！"+response.get("err_code_des"), HttpStatus.NOT_ACCEPTABLE);
                 }
             }
             return result;
