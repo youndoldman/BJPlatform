@@ -7,9 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import  com.donno.nj.domain.User;
 
-/**
- * Created by Administrator on 2017\9\6 0006.
- */
+
 public class AppUtil
 {
     public static final String SESSION_CUR_USER="curUser";

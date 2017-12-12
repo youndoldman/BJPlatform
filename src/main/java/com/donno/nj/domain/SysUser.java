@@ -1,7 +1,7 @@
 package com.donno.nj.domain;
 
 import java.io.Serializable;
-
+import java.util.Date;
 import com.google.common.base.MoreObjects;
 
 public class SysUser extends User implements Serializable
@@ -12,6 +12,8 @@ public class SysUser extends User implements Serializable
     private String mobilePhone;
     private String officePhone;
     private String email;
+    private AliveStatus aliveStatus;
+    private Date aliveUpdateTime;
 
     public SysUser()
     {
@@ -48,6 +50,16 @@ public class SysUser extends User implements Serializable
         return email;
     }
 
+    public AliveStatus getAliveStatus()
+    {
+        return aliveStatus;
+    }
+
+    public Date getAliveUpdateTime()
+    {
+        return aliveUpdateTime;
+    }
+
     public void setDepartment(Department department)
     {
         this.department = department;
@@ -78,6 +90,15 @@ public class SysUser extends User implements Serializable
         this.email = email;
     }
 
+    public void  setAliveStatus(AliveStatus aliveStatus)
+    {
+        this.aliveStatus = aliveStatus;
+    }
+
+    public void setAliveUpdateTime(Date aliveUpdateTime)
+    {
+        this.aliveUpdateTime = aliveUpdateTime;
+    }
 
     @Override
     public String toString()

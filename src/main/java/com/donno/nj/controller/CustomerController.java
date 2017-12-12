@@ -71,8 +71,6 @@ public class CustomerController
             {
                 responseEntity =  ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
-
-
         }
 
         return responseEntity;
