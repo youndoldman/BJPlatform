@@ -126,10 +126,6 @@
         </if>
         </if>
 
-        <if test="endTime != null">
-            AND  (create_time  >= #{endTime} )
-        </if>
-
 
         <if test="orderBy != null">
             <if test="orderBy != ''">
@@ -200,6 +196,12 @@
 
         <if test="addrDetail != null">
             AND  addr_detail like CONCAT(CONCAT('%', #{addrDetail}), '%')
+        </if>
+
+        <if test="startTime != null"  >
+            <if test="endTime != null">
+                AND  (create_time  BETWEEN #{startTime}  and #{endTime} )
+            </if>
         </if>
 
     </select>
