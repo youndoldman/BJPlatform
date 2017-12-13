@@ -13,6 +13,8 @@
 
         <result column="status" property="orderStatus" jdbcType="INTEGER"/>
         <result column="pay_status" property="payStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+        <result column="time_span" property="timeSpan" jdbcType="INTEGER"/>
+
         <result column="urgent" property="urgent" jdbcType="BOOLEAN"/>
         <result column="addr_province" property="recvAddr.province" jdbcType="VARCHAR"/>
         <result column="addr_city" property="recvAddr.city" jdbcType="VARCHAR"/>
@@ -56,14 +58,14 @@
     </delete>
 
     <select id="findBySn" resultMap="DetailResultMap">
-        SELECT *
+        SELECT *,TIMESTAMPDIFF(MINUTE,t_order.create_time, now()) as time_span
         FROM <include refid="TblOrder"/>
         WHERE
         order_sn =  #{orderSn}
     </select>
 
     <select id="getList" resultMap="DetailResultMap">
-        SELECT *
+        SELECT *, TIMESTAMPDIFF(MINUTE,t_order.create_time, now()) as time_span
         FROM <include refid="TblOrder"/>
     WHERE
         id > 0

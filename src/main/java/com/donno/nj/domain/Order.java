@@ -21,6 +21,8 @@ public class Order implements Serializable
     private PayStatus payStatus;
     private Boolean urgent;//是否加急
 
+    private Integer timeSpan;//订单创建到当前时间的时间差，分钟为单位
+
     private AccessType accessType;//订单接入类型
 
     private CustomerAddress recvAddr; //收货地址
@@ -91,6 +93,11 @@ public class Order implements Serializable
     public Boolean getUrgent()
     {
         return  urgent;
+    }
+
+    public Integer getTimeSpan()
+    {
+        return timeSpan;
     }
 
     public AccessType getAccessType()
@@ -184,6 +191,11 @@ public class Order implements Serializable
     public void setUrgent(Boolean urgent)
     {
         this.urgent = urgent;
+    }
+
+    public void setTimeSpan(Integer timeSpan)
+    {
+        this.timeSpan = timeSpan;
     }
 
     public void setCustomer(Customer customer)
