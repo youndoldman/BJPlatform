@@ -80,7 +80,7 @@ customServiceApp.service('OrderService', ['$http', 'URI', 'promiseWrapper','MISC
 
     //查询需要进行处理的任务订单
     this.retrieveTaskOrders = function (userId) {
-        return promise.wrap($http.get(taskOrdersUri+'/'+userId));
+        return promise.wrap($http.get(taskOrdersUri+'/'+userId+"?orderStatus=0"));
     };
 
     //查询在线的配送工

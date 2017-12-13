@@ -292,8 +292,7 @@ public class OrderServiceImpl implements OrderService
             orderOpHistory.setUserId(user.get().getUserId());
 
             String opLog = "";
-            if (orderStatus == OrderStatus.OSUnprocessed.getIndex())
-            {
+            if (orderStatus == OrderStatus.OSUnprocessed.getIndex()) {
                 opLog = "创建订单";
             }
             else if (orderStatus == OrderStatus.OSDispatching.getIndex())
