@@ -9,7 +9,7 @@
 
     <div class="toolbar">
         <form role="form">
-            <div class="row">
+            <div class="">
                 <div class="col-md-3">
                     <div class='input-group date' id='datetimepickerStart'>
                         <span class="input-group-addon ">起始时间</span>
@@ -34,7 +34,7 @@
                     <label class="input"><select  ng-model="q.orderStatus" ng-options="orderStatus.value for orderStatus in vm.orderStatus" class="form-control" ng-selected="" ng-change="orderStatusSearchChange()"></select></label>
                 </div>
             </div>
-            <div class="row" style="margin-top: 10px">
+            <div class="" style="margin-top: 10px">
                 <div class="inline-group col-md-12">
                     <label class="input">订单号：</label>
                     <label class="input"><input type="text" class="form-control input-sm" ng-model="q.orderSn" ng-change="search()" placeholder="订单号"> </label>
@@ -81,24 +81,23 @@
             <td class="message">{{order.recvPhone}}</td>
             <td class="message">{{order.createTime}}</td>
             <td class="operate">
-                <button title="详情" ng-click="modify(order)" type="button" class="btn btn-primary btn-outline btn-xs">
+                <button title="详情" ng-click="viewDetails(order)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="fa fa-info-circle"></i>
                 </button>
                 <!--<button title="修改" ng-click="modify(order)" type="button" class="btn btn-primary btn-outline btn-xs">-->
                     <!--<i class="fa fa-edit"></i>-->
                 <!--</button>-->
 
-                <button title="指派" ng-if="order.taskId" ng-click="assign(order)" type="button" class="btn btn-primary btn-outline btn-xs">
+                <button title="确认" ng-if="order.taskId" ng-click="check(order)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="fa fa-arrows"></i>
                 </button>
-                <button title="作废" ng-click="delete(order)" type="button" class="btn btn-primary btn-outline btn-xs">
-                    <i class="fa fa-trash-o"></i>
-                </button>
+                <!--<button title="作废" ng-click="delete(order)" type="button" class="btn btn-primary btn-outline btn-xs">-->
+                    <!--<i class="fa fa-trash-o"></i>-->
+                <!--</button>-->
             </td>
         </tr>
         </tbody>
     </table>
     <div ng-if="vm.userList.length == 0" nj-table-no-data></div>
     <div nj-pager pager="pager"></div>
-    <div id="aaaa" style="width:500px; height:300px"></div>
 </div>

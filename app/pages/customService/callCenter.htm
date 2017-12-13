@@ -194,15 +194,13 @@
         <table class="table table-bordered table-hover">
           <tr>
             <th  style="background: lightblue;text-align: center">编号</th>
-            <th  style="background: lightblue;text-align: center">姓名</th>
-            <th  style="background: lightblue;text-align: center">电话</th>
+            <th  style="background: lightblue;text-align: center">时间</th>
             <th  style="background: lightblue;text-align: center">地址</th>
           </tr>
           <tr ng-repeat="CustomerOrder in vm.CustomerOrderHistory" >
-            <td>{{CustomerOrder.customer.userId}}</td>
-            <td>{{CustomerOrder.customer.name}}</td>
-            <td>{{CustomerOrder.customer.phone}}</td>
-            <td>{{CustomerOrder.province}}{{CustomerOrder.city}}{{CustomerOrder.county}}{{CustomerOrder.detail}}</td>
+            <td>{{CustomerOrder.orderSn}}</td>
+            <td>{{CustomerOrder.createTime}}</td>
+            <td>{{CustomerOrder.recvAddr.province}}{{CustomerOrder.recvAddr.city}}{{CustomerOrder.recvAddr.county}}{{CustomerOrder.recvAddr.detail}}</td>
           </tr>
         </table>
         <div ng-if="vm.userList.length == 0" nj-table-no-data></div>

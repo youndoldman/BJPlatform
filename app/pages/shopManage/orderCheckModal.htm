@@ -1,0 +1,106 @@
+﻿<div class="modal" tabindex="-1">
+    <div class="modal-dialog"  style=" width: 1000px;">
+        <div class="modal-content">
+            <form name="userForm" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="close(false)" data-dismiss="modal"
+                            aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">&nbsp;{{modalTitle}}&nbsp;</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="panel-body">
+                        <div class="row" >
+                            <table class="table table-bordered table-hover .table-condensed">
+
+                                <thead>
+                                <tr>
+                                    <td style="background: lightblue;text-align: center" width="8%">商品号</td>
+                                    <td style="background: lightblue;text-align: center" width="12%">商品名称</td>
+                                    <td style="background: lightblue;text-align: center" width="10%">商品类型</td>
+                                    <td style="background: lightblue;text-align: center" width="10%">商品规格</td>
+                                    <td style="background: lightblue;text-align: center" width="5%">单位</td>
+                                    <td style="background: lightblue;text-align: center" width="5%">重量</td>
+                                    <td style="background: lightblue;text-align: center" width="9%">价格</td>
+                                    <td style="background: lightblue;text-align: center" width="10%">有效期</td>
+                                    <td style="background: lightblue;text-align: center" width="5%">状态</td>
+                                    <td style="background: lightblue;text-align: center" width="10%">说明</td>
+                                    <td style="background: lightblue;text-align: center" width="10%">原始价格</td>
+                                    <td style="background: lightblue;text-align: center" width="10%">成交价格</td>
+                                    <td style="background: lightblue;text-align: center" width="10%">数量</td>
+                                    <td style="background: lightblue;text-align: center" width="10%">小计</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="orderDetail in vm.currentOrder.orderDetailList">
+                                    <td class="message">{{orderDetail.goods.code}}</td>
+                                    <td class="message">{{orderDetail.goods.name}}</td>
+                                    <td class="message">{{orderDetail.goods.goodsType.name}}</td>
+                                    <td class="message">{{orderDetail.goods.specifications}}</td>
+                                    <td class="message">{{orderDetail.goods.unit}}</td>
+                                    <td class="message">{{orderDetail.goods.weight}}</td>
+                                    <td class="message">{{orderDetail.goods.price}}</td>
+                                    <td class="message">{{orderDetail.goods.lifeExpectancy}}</td>
+                                    <td class="message">{{orderDetail.goods.status}}</td>
+                                    <td class="message">{{orderDetail.goods.note}}</td>
+                                    <td class="message">{{orderDetail.originalPrice}}</td>
+                                    <td class="message">{{orderDetail.dealPrice}}</td>
+                                    <td class="message">{{orderDetail.quantity}}</td>
+                                    <td class="message">{{orderDetail.subtotal}}</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="input-group pdb15">
+                                <label class="col-sm-2 control-label input-label">收货人：</label>
+                                <div class="col-sm-4 input-width">
+                                    <input type="text"  class="form-control" ng-model="vm.currentOrder.recvName"  required>
+                                </div>
+
+                                <label class="col-sm-2 control-label input-label">联系电话：</label>
+                                <div class="col-sm-4 input-width">
+                                    <input type="text"  class="form-control" ng-model="vm.currentOrder.recvPhone"  required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-group pdb15">
+                                <label class="col-sm-2 control-label input-label">备注：</label>
+                                <div class="col-sm-4 input-width">
+                                    <input type="text"  class="form-control" ng-model="vm.currentOrder.comment"  required>
+                                </div>
+                                <label class="col-sm-2 control-label input-label">加急：</label>
+                                <div class="col-sm-4 input-width">
+                                    <input type="checkbox"  ng-model="vm.currentOrder.urgent" style="margin-top:10px">
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-group pdb15">
+                                <label class="col-sm-2 control-label input-label">金额：</label>
+                                <div class="col-sm-4 input-width">
+                                    <input type="text"  class="form-control" ng-model="vm.currentOrder.orderAmount"  required>
+                                </div>
+                                <label class="col-sm-2 control-label input-label">呼入号码：</label>
+                                <div class="col-sm-4 input-width">
+                                    <input type="text"  class="form-control" ng-model="vm.currentOrder.callInPhone"  required>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="submit" ng-click="submit(vm.currentOrder);" class="btn btn-primary" data-dismiss="modal" ng-if="isModify">保存</button>
+                    <button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
