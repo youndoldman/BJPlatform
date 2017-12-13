@@ -1,8 +1,8 @@
 'use strict';
 
-customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
-    'rootService', 'pager', 'udcModal', 'OrderService', 'sessionStorage',function ($scope, $rootScope, $filter, $location, Constants,
-                                                          rootService, pager, udcModal, OrderService,sessionStorage) {
+shopManageApp.controller('OrderCheckCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
+    'rootService', 'pager', 'udcModal', 'OrderCheckService', 'sessionStorage',function ($scope, $rootScope, $filter, $location, Constants,
+                                                          rootService, pager, udcModal, OrderCheckService,sessionStorage) {
         var gotoPage = function (pageNo) {
             $scope.pager.setCurPageNo(pageNo);
             searchOrder();
@@ -61,7 +61,7 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
             orderSn:null,
             callInPhone:null,
             userId:null,
-            orderStatus:$scope.vm.orderStatus[0],
+            orderStatus:$scope.vm.orderStatus[3],
         };
 
         $scope.search = function () {
@@ -75,8 +75,8 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
 
         $scope.viewDetails = function (order) {
             udcModal.show({
-                templateUrl: "./customService/orderModal.htm",
-                controller: "OrderModalCtrl",
+                templateUrl: "./shopManage/orderCheckModal.htm",
+                controller: "OrderCheckModalCtrl",
                 inputs: {
                     title: '订单详情',
                     initVal: order
@@ -85,12 +85,12 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
             })
         };
 
-        $scope.modify = function (order) {
+        $scope.check = function (order) {
             udcModal.show({
-                templateUrl: "./customService/orderModal.htm",
-                controller: "OrderModalCtrl",
+                templateUrl: "./shopManage/orderCheckModal.htm",
+                controller: "OrderCheckModalCtrl",
                 inputs: {
-                    title: '修改订单',
+                    title: '确认订单',
                     initVal: order
                 }
             }).then(function (result) {
@@ -98,34 +98,6 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
                     searchOrder();
                 }
             })
-        };
-
-        //指派订单
-        $scope.assign = function (order) {
-            udcModal.show({
-                templateUrl: "./customService/assignModal.htm",
-                controller: "AssignModalCtrl",
-                inputs: {
-                    title: '指派订单',
-                    initVal: order
-                }
-            }).then(function (result) {
-                if (result) {
-                    $scope.orderStatusSearchChange();
-                }
-            })
-        };
-
-        $scope.delete = function (order) {
-            udcModal.confirm({"title": "作废", "message": "是否作废该订单信息,订单编号: " + order.orderSn})
-                .then(function (result) {
-                    if (result) {
-                        //OrderService.deleteCustomer(customer).then(function () {
-                        //    searchCustomer();
-                        //    udcModal.info({"title": "处理结果", "message": "删除客户信息成功 "});
-                        //});
-                    }
-                })
         };
 
         var searchOrder = function () {
@@ -141,35 +113,30 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
             };
             console.log(queryParams);
 
-            OrderService.retrieveOrders(queryParams).then(function (orders) {
+            OrderCheckService.retrieveOrders(queryParams).then(function (orders) {
                 $scope.pager.update($scope.q, orders.total, queryParams.pageNo);
                 $scope.vm.orderList = orders.items;
             });
         };
 
-        var init = function () {
-            searchOrder();
-        };
-
-        init();
 
         //订单状态查询改变
         $scope.orderStatusSearchChange = function () {
             if ($scope.q.orderStatus==null) {
                 return;
             };
-            if($scope.q.orderStatus.key==0){
-            //查询需要进行强制派单的订单
+            if($scope.q.orderStatus.key==2){
+            //查询需要进行确认的订单
                 var queryParams = {
                     pageNo: $scope.pager.getCurPageNo(),
                     pageSize: $scope.pager.pageSize
                 };
                 var curUser = sessionStorage.getCurUser();
-                OrderService.retrieveTaskOrders(curUser.userId).then(function (tasks) {
+                OrderCheckService.retrieveTaskOrders(curUser.userId).then(function (tasks) {
                     $scope.pager.update($scope.q, tasks.total, queryParams.pageNo);
                     $scope.vm.taskList = tasks.items;
                     //任务到订单数组的结构转换
-                    $scope.vm.orderList= _.map(tasks.items, OrderService.toViewModelTaskOrders);;
+                    $scope.vm.orderList= _.map(tasks.items, OrderCheckService.toViewModelTaskOrders);;
 
                 });
 
@@ -177,6 +144,12 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
                 searchOrder();
             }
 
-        }
+        };
+        var init = function () {
+            $scope.orderStatusSearchChange();
+        };
+
+        init();
+
 
     }]);

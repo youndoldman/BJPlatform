@@ -74,7 +74,7 @@ public class WorkFlowServiceImpl implements WorkFlowService
     @Override
     public List<com.donno.nj.domain.Task> getTasksByUserId(String strUserID) {
         // 根据当前人的ID查询
-        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(strUserID);
+        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(strUserID).orderByTaskCreateTime().asc();
 
         List<Task> tasks = taskQuery.list();
         List<com.donno.nj.domain.Task>currentTaskList = new ArrayList<com.donno.nj.domain.Task>();

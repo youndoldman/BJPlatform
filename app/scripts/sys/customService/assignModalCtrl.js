@@ -93,6 +93,7 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
             $scope.close(true);
         }, function(value) {
             udcModal.info({"title": "处理结果", "message": "人工指派配送工失败 "+value.message});
+            $scope.close(false);
         })
 
     };
