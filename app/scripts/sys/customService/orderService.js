@@ -3,6 +3,7 @@
 customServiceApp.service('OrderService', ['$http', 'URI', 'promiseWrapper','MISC', function ($http, URI, promise,MISC) {
     var ordersUri = URI.resources.orders;
     var taskOrdersUri = URI.resources.taskOrders;
+    var taskOrdersDealUri = URI.resources.taskOrdersDeal;
     var usersUri = URI.resources.users;
 
     this.toViewModelTaskOrders = function (taskOrdersFromApi) {
@@ -85,6 +86,12 @@ customServiceApp.service('OrderService', ['$http', 'URI', 'promiseWrapper','MISC
     //查询在线的配送工
     this.retrieveDistributionworkers = function (params) {
         return promise.wrap($http.get(usersUri, {params: params}));
+
+    }
+
+    //人工派单至配送工
+    this.dealDistribution = function (params,taskId) {
+        return promise.wrap($http.get(taskOrdersDealUri+'/'+taskId, {params: params}));
 
     }
 }]);

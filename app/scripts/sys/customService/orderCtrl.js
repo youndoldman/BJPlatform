@@ -53,7 +53,7 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
             taskList:[],
             orderList: [],
             orderStatus:[{key:999,value:"全部订单"},{key:0,value:"待派送"},{key:1,value:"派送中"},{key:2,value:"已签收"},
-                {key:3,value:"已完成"},{key:4,value:"已作废"}],
+                {key:3,value:"已完成"},{key:4,value:"作废"}],
         };
         $scope.q = {
             startTime:null,
@@ -130,8 +130,8 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
 
         var searchOrder = function () {
             var queryParams = {
-                //startTime:$scope.q.startTime,
-                //endTime:$scope.q.endTime,
+                startTime:$scope.q.startTime,
+                endTime:$scope.q.endTime,
                 callInPhone:$scope.q.callInPhone,
                 userId:$scope.q.userId,
                 orderSn:$scope.q.orderSn,
@@ -139,6 +139,7 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize
             };
+            console.log(queryParams);
 
             OrderService.retrieveOrders(queryParams).then(function (orders) {
                 $scope.pager.update($scope.q, orders.total, queryParams.pageNo);
