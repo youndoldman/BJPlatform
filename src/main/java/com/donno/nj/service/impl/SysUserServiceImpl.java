@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Date;
+import java.util.ArrayList;
 
 @Service
 public class SysUserServiceImpl extends UserServiceImpl implements SysUserService
@@ -213,4 +214,13 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
         user.setDepartment(department);
     }
 
+
+    public List<String> getDepLeaderByUserId(String userId)
+    {
+        List<String> list = new ArrayList<String>() ;
+
+        list = sysUserDao.getDepLeaderByUserId(userId);
+
+        return list;
+    }
 }

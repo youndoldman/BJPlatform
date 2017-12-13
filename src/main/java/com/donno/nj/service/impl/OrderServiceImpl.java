@@ -248,13 +248,6 @@ public class OrderServiceImpl implements OrderService
         /*更新数据*/
         orderDao.update(newOrder);
 
-//        Group  group = groupDao.findByCode(ServerConstantValue.GP_CUSTOMER_SERVICE);
-//        if(group == null)
-//        {
-//            throw new ServerSideBusinessException("创建定单失败，系统用户组信息错误！", HttpStatus.NOT_ACCEPTABLE);
-//        }
-//        variables.put(ServerConstantValue.ACT_FW_STG_1_CANDI_GROUPS,String.valueOf(group.getId()));
-
         /*检查任务是否存在，处理订单*/
         int retCode = workFlowService.completeTask(taskId,variables);
         if (retCode != 0 )
@@ -323,4 +316,5 @@ public class OrderServiceImpl implements OrderService
             orderOpHistoryDao.insert(orderOpHistory);
         }
     }
+
 }

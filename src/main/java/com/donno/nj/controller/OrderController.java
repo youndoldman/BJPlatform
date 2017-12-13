@@ -7,6 +7,7 @@ import com.donno.nj.domain.*;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.*;
+import com.donno.nj.util.AppUtil;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
@@ -40,6 +41,9 @@ public class OrderController
 
     @Autowired
     private GroupService groupService;
+
+    @Autowired
+    private SysUserService sysUserService;
 
 
     @RequestMapping(value = "/api/TaskOrders/{userId}", method = RequestMethod.GET, produces = "application/json")
@@ -126,8 +130,37 @@ public class OrderController
             }
             else if (orderStatus == OrderStatus.OSSigned.getIndex())
             {
-                variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_USERS,candiUser);
-                variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_GROUPS,String.valueOf(group.get().getId()));
+                /*候选人为同一门店的店长*/
+                Optional<User> user = AppUtil.getCurrentLoginUser();
+                if (user.isPresent())
+                {
+                    List<String> candUserList = sysUserService.getDepLeaderByUserId(user.get().getUserId());
+                    if (candUserList.size() == 0)
+                    {
+                        throw new ServerSideBusinessException("用户所属部门没有指派负责人，流程无法继续！", HttpStatus.NOT_ACCEPTABLE);
+                    }
+
+                    String candLeader = "";
+                    for (String leader:candUserList)
+                    {
+                        if (candLeader.trim().length() > 0)
+                        {
+                            candLeader.concat(";");
+                        }
+                        candLeader.concat(leader);
+                    }
+
+                    variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_USERS,candLeader);
+                    variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_GROUPS,String.valueOf(group.get().getId()));
+                }
+                else
+                {
+                    throw new ServerSideBusinessException("查询参数错误，订单状态不正确！", HttpStatus.NOT_ACCEPTABLE);
+                }
+            }
+            else if (orderStatus == OrderStatus.OSCompleted.getIndex())
+            {
+                // to don nothing
             }
             else
             {

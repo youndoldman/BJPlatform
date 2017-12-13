@@ -3,8 +3,7 @@ package com.donno.nj.dao;
 
 import com.donno.nj.dao.base.BaseDao;
 import com.donno.nj.domain.SysUser;
-import com.donno.nj.domain.UserPosition;
-import com.google.common.base.Optional;
+import java.util.List;
 import java.util.Date;
 public interface SysUserDao extends BaseDao<SysUser>
 {
@@ -12,4 +11,6 @@ public interface SysUserDao extends BaseDao<SysUser>
     void deleteByUserIdx(Integer userIdx);
 
     void checkAlive(Date now);
+
+    List<String> getDepLeaderByUserId(String userId);
 }

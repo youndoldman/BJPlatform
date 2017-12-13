@@ -25,4 +25,6 @@ public interface SysUserService extends UserService
     void delete(Integer id);
 
     void checkAlive();
+
+    List<String> getDepLeaderByUserId(String userId);
 }
