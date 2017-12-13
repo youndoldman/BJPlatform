@@ -17,7 +17,7 @@
 
     <select id="getList" resultMap="BaseResultMap">
         SELECT t_order_op_his.id, t_order_op_his.oper_log,t_order.order_sn as order_sn,t_user.user_id as user_id,t_order_op_his.update_time
-        FROM <include refid="TableName"/>
+        FROM  t_order_op_his,t_order,t_user
         WHERE
         (t_order_op_his.order_idx = t_order.id and t_order_op_his.oper_idx = t_user.id)
 
@@ -45,16 +45,16 @@
 
     <select id="count" resultType="Integer">
         SELECT count(*)
-        FROM  t_order_op_his
+        FROM  t_order_op_his,t_order,t_user
         WHERE
-        id > 0
+        (t_order_op_his.order_idx = t_order.id and t_order_op_his.oper_idx = t_user.id)
 
         <if test="orderSn != null">
-            AND  order_idx = (select id from t_order where order_sn = #{orderSn})
+            AND  t_order_op_his.order_idx = (select id from t_order where order_sn = #{orderSn})
         </if>
 
         <if test="userId != null">
-            AND  oper_idx = (select id from t_user where user_id = #{userId})
+            AND  t_order_op_his.oper_idx = (select id from t_user where user_id = #{userId})
         </if>
 
     </select>
@@ -65,9 +65,9 @@
     </sql>
 
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        INSERT INTO <include refid="TableName"/>(<include refid="InsertColumnList"/>)
+        INSERT INTO t_order_op_his (<include refid="InsertColumnList"/>)
         VALUES(
-        (select id from t_order where order_sn = #{orderSn}),
+        #{orderIdx},
         (select id from t_user where user_id = #{userId}),
         #{opLog})
     </insert>

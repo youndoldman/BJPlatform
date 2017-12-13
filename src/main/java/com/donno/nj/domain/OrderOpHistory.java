@@ -6,6 +6,7 @@ public class OrderOpHistory
 {
     private Integer id;
 
+    private Integer orderIdx;
     private String orderSn;
     private String userId;
 
@@ -21,6 +22,12 @@ public class OrderOpHistory
     {
         return  orderSn;
     }
+
+    public Integer getOrderIdx()
+    {
+        return orderIdx;
+    }
+
 
     public String getUserId()
     {
@@ -45,6 +52,11 @@ public class OrderOpHistory
     public void setOrderSn(String orderSn)
     {
         this.orderSn = orderSn;
+    }
+
+    public void setOrderIdx(Integer orderIdx)
+    {
+        this.orderIdx = orderIdx;
     }
 
     public void setUserId(String userId)
