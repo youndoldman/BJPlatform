@@ -172,7 +172,7 @@ public class OrderServiceImpl implements OrderService
         createWorkFlow(order);
 
         /*订单创建日志*/
-        OrderOperHistory(order.getOrderSn(),order.getOrderStatus());
+        OrderOperHistory(order,order.getOrderStatus());
 
     }
 
@@ -264,7 +264,7 @@ public class OrderServiceImpl implements OrderService
         }
 
         /*订单变更历史记录*/
-        OrderOperHistory(newOrder.getOrderSn(),newOrder.getOrderStatus());
+        OrderOperHistory(newOrder,newOrder.getOrderStatus());
     }
 
 
@@ -281,13 +281,14 @@ public class OrderServiceImpl implements OrderService
     }
 
     @OperationLog(desc = "订单修改历史信息")
-    public void OrderOperHistory(String orderSn,Integer orderStatus)
+    public void OrderOperHistory(Order order,Integer orderStatus)
     {
         Optional<User> user = AppUtil.getCurrentLoginUser();
         if (user.isPresent())
         {
             OrderOpHistory orderOpHistory = new OrderOpHistory();
-            orderOpHistory.setOrderSn(orderSn);
+            orderOpHistory.setOrderSn(order.getOrderSn());
+            orderOpHistory.setOrderIdx(order.getId());
             orderOpHistory.setUserId(user.get().getUserId());
 
             String opLog = "";
@@ -305,7 +306,7 @@ public class OrderServiceImpl implements OrderService
             }
             else if (orderStatus == OrderStatus.OSCompleted.getIndex())
             {
-                opLog = "已接收";
+                opLog = "已结束";
             }
             else if (orderStatus == OrderStatus.OSCanceled.getIndex())
             {

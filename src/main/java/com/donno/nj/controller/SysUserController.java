@@ -108,6 +108,7 @@ public class SysUserController
         if (sysUserList.size() == 1)
         {
             sysUserList.get(0).setAliveStatus(AliveStatus.ASOnline);
+            sysUserList.get(0).setUpdateTime(new Date());
             sysUserList.get(0).setAliveUpdateTime(new Date());
             sysUserService.update(sysUserList.get(0).getId(),sysUserList.get(0));
         }
@@ -127,6 +128,7 @@ public class SysUserController
         if (sysUserList.size() == 1)
         {
             sysUserList.get(0).setAliveStatus(AliveStatus.ASOffline);
+            sysUserList.get(0).setUpdateTime(new Date());
             sysUserService.update(sysUserList.get(0).getId(),sysUserList.get(0));
         }
 

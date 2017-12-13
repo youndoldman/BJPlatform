@@ -24,5 +24,5 @@ public interface OrderService
 
     void deleteById(Integer id);
 
-    void OrderOperHistory(String orderSn,Integer orderStatus) ;
+    void OrderOperHistory(Order order,Integer orderStatus) ;
 }
