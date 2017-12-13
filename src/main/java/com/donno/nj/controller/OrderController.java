@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,7 @@ public class OrderController
     {
         List<Task> taskList = workFlowService.getTasksByUserId(userId);
 
+        List<Task> taskListNoOrder = new ArrayList<Task>();
         for (Task task:taskList)
         {
             Optional<Order> order = orderService.findBySn(task.getProcess().getBuinessKey());
@@ -59,6 +61,10 @@ public class OrderController
                     {
                         task.setObject(order.get());
                     }
+                    else
+                    {
+                        taskListNoOrder.add(task);
+                    }
                 }
                 else
                 {
@@ -66,6 +72,14 @@ public class OrderController
                 }
             }
         }
+
+
+        /*移除不符合查询条件订单的任务*/
+        for (Task task:taskListNoOrder)
+        {
+            taskList.remove(task);
+        }
+
 
         return ResponseEntity.ok(ListRep.assemble(taskList, taskList.size()));
     }
