@@ -10,14 +10,17 @@ public enum OrderStatus implements IEnum
     private int index;
 
     // 构造方法
-    OrderStatus(String name, int index) {
+    OrderStatus(String name, int index)
+    {
         this.name = name;
         this.index = index;
     }
 
     // 普通方法
-    public static String getName(int index) {
-        for (OrderStatus c : OrderStatus.values()) {
+    public static String getName(int index)
+    {
+        for (OrderStatus c : OrderStatus.values())
+        {
             if (c.getIndex() == index) {
                 return c.name;
             }
