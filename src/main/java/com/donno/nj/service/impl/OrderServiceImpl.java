@@ -188,7 +188,7 @@ public class OrderServiceImpl implements OrderService
         }
 
         /*指定可办理的组*/
-        variables.put(ServerConstantValue.ACT_FW_STG_CANDI_GROUPS,String.valueOf(group.getId()));
+        variables.put(ServerConstantValue.ACT_FW_STG_1_CANDI_GROUPS,String.valueOf(group.getId()));
 
          /*取系统中可推送派送员的范围参数*/
         Integer dispatchRange = systemParamDao.getDispatchRange();
@@ -221,7 +221,7 @@ public class OrderServiceImpl implements OrderService
                 }
             }
 
-            variables.put(ServerConstantValue.ACT_FW_STG_CANDI_USERS,candUser);
+            variables.put(ServerConstantValue.ACT_FW_STG_1_CANDI_USERS,candUser);
         }
 
         workFlowService.createWorkFlow(WorkFlowTypes.GAS_ORDER_FLOW,order.getCustomer().getUserId(),variables,order.getOrderSn());
@@ -248,13 +248,12 @@ public class OrderServiceImpl implements OrderService
         /*更新数据*/
         orderDao.update(newOrder);
 
-
-        Group  group = groupDao.findByCode(ServerConstantValue.GP_CUSTOMER_SERVICE);
-        if(group == null)
-        {
-            throw new ServerSideBusinessException("创建定单失败，系统用户组信息错误！", HttpStatus.NOT_ACCEPTABLE);
-        }
-        variables.put(ServerConstantValue.ACT_FW_STG_CANDI_GROUPS,String.valueOf(group.getId()));
+//        Group  group = groupDao.findByCode(ServerConstantValue.GP_CUSTOMER_SERVICE);
+//        if(group == null)
+//        {
+//            throw new ServerSideBusinessException("创建定单失败，系统用户组信息错误！", HttpStatus.NOT_ACCEPTABLE);
+//        }
+//        variables.put(ServerConstantValue.ACT_FW_STG_1_CANDI_GROUPS,String.valueOf(group.getId()));
 
         /*检查任务是否存在，处理订单*/
         int retCode = workFlowService.completeTask(taskId,variables);

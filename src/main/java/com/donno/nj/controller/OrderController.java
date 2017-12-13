@@ -38,6 +38,9 @@ public class OrderController
     @Autowired
     private OrderOpHistoryService orderOpHistoryService;
 
+    @Autowired
+    private GroupService groupService;
+
 
     @RequestMapping(value = "/api/TaskOrders/{userId}", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取任务订单列表")
@@ -106,8 +109,31 @@ public class OrderController
         else
         {
             orderOptional.get().setOrderStatus(orderStatus);
+
+
             Map<String, Object> variables = new HashMap<String, Object>();
-            variables.put(ServerConstantValue.ACT_FW_STG_CANDI_USERS,candiUser);
+
+            Optional<Group>  group = groupService.findByCode(ServerConstantValue.GP_CUSTOMER_SERVICE);
+            if(group == null)
+            {
+                throw new ServerSideBusinessException("用户组信息错误！", HttpStatus.NOT_ACCEPTABLE);
+            }
+
+            if (orderStatus == OrderStatus.OSDispatching.getIndex())
+            {
+                variables.put(ServerConstantValue.ACT_FW_STG_2_CANDI_USERS,candiUser);
+                variables.put(ServerConstantValue.ACT_FW_STG_2_CANDI_GROUPS,String.valueOf(group.get().getId()));
+            }
+            else if (orderStatus == OrderStatus.OSSigned.getIndex())
+            {
+                variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_USERS,candiUser);
+                variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_GROUPS,String.valueOf(group.get().getId()));
+            }
+            else
+            {
+                throw new ServerSideBusinessException("查询参数错误，订单状态不正确！", HttpStatus.NOT_ACCEPTABLE);
+            }
+
             orderService.update(taskId,variables,orderOptional.get().getId(),orderOptional.get());
         }
 
