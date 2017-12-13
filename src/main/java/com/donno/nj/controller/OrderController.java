@@ -130,33 +130,8 @@ public class OrderController
             }
             else if (orderStatus == OrderStatus.OSSigned.getIndex())
             {
-                /*候选人为同一门店的店长*/
-                Optional<User> user = AppUtil.getCurrentLoginUser();
-                if (user.isPresent())
-                {
-                    List<String> candUserList = sysUserService.getDepLeaderByUserId(user.get().getUserId());
-                    if (candUserList.size() == 0)
-                    {
-                        throw new ServerSideBusinessException("用户所属部门没有指派负责人，流程无法继续！", HttpStatus.NOT_ACCEPTABLE);
-                    }
-
-                    String candLeader = "";
-                    for (String leader:candUserList)
-                    {
-                        if (candLeader.trim().length() > 0)
-                        {
-                            candLeader.concat(";");
-                        }
-                        candLeader.concat(leader);
-                    }
-
-                    variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_USERS,candLeader);
-                    variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_GROUPS,String.valueOf(group.get().getId()));
-                }
-                else
-                {
-                    throw new ServerSideBusinessException("查询参数错误，订单状态不正确！", HttpStatus.NOT_ACCEPTABLE);
-                }
+                variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_USERS,candiUser);
+                variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_GROUPS,String.valueOf(group.get().getId()));
             }
             else if (orderStatus == OrderStatus.OSCompleted.getIndex())
             {

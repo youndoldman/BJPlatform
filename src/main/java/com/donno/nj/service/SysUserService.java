@@ -26,5 +26,7 @@ public interface SysUserService extends UserService
 
     void checkAlive();
 
-    List<String> getDepLeaderByUserId(String userId);
+    List<SysUser> getDepLeaderByUserId(String userId,String groupCode);
+
+
 }

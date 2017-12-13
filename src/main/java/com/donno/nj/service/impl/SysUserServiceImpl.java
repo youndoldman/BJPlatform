@@ -6,10 +6,7 @@ import com.donno.nj.dao.SysUserDao;
 import com.donno.nj.dao.UserDao;
 import com.donno.nj.dao.DepartmentDao;
 import com.donno.nj.dao.UserPositionDao;
-import com.donno.nj.domain.Department;
-import com.donno.nj.domain.SysUser;
-import com.donno.nj.domain.User;
-import com.donno.nj.domain.UserPosition;
+import com.donno.nj.domain.*;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.service.SysUserService;
 
@@ -214,13 +211,27 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
         user.setDepartment(department);
     }
 
-
-    public List<String> getDepLeaderByUserId(String userId)
+    @Override
+    public List<SysUser> getDepLeaderByUserId(String userId,String groupCode)
     {
-        List<String> list = new ArrayList<String>() ;
+        List<SysUser> sysUsers = new ArrayList<SysUser>() ;
 
-        list = sysUserDao.getDepLeaderByUserId(userId);
+         /*用户组信息校验*/
+        Group group = groupDao.findByCode(groupCode.trim());
+        if (groupCode == null || group == null)//用户组不存在
+        {
+            throw new ServerSideBusinessException("用户组信息错误，不存在用户组" ,HttpStatus.NOT_ACCEPTABLE);
+        }
 
-        return list;
+        /*用户信息校验*/
+        SysUser user = sysUserDao.findByUserId(userId);
+        if (userId == null || user == null)
+        {
+            throw new ServerSideBusinessException("用户信息错误，不存在用户" ,HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        sysUsers = sysUserDao.getDepLeaderByUserId(userId,groupCode);
+
+        return sysUsers;
     }
 }

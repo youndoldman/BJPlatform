@@ -30,6 +30,11 @@
 
     </resultMap>
 
+    <resultMap id="DepLeaderMap" type="com.donno.nj.domain.SysUser">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+    </resultMap>
+
     <sql id="TblSysUser">
         t_sysuser
     </sql>
@@ -166,7 +171,7 @@
         </if>
 
         <if test="departmentCode != null">
-            AND  t_sysuser.department_idx = ( select id from t_department where code =#{departmentCode} )
+            AND  t_sysuser.department_idx = ( select id from t_department where code = #{departmentCode} )
         </if>
 
         <if test="mobilePhone != null">
@@ -204,6 +209,27 @@
         (select alive_expire_time from t_system_param )
         )
     </update>
+
+
+
+    <select id="getDepLeaderByUserId" resultMap="DepLeaderMap">
+        SELECT id,user_id
+        FROM t_user
+        WHERE
+          id in (
+                 select user_idx from t_sysuser where
+                department_idx = (select department_idx from t_sysuser where  user_idx = ( select id from t_user where user_id =  #{userId}))
+               )
+          and
+             (
+              group_idx =
+              (
+                select id from t_group where code = #{groupCode}
+              )
+
+            )
+    </select>
+
 
 
 

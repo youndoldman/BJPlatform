@@ -281,4 +281,19 @@ public class SysUserController
 
         return responseEntity;
     }
+
+    @OperationLog(desc = "查询部门负责人")
+    @RequestMapping(value = "/api/sysusers/GetDepLeader", method = RequestMethod.GET)
+    public ResponseEntity getDepLeaderByUserId(@RequestParam(value = "groupCode", defaultValue = "",required = true) String groupCode,
+                                               @RequestParam(value = "userId", defaultValue = "",required = true) String userId)
+    {
+        ResponseEntity responseEntity;
+
+        List<SysUser> sysUsers = sysUserService.getDepLeaderByUserId(userId,groupCode);
+
+        responseEntity = ResponseEntity.ok(ListRep.assemble(sysUsers, sysUsers.size()));
+
+        return responseEntity;
+    }
+
 }
