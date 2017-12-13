@@ -30,7 +30,7 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
 
                 //$scope.map.addControl(new AMap.OverView({isOpen:true}));
             });
-    }
+    };
     //目的地址初始化
     var destNationInitial = function() {
         var iconDest = new AMap.Icon({
@@ -49,7 +49,7 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
             +$scope.vm.currentOrder.recvAddr.county+$scope.vm.currentOrder.recvAddr.detail;
         //给Marker绑定单击事件
         markerDest.on('click', markerDestClick);
-    }
+    };
 
     var markerDestClick = function (e) {
         infoWindow.setContent(e.target.content);
@@ -77,15 +77,24 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
         close(result, 500);
     };
 
-    $scope.submit = function (order) {
-        //if ($scope.isModify) {
-        //    OrderService.modifyOrder(order).then(function () {
-        //        udcModal.info({"title": "处理结果", "message": "修改订单信息成功 "});
-        //        $scope.close(true);
-        //    }, function(value) {
-        //        udcModal.info({"title": "处理结果", "message": "修改订单信息失败 "+value.message});
-        //    })
-        //}
+    $scope.submit = function () {
+        //强行指派配送工
+        if($scope.vm.selectedWorker.userId==null){
+            udcModal.info({"title": "错误信息", "message": "请在地图中选择将要派单的配送工！ "});
+            return;
+        }
+        var dealparams = {
+            businessKey: $scope.vm.currentOrder.orderSn,
+            candiUser   : $scope.vm.selectedWorker.userId,
+            orderStatus: 1
+        };
+        OrderService.dealDistribution(dealparams,$scope.vm.currentOrder.taskId).then(function () {
+            udcModal.info({"title": "处理结果", "message": "人工指派配送工成功，工号："+$scope.vm.selectedWorker.userId});
+            $scope.close(true);
+        }, function(value) {
+            udcModal.info({"title": "处理结果", "message": "人工指派配送工失败 "+value.message});
+        })
+
     };
 
     var getDestLonLat = function () {
@@ -134,7 +143,7 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
 
 
             markerDest.content = {userId:$scope.vm.onLineWorkersList[i].userId,
-            name:$scope.vm.onLineWorkersList[i].name, mobilePhone:$scope.vm.onLineWorkersList[i].mobilePhone};
+                name:$scope.vm.onLineWorkersList[i].name, mobilePhone:$scope.vm.onLineWorkersList[i].mobilePhone};
 
             //给Marker绑定单击事件
             markerDest.on('click', markerWorkersClick);
@@ -156,6 +165,6 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
     var refleshWorkerInfo = function () {
         console.log("refleshWorkerInfo");
         $scope.vm.selectedWorker=$scope.vm.selectedWorker;
-    }
+    };
     init();
 }]);
