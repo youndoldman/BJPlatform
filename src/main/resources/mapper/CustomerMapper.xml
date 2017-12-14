@@ -115,6 +115,16 @@
         t_user.id = #{id}
     </select>
 
+    <select id="findById" resultMap="DetailResultMap">
+        SELECT <include refid="JoinSelectColumn"/>
+        FROM <include refid="JoinTableList"/>
+        WHERE
+        (<include refid="JoinWhereCondition"/>)
+        AND
+        t_user.id = #{id}
+    </select>
+
+
     <select id="findByUserId" resultMap="DetailResultMap">
         SELECT <include refid="JoinSelectColumn"/>
         FROM <include refid="JoinTableList"/>
