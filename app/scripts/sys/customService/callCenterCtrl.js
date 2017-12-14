@@ -210,28 +210,39 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             $scope.vm.currentCustomer = "";
             var queryParams = {
                 phone:$scope.searchParam.phone,
-                detail:$scope.searchParam.address,
+                addrDetail:$scope.searchParam.address,
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize
             }
 
             console.log(queryParams);
 
-            CustomerManageService.retrieveCustomerCallin(queryParams).then(function (customersCallIn) {
-                $scope.pager.update($scope.q, customersCallIn.total, queryParams.pageNo);
-                for(var i=0;i<customersCallIn.items.length;i++)
-                {
-                    var customer = customersCallIn.items[i].customer;
-                    if(customer != null) {
-                        $scope.vm.customerList.push(customer);
-                    }
-                }
+            //以后修改，这里为了演示方便
+            CustomerManageService.retrieveCustomers(queryParams).then(function (customers) {
+                $scope.pager.update($scope.q, customers.total, queryParams.pageNo);
+                $scope.vm.customerList=customers.items;
                 if($scope.vm.customerList.length>0){
                     $scope.vm.currentCustomer = $scope.vm.customerList[0];
                     //刷新订单
                     refleshOrder();
                 }
             });
+
+            //CustomerManageService.retrieveCustomerCallin(queryParams).then(function (customersCallIn) {
+            //    $scope.pager.update($scope.q, customersCallIn.total, queryParams.pageNo);
+            //    for(var i=0;i<customersCallIn.items.length;i++)
+            //    {
+            //        var customer = customersCallIn.items[i].customer;
+            //        if(customer != null) {
+            //            $scope.vm.customerList.push(customer);
+            //        }
+            //    }
+            //    if($scope.vm.customerList.length>0){
+            //        $scope.vm.currentCustomer = $scope.vm.customerList[0];
+            //        //刷新订单
+            //        refleshOrder();
+            //    }
+            //});
         };
         //将列表中的客户信息显示到详情
         $scope.showDetail = function (customer) {
@@ -246,9 +257,9 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             }
 
 
-            CustomerManageService.retrieveCustomerCallin(queryParams).then(function (customersCallIn) {
-                $scope.pager.update($scope.q, customersCallIn.total, queryParams.pageNo);
-                $scope.vm.CustomerOrderHistory = customersCallIn.items;
+            OrderService.retrieveOrders(queryParams).then(function (orders) {
+                $scope.pager.update($scope.q, orders.total, queryParams.pageNo);
+                $scope.vm.CustomerOrderHistory = orders.items;
             });
 
             //刷新订单
@@ -272,6 +283,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         }
 
         var init = function () {
+            $scope.pager.pageSize=3;
             //呼叫中心初始化
             callCenterLogin();
             $scope.pager.update($scope.q, 0, 1);

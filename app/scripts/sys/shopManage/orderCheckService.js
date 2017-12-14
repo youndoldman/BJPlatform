@@ -1,10 +1,9 @@
 'use strict';
 
-customServiceApp.service('OrderService', ['$http', 'URI', 'promiseWrapper','MISC', function ($http, URI, promise,MISC) {
+shopManageApp.service('OrderCheckService', ['$http', 'URI', 'promiseWrapper','MISC', function ($http, URI, promise,MISC) {
     var ordersUri = URI.resources.orders;
     var taskOrdersUri = URI.resources.taskOrders;
     var taskOrdersDealUri = URI.resources.taskOrdersDeal;
-    var usersUri = URI.resources.users;
 
     this.toViewModelTaskOrders = function (taskOrdersFromApi) {
         if(taskOrdersFromApi.object==null)
@@ -61,37 +60,20 @@ customServiceApp.service('OrderService', ['$http', 'URI', 'promiseWrapper','MISC
 
 
 
-
-    //提交订气订单
-    this.createOrder = function (order){
-        return promise.wrap($http.post(ordersUri, order));
-    };
-
-
     //查询所有订单
     this.retrieveOrders = function (params) {
         return promise.wrap($http.get(ordersUri, {params: params}));
     };
 
-    //修改订单
-    this.modifyOrder = function (order) {
-        return promise.wrap($http.put(ordersUri + "/" + order.orderSn, order));
-    };
-
 
     //查询需要进行处理的任务订单
     this.retrieveTaskOrders = function (userId) {
-        return promise.wrap($http.get(taskOrdersUri+'/'+userId+"?orderStatus=0"));
+        return promise.wrap($http.get(taskOrdersUri+'/'+userId+"?orderStatus=2"));
     };
 
-    //查询在线的配送工
-    this.retrieveDistributionworkers = function (params) {
-        return promise.wrap($http.get(usersUri, {params: params}));
 
-    }
-
-    //人工派单至配送工
-    this.dealDistribution = function (params,taskId) {
+    //确认订单
+    this.checkOrder = function (params,taskId) {
         return promise.wrap($http.get(taskOrdersDealUri+'/'+taskId, {params: params}));
 
     }

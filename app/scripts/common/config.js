@@ -96,15 +96,27 @@ commonModule.constant('NavItem', {
             icon: "fa-gears"
         }]
     },
-    'OrderCenter': {
+    'ShopCenter': {
         roles:[],
-        name: "订单管理",
-        href: "orderCenter.htm",
+        name: "门店管理",
+        href: "./shopCenter.htm",
+        menuItems: [{
+            index: 0,
+            name: "订单核实",
+            href: "./shopCenter.htm#/ShopManage/orderCheck",
+            icon: "fa-group"
+        }, {
+            index: 1,
+            name: "统计报表",
+            target: "_blank",
+            href: "",
+            icon: "fa-plane"
+        }]
     },
     'CustomService': {
         roles:[],
         name: "客服业务",
-        href: "./CustomService.htm",
+        href: "./customService.htm",
         menuItems: [{
             index: 0,
             name: "呼叫中心",
