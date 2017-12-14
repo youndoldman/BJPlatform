@@ -120,19 +120,19 @@ commonModule.constant('NavItem', {
         menuItems: [{
             index: 0,
             name: "呼叫中心",
-            href: "./CustomService.htm#/CustomService/callCenter",
+            href: "./customService.htm#/CustomService/callCenter",
             icon: "fa-group"
         }, {
             index: 1,
             name: "订单管理",
             target: "_blank",
-            href: "./CustomService.htm#/CustomService/orderManage",
+            href: "./customService.htm#/CustomService/orderManage",
             icon: "fa-gears"
         }, {
             index: 2,
             name: "客户管理",
             target: "_blank",
-            href: "./CustomService.htm#/CustomService/customerManage",
+            href: "./customService.htm#/CustomService/customerManage",
             icon: "fa-plane"
         }, {
             index: 3,
