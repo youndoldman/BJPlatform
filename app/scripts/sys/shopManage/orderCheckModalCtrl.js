@@ -37,7 +37,7 @@ shopManageApp.controller('OrderCheckModalCtrl', ['$scope', 'close', 'OrderCheckS
 
     var init = function () {
         $scope.vm.currentOrder = _.clone(initVal);
-        if(title == "修改订单") {
+        if(title == "确认订单") {
             $scope.isModify = true;
         }
         else {

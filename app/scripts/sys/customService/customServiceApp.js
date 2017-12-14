@@ -10,7 +10,7 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                 url: '/CustomService',
                 abstract: true,
                 views: {
-                    "": {templateUrl: '../pages/CustomService/customServiceLink.htm'}
+                    "": {templateUrl: '../pages/customService/customServiceLink.htm'}
                 },
                 onEnter: function (rootService, NavItem) {
                     rootService.updateActiveNavL2(NavItem.CustomService.menuItems[0]);
@@ -20,7 +20,7 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                 url:'/callCenter',
                 views: {
                     "head@CustomService": {
-                        templateUrl: '../pages/customService/webPhone.htm',
+                        templateUrl: '../pages/customService/webphone.htm',
                         controller: '',
                         resolve: {}
                     },
@@ -38,7 +38,7 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                 url:'/orderManage',
                 views: {
                     "content@CustomService": {
-                        templateUrl: '../pages/CustomService/orderList.htm',
+                        templateUrl: '../pages/customService/orderList.htm',
                         controller: 'OrderCtrl',
                         resolve: {}
                     }
@@ -51,7 +51,7 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                 url:'/customerManage',
                 views: {
                     "content@CustomService": {
-                        templateUrl: '../pages/CustomService/customerList.htm',
+                        templateUrl: '../pages/customService/customerList.htm',
                         controller: 'CustomerManageCtrl',
                         resolve: {}
                     }
