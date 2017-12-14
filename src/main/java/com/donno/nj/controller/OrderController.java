@@ -125,11 +125,21 @@ public class OrderController
 
             if (orderStatus == OrderStatus.OSDispatching.getIndex())
             {
+                if(candiUser == null || candiUser.trim().length() == 0)
+                {
+                    throw new ServerSideBusinessException("用户不存在！", HttpStatus.NOT_ACCEPTABLE);
+                }
+
                 variables.put(ServerConstantValue.ACT_FW_STG_2_CANDI_USERS,candiUser);
                 variables.put(ServerConstantValue.ACT_FW_STG_2_CANDI_GROUPS,String.valueOf(group.get().getId()));
             }
             else if (orderStatus == OrderStatus.OSSigned.getIndex())
             {
+                if(candiUser == null || candiUser.trim().length() == 0)
+                {
+                    throw new ServerSideBusinessException("用户不存在！", HttpStatus.NOT_ACCEPTABLE);
+                }
+
                 variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_USERS,candiUser);
                 variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_GROUPS,String.valueOf(group.get().getId()));
             }
