@@ -29,8 +29,13 @@
         <result column="note" property="note" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+
         <association property="customer" column="customer_idx" select="com.donno.nj.dao.CustomerDao.selectById">
         </association>
+
+        <association property="dispatcher" column="id" select="com.donno.nj.dao.SysUserDao.findByOrderIdx">
+        </association>
+
         <collection property="orderDetailList" column="id" ofType="com.donno.nj.domain.OrderDetail" select="com.donno.nj.dao.OrderDetailDao.findByOrderIdx">
         </collection>
 
@@ -52,6 +57,8 @@
         #{recvAddr.province}, #{recvAddr.city},#{recvAddr.county},#{recvAddr.detail},#{recvLongitude},#{recvLatitude},
         #{recvName}, #{recvPhone},#{comment},#{note} )
     </insert>
+
+
 
     <delete id="delete" parameterType="java.lang.Integer">
         DELETE FROM <include refid="TblOrder"/> WHERE id= #{id}
@@ -245,6 +252,18 @@
     </set>
     WHERE id = #{id}
     </update>
+
+
+
+     <!--订单派送人-->
+    <insert id="insertDistatcher" >
+        INSERT INTO  t_order_dispatcher(order_idx,dispatcher_idx)
+        VALUES
+        (
+         #{orderIdx},#{userIdx}
+        )
+    </insert>
+
 
 
 </mapper>

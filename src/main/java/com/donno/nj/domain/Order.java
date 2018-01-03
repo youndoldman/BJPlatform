@@ -34,6 +34,8 @@ public class Order implements Serializable
     private Date reserveTime;
     private String comment; //订单附言
 
+    private SysUser dispatcher;//订单派送人
+
     private String  note;
     private Date createTime;
     private Date updateTime;
@@ -69,6 +71,10 @@ public class Order implements Serializable
         return customer;
     }
 
+    public SysUser getDispatcher()
+    {
+        return  dispatcher;
+    }
 
     public Float getOrderAmount()
     {
@@ -201,6 +207,11 @@ public class Order implements Serializable
     public void setCustomer(Customer customer)
     {
         this.customer = customer;
+    }
+
+    public void setDispatcher(SysUser dispatcher)
+    {
+        this.dispatcher = dispatcher;
     }
 
     public void setOrderAmount(Float orderAmount)

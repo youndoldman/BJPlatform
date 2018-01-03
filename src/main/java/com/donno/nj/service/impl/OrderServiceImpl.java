@@ -255,10 +255,19 @@ public class OrderServiceImpl implements OrderService
             throw new ServerSideBusinessException("订单处理失败！", HttpStatus.EXPECTATION_FAILED);
         }
 
+        /*订单指派关系*/
+        if (newOrder.getOrderStatus() == OrderStatus.OSDispatching.getIndex())
+        {
+            String strCandiUser =  (String)variables.get(ServerConstantValue.ACT_FW_STG_2_CANDI_USERS);
+
+            SysUser candiUser = sysUserDao.findByUserId(strCandiUser);
+            orderDao.insertDistatcher(newOrder.getId(),candiUser.getId());
+        }
+
+
         /*订单变更历史记录*/
         OrderOperHistory(newOrder,newOrder.getOrderStatus());
     }
-
 
 
     @Override
@@ -290,6 +299,7 @@ public class OrderServiceImpl implements OrderService
             else if (orderStatus == OrderStatus.OSDispatching.getIndex())
             {
                 opLog = "订单派送中";
+
             }
             else if (orderStatus == OrderStatus.OSSigned.getIndex())
             {
