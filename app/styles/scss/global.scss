@@ -10,7 +10,6 @@
 @import "modal";
 @import "scrollBar";
 
-
 $body-bg: #f3f3f4;
 
 //主页面的DIV向左移动100px
@@ -20,8 +19,10 @@ $body-bg: #f3f3f4;
 body {
   background-color: $body-bg;
   padding-top: 55px;
-  font-size: smaller;
+  font-size: small;
+  font-family: "Microsoft Yahei";
 }
+
 
 html, body {
   height: 100%;

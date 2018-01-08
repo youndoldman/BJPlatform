@@ -3,7 +3,8 @@ manageApp.controller('GoodsTypeModalCtrl', ['$scope', 'close', 'GoodsService', '
     $scope.modalTitle = title;
     $scope.vm = {
         goodsType: {
-        }
+        },
+        goodsOldCode:null
     };
 
     $scope.isModify = false;
@@ -19,7 +20,7 @@ manageApp.controller('GoodsTypeModalCtrl', ['$scope', 'close', 'GoodsService', '
                 $scope.close(true);
             })
         } else if (goodsType.name != "" &&goodsType.code != ""&& title == "修改商品类型") {
-            GoodsService.modifyGoodsType(goodsType).then(function () {
+            GoodsService.modifyGoodsType(goodsType, $scope.vm.goodsOldCode).then(function () {
                 udcModal.info({"title": "处理结果", "message": "修改商品类型成功 "});
                 $scope.close(true);
             })
@@ -31,6 +32,7 @@ manageApp.controller('GoodsTypeModalCtrl', ['$scope', 'close', 'GoodsService', '
 
     var init = function () {
         $scope.vm.goodsType = _.clone(initVal);
+        $scope.vm.goodsOldCode = $scope.vm.goodsType.code;
         if(title == "修改商品") {
             $scope.isModify = true;
         }

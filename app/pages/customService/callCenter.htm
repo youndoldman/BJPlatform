@@ -9,7 +9,7 @@
 <div class="row" style="margin-top:15px;">
   <div class="col-md-5">
     <!-- general form elements -->
-    <div class="panel panel-primary" style="min-height: 500px;">
+    <div class="panel panel-primary" style="height: 430px;">
       <div class="panel-heading">
         <h3 class="panel-title">客户资料</h3>
       </div>
@@ -126,7 +126,6 @@
             <input type="text" class="form-control  input-sm" ng-model="vm.currentCustomer.note">
           </div>
         </div>
-        <br>
         <hr>
         <div class="row">
           <div class="col-xs-2 text-left">
@@ -146,22 +145,19 @@
 
           </div>
         </div>
-        <br>
 
-        <div class="row">
+        <div class="row" style="margin-top: 5px">
 
-          <button type="save" class="btn btn-primary btn-lg pull-left" style="margin-left: 20px" ng-click="initPopUp()">新建客户</button>
+          <button type="save" class="btn btn-primary btn-md pull-left" style="margin-left: 10px" ng-click="initPopUp()">新建客户</button>
 
-
-          <button type="save" class="btn btn-primary btn-lg pull-right" style="margin-right: 40px" ng-click="modify(vm.currentCustomer)">资料修改</button>
-
+          <button type="save" class="btn btn-primary btn-md pull-right" style="margin-right: 10px" ng-click="modify(vm.currentCustomer)">资料修改</button>
         </div>
 
       </div>
     </div>
   </div>
-  <div class="col-md-6">
-    <div class="panel panel-primary" style="min-height: 500px">
+  <div class="col-md-4">
+    <div class="panel panel-primary" style="height: 430px;overflow: auto">
       <div class="panel-heading">
         <h3 class="panel-title">查询窗口</h3>
       </div>
@@ -170,7 +166,7 @@
       <div class="panel-body" style="min-height: 250px">
         <p>关联客户</p>
         <br/>
-        <table class="table table-bordered table-hover .table-condensed">
+        <table class="table table-bordered table-hover .table-condensed table-striped" style="table-layout:fixed;">
           <tr>
             <th  style="background: lightblue;text-align: center">编号</th>
             <th  style="background: lightblue;text-align: center">姓名</th>
@@ -178,10 +174,10 @@
             <th  style="background: lightblue;text-align: center">地址</th>
           </tr>
           <tr ng-repeat="customer in vm.customerList" ng-click="showDetail(customer)">
-            <td>{{customer.userId}}</td>
-            <td>{{customer.name}}</td>
-            <td>{{customer.phone}}</td>
-            <td>{{customer.address.province}}{{customer.address.city}}{{customer.address.county}}{{customer.address.detail}}</td>
+            <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{customer.userId}}</td>
+            <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{customer.name}}</td>
+            <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{customer.phone}}</td>
+            <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{customer.address.province}}{{customer.address.city}}{{customer.address.county}}{{customer.address.detail}}</td>
           </tr>
         </table>
         <div ng-if="vm.userList.length == 0" nj-table-no-data></div>
@@ -191,16 +187,16 @@
       <div class="panel-body" style="margin-top: -20px">
         <p>订气记录</p>
         <br/>
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered table-hover"  style="table-layout:fixed;">
           <tr>
             <th  style="background: lightblue;text-align: center">编号</th>
             <th  style="background: lightblue;text-align: center">时间</th>
             <th  style="background: lightblue;text-align: center">地址</th>
           </tr>
           <tr ng-repeat="CustomerOrder in vm.CustomerOrderHistory" >
-            <td>{{CustomerOrder.orderSn}}</td>
-            <td>{{CustomerOrder.createTime}}</td>
-            <td>{{CustomerOrder.recvAddr.province}}{{CustomerOrder.recvAddr.city}}{{CustomerOrder.recvAddr.county}}{{CustomerOrder.recvAddr.detail}}</td>
+            <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{CustomerOrder.orderSn}}</td>
+            <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{CustomerOrder.createTime}}</td>
+            <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{CustomerOrder.recvAddr.province}}{{CustomerOrder.recvAddr.city}}{{CustomerOrder.recvAddr.county}}{{CustomerOrder.recvAddr.detail}}</td>
           </tr>
         </table>
         <div ng-if="vm.userList.length == 0" nj-table-no-data></div>
@@ -208,158 +204,158 @@
       </div>
     </div>
   </div>
+  <div class="col-md-3">
+    <div class="panel panel-primary" style="height: 800px;overflow: auto">
+      <div class="panel-heading">
+        <h3 class="panel-title">来电记录</h3>
+      </div>
+
+      <!-- /.box-header -->
+      <!-- form start -->
+      <form role="form">
+        <div class="panel-body">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab_1" data-toggle="tab">来电记录</a></li>
+            <li><a href="#tab_2" data-toggle="tab">未处理来电</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab_1">
+              <div class="row">
+                <div class="col-xs-7">
+
+                  <div class="input-group date">
+                    <div class="input-group-addon">
+                      <i class="fa fa-calendar"></i>
+                    </div>
+                    <input type="text" class="form-control pull-right input-sm" placeholder="2017-07-30">
+                  </div>
+                </div>
+                <div class="col-xs-5">
+
+                  <select class="form-control input-sm" >
+                    <option>525</option>
+                    <option>535</option>
+                    <option>545</option>
+                    <option>555</option>
+                  </select>
+                </div>
+              </div>
+              <br>
+              <div>
+                <label>来电号码：</label>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-xs-7">
+                  <div class="box-tools">
+                    <div class="input-group input-group-sm">
+                      <input type="text" name="table_search" class="form-control " placeholder="12345678911">
+
+                      <div class="input-group-btn">
+                        <button type="search" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-xs-5">
+                  <select class="form-control input-sm">
+                    <option>100条</option>
+                    <option>200条</option>
+                    <option>300条</option>
+                  </select>
+                </div>
+              </div>
+              <br><br>
+              <table class="table table-bordered">
+                <tr>
+                  <th style="background: lightblue">电话号码</th>
+                  <th style="background: lightblue">来电时间</th>
+                  <th style="background: lightblue">接线员</th>
+                </tr>
+                <tr><td>12345678901</td><td>2017-07-30</td><td>555</td></tr>
+                <tr><td>12345678902</td><td>2017-07-30</td><td>535</td></tr>
+                <tr><td>12345678903</td><td>2017-07-30</td><td>525</td></tr>
+                <tr><td>12345678904</td><td>2017-07-30</td><td>545</td></tr>
+                <tr><td>12345678905</td><td>2017-07-30</td><td>555</td></tr>
+                <tr><td>12345678906</td><td>2017-07-30</td><td>555</td></tr>
+              </table>
+            </div>
+            <!-- /.tab-pane -->
+            <div class="tab-pane" id="tab_2">
+              <div class="row">
+                <div class="col-xs-7">
+
+                  <div class="input-group date">
+                    <div class="input-group-addon">
+                      <i class="fa fa-calendar"></i>
+                    </div>
+                    <input type="text" class="form-control pull-right input-sm" placeholder="2017-07-30">
+                  </div>
+                </div>
+                <div class="col-xs-5">
+
+                  <select class="form-control input-sm" >
+                    <option>525</option>
+                    <option>535</option>
+                    <option>545</option>
+                    <option>555</option>
+                  </select>
+                </div>
+              </div>
+              <br>
+              <div>
+                <label>来电号码：</label>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-xs-7">
+                  <div class="box-tools">
+                    <div class="input-group input-group-sm">
+                      <input type="text" name="table_search" class="form-control " placeholder="12345678911">
+
+                      <div class="input-group-btn">
+                        <button type="search" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-xs-5">
+                  <select class="form-control input-sm">
+                    <option>100条</option>
+                    <option>200条</option>
+                    <option>300条</option>
+                  </select>
+                </div>
+              </div>
+              <br><br>
+              <table class="table table-bordered">
+                <tr>
+                  <th style="background: lightblue">电话号码</th>
+                  <th style="background: lightblue">来电时间</th>
+                  <th style="background: lightblue">接线员</th>
+                </tr>
+                <tr><td>12345678901</td><td>2017-07-30</td><td>555</td></tr>
+                <tr><td>12345678902</td><td>2017-07-30</td><td>535</td></tr>
+                <tr><td>12345678903</td><td>2017-07-30</td><td>525</td></tr>
+                <tr><td>12345678904</td><td>2017-07-30</td><td>545</td></tr>
+                <tr><td>12345678905</td><td>2017-07-30</td><td>555</td></tr>
+                <tr><td>12345678906</td><td>2017-07-30</td><td>555</td></tr>
+              </table>
+            </div>
+
+            <!-- /.tab-pane -->
+          </div>
+          <!-- /.tab-content -->
+        </div>
+        <!-- Custom Tabs -->
+      </form>
+    </div>
+  </div>
 </div>
-<!--<div class="col-md-3 " style="width:25%;margin-left:-15px;margin-right:15px ">-->
-<!--<div class="panel panel-primary" style="min-height: 500px">-->
-<!--<div class="panel-heading">-->
-<!--<h3 class="panel-title">来电记录</h3>-->
-<!--</div>-->
-
-<!--&lt;!&ndash; /.box-header &ndash;&gt;-->
-<!--&lt;!&ndash; form start &ndash;&gt;-->
-<!--<form role="form">-->
-<!--<div class="panel-body">-->
-<!--<ul class="nav nav-tabs">-->
-<!--<li class="active"><a href="#tab_1" data-toggle="tab">来电记录</a></li>-->
-<!--<li><a href="#tab_2" data-toggle="tab">未处理来电</a></li>-->
-<!--</ul>-->
-<!--<div class="tab-content">-->
-<!--<div class="tab-pane active" id="tab_1">-->
-<!--<div class="row">-->
-<!--<div class="col-xs-7">-->
-
-<!--<div class="input-group date">-->
-<!--<div class="input-group-addon">-->
-<!--<i class="fa fa-calendar"></i>-->
-<!--</div>-->
-<!--<input type="text" class="form-control pull-right input-sm" placeholder="2017-07-30">-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="col-xs-5">-->
-
-<!--<select class="form-control input-sm" >-->
-<!--<option>525</option>-->
-<!--<option>535</option>-->
-<!--<option>545</option>-->
-<!--<option>555</option>-->
-<!--</select>-->
-<!--</div>-->
-<!--</div>-->
-<!--<br>-->
-<!--<div>-->
-<!--<label>来电号码：</label>-->
-<!--</div>-->
-<!--<br>-->
-<!--<div class="row">-->
-<!--<div class="col-xs-7">-->
-<!--<div class="box-tools">-->
-<!--<div class="input-group input-group-sm">-->
-<!--<input type="text" name="table_search" class="form-control " placeholder="12345678911">-->
-
-<!--<div class="input-group-btn">-->
-<!--<button type="search" class="btn btn-flat"><i class="fa fa-search"></i></button>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-
-<!--<div class="col-xs-5">-->
-<!--<select class="form-control input-sm">-->
-<!--<option>100条</option>-->
-<!--<option>200条</option>-->
-<!--<option>300条</option>-->
-<!--</select>-->
-<!--</div>-->
-<!--</div>-->
-<!--<br><br>-->
-<!--<table class="table table-bordered">-->
-<!--<tr>-->
-<!--<th style="background: lightblue">电话号码</th>-->
-<!--<th style="background: lightblue">来电时间</th>-->
-<!--<th style="background: lightblue">接线员</th>-->
-<!--</tr>-->
-<!--<tr><td>12345678901</td><td>2017-07-30</td><td>555</td></tr>-->
-<!--<tr><td>12345678902</td><td>2017-07-30</td><td>535</td></tr>-->
-<!--<tr><td>12345678903</td><td>2017-07-30</td><td>525</td></tr>-->
-<!--<tr><td>12345678904</td><td>2017-07-30</td><td>545</td></tr>-->
-<!--<tr><td>12345678905</td><td>2017-07-30</td><td>555</td></tr>-->
-<!--<tr><td>12345678906</td><td>2017-07-30</td><td>555</td></tr>-->
-<!--</table>-->
-<!--</div>-->
-<!--&lt;!&ndash; /.tab-pane &ndash;&gt;-->
-<!--<div class="tab-pane" id="tab_2">-->
-<!--<div class="row">-->
-<!--<div class="col-xs-7">-->
-
-<!--<div class="input-group date">-->
-<!--<div class="input-group-addon">-->
-<!--<i class="fa fa-calendar"></i>-->
-<!--</div>-->
-<!--<input type="text" class="form-control pull-right input-sm" placeholder="2017-07-30">-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="col-xs-5">-->
-
-<!--<select class="form-control input-sm" >-->
-<!--<option>525</option>-->
-<!--<option>535</option>-->
-<!--<option>545</option>-->
-<!--<option>555</option>-->
-<!--</select>-->
-<!--</div>-->
-<!--</div>-->
-<!--<br>-->
-<!--<div>-->
-<!--<label>来电号码：</label>-->
-<!--</div>-->
-<!--<br>-->
-<!--<div class="row">-->
-<!--<div class="col-xs-7">-->
-<!--<div class="box-tools">-->
-<!--<div class="input-group input-group-sm">-->
-<!--<input type="text" name="table_search" class="form-control " placeholder="12345678911">-->
-
-<!--<div class="input-group-btn">-->
-<!--<button type="search" class="btn btn-flat"><i class="fa fa-search"></i></button>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-
-<!--<div class="col-xs-5">-->
-<!--<select class="form-control input-sm">-->
-<!--<option>100条</option>-->
-<!--<option>200条</option>-->
-<!--<option>300条</option>-->
-<!--</select>-->
-<!--</div>-->
-<!--</div>-->
-<!--<br><br>-->
-<!--<table class="table table-bordered">-->
-<!--<tr>-->
-<!--<th style="background: lightblue">电话号码</th>-->
-<!--<th style="background: lightblue">来电时间</th>-->
-<!--<th style="background: lightblue">接线员</th>-->
-<!--</tr>-->
-<!--<tr><td>12345678901</td><td>2017-07-30</td><td>555</td></tr>-->
-<!--<tr><td>12345678902</td><td>2017-07-30</td><td>535</td></tr>-->
-<!--<tr><td>12345678903</td><td>2017-07-30</td><td>525</td></tr>-->
-<!--<tr><td>12345678904</td><td>2017-07-30</td><td>545</td></tr>-->
-<!--<tr><td>12345678905</td><td>2017-07-30</td><td>555</td></tr>-->
-<!--<tr><td>12345678906</td><td>2017-07-30</td><td>555</td></tr>-->
-<!--</table>-->
-<!--</div>-->
-
-<!--&lt;!&ndash; /.tab-pane &ndash;&gt;-->
-<!--</div>-->
-<!--&lt;!&ndash; /.tab-content &ndash;&gt;-->
-<!--</div>-->
-<!--&lt;!&ndash; Custom Tabs &ndash;&gt;-->
-<!--</form>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<div class="row col-md-11" style="min-width: 94%">
+<div class="row">
+  <div class="col-md-9" style="margin-right:10px;height: 400px;margin-top: -370px">
   <ul class="nav nav-tabs">
     <li class="active"><a href="#/decision/cost#tab1" data-toggle="tab">订气</a></li>
     <li><a href="#/decision/cost#tab2" data-toggle="tab">报修</a></li>
@@ -367,33 +363,33 @@
   </ul>
   <div class="tab-content" >
     <div class="tab-pane fade in active" id="tab1">
-      <div class="row col-md-12" style="margin-top: 20px">
-        <div class="col-md-3" style="margin-top: 20px">
+      <div class="row col-md-12" style="margin-top: 5px">
+        <div class="col-md-2" style="margin-top: 5px">
           <div class="input-group">
-            <span class="input-group-addon">商品类型</span>
+            <span class="input-group-addon">类型</span>
             <select name="goodsType" ng-model="temp.selectedGoodsType" ng-options="goodsType.name for goodsType in temp.goodsTypesList" class="form-control" ng-selected="" ng-change="goodsTypeChange()"></select>
           </div>
         </div>
-        <div class="col-md-3" style="margin-top: 20px">
+        <div class="col-md-3" style="margin-top: 5px">
           <div class="input-group">
             <span class="input-group-addon">商品</span>
             <select name="goods" ng-model="temp.selectedGoods" ng-options="goods.name for goods in temp.goodsList" class="form-control" ng-selected=""></select>
           </div>
         </div>
-        <div class="col-md-2" style="margin-top: 20px">
+        <div class="col-md-2" style="margin-top: 5px">
           <div class="input-group pull-right" >
             <span class="input-group-addon">数量</span>
             <input type="number"  class="form-control" ng-model="temp.selectedQuantity" ></input>
           </div>
         </div>
-        <div class="col-md-2" style="margin-top: 20px">
+        <div class="col-md-2" style="margin-top: 5px;margin-left: -10px">
           <div class="input-group">
             <button type="button" class="btn btn-sm btn-success" ng-click="addToCart()"><i class="fa fa-plus"></i> 添加购物车 </button>
           </div>
         </div>
-        <div class="col-md-1 col-md-offset-1" style="margin-top: 20px">
+        <div class="col-md-1 col-md-offset-2" style="margin-top: 5px">
           <div class="input-group">
-            <button class="btn btn-primary"  ng-click="createOrder()">生成订单</button>
+            <button class="btn btn-sm btn-primary"  ng-click="createOrder()"><i class="fa fa-plus"></i> 生成订单 </button>
           </div>
 
         </div>
@@ -403,73 +399,73 @@
         <div class="panel-body">
 
           <div class="row" >
-            <div class="col-md-8" style="margin-top: 20px;min-height: 250px">
+            <div class="col-md-8" style="margin-top: 5px;min-height: 200px">
               <table class="table table-bordered table-hover .table-condensed">
 
-              <thead>
-              <tr>
-                <td style="background: lightblue;text-align: center" width="8%">商品号</td>
-                <td style="background: lightblue;text-align: center" width="12%">商品名称</td>
-                <td style="background: lightblue;text-align: center" width="10%">商品类型</td>
-                <td style="background: lightblue;text-align: center" width="10%">商品规格</td>
-                <td style="background: lightblue;text-align: center" width="5%">单位</td>
-                <td style="background: lightblue;text-align: center" width="5%">重量</td>
-                <td style="background: lightblue;text-align: center" width="9%">价格</td>
-                <td style="background: lightblue;text-align: center" width="10%">有效期</td>
-                <td style="background: lightblue;text-align: center" width="5%">状态</td>
-                <td style="background: lightblue;text-align: center" width="10%">说明</td>
-                <td style="background: lightblue;text-align: center" width="10%">原始价格</td>
-                <td style="background: lightblue;text-align: center" width="10%">成交价格</td>
-                <td style="background: lightblue;text-align: center" width="10%">数量</td>
-                <td style="background: lightblue;text-align: center" width="10%">小计</td>
-                <td style="background: lightblue;text-align: center" width="10%">删除</td>
-              </tr>
-              </thead>
-              <tbody>
-              <tr ng-repeat="orderDetail in currentOrder.orderDetailList">
-                <td class="message">{{orderDetail.goods.code}}</td>
-                <td class="message">{{orderDetail.goods.name}}</td>
-                <td class="message">{{orderDetail.goods.goodsType.name}}</td>
-                <td class="message">{{orderDetail.goods.specifications}}</td>
-                <td class="message">{{orderDetail.goods.unit}}</td>
-                <td class="message">{{orderDetail.goods.weight}}</td>
-                <td class="message">{{orderDetail.goods.price}}</td>
-                <td class="message">{{orderDetail.goods.lifeExpectancy}}</td>
-                <td class="message">{{orderDetail.goods.status}}</td>
-                <td class="message">{{orderDetail.goods.note}}</td>
-                <td class="message">{{orderDetail.originalPrice}}</td>
-                <td class="message">{{orderDetail.dealPrice}}</td>
-                <td class="message">{{orderDetail.quantity}}</td>
-                <td class="message">{{orderDetail.subtotal}}</td>
-                <td class="operate">
-                  <button title="删除" ng-click="deleteGoodsFromCart(orderDetail)" type="button" class="btn btn-primary btn-outline btn-xs">
-                    <i class="fa fa-trash-o"></i>
-                  </button>
-                </td>
-              </tr>
+                <thead>
+                <tr>
+                  <td style="background: lightblue;text-align: center" width="8%">商品号</td>
+                  <td style="background: lightblue;text-align: center" width="12%">商品名称</td>
+                  <td style="background: lightblue;text-align: center" width="10%">商品类型</td>
+                  <td style="background: lightblue;text-align: center" width="10%">商品规格</td>
+                  <td style="background: lightblue;text-align: center" width="5%">单位</td>
+                  <td style="background: lightblue;text-align: center" width="5%">重量</td>
+                  <td style="background: lightblue;text-align: center" width="9%">价格</td>
+                  <td style="background: lightblue;text-align: center" width="10%">有效期</td>
+                  <td style="background: lightblue;text-align: center" width="5%">状态</td>
+                  <td style="background: lightblue;text-align: center" width="10%">说明</td>
+                  <td style="background: lightblue;text-align: center" width="10%">原始价格</td>
+                  <td style="background: lightblue;text-align: center" width="10%">成交价格</td>
+                  <td style="background: lightblue;text-align: center" width="10%">数量</td>
+                  <td style="background: lightblue;text-align: center" width="10%">小计</td>
+                  <td style="background: lightblue;text-align: center" width="10%">删除</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="orderDetail in currentOrder.orderDetailList">
+                  <td class="message">{{orderDetail.goods.code}}</td>
+                  <td class="message">{{orderDetail.goods.name}}</td>
+                  <td class="message">{{orderDetail.goods.goodsType.name}}</td>
+                  <td class="message">{{orderDetail.goods.specifications}}</td>
+                  <td class="message">{{orderDetail.goods.unit}}</td>
+                  <td class="message">{{orderDetail.goods.weight}}</td>
+                  <td class="message">{{orderDetail.goods.price}}</td>
+                  <td class="message">{{orderDetail.goods.lifeExpectancy}}</td>
+                  <td class="message">{{orderDetail.goods.status}}</td>
+                  <td class="message">{{orderDetail.goods.note}}</td>
+                  <td class="message">{{orderDetail.originalPrice}}</td>
+                  <td class="message">{{orderDetail.dealPrice}}</td>
+                  <td class="message">{{orderDetail.quantity}}</td>
+                  <td class="message">{{orderDetail.subtotal}}</td>
+                  <td class="operate">
+                    <button title="删除" ng-click="deleteGoodsFromCart(orderDetail)" type="button" class="btn btn-primary btn-outline btn-xs">
+                      <i class="fa fa-trash-o"></i>
+                    </button>
+                  </td>
+                </tr>
 
-              </tbody>
+                </tbody>
               </table>
             </div>
-            <div class="col-md-2" style="margin-top: 20px">
+            <div class="col-md-2" style="margin-top: 5px">
               <div class="input-group">
                 <span class="input-group-addon">联系人</span>
                 <input type="text" class="form-control" ng-model="currentOrder.recvName">
               </div>
             </div>
-            <div class="col-md-2" style="margin-top: 20px">
+            <div class="col-md-2" style="margin-top: 5px">
               <div class="input-group">
                 <span class="input-group-addon">电话</span>
                 <input type="text" class="form-control" ng-model="currentOrder.recvPhone">
               </div>
             </div>
-            <div class="col-md-4" style="margin-top: 20px">
+            <div class="col-md-4" style="margin-top: 5px">
               <div class="input-group">
                 <span class="input-group-addon">送气地址</span>
                 <input type="text" class="form-control" value={{currentOrder.recvAddr.province}}{{currentOrder.recvAddr.city}}{{currentOrder.recvAddr.country}}{{currentOrder.recvAddr.detail}}>
               </div>
             </div>
-            <div class="col-md-4" style="margin-top: 20px">
+            <div class="col-md-4" style="margin-top: 5px">
               <div class="form-group">
                 <div class='input-group date' id='datetimepickerOrder'>
                   <span class="input-group-addon">预约时间</span>
@@ -480,7 +476,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-2" style="margin-top: 20px">
+            <div class="col-md-2" style="margin-top: 5px">
               <div class="input-group has-error">
                <span class="input-group-addon">
               <input type="checkbox" aria-label="..." ng-model="currentOrder.urgent">
@@ -488,13 +484,13 @@
                 <input type="text" class="form-control lead" style="color: red" value="加急配送" disabled　>
               </div>
             </div>
-            <div class="col-md-2" style="margin-top: 20px">
+            <div class="col-md-2" style="margin-top: 5px">
               <div class="input-group">
                 <span class="input-group-addon">备注</span>
                 <input type="text" class="form-control" ng-model="currentOrder.comment">
               </div>
             </div>
-            <div class="col-md-4" style="margin-top: 20px">
+            <div class="col-md-4" style="margin-top: 5px">
               <div class="input-group has-success">
                 <span class="input-group-addon ">订单总额</span>
                 <input type="number"  class="form-control" ng-model="currentOrder.orderAmount" ></input>
@@ -508,8 +504,8 @@
     <div class="tab-pane fade" id="tab2">
       <div class="panel panel-primary" style="min-height: 300px;">
         <div class="panel-body">
-          <div class="row col-md-7" style="margin-top: 20px">
-            <div class="col-md-5" style="margin-top: 20px">
+          <div class="row col-md-7" style="margin-top: 5px">
+            <div class="col-md-5" style="margin-top: 5px">
               <div class="input-group">
                 <span class="input-group-addon">报修类型</span>
                 <select  class="form-control">
@@ -521,30 +517,30 @@
             </div>
           </div>
           <div class="row" >
-            <div class="col-md-7" style="margin-top: 20px;min-height: 200px">
+            <div class="col-md-7" style="margin-top: 5px;min-height: 200px">
               <span class="input-group-addon">报修描述</span>
               <textarea class="form-control" rows="8"></textarea>
             </div>
-            <div class="col-md-2" style="margin-top: 20px">
+            <div class="col-md-2" style="margin-top: 5px">
               <div class="input-group">
                 <span class="input-group-addon">联系人</span>
                 <input type="text" class="form-control" ng-model="vm.currentCustomer.name">
               </div>
             </div>
-            <div class="col-md-2" style="margin-top: 20px">
+            <div class="col-md-2" style="margin-top: 5px">
               <div class="input-group">
                 <span class="input-group-addon">联系电话</span>
                 <input type="text" class="form-control" ng-model="vm.currentCustomer.phone">
               </div>
             </div>
-            <div class="col-md-4" style="margin-top: 20px">
+            <div class="col-md-4" style="margin-top: 5px">
               <div class="input-group">
                 <span class="input-group-addon">维修地址</span>
                 <input type="text" class="form-control" value={{vm.currentCustomer.address.province}}{{vm.currentCustomer.address.city}}{{vm.currentCustomer.address.country}}{{vm.currentCustomer.address.detail}}>
               </div>
             </div>
 
-            <div class="col-md-4" style="margin-top: 20px">
+            <div class="col-md-4" style="margin-top: 5px">
               <div class="form-group">
 
 
@@ -557,7 +553,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-2" style="margin-top: 20px">
+            <div class="col-md-2" style="margin-top: 5px">
               <div class="input-group has-error">
                <span class="input-group-addon">
               <input type="checkbox" aria-label="..." >
@@ -566,7 +562,7 @@
               </div>
             </div>
 
-            <div class="col-md-2 col-md-offset-1" style="margin-top: 20px">
+            <div class="col-md-2 col-md-offset-1" style="margin-top: 5px">
               <button class="btn btn-primary"  ng-click="createOrder()">维修生成订单</button>
             </div>
           </div>
@@ -577,6 +573,7 @@
       <chart3></chart3>
     </div>
   </div>
+</div>
 </div>
 <!--<div class="row">-->
 <!--<div class="col-md-12">-->

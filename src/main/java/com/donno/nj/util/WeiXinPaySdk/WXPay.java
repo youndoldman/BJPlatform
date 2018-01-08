@@ -484,6 +484,8 @@ public class WXPay {
      * @throws Exception
      */
     public Map<String, String> refund(Map<String, String> reqData) throws Exception {
+        int a = this.config.getHttpConnectTimeoutMs();
+        int b = this.config.getHttpReadTimeoutMs();
         return this.refund(reqData, this.config.getHttpConnectTimeoutMs(), this.config.getHttpReadTimeoutMs());
     }
 

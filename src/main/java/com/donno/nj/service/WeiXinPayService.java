@@ -25,4 +25,7 @@ public interface WeiXinPayService
 
     //退款接口
     boolean doRefund(String out_trade_no, String total_fee);
+
+    //支付结果通知接口
+    Map<String, String> payNotify(String notify_msg);
 }
