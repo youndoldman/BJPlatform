@@ -55,7 +55,7 @@ manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper', function ($
         return promise.wrap($http.post(goodsTypesUri, goodsType));
     };
 
-    this.modifyGoodsType = function (goodsType) {
+    this.modifyGoodsType = function (goodsType, oldCode) {
         return promise.wrap($http.put(goodsTypesUri + "/" + goodsType.code, goodsType));
     };
 

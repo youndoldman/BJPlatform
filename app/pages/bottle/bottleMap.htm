@@ -1,0 +1,45 @@
+<div id="mapContainer" class="col-xs-12 col-sm-9 col-md-9 col-lg-9 div-bordered" style="height:800px"></div>
+<div  class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+    <div class="ribbon">
+        <a href=""><span class="home fa fa-home"></span></a>
+        <ol class="breadcrumb">
+            <li>钢瓶列表</li>
+        </ol>
+    </div>
+
+    <div class="table-wrapper table-bordered" style="height: 800px">
+        <div class="toolbar">
+            <form role="form">
+                <div class="inline-group">
+                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.userName" ng-change="search()" placeholder="钢瓶编码"> </label>
+                    <button type="submit" class="btn btn-sm btn-primary" ng-click=""><i class="fa fa-search"></i> 搜索 </button>
+                </div>
+            </form>
+        </div>
+        <table class="table table-striped table-hover props table-sm">
+            <thead>
+            <tr>
+                <th width="1%"></th>
+                <th width="39%">钢瓶编码</th>
+                <th width="40%">生产日期</th>
+                <th width="20%">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="bottle in vm.bottleList">
+                <td></td>
+                <td class="message">{{bottle.code}}</td>
+                <td class="message">{{bottle.createTime}}</td>
+                <td class="operate">
+                    <button title="查看位置" ng-click="location(bottle.location|lonFilter, bottle.location|lanFilter)" type="button" class="btn btn-primary btn-outline btn-xs">
+                        <i class="fa fa-info-circle"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div ng-if="vm.bottleList.length == 0" nj-table-no-data></div>
+        <div nj-pager pager="pager"></div>
+    </div>
+
+</div>

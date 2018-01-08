@@ -1,11 +1,8 @@
 package com.donno.nj.service.impl;
 
 import com.donno.nj.exception.ServerSideBusinessException;
-import com.donno.nj.util.WeiXinPaySdk.WXPay;
-import com.donno.nj.util.WeiXinPaySdk.WXPayConfigImpl;
-import com.donno.nj.util.WeiXinPaySdk.WXPayConstants;
+import com.donno.nj.util.WeiXinPaySdk.*;
 
-import com.donno.nj.util.WeiXinPaySdk.WXPayUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.donno.nj.service.WeiXinPayService;
@@ -151,13 +148,18 @@ public class WeiXinPayServiceImpl implements WeiXinPayService
     //退款 out_trade_no-退款订单号 total_fee-退款金额
     @Override
     public boolean doRefund(String out_trade_no, String total_fee) {
+
         HashMap<String, String> data = new HashMap<String, String>();
+        data.put("appid", wxPayConfigImpl.getOfficialID());
+        data.put("out_refund_no", WXPayUtil.generateNonceStr());
+
+
         data.put("out_trade_no", out_trade_no);
         data.put("out_refund_no", out_trade_no);
         data.put("total_fee", total_fee);
         data.put("refund_fee", total_fee);
         data.put("refund_fee_type", "CNY");
-        data.put("op_user_id", wxPayConfigImpl.getMchID());
+
 
         try {
             Map<String, String> r = wxpay.refund(data);
@@ -170,6 +172,27 @@ public class WeiXinPayServiceImpl implements WeiXinPayService
         } catch (java.lang.Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    //支付结果通知接口
+    @Override
+    public Map<String, String> payNotify(String notify_msg) {
+
+        HashMap<String, String> result = new HashMap<String, String>();
+        try {
+        Map<String, String> notifyMap = WXPayUtil.xmlToMap(notify_msg);  // 转换成map
+            if (true/*wxpay.isPayResultNotifySignatureValid(notifyMap)*/) {
+                result.put("out_trade_no", notifyMap.get("out_trade_no"));
+                result.put("total_fee", notifyMap.get("total_fee"));
+                return result;
+            }
+            else {
+                return null;
+            }
+        } catch (java.lang.Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

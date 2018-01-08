@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.Map;
-
 import com.donno.nj.util.QRCodeUtil;
 
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +40,7 @@ public class TestController {
     private static final Logger logger = LoggerFactory.getLogger(TestController.class);
 
 
-    @RequestMapping(value = "/api/test/QRCode/Create", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/test/QRCode/Create", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity testQRCode(HttpServletResponse response, @RequestParam(value = "text") String text) throws IOException {
         response.setContentType("image/png;charset=UTF-8");
 
@@ -109,4 +108,54 @@ public class TestController {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
     }
+
+    @RequestMapping(value = "/api/test/Pay/notify", method = RequestMethod.POST, produces = "application/xml")
+    public ResponseEntity testPayNotify(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/xml");
+
+        try {
+            InputStream inputStream = request.getInputStream();
+
+            byte[] bytes = new byte[0];
+            bytes = new byte[inputStream.available()];
+            inputStream.read(bytes);
+            String notifyData = new String(bytes);// 支付结果通知的xml格式数据
+            Map<String, String> result = weiXinPayService.payNotify(notifyData);
+            if(result!=null){
+                //支付结果通知为成功TODO
+            }else{
+
+            }
+            String claimStr ="<xml>\n" +
+                    "  <return_code><![CDATA[SUCCESS]]></return_code>\n" +
+                    "  <return_msg><![CDATA[OK]]></return_msg>\n" +
+                    "</xml>";
+            response.getOutputStream().write(claimStr.getBytes(), 0, claimStr.length());
+
+
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+    }
+
+    @RequestMapping(value = "/api/test/Pay/refound", method = RequestMethod.GET)
+    public ResponseEntity testQRCode(HttpServletRequest request, @RequestParam(value = "totalFee") String totalFee,
+                                     @RequestParam(value = "outTradeNo") String outTradeNo) throws IOException {
+        try {
+            boolean result = weiXinPayService.doRefund(outTradeNo, totalFee);
+            if (result){
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }else {
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+            }
+
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+        }
+    }
+
+
+
+
 }

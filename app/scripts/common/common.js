@@ -148,6 +148,7 @@ commonModule.service('promiseWrapper', ['$q', '$rootScope', function ($q, $rootS
 
 commonModule.controller('CommonModuleCtrl', ['$rootScope','$scope', '$interval','$timeout','sessionStorage', 'URI', 'promiseWrapper','$window','$http',function ($rootScope,$scope,$interval,$timeout,sessionStorage,URI,promise,$window,$http) {
     $scope.currentTime = "";
+    $scope.currentUser = {};
     function getDate(){
         var date = new Date();
         var year = date.getFullYear();
@@ -159,10 +160,10 @@ commonModule.controller('CommonModuleCtrl', ['$rootScope','$scope', '$interval',
         $scope.currentTime = year + "-" + month + "-" + day + " " + hh + ":" + mm + ":" + ss;
     }
     var init = function () {
+        $scope.currentUser = sessionStorage.getCurUser();
         //$scope.timer = $interval( function(){
         //    getDate();
         //}, 100000);
-
     };
     $scope.inRoles = function(roles)
     {

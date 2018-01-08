@@ -2,6 +2,8 @@ package com.donno.nj.util.WeiXinPaySdk;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.File;
+import java.io.FileInputStream;
 
 public class WXPayConfigImpl extends WXPayConfig{
 
@@ -9,7 +11,7 @@ public class WXPayConfigImpl extends WXPayConfig{
     private static WXPayConfigImpl INSTANCE;
 
     private WXPayConfigImpl() throws Exception{
-//        String certPath = "D://CERT/common/apiclient_cert.p12";
+//        String certPath = "D://apiclient_cert.p12";
 //        File file = new File(certPath);
 //        InputStream certStream = new FileInputStream(file);
 //        this.certData = new byte[(int) file.length()];

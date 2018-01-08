@@ -237,43 +237,42 @@ commonModule.constant('NavItem', {
         menuItems: [{
             index: 0,
             name: "钢瓶位置",
-            href: "",
+            href: "./gasCenter.htm#/bottles/map",
             icon: "fa-sitemap"
         }, {
             index: 1,
-            name: "门店管理",
-            target: "_blank",
-            href: "",
+            name: "钢瓶档案",
+            href: "./gasCenter.htm#/bottles/list",
             icon: "fa-building"
         }]
     },
-    'AppCenter': {
-        roles:[],
-        name: "增值服务",
-        href: "./appCenter.htm",
-        menuItems: [{
-            index: 0,
-            name: "便民服务",
-            href: "./appCenter.htm#/apps",
-            icon: "fa-phone"
-        }]
-    },
-    'CustomerCenter': {
-        roles:[],
-        name: "客户中心",
-        href: "./customerCenter.htm",
-        menuItems: [{
-            index: 0,
-            name: "我要订气",
-            href: "./customerCenter.htm#/customer/create",
-            icon: "fa-phone"
-        }, {
-            index: 1,
-            name: "我的订单",
-            href: "./customerCenter.htm#/customer/query",
-            icon: "fa-sitemap"
-        }]
-    },
+    //'AppCenter': {
+    //    roles:[],
+    //    name: "增值服务",
+    //    href: "./appCenter.htm",
+    //    menuItems: [{
+    //        index: 0,
+    //        name: "便民服务",
+    //        href: "./appCenter.htm#/apps",
+    //        icon: "fa-phone"
+    //    }]
+    //},
+    //'CustomerCenter': {
+    //    roles:[],
+    //    name: "客户中心",
+    //    href: "./customerCenter.htm",
+    //    menuItems: [{
+    //        index: 0,
+    //        name: "我要订气",
+    //        href: "./customerCenter.htm#/customer/create",
+    //        icon: "fa-phone"
+    //    }, {
+    //        index: 1,
+    //        name: "我的订单",
+    //        href: "./customerCenter.htm#/customer/query",
+    //        icon: "fa-sitemap"
+    //    }]
+    //},
 });
 
 
