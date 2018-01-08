@@ -282,6 +282,9 @@ public class SysUserController
         return responseEntity;
     }
 
+
+
+
     @OperationLog(desc = "查询部门负责人")
     @RequestMapping(value = "/api/sysusers/GetDepLeader", method = RequestMethod.GET)
     public ResponseEntity getDepLeaderByUserId(@RequestParam(value = "groupCode", defaultValue = "",required = true) String groupCode,

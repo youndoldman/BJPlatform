@@ -123,7 +123,7 @@ public class OrderController
                 throw new ServerSideBusinessException("用户组信息错误！", HttpStatus.NOT_ACCEPTABLE);
             }
 
-            if (orderStatus == OrderStatus.OSDispatching.getIndex())
+            if (orderStatus == OrderStatus.OSDispatching.getIndex())//派送
             {
                 if(candiUser == null || candiUser.trim().length() == 0)
                 {
@@ -133,7 +133,7 @@ public class OrderController
                 variables.put(ServerConstantValue.ACT_FW_STG_2_CANDI_USERS,candiUser);
                 variables.put(ServerConstantValue.ACT_FW_STG_2_CANDI_GROUPS,String.valueOf(group.get().getId()));
             }
-            else if (orderStatus == OrderStatus.OSSigned.getIndex())
+            else if (orderStatus == OrderStatus.OSSigned.getIndex())//签收
             {
                 if(candiUser == null || candiUser.trim().length() == 0)
                 {
@@ -143,7 +143,7 @@ public class OrderController
                 variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_USERS,candiUser);
                 variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_GROUPS,String.valueOf(group.get().getId()));
             }
-            else if (orderStatus == OrderStatus.OSCompleted.getIndex())
+            else if (orderStatus == OrderStatus.OSCompleted.getIndex())//结束
             {
                 // to don nothing
             }
@@ -325,7 +325,7 @@ public class OrderController
         return responseEntity;
     }
 
-    @OperationLog(desc = "删除商品信息")
+    @OperationLog(desc = "删除订单信息")
     @RequestMapping(value = "/api/Orders/{orderSn}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable("orderSn") String orderSn)
     {

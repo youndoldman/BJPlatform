@@ -198,6 +198,15 @@
     </select>
 
 
+    <select id="findByOrderIdx" resultMap="DetailResultMap">
+        SELECT <include refid="JoinSelectColumn"/>
+        FROM <include refid="JoinTableList"/>
+        WHERE
+        (<include refid="JoinWhereCondition"/>)
+        and
+        t_user.id = (select dispatcher_idx from t_order_dispatcher where order_idx = #{id} )
+    </select>
+
 
     <update id="checkAlive">
         UPDATE <include refid="TblSysUser"/>
