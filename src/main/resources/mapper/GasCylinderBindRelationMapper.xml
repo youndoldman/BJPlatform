@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.GasCylinderBindRelationDao">
+
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.GasCylinderBindRelation">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <association property="gasCylinder" column="cylinder_idx" select="com.donno.nj.dao.GasCylinderDao.findById">
+        </association>
+        <association property="locationDevice" column="location_dev_idx" select="com.donno.nj.dao.LocationDeviceDao.findById">
+        </association>
+    </resultMap>
+
+    <sql id="TblGasCylinderAuxiliary">
+        t_cylinder_auxiliary
+    </sql>
+
+
+    <!--绑定钢瓶与定位终端-->
+    <insert id="bindLocationDev">
+        INSERT  INTO t_cylinder_auxiliary(cylinder_idx,location_dev_idx,note)
+        VALUES( #{gasCylinderIdx},#{locationDevIdx}, '')
+    </insert>
+
+    <!--钢瓶与定位终端解绑定-->
+    <delete id="unBindLocationDev">
+        DELETE  from t_cylinder_auxiliary
+        WHERE  cylinder_idx = #{gasCylinderIdx} and   location_dev_idx = #{locationDevIdx}
+    </delete>
+
+    <delete id="deleteByIdx" parameterType="java.lang.Integer">
+    DELETE FROM t_cylinder_auxiliary WHERE id= #{id}
+    </delete>
+
+
+    <!--查找钢瓶绑定的定位终端-->
+    <select id="findLocateDevByCylinderId" resultMap="com.donno.nj.dao.LocationDeviceDao.DetailResultMap">
+        SELECT t_location_device.*
+        FROM t_location_device,t_cylinder_auxiliary,t_gas_cylinder
+        where
+        (
+        t_location_device.id  = t_cylinder_auxiliary.location_dev_idx
+        AND   t_gas_cylinder.id  = t_cylinder_auxiliary.cylinder_idx
+        AND t_cylinder_auxiliary.cylinder_idx = #{gasCylinderIdx}
+        )
+    </select>
+
+   <!--查找定位终端关联的钢瓶-->
+    <select id="findGasCylinderByLocateDevId" resultMap="com.donno.nj.dao.GasCylinderDao.DetailResultMap">
+        SELECT t_gas_cylinder.*
+        FROM t_location_device,t_cylinder_auxiliary,t_gas_cylinder
+        where
+        (
+              t_location_device.id  = t_cylinder_auxiliary.location_dev_idx
+        AND   t_gas_cylinder.id  = t_cylinder_auxiliary.cylinder_idx
+        AND t_cylinder_auxiliary.location_dev_idx = #{locationDevIdx}
+        )
+    </select>
+
+
+    <!--查找钢瓶与定位终端是否已经绑定-->
+    <!--<select id="findGasCylinderByIdx" resultMap="com.donno.nj.dao.GasCylinderDao.DetailResultMap">-->
+        <!--SELECT  *-->
+        <!--FROM t_cylinder_auxiliary-->
+        <!--WHERE-->
+        <!--t_cylinder_auxiliary.cylinder_idx = #{gasCylinderIdx} and t_cylinder_auxiliary.location_dev_idx  = #{locationDevIdx}-->
+    <!--</select>-->
+
+    <!--查找钢瓶与定位终端绑定关系-->
+    <select id="findBindRelation" resultMap="DetailResultMap">
+        SELECT  *
+        FROM t_cylinder_auxiliary
+        WHERE
+        t_cylinder_auxiliary.cylinder_idx = #{gasCylinderIdx} and t_cylinder_auxiliary.location_dev_idx  = #{locationDevIdx}
+    </select>
+
+    <!--<select id="getList" resultMap="DetailResultMap">-->
+    <!--SELECT *-->
+    <!--FROM <include refid="TblGasCylinder"/>-->
+    <!--WHERE-->
+        <!--id > 0-->
+        <!--<if test="number != null">AND  number = #{number}</if>-->
+
+        <!--<if test="orderBy != null">-->
+            <!--<if test="orderBy != ''">-->
+                <!--ORDER BY   ${orderBy}-->
+            <!--</if>-->
+        <!--</if>-->
+
+        <!--<if test="limit != null" >-->
+            <!--<if test="offset != null" >-->
+                <!--limit #{limit} offset #{offset};-->
+            <!--</if>-->
+        <!--</if>-->
+    <!--</select>-->
+
+
+    <!--<select id="count" resultType="Integer">-->
+        <!--SELECT COUNT(*)-->
+        <!--FROM <include refid="TblGasCylinder"/>-->
+        <!--WHERE-->
+        <!--id > 0-->
+        <!--<if test="number != null">AND  number = #{number}</if>-->
+
+    <!--</select>-->
+
+
+</mapper>

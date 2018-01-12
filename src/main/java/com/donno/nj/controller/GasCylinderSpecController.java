@@ -2,11 +2,9 @@ package com.donno.nj.controller;
 
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
+import com.donno.nj.domain.GasCylinderSpec;
 import com.donno.nj.representation.ListRep;
-import com.donno.nj.service.*;
-import com.donno.nj.domain.GoodsType;
-import com.donno.nj.util.AppUtil;
-import com.google.common.base.Optional;
+import com.donno.nj.service.GasCylinderSpecService;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,27 +12,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
 import java.net.URI;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 import static com.donno.nj.util.ParamMapBuilder.paginationParams;
-import static com.google.common.collect.Maps.newHashMap;
 
 @RestController
-public class GoodsTypeController
+public class GasCylinderSpecController
 {
 
     @Autowired
-    GoodsTypeService goodsTypeService;
+    GasCylinderSpecService gasCylinderSpecService;
 
-    @RequestMapping(value = "/api/GoodsTypes", method = RequestMethod.GET, produces = "application/json")
-    @OperationLog(desc = "获取商品类型列表")
+    @RequestMapping(value = "/api/GasCylinderSpec", method = RequestMethod.GET, produces = "application/json")
+    @OperationLog(desc = "获取钢瓶规格列表")
     public ResponseEntity retrieve(@RequestParam(value = "code", defaultValue = "") String code,
                                             @RequestParam(value = "name", defaultValue = "") String name,
                                             @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
@@ -54,52 +47,52 @@ public class GoodsTypeController
 
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
-        List<GoodsType> customers = goodsTypeService.retrieve(params);
-        Integer count = goodsTypeService.count(params);
+        List<GasCylinderSpec> customers = gasCylinderSpecService.retrieve(params);
+        Integer count = gasCylinderSpecService.count(params);
 
         return ResponseEntity.ok(ListRep.assemble(customers, count));
     }
 
-    @OperationLog(desc = "创建商品类型")
-    @RequestMapping(value = "/api/GoodsTypes", method = RequestMethod.POST)
-    public ResponseEntity create(@RequestBody GoodsType goodsType, UriComponentsBuilder ucBuilder)
+    @OperationLog(desc = "创建钢瓶规格")
+    @RequestMapping(value = "/api/GasCylinderSpec", method = RequestMethod.POST)
+    public ResponseEntity create(@RequestBody GasCylinderSpec gasCylinderSpec, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
-        if (goodsTypeService.findByCode(goodsType.getCode()).isPresent())
+        if (gasCylinderSpecService.findByCode(gasCylinderSpec.getCode()).isPresent())
         {
             responseEntity =  ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
         else
         {
              /*创建*/
-            goodsTypeService.create(goodsType);
+            gasCylinderSpecService.create(gasCylinderSpec);
 
-            URI uri = ucBuilder.path("/api/GoodsTypes/{code}").buildAndExpand(goodsType.getCode()).toUri();
+            URI uri = ucBuilder.path("/api/GasCylinderSpec/{code}").buildAndExpand(gasCylinderSpec.getCode()).toUri();
             responseEntity = ResponseEntity.created(uri).build();
         }
 
         return responseEntity;
     }
 
-    @OperationLog(desc = "修改商品类型信息")
-    @RequestMapping(value = "/api/GoodsTypes/{code}", method = RequestMethod.PUT)
-    public ResponseEntity update(@PathVariable("code") String code, @RequestBody GoodsType newGoodsType)
+    @OperationLog(desc = "修改钢瓶规格信息")
+    @RequestMapping(value = "/api/GasCylinderSpec/{code}", method = RequestMethod.PUT)
+    public ResponseEntity update(@PathVariable("code") String code, @RequestBody GasCylinderSpec newGasCylinderSpec)
     {
         ResponseEntity responseEntity;
 
-        goodsTypeService.update(code, newGoodsType);
+        gasCylinderSpecService.update(code, newGasCylinderSpec);
         responseEntity = ResponseEntity.ok().build();
 
         return responseEntity;
     }
 
-    @OperationLog(desc = "删除商品类型信息")
-    @RequestMapping(value = "/api/GoodsTypes/{code}", method = RequestMethod.DELETE)
+    @OperationLog(desc = "删除钢瓶规格信息")
+    @RequestMapping(value = "/api/GasCylinderSpec/{code}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable("code") String code)
     {
         ResponseEntity responseEntity;
 
-        goodsTypeService.deleteByCode(code);
+        gasCylinderSpecService.deleteByCode(code);
         responseEntity = ResponseEntity.noContent().build();
 
         return responseEntity;
