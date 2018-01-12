@@ -12,6 +12,8 @@
         <result column="next_verify_date" property="nextVerifyDate" jdbcType="TIMESTAMP"/>
         <result column="scrap_date" property="scrapDate" jdbcType="TIMESTAMP"/>
         <result column="status" property="status"  typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+
+        <!--<result column="status" property="status"  typeHandler="com.donno.nj.domain..EnumOrdinalTypeHandler"/>-->
         <result column="longitude" property="longitude" jdbcType="DOUBLE"/>
         <result column="latitude" property="latitude" jdbcType="DOUBLE"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
