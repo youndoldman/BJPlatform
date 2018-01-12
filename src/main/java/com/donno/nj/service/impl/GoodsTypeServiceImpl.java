@@ -120,18 +120,28 @@ public class GoodsTypeServiceImpl implements GoodsTypeService
     }
 
     @Override
-    public  void deleteById(Integer id)
+    public  void deleteByCode(String code)
     {
-        /*如有已经有该类型的商品存在，则不允许删除该商品类型*/
-        Map params = new HashMap<String,String>();
-        params.putAll(ImmutableMap.of("typeCode", id));
-
-        if(goodsDao.count(params) > 0)
+        Optional<GoodsType> goodsType = findByCode(code);
+        if (goodsType.isPresent())
         {
-            throw new ServerSideBusinessException("商品类型不能删除，请先删除该类型的商品信息！", HttpStatus.NOT_ACCEPTABLE);
+            /*如有已经有该类型的商品存在，则不允许删除该商品类型*/
+            Map params = new HashMap<String,String>();
+            params.putAll(ImmutableMap.of("typeCode", code));
+
+            if(goodsDao.count(params) > 0)
+            {
+                throw new ServerSideBusinessException("商品类型不能删除，请先删除该类型的商品信息！", HttpStatus.NOT_ACCEPTABLE);
+            }
+
+            goodsTypeDao.delete(goodsType.get().getId());
+        }
+        else
+        {
+            throw new ServerSideBusinessException("商品类型不存在！", HttpStatus.NOT_FOUND);
         }
 
-        goodsTypeDao.delete(id);
+
     }
 
 

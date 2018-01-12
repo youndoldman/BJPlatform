@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.GasCylinderDao">
+
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.GasCylinder">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+       <result column="number" property="number" jdbcType="VARCHAR"/>
+
+        <result column="production_date" property="productionDate" jdbcType="TIMESTAMP"/>
+        <result column="verify_date" property="verifyDate" jdbcType="TIMESTAMP"/>
+        <result column="next_verify_date" property="nextVerifyDate" jdbcType="TIMESTAMP"/>
+        <result column="scrap_date" property="scrapDate" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status"  typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+        <result column="longitude" property="longitude" jdbcType="DOUBLE"/>
+        <result column="latitude" property="latitude" jdbcType="DOUBLE"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+
+        <association property="spec" column="spec_idx" select="com.donno.nj.dao.GasCylinderSpecDao.findById">
+        </association>
+
+        <association property="locationDevice" column="id" select="com.donno.nj.dao.GasCylinderBindRelationDao.findLocateDevByCylinderId">
+        </association>
+
+    </resultMap>
+
+    <sql id="TblGasCylinder">
+        t_gas_cylinder
+    </sql>
+
+    <sql id="InsertColumnList">
+        number,spec_idx,production_date,verify_date,next_verify_date,scrap_date,status,note
+    </sql>
+
+    <insert id="insert"  keyProperty="id" useGeneratedKeys="true">
+        INSERT IGNORE INTO <include refid="TblGasCylinder"/>(<include refid="InsertColumnList"/>)
+        VALUES( #{number},#{spec.id}, #{productionDate} , #{verifyDate},#{nextVerifyDate},#{scrapDate},#{status.index}, #{note})
+    </insert>
+
+    <delete id="deleteByIdx" parameterType="java.lang.Integer">
+    DELETE FROM <include refid="TblGasCylinder"/> WHERE id= #{id}
+    </delete>
+
+    <!--钢瓶信息修改-->
+    <update id="update">
+    UPDATE <include refid="TblGasCylinder"/>
+    <set>
+        <if test="number != null">number = #{number},</if>
+        <if test="productionDate != null">production_date = #{productionDate},</if>
+        <if test="verifyDate != null">verify_date = #{verifyDate},</if>
+        <if test="nextVerifyDate != null">next_verify_date = #{nextVerifyDate},</if>
+        <if test="scrapDate != null">scrap_date = #{scrapDate},</if>
+        <if test="status != null">status = #{status.index},</if>
+        <if test="longitude != null">longitude = #{longitude},</if>
+        <if test="latitude != null">latitude = #{latitude},</if>
+        <if test="note != null">note = #{note},</if>
+
+        <if test="spec != null">
+          <if test="spec.id != null">spec_idx = #{spec.id},</if>
+        </if>
+    </set>
+    WHERE id = #{id}
+    </update>
+
+
+
+    <select id="findById" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblGasCylinder"/>
+        WHERE
+        id =  #{id}
+    </select>
+
+    <select id="findByNumber" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblGasCylinder"/>
+        WHERE
+        number =  #{number}
+    </select>
+
+
+    <select id="getList" resultMap="DetailResultMap">
+    SELECT *
+    FROM <include refid="TblGasCylinder"/>
+    WHERE
+        id > 0
+
+        <if test="number != null">AND  number = #{number}</if>
+
+        <if test="specCode != null">AND  spec_idx =  ( select id from t_gas_cylinder_spec where code = #{specCode} ) </if>
+
+        <if test="status != null">AND  status = #{status}</if>
+
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+
+    <select id="count" resultType="Integer">
+        SELECT COUNT(*)
+        FROM <include refid="TblGasCylinder"/>
+        WHERE
+        id > 0
+        <if test="number != null">AND  number = #{number}</if>
+
+        <if test="specCode != null">AND  spec_idx =  ( select id from t_gas_cylinder_spec where code = #{specCode} ) </if>
+
+        <if test="status != null">AND  status = #{status}</if>
+
+
+    </select>
+
+
+
+
+
+
+</mapper>

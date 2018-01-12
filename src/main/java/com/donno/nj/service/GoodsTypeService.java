@@ -20,5 +20,5 @@ public interface GoodsTypeService
 
     void update(String code, GoodsType newCustomerType);
 
-    void deleteById(Integer id);
+    void deleteByCode(String code);
 }

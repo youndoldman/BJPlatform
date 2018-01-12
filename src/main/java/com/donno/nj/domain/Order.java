@@ -151,7 +151,6 @@ public class Order implements Serializable
         return orderDetailList;
     }
 
-
     public String getNote()
     {
         return note;
