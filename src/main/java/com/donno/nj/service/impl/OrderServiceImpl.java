@@ -326,4 +326,33 @@ public class OrderServiceImpl implements OrderService
         }
     }
 
+
+    @OperationLog(desc = "微信支付成功")
+    public void weixinPayOk(String orderSn,String weixinOrderSn,Integer amount)
+    {
+        /*参数校验*/
+        if (orderSn == null || orderSn.trim().length() == 0 )
+        {
+            throw new ServerSideBusinessException("订单号参数为空！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (weixinOrderSn == null || weixinOrderSn.trim().length() == 0)
+        {
+            throw new ServerSideBusinessException("微信订单号参数为空！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        /*订单号检查*/
+        Order order = orderDao.findBySn(orderSn);
+        if (order == null)
+        {
+            throw new ServerSideBusinessException("微信订单号不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        /*订单状态更改为已支付*/
+        order.setPayStatus(PayStatus.PSPaied);
+        orderDao.update(order);
+
+        /*订单号与微信订单号关联*/
+        orderDao.bindWeixinOrderSn(order.getId(),weixinOrderSn,amount);
+    }
 }

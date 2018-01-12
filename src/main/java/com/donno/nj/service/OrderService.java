@@ -26,5 +26,7 @@ public interface OrderService
 
     void OrderOperHistory(Order order,Integer orderStatus) ;
 
+    void weixinPayOk(String orderSn,String weixinSn,Integer amount);
+
 
 }

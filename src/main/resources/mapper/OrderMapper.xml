@@ -264,6 +264,14 @@
         )
     </insert>
 
+    <!--订单与微信订单号关联-->
+    <insert id="bindWeixinOrderSn" >
+        INSERT INTO  t_order_weixin(order_idx,weixin_order_sn,amount)
+        VALUES
+        (
+        #{orderIdx},#{weixinOrderSn},#{amount}
+        )
+    </insert>
 
 
 </mapper>

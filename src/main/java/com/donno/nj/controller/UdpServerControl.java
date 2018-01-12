@@ -10,8 +10,8 @@ public class UdpServerControl
 
     public UdpServerControl() throws Exception
     {
-        udpServer = new UdpServer();
-        udpServer.run(8090);
+//        udpServer = new UdpServer();
+//        udpServer.run(8090);
     }
 
 }
