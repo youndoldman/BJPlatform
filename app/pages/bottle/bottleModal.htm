@@ -1,7 +1,7 @@
 <div class="modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form name="bottomForm" novalidate>
+            <form name="bottleForm" novalidate>
                 <div class="modal-header">
                     <button type="button" class="close" ng-click="close(false)" data-dismiss="modal"
                             aria-hidden="true">&times;</button> <h4 class="modal-title">&nbsp;{{modalTitle}}&nbsp;</h4>
@@ -9,34 +9,51 @@
 
                 <div class="modal-body">
                     <div class="input-group pdb15">
-                        <label class="col-sm-4 control-label input-label">钢瓶编码：</label>
+                        <label class="col-sm-4 control-label input-label-large">钢瓶编码：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="name" class="form-control" ng-model="vm.bottle.name"  required>
-                            <div class="input-tips">
-                                    <span ng-show="bottleForm.name.$error.required || bottleForm.name.$invalid">
-                                        <p><span class="star">&nbsp;*&nbsp;</span>必填项，请输入有效的钢瓶编码信息</p>
-                                    </span>
-                            </div>
+                            <input type="text" name="code" class="form-control" ng-model="vm.bottle.code"  required>
                         </div>
+                        <label class="input-tips" ng-show="bottleForm.code.$error.required || bottleForm.code.$invalid">&nbsp;*&nbsp;必填项</label>
                     </div>
-                <div class="input-group pdb15">
-                    <label class="col-sm-4 control-label input-label">钢瓶产地：</label>
-                    <div class="col-sm-8 input-width">
-                        <input type="text" name="facture" class="form-control" ng-model="vm.bottle.facture"  required>
-                    </div>
-                </div>
                     <div class="input-group pdb15">
-                        <label class="col-sm-4 control-label input-label">钢瓶位置：</label>
+                        <label class="col-sm-4 control-label input-label-large">规格：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="facture" class="form-control" ng-model="vm.bottle.location"  required>
+                            <input type="text" name="specifications" class="form-control" ng-model="vm.bottle.specifications"  required>
                         </div>
                     </div>
                     <div class="input-group pdb15">
-                        <label class="col-sm-4 control-label input-label">钢瓶容量：</label>
+                        <label class="col-sm-4 control-label input-label-large">生产日期：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="facture" class="form-control" ng-model="vm.bottle.size"  required>
+                            <input type="text" name="birthTime" class="form-control" ng-model="vm.bottle.birthTime"  required>
                         </div>
                     </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label-large">上次钢检日期：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="text" name="lastCheckTime" class="form-control" ng-model="vm.bottle.lastCheckTime"  required>
+                        </div>
+                    </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label-large">下次钢检日期：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="text" name="nextCheckTime" class="form-control" ng-model="vm.bottle.nextCheckTime"  required>
+                        </div>
+                    </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label-large">报废日期：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="text" name="deadTime" class="form-control" ng-model="vm.bottle.deadTime"  required>
+                        </div>
+                    </div>
+                    <div class="input-group pdb15" ng-if="isModify">
+                        <label class="col-sm-4 control-label input-label-large">定位终端编码：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="text" name="deviceCode" class="form-control" ng-model="vm.bottle.deviceCode"  required>
+                        </div>
+                        <button ng-if="isBinded" type="button" class="btn btn-sm btn-danger" ng-click="unBind()"><i class="fa fa-plus"></i> 解绑 </button>
+                        <button ng-if="!isBinded" type="button" class="btn btn-sm btn-success" ng-click="bind()"><i class="fa fa-plus"></i> 绑定 </button>
+                    </div>
+
                 </div>
 
 

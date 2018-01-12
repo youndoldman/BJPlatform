@@ -13,6 +13,7 @@
             <div class="inline-group">
                 <label class="input"><input type="text" class="form-control input-sm" ng-model="q.userName" ng-change="search()" placeholder="用户名称"> </label>
                 <button type="submit" class="btn btn-sm btn-primary" ng-click="search()"><i class="fa fa-search"></i> 搜索 </button>
+                <label class="input col-sm-offset-7">角色：<select  class="input-sm" ng-model="q.userGroup" ng-options="userGroup.name for userGroup in vm.userGroups" class="form-control" ng-selected="" ng-change="search()"></select></label>
                 <button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUp()"><i class="fa fa-plus"></i> 新增用户 </button>
             </div>
         </form>

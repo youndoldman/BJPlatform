@@ -58,11 +58,11 @@
             <th width="7%">接入方式</th>
             <th width="7%">支付方式</th>
             <th width="7%">订单客户</th>
-            <th width="4%">状态</th>
+            <th width="5%">状态</th>
             <th width="12%">预约时间</th>
             <th width="20%">收货地址</th>
             <th width="5%">收货人</th>
-            <th width="7%">联系电话</th>
+            <th width="5%">配送员</th>
             <th width="12%">订单时间</th>
             <th width="15%">操作</th>
         </tr>
@@ -74,11 +74,12 @@
             <td class="message">{{order.accessType}}</td>
             <td class="message">{{order.payType}}</td>
             <td class="message">{{order.customer.userId}}</td>
-            <td class="message">{{order.orderStatus}}</td>
+            <td class="message">{{vm.orderStatusDisplay[order.orderStatus]}}</td>
             <td class="message">{{order.reserveTime}}</td>
             <td class="message">{{order.recvAddr.province}}{{order.recvAddr.city}}{{order.recvAddr.county}}{{order.recvAddr.detail}}</td>
-            <td class="message">{{order.recvName}}</td>
-            <td class="message">{{order.recvPhone}}</td>
+            <td class="message" title="电话：{{order.recvPhone}}">{{order.recvName}}</td>
+
+            <td class="message" title="电话：{{order.dispatcher.mobilePhone}} 工号：{{order.dispatcher.jobNumber}}">{{order.dispatcher.name}}</td>
             <td class="message">{{order.createTime}}</td>
             <td class="operate">
                 <button title="详情" ng-click="modify(order)" type="button" class="btn btn-primary btn-outline btn-xs">

@@ -157,7 +157,7 @@
     </div>
   </div>
   <div class="col-md-4">
-    <div class="panel panel-primary" style="height: 430px;overflow: auto">
+    <div class="panel panel-primary" style="height: 430px;">
       <div class="panel-heading">
         <h3 class="panel-title">查询窗口</h3>
       </div>
@@ -181,9 +181,9 @@
           </tr>
         </table>
         <div ng-if="vm.userList.length == 0" nj-table-no-data></div>
-        <div style="margin-top: -30px" nj-pager pager="pager" hidepagesizeoptions=true></div>
+        <div style="margin-top: -30px" nj-pager pager="pagerCustomer" hidepagesizeoptions=true></div>
       </div>
-      <hr style="margin-top: -30px"/>
+      <hr style="margin-top: -50px"/>
       <div class="panel-body" style="margin-top: -20px">
         <p>订气记录</p>
         <br/>
@@ -200,7 +200,7 @@
           </tr>
         </table>
         <div ng-if="vm.userList.length == 0" nj-table-no-data></div>
-        <div nj-pager pager="pager"  hidepagesizeoptions=true></div>
+        <div style="margin-top: -30px" nj-pager pager="pagerHistory"  hidepagesizeoptions=true></div>
       </div>
     </div>
   </div>
