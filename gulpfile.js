@@ -17,7 +17,8 @@ var srcPaths = {
     scripts: 'app/scripts/**/*',
     styles: 'app/styles/scss/',
     html: 'app/pages/**/*',
-    lib: 'app/lib/**/*'
+    lib: 'app/lib/**/*',
+    testDataBase:'app/test-data/**/*'
 };
 
 var distPaths = {
@@ -25,7 +26,8 @@ var distPaths = {
     images: 'src/main/webapp/dist/images/',
     css: 'src/main/webapp/dist/styles/stylesheets/',
     html: 'src/main/webapp/dist/pages/',
-    lib: 'src/main/webapp/dist/lib/'
+    lib: 'src/main/webapp/dist/lib/',
+    testDataBase:'src/main/webapp/dist/test-data/'
 };
 
 var revPaths = {
@@ -127,11 +129,14 @@ gulp.task('serve', function() {
     });
 });
 
+
 gulp.task('watch', function () {
-    gulp.watch(['app/pages/**/*', 'app/scripts/**/*', 'app/styles/scss/**/*'], ['dev-build']);
+    gulp.watch(['app/pages/**/*', 'app/scripts/**/*', 'app/styles/scss/**/*', 'app/test-data/**/*'], ['dev-build']);
 });
 
 gulp.task('dev', ['serve', 'watch']);
 
 gulp.task('default', ['dev']);
+
+
 

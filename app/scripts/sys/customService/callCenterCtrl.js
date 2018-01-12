@@ -3,10 +3,22 @@
 customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
     'rootService', 'pager', 'udcModal', 'CustomerManageService', 'OrderService','sessionStorage',function ($scope, $rootScope, $filter, $location, Constants,
                                                                            rootService, pager, udcModal, CustomerManageService,OrderService,sessionStorage) {
-        var gotoPage = function (pageNo) {
-            $scope.pager.setCurPageNo(pageNo);
+
+
+        var gotoPageCustomer = function (pageNo) {
+            $scope.pagerCustomer.setCurPageNo(pageNo);
             searchCustomer();
         };
+        var gotoPageHistory = function (pageNo) {
+            $scope.pagerHistory.setCurPageNo(pageNo);
+            searchOrderHistory();
+        };
+        $scope.pagerCustomer = pager.init('CustomerListCtrl', gotoPageCustomer);
+
+        $scope.pagerHistory = pager.init('CustomerListCtrl', gotoPageHistory);
+
+
+
         $(function () {
 
             $('#datetimepickerOrder').datetimepicker({
@@ -49,14 +61,16 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             address:null
         };
 
-        $scope.pager = pager.init('CustomerListCtrl', gotoPage);
-        var historyQ = $scope.pager.getQ();
 
-        $scope.q = {
-            CustomerName: historyQ.CustomerName || "",
-            CustomerPhone: historyQ.CustomerPhone || "",
-            CustomerAddress: historyQ.CustomerAddress || ""
+
+
+        $scope.qCustomer = {
+
         };
+        $scope.qHistory = {
+
+        };
+
 
         $scope.vm = {
             callInPhone:"13913015340",
@@ -151,7 +165,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         };
 
         $scope.search = function () {
-            $scope.pager.setCurPageNo(1);
+            $scope.pagerCustomer.setCurPageNo(1);
             searchCustomer();
         };
 
@@ -204,6 +218,22 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 })
         };
 
+        var searchOrderHistory = function () {
+            //清空表格
+            $scope.vm.CustomerOrderHistory = [];
+            var queryParams = {
+                userId:$scope.vm.currentCustomer.userId,
+                pageNo: $scope.pagerHistory.getCurPageNo(),
+                pageSize: $scope.pagerHistory.pageSize
+            }
+
+
+            OrderService.retrieveOrders(queryParams).then(function (orders) {
+                $scope.pagerHistory.update($scope.qHistory, orders.total, queryParams.pageNo);
+                $scope.vm.CustomerOrderHistory = orders.items;
+            });
+        }
+
         var searchCustomer = function () {
             //清空表格
             $scope.vm.customerList = [];
@@ -211,15 +241,14 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             var queryParams = {
                 phone:$scope.searchParam.phone,
                 addrDetail:$scope.searchParam.address,
-                pageNo: $scope.pager.getCurPageNo(),
-                pageSize: $scope.pager.pageSize
+                pageNo: $scope.pagerCustomer.getCurPageNo(),
+                pageSize: $scope.pagerCustomer.pageSize
             }
 
-            console.log(queryParams);
 
             //以后修改，这里为了演示方便
             CustomerManageService.retrieveCustomers(queryParams).then(function (customers) {
-                $scope.pager.update($scope.q, customers.total, queryParams.pageNo);
+                $scope.pagerCustomer.update($scope.qCustomer, customers.total, queryParams.pageNo);
                 $scope.vm.customerList=customers.items;
                 if($scope.vm.customerList.length>0){
                     $scope.vm.currentCustomer = $scope.vm.customerList[0];
@@ -248,19 +277,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         $scope.showDetail = function (customer) {
             $scope.vm.currentCustomer = customer;
             //查询当前客户的订气记录
-            //清空表格
-            $scope.vm.CustomerOrderHistory = [];
-            var queryParams = {
-                userId:$scope.vm.currentCustomer.userId,
-                pageNo: $scope.pager.getCurPageNo(),
-                pageSize: $scope.pager.pageSize
-            }
-
-
-            OrderService.retrieveOrders(queryParams).then(function (orders) {
-                $scope.pager.update($scope.q, orders.total, queryParams.pageNo);
-                $scope.vm.CustomerOrderHistory = orders.items;
-            });
+            searchOrderHistory();
 
             //刷新订单
             refleshOrder();
@@ -283,10 +300,12 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         }
 
         var init = function () {
-            $scope.pager.pageSize=3;
+            $scope.pagerCustomer.pageSize=2;
+            $scope.pagerHistory.pageSize=2;
             //呼叫中心初始化
             callCenterLogin();
-            $scope.pager.update($scope.q, 0, 1);
+            $scope.pagerCustomer.update($scope.qCustomer, 0, 1);
+            $scope.pagerHistory.update($scope.qHistory, 0, 1);
             //查询商品类型
             var queryParams = {
             };

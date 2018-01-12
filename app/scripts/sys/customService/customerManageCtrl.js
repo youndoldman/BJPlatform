@@ -83,7 +83,9 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
         };
 
         var init = function () {
+            $scope.pager.pageSize=25;
             searchCustomer();
+
         };
 
         init();

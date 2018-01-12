@@ -12,7 +12,7 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
         {
             console.log(lon+"------"+lan);
             BottleService.location(lon, lan);
-        }
+        };
         $scope.pager = pager.init('BottleListCtrl', gotoPage);
         var historyQ = $scope.pager.getQ();
 
@@ -53,7 +53,7 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
                 templateUrl: "./bottle/bottleModal.htm",
                 controller: "BottleModalCtrl",
                 inputs: {
-                    title: '修改钢瓶信息',
+                    title: '修改钢瓶',
                     initVal: bottle
                 }
             }).then(function (result) {
@@ -85,20 +85,34 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
                 $scope.pager.update($scope.q, bottles.total, queryParams.pageNo);
                 $scope.vm.bottleList = _.map(bottles.items, BottleService.toViewModel);
             });
+
         };
 
 
 
         var init = function () {
-            searchBottles();
+            $scope.vm.bottleList = [{
+                id:"001",
+                code:"00011",
+                specifications:"10kg",
+                deviceCode:"00031",
+                deviceBattery:"80%",
+                birthTime:"2017-01-01",
+                lastCheckTime:"2017-01-01",
+                nextCheckTime:"2018-01-01",
+                deadTime:"2020-01-01",
+            }];
+            //searchBottles();
         };
 
         init();
 
     }]);
 
-bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'title', 'initVal', function ($scope, close, BottleService, title, initVal) {
+bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'title', 'initVal', 'udcModal',function ($scope, close, BottleService, title, initVal, udcModal) {
     $scope.modalTitle = title;
+    $scope.isModify = false;
+    $scope.isBinded = false;//是否绑定定位终端
     $scope.vm = {
         bottle: {}
     };
@@ -120,7 +134,29 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
     };
 
     var init = function () {
-        $scope.vm.bottle = _.clone(initVal)
+        $scope.vm.bottle = _.clone(initVal);
+        if (title == "修改钢瓶"){
+            $scope.isModify = true;
+        } else {
+            $scope.isModify = false;
+        }
+        //没有绑定定位终端
+        if ($scope.vm.bottle.deviceCode==null){
+            $scope.isBinded = false;
+        } else{
+            $scope.isBinded = true;
+        }
+    };
+    //解除绑定
+    $scope.unBind = function () {
+        $scope.vm.bottle.deviceCode = null;
+        $scope.isBinded = false;
+        udcModal.info({"title": "处理结果", "message": "解除绑定成功 "});
+    };
+    //绑定
+    $scope.bind = function () {
+        $scope.isBinded = true;
+        udcModal.info({"title": "处理结果", "message": "绑定成功 "});
     };
 
     init();

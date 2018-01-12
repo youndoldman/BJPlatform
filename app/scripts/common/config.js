@@ -9,18 +9,18 @@ commonModule.constant('MISC', {
 
 commonModule.constant('URI', {
     'resources': {
-        'loginPage': '../pages/login.htm',
-        'mainPage': '../pages/mainCenter.htm',
-        'users': '../../../api/sysusers',
-        'department': '../../../api/Department',
-        'groups': '../../../api/groups',
-        'customers': '../../../api/customers',
-        'customerSource': '../../../api/CustomerSource',
-        'customerLevel': '../../../api/CustomerLevel',
-        'customerType': '../../../api/CustomerType',
-        'customerCallin':'../../../api/CustomerCallIn',
-        'login':'../../../api/sysusers/login',
-        'logout':'../../../api/sysusers/logout',
+        'loginPage': '../pages/login.htm',//登录页
+        'mainPage': '../pages/mainCenter.htm',//首页
+        'users': '../../../api/sysusers',//系统用户接口
+        'department': '../../../api/Department',//部门接口
+        'groups': '../../../api/groups',//组接口
+        'customers': '../../../api/customers',//客户接口
+        'customerSource': '../../../api/CustomerSource',//客户来源查询接口
+        'customerLevel': '../../../api/CustomerLevel',//客户等级查询接口
+        'customerType': '../../../api/CustomerType',//客户类型查询接口
+        'customerCallin':'../../../api/CustomerCallIn',//电话关联的客户资料查询接口
+        'login':'../../../api/sysusers/login',//系统用户登录接口
+        'logout':'../../../api/sysusers/logout',//系统用户登出接口
         'orders':'../../../api/Orders',　　　　　//订气订单接口
         'taskOrders':'../../../api/TaskOrders',//任务订单接口
         'taskOrdersDeal':'../../../api/TaskOrders/Process',//任务订单办理接口
@@ -28,6 +28,10 @@ commonModule.constant('URI', {
         'goodsTypes': '../../../api/GoodsTypes',//商品类型
         'subdistrict':'http://restapi.amap.com/v3/config/district',//高德地图行政区域接口
         'geocode':'http://restapi.amap.com/v3/geocode/geo',//高德地图逆地址解码接口
+        'bottle': '../../../api/bottles',//钢瓶接口
+        'gpsBind': '../../../api/gpsBind',//定位终端绑定接口
+        'gpsUnBind': '../../../api/gpsUnBind',//定位终端解除绑定接口
+
 
 
     }

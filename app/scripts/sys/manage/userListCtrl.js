@@ -12,11 +12,13 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
         var historyQ = $scope.pager.getQ();
 
         $scope.q = {
-            userName: historyQ.userName || ""
+            userName: null,
+            userGroup:{code:null}
         };
 
         $scope.vm = {
-            userList: []
+            userList: [],
+            userGroups: []
         };
         $scope.search = function () {
             $scope.pager.setCurPageNo(1);
@@ -70,9 +72,10 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
 
         var searchUsers = function () {
             var queryParams = {
-                name: $scope.q.userName,
+                userName: $scope.q.userName,
                 pageNo: $scope.pager.getCurPageNo(),
-                pageSize: $scope.pager.pageSize
+                pageSize: $scope.pager.pageSize,
+                groupCode:$scope.q.userGroup.code
             };
 
             UserService.retrieveUsers(queryParams).then(function (users) {
@@ -82,9 +85,17 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
             });
         };
 
+        var retrieveUserGroups = function(){
+            UserService.retrieveGroups().then(function (userGroups) {
+                $scope.vm.userGroups = _.map(userGroups.items, UserService.toViewModelGroup);
+            });
+        };
+
         var init = function () {
             searchUsers();
+            retrieveUserGroups();
         };
+
 
         init();
 
