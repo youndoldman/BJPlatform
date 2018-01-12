@@ -17,7 +17,7 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
         var historyQ = $scope.pager.getQ();
 
         $scope.q = {
-            bottleName: historyQ.bottleName || ""
+            bottleNumber: historyQ.bottleNumber || ""
         };
 
         $scope.vm = {
@@ -76,14 +76,14 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
 
         var searchBottles = function () {
             var queryParams = {
-                name: $scope.q.bottleName,
+                number: $scope.q.bottleNumber,
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize
             };
 
             BottleService.retrieveBottles(queryParams).then(function (bottles) {
                 $scope.pager.update($scope.q, bottles.total, queryParams.pageNo);
-                $scope.vm.bottleList = _.map(bottles.items, BottleService.toViewModel);
+                $scope.vm.bottleList = bottles.items;
             });
 
         };
@@ -91,18 +91,8 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
 
 
         var init = function () {
-            $scope.vm.bottleList = [{
-                id:"001",
-                code:"00011",
-                specifications:"10kg",
-                deviceCode:"00031",
-                deviceBattery:"80%",
-                birthTime:"2017-01-01",
-                lastCheckTime:"2017-01-01",
-                nextCheckTime:"2018-01-01",
-                deadTime:"2020-01-01",
-            }];
-            //searchBottles();
+            //查询钢瓶
+            searchBottles();
         };
 
         init();
@@ -114,7 +104,14 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
     $scope.isModify = false;
     $scope.isBinded = false;//是否绑定定位终端
     $scope.vm = {
-        bottle: {}
+        bottle: {},
+        config:{
+            status:[{value:0,name:"未启用"},
+                {value:1,name:"启用"},
+                {value:2,name:"停用"},
+                {value:3,name:"作废"}],
+            specs:[],
+        }
     };
 
     $scope.close = function (result) {
@@ -141,22 +138,42 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
             $scope.isModify = false;
         }
         //没有绑定定位终端
-        if ($scope.vm.bottle.deviceCode==null){
+        if ($scope.vm.bottle.locationDevice==null){
             $scope.isBinded = false;
         } else{
             $scope.isBinded = true;
         }
+        //获取钢瓶规格列表
+        BottleService.retrieveBottleSpecs().then(function (specs) {
+            $scope.vm.config.specs = specs.items;
+            if($scope.isModify){
+                //规格
+                for(var i=0; i<$scope.vm.config.specs.length; i++){
+                    if($scope.vm.bottle.spec.code == $scope.vm.config.specs[i].code){
+                        $scope.vm.bottle.spec = $scope.vm.config.specs[i];
+                        break;
+                    }
+                }
+            }else {
+                $scope.vm.bottle.spec = $scope.vm.config.specs[0];
+                $scope.vm.bottle.status = $scope.vm.config.status[0].value;
+            }
+        })
     };
     //解除绑定
     $scope.unBind = function () {
-        $scope.vm.bottle.deviceCode = null;
-        $scope.isBinded = false;
-        udcModal.info({"title": "处理结果", "message": "解除绑定成功 "});
+        BottleService.unBindBottle($scope.vm.bottle, $scope.vm.bottle.locationDevice.number).then(function () {
+            $scope.vm.bottle.locationDevice = null;
+            $scope.isBinded = false;
+            udcModal.info({"title": "处理结果", "message": "解除绑定成功 "});
+        })
     };
     //绑定
     $scope.bind = function () {
-        $scope.isBinded = true;
-        udcModal.info({"title": "处理结果", "message": "绑定成功 "});
+        BottleService.bindBottle($scope.vm.bottle, $scope.vm.bottle.locationDevice.number).then(function () {
+            $scope.isBinded = true;
+            udcModal.info({"title": "处理结果", "message": "绑定成功 "});
+        })
     };
 
     init();

@@ -2,13 +2,6 @@ package com.donno.nj.controller;
 
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.service.WeiXinPayService;
-import com.donno.nj.aspect.OperationLog;
-import org.activiti.bpmn.model.BpmnModel;
-import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.activiti.engine.impl.context.Context;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.image.ProcessDiagramGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +25,15 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-public class TestController {
+public class PayController {
 
     @Autowired
     WeiXinPayService weiXinPayService;
 
-    private static final Logger logger = LoggerFactory.getLogger(TestController.class);
+    private static final Logger logger = LoggerFactory.getLogger(PayController.class);
 
 
-    @RequestMapping(value = "/api/test/QRCode/Create", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/api/pay/QRCode", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity testQRCode(HttpServletResponse response, @RequestParam(value = "text") String text) throws IOException {
         response.setContentType("image/png;charset=UTF-8");
 
@@ -58,8 +51,8 @@ public class TestController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @RequestMapping(value = "/api/test/Pay/MicroApp", method = RequestMethod.GET)
-        public ResponseEntity testQRCode(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "totalFree") String totalFree,
+    @RequestMapping(value = "/api/pay/microApp", method = RequestMethod.GET)
+        public ResponseEntity testQRCode(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "totalFee") String totalFree,
                                      @RequestParam(value = "orderIndex") String orderIndex,
                                      @RequestParam(value = "userCode") String userCode) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
@@ -79,8 +72,8 @@ public class TestController {
         return ResponseEntity.ok(result);
     }
 
-    @RequestMapping(value = "/api/test/Pay/Scan", method = RequestMethod.GET)
-    public ResponseEntity testQRCode(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "totalFree") String totalFee,
+    @RequestMapping(value = "/api/pay/scan", method = RequestMethod.GET)
+    public ResponseEntity testQRCode(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "totalFee") String totalFee,
                                      @RequestParam(value = "orderIndex") String orderIndex) throws IOException {
         response.setContentType("image/png;charset=UTF-8");
 
@@ -109,7 +102,7 @@ public class TestController {
         }
     }
 
-    @RequestMapping(value = "/api/test/Pay/notify", method = RequestMethod.POST, produces = "application/xml")
+    @RequestMapping(value = "/api/pay/notify", method = RequestMethod.POST, produces = "application/xml")
     public ResponseEntity testPayNotify(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/xml");
 
@@ -123,6 +116,18 @@ public class TestController {
             Map<String, String> result = weiXinPayService.payNotify(notifyData);
             if(result!=null){
                 //支付结果通知为成功TODO
+                String out_trade_no = result.get("out_trade_no");
+                String total_fee = result.get("total_fee");
+                String original_no = "";
+                String temps[] = out_trade_no.split("x");
+                if (temps.length<2){
+                    //错误订单格式
+                }else {
+                    original_no = temps[0];
+                }
+
+
+
             }else{
 
             }
@@ -139,7 +144,7 @@ public class TestController {
         }
     }
 
-    @RequestMapping(value = "/api/test/Pay/refound", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/pay/refund", method = RequestMethod.GET)
     public ResponseEntity testQRCode(HttpServletRequest request, @RequestParam(value = "totalFee") String totalFee,
                                      @RequestParam(value = "outTradeNo") String outTradeNo) throws IOException {
         try {
@@ -149,7 +154,6 @@ public class TestController {
             }else {
                 return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
             }
-
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
