@@ -28,9 +28,13 @@ commonModule.constant('URI', {
         'goodsTypes': '../../../api/GoodsTypes',//商品类型
         'subdistrict':'http://restapi.amap.com/v3/config/district',//高德地图行政区域接口
         'geocode':'http://restapi.amap.com/v3/geocode/geo',//高德地图逆地址解码接口
-        'bottle': '../../../api/bottles',//钢瓶接口
-        'gpsBind': '../../../api/gpsBind',//定位终端绑定接口
-        'gpsUnBind': '../../../api/gpsUnBind',//定位终端解除绑定接口
+        'bottle': '../../../api/GasCylinder',//钢瓶接口
+        'gpsBind': '../../../api/GasCylinder/Bind',//定位终端绑定接口
+        'gpsUnBind': '../../../api/GasCylinder/UnBind',//定位终端解除绑定接口
+        'bottleSpecQuery': '../../../api/GasCylinderSpec'//钢瓶规格查询
+
+
+
 
 
 

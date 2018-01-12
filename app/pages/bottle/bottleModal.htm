@@ -11,44 +11,50 @@
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label-large">钢瓶编码：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="code" class="form-control" ng-model="vm.bottle.code"  required>
+                            <input type="text" name="number" class="form-control" ng-model="vm.bottle.number"  required>
                         </div>
-                        <label class="input-tips" ng-show="bottleForm.code.$error.required || bottleForm.code.$invalid">&nbsp;*&nbsp;必填项</label>
+                        <label class="input-tips" ng-show="bottleForm.number.$error.required || bottleForm.number.$invalid">&nbsp;*&nbsp;必填项</label>
                     </div>
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label-large">规格：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="specifications" class="form-control" ng-model="vm.bottle.specifications"  required>
+                            <select name="spec" ng-model="vm.bottle.spec" ng-options="spec.name for spec in vm.config.specs" class="form-control" ng-selected=""></select>
                         </div>
                     </div>
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label-large">生产日期：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="birthTime" class="form-control" ng-model="vm.bottle.birthTime"  required>
+                            <input type="text" name="productionDate" class="form-control" ng-model="vm.bottle.productionDate"  required>
                         </div>
                     </div>
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label-large">上次钢检日期：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="lastCheckTime" class="form-control" ng-model="vm.bottle.lastCheckTime"  required>
+                            <input type="text" name="verifyDate" class="form-control" ng-model="vm.bottle.verifyDate"  required>
                         </div>
                     </div>
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label-large">下次钢检日期：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="nextCheckTime" class="form-control" ng-model="vm.bottle.nextCheckTime"  required>
+                            <input type="text" name="nextVerifyDate" class="form-control" ng-model="vm.bottle.nextVerifyDate"  required>
                         </div>
                     </div>
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label-large">报废日期：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="deadTime" class="form-control" ng-model="vm.bottle.deadTime"  required>
+                            <input type="text" name="scrapDate" class="form-control" ng-model="vm.bottle.scrapDate"  required>
+                        </div>
+                    </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label-large">状态：</label>
+                        <div class="col-sm-8 input-width">
+                            <select name="status" ng-model="vm.bottle.status" ng-options="status.value as status.name for status in vm.config.status" class="form-control" ng-selected=""></select>
                         </div>
                     </div>
                     <div class="input-group pdb15" ng-if="isModify">
                         <label class="col-sm-4 control-label input-label-large">定位终端编码：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="deviceCode" class="form-control" ng-model="vm.bottle.deviceCode"  required>
+                            <input type="text" name="locationDevNumber" class="form-control" ng-model="vm.bottle.locationDevice.number"  required>
                         </div>
                         <button ng-if="isBinded" type="button" class="btn btn-sm btn-danger" ng-click="unBind()"><i class="fa fa-plus"></i> 解绑 </button>
                         <button ng-if="!isBinded" type="button" class="btn btn-sm btn-success" ng-click="bind()"><i class="fa fa-plus"></i> 绑定 </button>

@@ -28,6 +28,7 @@
             <th width="10%">上次钢检日期</th>
             <th width="10%">下次钢检日期</th>
             <th width="10%">报废日期</th>
+            <th width="5%">状态</th>
             <th width="10%">操作</th>
         </tr>
         </thead>
@@ -35,14 +36,15 @@
         <tr ng-repeat="bottle in vm.bottleList">
             <td></td>
             <td class="message">{{bottle.id}}</td>
-            <td class="message">{{bottle.code}}</td>
-            <td class="message">{{bottle.specifications}}</td>
-            <td class="message">{{bottle.deviceCode}}</td>
-            <td class="message">{{bottle.deviceBattery}}</td>
-            <td class="message">{{bottle.birthTime}}</td>
-            <td class="message">{{bottle.lastCheckTime}}</td>
-            <td class="message">{{bottle.nextCheckTime}}</td>
-            <td class="message">{{bottle.deadTime}}</td>
+            <td class="message">{{bottle.number}}</td>
+            <td class="message">{{bottle.spec.name}}</td>
+            <td class="message">{{bottle.locationDevice.number}}</td>
+            <td class="message">{{bottle.locationDevice.electricQuantity}}</td>
+            <td class="message">{{bottle.productionDate}}</td>
+            <td class="message">{{bottle.verifyDate}}</td>
+            <td class="message">{{bottle.nextVerifyDate}}</td>
+            <td class="message">{{bottle.scrapDate}}</td>
+            <td class="message">{{bottle.status}}</td>
 
             <td class="operate">
                 <button title="详情" ng-click="location(bottle.location|lonFilter, bottle.location|lanFilter)" type="button" class="btn btn-primary btn-outline btn-xs">

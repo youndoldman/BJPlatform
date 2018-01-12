@@ -71,7 +71,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService
         data.put("appid", wxPayConfigImpl.getAppID());
         data.put("body", "云南百江燃气公司订气业务");
         //加上系统时间
-        orderIndex = orderIndex+"aaa"+WXPayUtil.getCurrentTimestamp();
+        orderIndex = orderIndex+"x"+WXPayUtil.getCurrentTimestamp();
         data.put("out_trade_no", orderIndex);
         data.put("device_info", "");
         data.put("fee_type", "CNY");

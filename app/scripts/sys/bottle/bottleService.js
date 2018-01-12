@@ -3,18 +3,14 @@
 bottleApp.service('BottleService', ['$http', 'URI', 'promiseWrapper', function ($http, URI, promise) {
 
 
-    var bottleUri = URI.resources.bottle;//钢瓶接口
+    var bottlesUri = URI.resources.bottle;//钢瓶接口
     var gpsBindUri = URI.resources.gpsBind;//定位终端绑定接口
     var gpsUnBindUri = URI.resources.gpsUnBind;//定位终端解除绑定接口
+    var bottleSpecQueryUri = URI.resources.bottleSpecQuery;//钢瓶规格查询
 
     this.toViewModel = function (bottleFromApi) {
         return {
             id: bottleFromApi.id,
-            name: bottleFromApi.name,
-            facture: bottleFromApi.facture,
-            location: bottleFromApi.location,
-            createTime: bottleFromApi.createTime,
-            updateTime: bottleFromApi.updateTime
         }
     };
 
@@ -35,13 +31,17 @@ bottleApp.service('BottleService', ['$http', 'URI', 'promiseWrapper', function (
     };
 
     //绑定定位终端至钢瓶
-    this.bindBottle = function (bottle, deviceId) {
-        return promise.wrap($http.delete(bottlesUri + "/" + bottle.id));
+    this.bindBottle = function (bottle, locationDevNumber) {
+        return promise.wrap($http.put(gpsBindUri + "/" + bottle.number+"?locationDevNumber="+locationDevNumber));
     };
     //解除绑定定位终端
-    this.unBindBottle = function (bottle) {
-        return promise.wrap($http.delete(bottlesUri + "/" + bottle.id));
+    this.unBindBottle = function (bottle, locationDevNumber) {
+        return promise.wrap($http.put(gpsUnBindUri + "/" + bottle.number+"?locationDevNumber="+locationDevNumber));
     };
 
+    //钢瓶规格查询
+    this.retrieveBottleSpecs = function () {
+        return promise.wrap($http.get(bottleSpecQueryUri));
+    };
 }]);
 
