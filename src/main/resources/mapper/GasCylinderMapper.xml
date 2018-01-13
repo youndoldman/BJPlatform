@@ -11,9 +11,9 @@
         <result column="verify_date" property="verifyDate" jdbcType="TIMESTAMP"/>
         <result column="next_verify_date" property="nextVerifyDate" jdbcType="TIMESTAMP"/>
         <result column="scrap_date" property="scrapDate" jdbcType="TIMESTAMP"/>
+        <!--<result column="status" property="status"  typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>-->
+        <!--<result column="status" property="status"  typeHandler="com.donno.nj.domain.EnumOrdinalTypeHandler"/>-->
         <result column="status" property="status"  typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
-
-        <!--<result column="status" property="status"  typeHandler="com.donno.nj.domain..EnumOrdinalTypeHandler"/>-->
         <result column="longitude" property="longitude" jdbcType="DOUBLE"/>
         <result column="latitude" property="latitude" jdbcType="DOUBLE"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
@@ -35,6 +35,11 @@
     <sql id="InsertColumnList">
         number,spec_idx,production_date,verify_date,next_verify_date,scrap_date,status,note
     </sql>
+
+    <!--<insert id="insert"  keyProperty="id" useGeneratedKeys="true" parameterType="com.donno.nj.domain.GasCylinder" >-->
+        <!--INSERT IGNORE INTO <include refid="TblGasCylinder"/>(<include refid="InsertColumnList"/>)-->
+        <!--VALUES( #{number},#{spec.id}, #{productionDate} , #{verifyDate},#{nextVerifyDate},#{scrapDate},#{status ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{note})-->
+    <!--</insert>-->
 
     <insert id="insert"  keyProperty="id" useGeneratedKeys="true">
         INSERT IGNORE INTO <include refid="TblGasCylinder"/>(<include refid="InsertColumnList"/>)

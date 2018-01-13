@@ -1,6 +1,8 @@
 package com.donno.nj.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum AccessType implements IEnum
 {
     ATWeixin("微信接入", 0), ATCustomService("客服接入", 1);

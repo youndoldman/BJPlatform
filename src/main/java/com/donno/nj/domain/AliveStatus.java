@@ -1,6 +1,8 @@
 package com.donno.nj.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum AliveStatus implements IEnum
 {
     ASOffline("离线", 0), ASOnline("在线", 1);

@@ -1,6 +1,8 @@
 package com.donno.nj.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum PayStatus implements IEnum
 {
     PSUnpaid("待支付", 0), PSPaied("已支付", 1),PSRefounding("退款中", 2),PSRefounded("已退款", 3);

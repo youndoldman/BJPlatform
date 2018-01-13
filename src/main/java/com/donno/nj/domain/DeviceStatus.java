@@ -1,7 +1,12 @@
 package com.donno.nj.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.google.common.base.MoreObjects;
 
-public enum DeviceStatus implements IEnum
+import java.io.Serializable;
+
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+public enum DeviceStatus implements IEnum,Serializable
 {
     DevDisabled("未启用", 0), DevEnabled("已启用", 1),DevBlocked("已停用", 2),DevCanceled("已作废", 3);
 
@@ -29,7 +34,8 @@ public enum DeviceStatus implements IEnum
     }
 
     // get set 方法
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
@@ -43,6 +49,15 @@ public enum DeviceStatus implements IEnum
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    @Override
+    public String toString()
+    {
+        return MoreObjects.toStringHelper(this)
+                .add("name", name)
+                .add("index", index)
+                .toString();
     }
 };
 
