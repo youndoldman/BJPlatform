@@ -1,6 +1,8 @@
 package com.donno.nj.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum PayType implements IEnum
 {
     PTOnLine("在线支付", 0), PTOffline("线下支付", 1);

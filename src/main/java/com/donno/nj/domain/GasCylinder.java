@@ -1,5 +1,6 @@
 package com.donno.nj.domain;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.google.common.base.MoreObjects;
 
 import java.io.Serializable;
@@ -19,6 +20,8 @@ public class GasCylinder implements Serializable
 
     private Double longitude;
     private Double latitude;
+
+
     private DeviceStatus status;
 
     private LocationDevice locationDevice;
@@ -75,6 +78,7 @@ public class GasCylinder implements Serializable
     {
         return latitude;
     }
+
 
    public DeviceStatus getStatus()
    {

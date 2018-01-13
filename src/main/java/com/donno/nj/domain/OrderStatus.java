@@ -1,6 +1,8 @@
 package com.donno.nj.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum OrderStatus implements IEnum
 {
     OSUnprocessed("待处理", 0), OSDispatching("派送中", 1),OSSigned("已签收", 2),OSCompleted("已结束", 3),OSCanceled("作废", 4);
