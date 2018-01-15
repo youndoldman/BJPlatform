@@ -9,11 +9,6 @@ import org.json.JSONObject;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * Created by IntelliJ IDEA 14.
- * User: karl.zhao
- * Time: 2016/1/21 0021.
- */
 public class UdpServerHandler
         extends SimpleChannelInboundHandler<DatagramPacket>
 {
@@ -25,6 +20,8 @@ public class UdpServerHandler
         String revMessage = datagramPacket.content().toString(CharsetUtil.UTF_8);
 
         JSONObject json = new JSONObject(revMessage);
+
+        /*接收数据解析*/
         Integer openid = json.getInt("id");
         System.out.println(openid);
 
