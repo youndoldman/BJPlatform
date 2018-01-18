@@ -23,12 +23,17 @@ import com.donno.nj.util.QRCodeUtil;
 
 import org.springframework.web.bind.annotation.*;
 
+import com.donno.nj.service.OrderService;
+
 
 @RestController
 public class PayController {
 
     @Autowired
     WeiXinPayService weiXinPayService;
+
+    @Autowired
+    OrderService orderService;
 
     private static final Logger logger = LoggerFactory.getLogger(PayController.class);
 
@@ -124,6 +129,7 @@ public class PayController {
                     //错误订单格式
                 }else {
                     original_no = temps[0];
+                    orderService.weixinPayOk(original_no, out_trade_no, Integer.parseInt(total_fee));
                 }
 
 
