@@ -1,0 +1,45 @@
+<div class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="bottleForm" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="close(false)" data-dismiss="modal"
+                            aria-hidden="true">&times;</button> <h4 class="modal-title">&nbsp;{{modalTitle}}&nbsp;</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label-large">钢瓶编码：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="text" name="number" class="form-control" ng-model="vm.handOver.bottleNumber"  required>
+                        </div>
+                    </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label-large">原责任人：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="text" name="srcUser" class="form-control" ng-model="vm.handOver.srcUser"  ng-disabled="isModify" required>
+                        </div>
+                    </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label-large">移交责任人：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="text" name="destUser" class="form-control" ng-model="vm.handOver.destUser"  ng-disabled="!isModify" required>
+                        </div>
+                    </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label-large">移交原因：</label>
+                        <div class="col-sm-8 input-width">
+                            <select name="spec" ng-model="vm.selectReason" ng-options="reason.name for reason in vm.reasons" class="form-control" ng-selected=""></select>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="submit" ng-click="submit(vm.bottle);" class="btn btn-primary" data-dismiss="modal">保存</button>
+                    <button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -107,9 +107,9 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
         bottle: {},
         config:{
             status:[{value:0,name:"未启用"},
-                {value:1,name:"启用"},
-                {value:2,name:"停用"},
-                {value:3,name:"作废"}],
+                {value:1,name:"已启用"},
+                {value:2,name:"已停用"},
+                {value:3,name:"已作废"}],
             specs:[],
         }
     };
@@ -124,7 +124,10 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
                 $scope.close(true);
             })
         } else if (bottle.name != "" && title == "修改钢瓶") {
+            //去除定位终端字段，才能提交
+            bottle.locationDevice = null;
             BottleService.modifyBottle(bottle).then(function () {
+                udcModal.info({"title": "处理结果", "message": "修改钢瓶信息成功 "});
                 $scope.close(true);
             })
         }
@@ -159,6 +162,11 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
                 $scope.vm.bottle.status = $scope.vm.config.status[0].value;
             }
         })
+        if($scope.isModify) {
+            //钢瓶状态格式化
+            $scope.vm.bottle.status = $scope.vm.bottle.status.index;
+        }
+
     };
     //解除绑定
     $scope.unBind = function () {

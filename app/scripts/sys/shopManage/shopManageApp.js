@@ -27,6 +27,19 @@ var shopManageApp = angular.module('ShopManageApp', ['ui.router', 'CommonModule'
                 onEnter: function (rootService, NavItem) {
                     rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[0]);
                 }
+            })
+            .state('ShopManage.stockControl',{
+                url:'/stockControl',
+                views: {
+                    "content@ShopManage": {
+                        templateUrl: '../pages/shopManage/shopStock.htm',
+                        controller: 'ShopStockCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[1]);
+                }
             });
         $httpProvider.interceptors.push('HttpInterceptor');
     }]).run(['$rootScope', 'rootService', 'NavItem', function ($rootScope, rootService, NavItem) {

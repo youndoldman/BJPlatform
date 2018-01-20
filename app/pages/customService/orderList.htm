@@ -71,8 +71,8 @@
         <tr ng-repeat="order in vm.orderList" ng-class="{danger:order.timeSpan>10&&order.orderStatus==0}">
             <td></td>
             <td class="message">{{order.orderSn}}</td>
-            <td class="message">{{order.accessType}}</td>
-            <td class="message">{{order.payType}}</td>
+            <td class="message">{{order.accessType.name}}</td>
+            <td class="message">{{order.payType.name}}</td>
             <td class="message">{{order.customer.userId}}</td>
             <td class="message">{{vm.orderStatusDisplay[order.orderStatus]}}</td>
             <td class="message">{{order.reserveTime}}</td>

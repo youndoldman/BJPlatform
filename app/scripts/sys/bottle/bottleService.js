@@ -23,7 +23,7 @@ bottleApp.service('BottleService', ['$http', 'URI', 'promiseWrapper', function (
     };
 
     this.modifyBottle = function (bottle) {
-        return promise.wrap($http.put(bottlesUri + "/" + bottle.id, bottle));
+        return promise.wrap($http.put(bottlesUri + "/" + bottle.number, bottle));
     };
 
     this.deleteBottle = function (bottle) {
