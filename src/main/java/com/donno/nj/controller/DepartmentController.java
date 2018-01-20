@@ -29,13 +29,14 @@ public class DepartmentController
     @Autowired
     DepartmentService departmentService ;
 
-    @RequestMapping(value = "/api/Department", method = RequestMethod.GET, produces = "application/json")
-    @OperationLog(desc = "获取部门信息列表")
-    public ResponseEntity retrieve(@RequestParam(value = "code", defaultValue = "") String code,
+
+    @RequestMapping(value = "/api/Department/Upper", method = RequestMethod.GET, produces = "application/json")
+    @OperationLog(desc = "获取部门信息列表(递归含上级部门信息)")
+    public ResponseEntity retrieveParentDep(@RequestParam(value = "code", defaultValue = "") String code,
                                    @RequestParam(value = "name", defaultValue = "") String name,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
-                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
+                                   @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
     {
         Map params = new HashMap<String,String>();
 
@@ -53,6 +54,31 @@ public class DepartmentController
 
         List<Department> departments = departmentService.retrieve(params);
         Integer count = departmentService.count(params);
+
+        return ResponseEntity.ok(ListRep.assemble(departments, count));
+    }
+
+
+
+    @RequestMapping(value = "/api/Department/Lower", method = RequestMethod.GET, produces = "application/json")
+    @OperationLog(desc = "获取部门信息列表(含下级部门信息)")
+    public ResponseEntity retrieveSubDepartment(@RequestParam(value = "code", defaultValue = "") String code,
+                                   @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
+                                   @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
+                                   @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
+    {
+        Map params = new HashMap<String,String>();
+
+        if (code.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("code", code));
+        }
+
+
+        params.putAll(paginationParams(pageNo, pageSize, orderBy));
+
+        List<Department> departments = departmentService.retrieveSubDepartment(params);
+        Integer count = departmentService.countSubDepartment(params);
 
         return ResponseEntity.ok(ListRep.assemble(departments, count));
     }

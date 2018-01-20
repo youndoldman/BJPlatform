@@ -18,4 +18,5 @@ public interface GasCylinderBindRelationDao extends BaseDao<GasCylinderBindRelat
     GasCylinder  findGasCylinderByLocateDevId(Integer locationDevIdx)  ;
 
     GasCylinderBindRelation findBindRelation(@Param("gasCylinderIdx") Integer gasCylinderId,@Param("locationDevIdx") Integer locationDevIdx)  ;
+
 }

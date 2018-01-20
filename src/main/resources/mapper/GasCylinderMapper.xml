@@ -11,9 +11,9 @@
         <result column="verify_date" property="verifyDate" jdbcType="TIMESTAMP"/>
         <result column="next_verify_date" property="nextVerifyDate" jdbcType="TIMESTAMP"/>
         <result column="scrap_date" property="scrapDate" jdbcType="TIMESTAMP"/>
-        <!--<result column="status" property="status"  typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>-->
-        <!--<result column="status" property="status"  typeHandler="com.donno.nj.domain.EnumOrdinalTypeHandler"/>-->
-        <result column="status" property="status"  typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+
+        <result column="life_status" property="lifeStatus"  typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+        <result column="service_status" property="serviceStatus"  typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
         <result column="longitude" property="longitude" jdbcType="DOUBLE"/>
         <result column="latitude" property="latitude" jdbcType="DOUBLE"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
@@ -33,7 +33,7 @@
     </sql>
 
     <sql id="InsertColumnList">
-        number,spec_idx,production_date,verify_date,next_verify_date,scrap_date,status,note
+        number,spec_idx,production_date,verify_date,next_verify_date,scrap_date,life_status,service_status,note
     </sql>
 
     <!--<insert id="insert"  keyProperty="id" useGeneratedKeys="true" parameterType="com.donno.nj.domain.GasCylinder" >-->
@@ -43,7 +43,7 @@
 
     <insert id="insert"  keyProperty="id" useGeneratedKeys="true">
         INSERT IGNORE INTO <include refid="TblGasCylinder"/>(<include refid="InsertColumnList"/>)
-        VALUES( #{number},#{spec.id}, #{productionDate} , #{verifyDate},#{nextVerifyDate},#{scrapDate},#{status.index}, #{note})
+        VALUES( #{number},#{spec.id}, #{productionDate} , #{verifyDate},#{nextVerifyDate},#{scrapDate},#{lifeStatus.index},#{serviceStatus.index}, #{note})
     </insert>
 
     <delete id="deleteByIdx" parameterType="java.lang.Integer">
@@ -59,7 +59,8 @@
         <if test="verifyDate != null">verify_date = #{verifyDate},</if>
         <if test="nextVerifyDate != null">next_verify_date = #{nextVerifyDate},</if>
         <if test="scrapDate != null">scrap_date = #{scrapDate},</if>
-        <if test="status != null">status = #{status.index},</if>
+        <if test="lifeStatus != null">life_status = #{lifeStatus.index},</if>
+        <if test="serviceStatus != null">service_status = #{serviceStatus.index},</if>
         <if test="longitude != null">longitude = #{longitude},</if>
         <if test="latitude != null">latitude = #{latitude},</if>
         <if test="note != null">note = #{note},</if>
@@ -69,6 +70,12 @@
         </if>
     </set>
     WHERE id = #{id}
+    </update>
+
+    <update id="updateSvcStatus">
+        UPDATE <include refid="TblGasCylinder"/>
+        SET service_status = #{serviceStatus.index}
+        WHERE id = #{id}
     </update>
 
 
@@ -98,7 +105,13 @@
 
         <if test="specCode != null">AND  spec_idx =  ( select id from t_gas_cylinder_spec where code = #{specCode} ) </if>
 
-        <if test="status != null">AND  status = #{status}</if>
+        <if test="lifeStatus != null">AND  lifeStatus = #{lifeStatus}</if>
+
+        <if test="serviceStatus != null">AND  serviceStatus = #{serviceStatus}</if>
+
+        <if test="liableUserId != null">AND id in (select cylinder_idx from t_cylinder_user where user_idx =  ( select id from t_user WHERE user_id =  #{liableUserId} ))  </if>
+
+        <if test="liableDepartmentCode != null">AND id in (select cylinder_idx from t_cylinder_user where user_idx in ( select user_idx from t_sysuser where department_idx = (select id from t_department where code = #{liableDepartmentCode})  ))  </if>
 
         <if test="orderBy != null">
             <if test="orderBy != ''">
@@ -123,7 +136,9 @@
 
         <if test="specCode != null">AND  spec_idx =  ( select id from t_gas_cylinder_spec where code = #{specCode} ) </if>
 
-        <if test="status != null">AND  status = #{status}</if>
+        <if test="lifeStatus != null">AND  lifeStatus = #{lifeStatus}</if>
+
+        <if test="serviceStatus != null">AND  serviceStatus = #{serviceStatus}</if>
 
 
     </select>

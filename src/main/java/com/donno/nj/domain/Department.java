@@ -5,6 +5,7 @@ import com.google.common.base.MoreObjects;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class Department  implements Serializable
 {
@@ -12,6 +13,8 @@ public class Department  implements Serializable
     private String code;
     private String name;
     private Department parentDepartment;
+
+    private List<Department> lstSubDepartment;
     private String note;
     private Date createTime;
     private Date updateTime;
@@ -38,6 +41,11 @@ public class Department  implements Serializable
     public Department getParentDepartment()
     {
         return  parentDepartment;
+    }
+
+    public List<Department> getLstSubDepartment()
+    {
+        return lstSubDepartment;
     }
 
     public String getNote()
@@ -73,6 +81,11 @@ public class Department  implements Serializable
     public void setParentDepartment(Department parentDepartment)
     {
         this.parentDepartment = parentDepartment;
+    }
+
+    public void setLstSubDepartment(List<Department> lstSubDepartment)
+    {
+        this.lstSubDepartment = lstSubDepartment;
     }
 
     public void  setNote(String note)

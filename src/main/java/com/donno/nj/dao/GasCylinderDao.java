@@ -11,4 +11,6 @@ public interface GasCylinderDao extends BaseDao<GasCylinder>
 
     void deleteByIdx(Integer id);
 
+    void updateSvcStatus(Integer id,Integer serviceStatus);
+
 }

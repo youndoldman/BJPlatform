@@ -13,6 +13,16 @@
         </association>
     </resultMap>
 
+    <resultMap id="SubDepResultMap" type="com.donno.nj.domain.Department">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <collection property="lstSubDepartment" javaType="ArrayList" column="id" ofType="Department" select="com.donno.nj.dao.DepartmentDao.findSubDep" />
+    </resultMap>
+
     <sql id="TableName">
         t_department
     </sql>
@@ -33,12 +43,24 @@
     </select>
 
 
+
     <select id="findByCode" resultMap="BaseResultMap">
         SELECT <include refid="QueryColumnList"/>
         FROM <include refid="TableName"/>
         WHERE
         code = #{code}
     </select>
+
+
+    <select id="findSubDep" resultMap="SubDepResultMap">
+        SELECT <include refid="QueryColumnList"/>
+        FROM <include refid="TableName"/>
+        <where>
+            parent_idx = #{id}
+        </where>
+
+    </select>
+
 
     <select id="getList" resultMap="BaseResultMap">
         SELECT <include refid="QueryColumnList"/>
@@ -52,6 +74,7 @@
             <if test="name != null">
                 and  name LIKE CONCAT('%',#{name},'%')
             </if>
+
             <if test="orderBy != null">
                 <if test="orderBy != ''">
                     ORDER BY   ${orderBy}
@@ -66,6 +89,7 @@
         </if>
     </select>
 
+
     <select id="count" resultType="Integer">
         SELECT COUNT(*)
         FROM <include refid="TableName"/>
@@ -75,12 +99,74 @@
                 and  code = #{code}
             </if>
 
-            <if test="parentDepartment != null">
-                and  parent_idx = #{parentDepartment.id}
+
+            <if test="name != null">
+                and  name LIKE CONCAT('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+
+
+    <select id="getSubDepList" resultMap="SubDepResultMap">
+        SELECT <include refid="QueryColumnList"/>
+        FROM <include refid="TableName"/>
+        <where>
+            id > 0
+
+            <if test="code != null">
+                and  code = #{code}
+            </if>
+
+            <if test="code == null">
+               and parent_idx = 0
             </if>
 
             <if test="name != null">
                 and  name LIKE CONCAT('%',#{name},'%')
+            </if>
+            <!--<if test="code != null">-->
+                <!--and parent_idx = ( SELECT id from t_department where code = #{code} )-->
+            <!--</if>-->
+
+            <!--<if test="code == null">-->
+                <!--and parent_idx = 0-->
+            <!--</if>-->
+
+            <!--<if test="name != null">-->
+                <!--and  parent_idx in ( select id from  t_department where name LIKE CONCAT('%',#{name},'%') )-->
+            <!--</if>-->
+
+            <if test="orderBy != null">
+                <if test="orderBy != ''">
+                    ORDER BY   ${orderBy}
+                </if>
+            </if>
+        </where>
+
+        <if test="limit != null"  >
+            <if test="offset != null"  >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+
+    <select id="countSubDep" resultType="Integer">
+        SELECT COUNT(*)
+        FROM <include refid="TableName"/>
+        <where>
+            id > 0
+
+            <if test="code != null">
+                and parent_idx = ( SELECT id from t_department where code = #{code} )
+            </if>
+
+            <if test="code == null">
+                and parent_idx = 0
+            </if>
+
+            <if test="name != null">
+                and  parent_idx in ( select id from  t_department where name LIKE CONCAT('%',#{name},'%') )
             </if>
         </where>
     </select>

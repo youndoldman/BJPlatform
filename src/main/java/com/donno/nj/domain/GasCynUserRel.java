@@ -5,18 +5,18 @@ import com.google.common.base.MoreObjects;
 import java.io.Serializable;
 import java.util.Date;
 
-public class GasCylinderBindRelation implements Serializable
+
+public class GasCynUserRel implements Serializable
 {
     private Integer id;
 
     private GasCylinder gasCylinder;
-    private LocationDevice locationDevice;
+    private User user;
 
-    private String note;
     private Date createTime;
     private Date updateTime;
 
-    public GasCylinderBindRelation()
+    public GasCynUserRel()
     {
     }
 
@@ -30,9 +30,9 @@ public class GasCylinderBindRelation implements Serializable
         return gasCylinder;
     }
 
-    public LocationDevice getLocationDevice()
+    public User getUser()
     {
-        return locationDevice;
+        return user;
     }
 
 
@@ -56,15 +56,9 @@ public class GasCylinderBindRelation implements Serializable
         this.gasCylinder = gasCylinder;
     }
 
-    public void setLocationDevice(LocationDevice locationDevice)
+    public void setUser(User user)
     {
-        this.locationDevice = locationDevice;
-    }
-
-
-    public void setNote(String note)
-    {
-        this.note = note;
+        this.user = user;
     }
 
     public void setCreateTime(Date createTime)
@@ -83,7 +77,6 @@ public class GasCylinderBindRelation implements Serializable
     {
         return MoreObjects.toStringHelper(this)
                 .add("id", id)
-                .add("note", note)
                 .add("createTime", createTime)
                 .add("updateTime", updateTime)
                 .toString();

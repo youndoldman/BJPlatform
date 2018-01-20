@@ -29,7 +29,10 @@ public class GasCylinderController
     @OperationLog(desc = "获取商品列表")
     public ResponseEntity retrieve(@RequestParam(value = "number", defaultValue = "") String number,
                                    @RequestParam(value = "specCode", defaultValue = "") String specCode,
-                                   @RequestParam(value = "status", required = false) Integer status,
+                                   @RequestParam(value = "lifeStatus", required = false) Integer lifeStatus,
+                                   @RequestParam(value = "serviceStatus", required = false) Integer serviceStatus,
+                                   @RequestParam(value = "liableUserId", defaultValue = "") String liableUserId,
+                                   @RequestParam(value = "liableDepartmentCode", defaultValue = "") String liableDepartmentCode,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
@@ -47,9 +50,24 @@ public class GasCylinderController
         }
 
 
-        if (status != null)
+        if (lifeStatus != null)
         {
-            params.putAll(ImmutableMap.of("status", status));
+            params.putAll(ImmutableMap.of("lifeStatus", lifeStatus));
+        }
+
+        if (serviceStatus != null)
+        {
+            params.putAll(ImmutableMap.of("serviceStatus", serviceStatus));
+        }
+
+        if (liableUserId != null)
+        {
+            params.putAll(ImmutableMap.of("liableUserId", liableUserId));
+        }
+
+        if (liableDepartmentCode != null)
+        {
+            params.putAll(ImmutableMap.of("liableDepartmentCode", liableDepartmentCode));
         }
 
 
@@ -85,6 +103,22 @@ public class GasCylinderController
 
         return responseEntity;
     }
+
+
+    @OperationLog(desc = "修改钢瓶业务状态")
+    @RequestMapping(value = "/api/GasCylinder/ServiceStatus/{number}", method = RequestMethod.PUT)
+    public ResponseEntity updateCynSvcStatus(@PathVariable("number") String number,
+                                             @RequestParam(value = "srcUerId", defaultValue = "") String srcUerId,
+                                             @RequestParam(value = "targetUserId", defaultValue = "") String targetUserId,
+                                             @RequestParam(value = "serviceStatus", required = false) Integer serviceStatus)
+    {
+        ResponseEntity responseEntity;
+        gasCylinderService.updateSvcStatus(number,serviceStatus,srcUerId,targetUserId);
+        responseEntity = ResponseEntity.ok().build();
+
+        return responseEntity;
+    }
+
 
 
 

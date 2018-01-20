@@ -22,9 +22,13 @@ public class GasCylinder implements Serializable
     private Double latitude;
 
 
-    private DeviceStatus status;
+    private DeviceStatus lifeStatus;
+
+    private GasCynServiceStatus serviceStatus;
 
     private LocationDevice locationDevice;
+
+    private User user;
 
     private String  note;
     private Date createTime;
@@ -80,14 +84,24 @@ public class GasCylinder implements Serializable
     }
 
 
-   public DeviceStatus getStatus()
+   public DeviceStatus getLifeStatus()
    {
-       return  status;
+       return  lifeStatus;
    }
+
+    public GasCynServiceStatus getServiceStatus()
+    {
+        return  serviceStatus;
+    }
 
     public LocationDevice getLocationDevice()
     {
         return locationDevice;
+    }
+
+    public User getUser()
+    {
+        return user;
     }
 
     public String getNote()
@@ -151,14 +165,24 @@ public class GasCylinder implements Serializable
         this.latitude = latitude;
     }
 
-    public void setStatus(DeviceStatus status)
+    public void setLifeStatus(DeviceStatus lifeStatus)
     {
-        this.status = status;
+        this.lifeStatus = lifeStatus;
+    }
+
+    public void  setServiceStatus(GasCynServiceStatus serviceStatus)
+    {
+        this.serviceStatus = serviceStatus;
     }
 
     public void setLocationDevice(LocationDevice locationDevice)
     {
         this.locationDevice = locationDevice;
+    }
+
+    public void setUser(User user)
+    {
+        this.user = user;
     }
 
     public void setNote(String note)

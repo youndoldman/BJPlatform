@@ -1,23 +1,16 @@
 package com.donno.nj.service.impl;
 
 import com.donno.nj.aspect.OperationLog;
-import com.donno.nj.dao.GasCylinderBindRelationDao;
-import com.donno.nj.dao.GasCylinderDao;
-import com.donno.nj.dao.GasCylinderSpecDao;
-import com.donno.nj.dao.LocationDeviceDao;
-import com.donno.nj.domain.DeviceStatus;
-import com.donno.nj.domain.GasCylinder;
-import com.donno.nj.domain.GasCylinderSpec;
-import com.donno.nj.domain.LocationDevice;
+import com.donno.nj.dao.*;
+import com.donno.nj.domain.*;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.service.GasCylinderService;
+import com.donno.nj.util.AppUtil;
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +30,12 @@ public class GasCylinderServiceImpl implements GasCylinderService
 
     @Autowired
     private GasCylinderBindRelationDao gasCylinderBindRelationDao;
+
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private GasCynUserRelDao gasCynUserRelDao;
 
     @Override
     public Optional<GasCylinder> findByNumber(String number)
@@ -97,7 +96,19 @@ public class GasCylinderServiceImpl implements GasCylinderService
             throw new ServerSideBusinessException("钢瓶信息已经存在！", HttpStatus.CONFLICT);
         }
 
+        gasCylinder.setServiceStatus(GasCynServiceStatus.StationStock);
         gasCylinderDao.insert(gasCylinder);
+
+        /*当前用户获取*/
+        Optional<User> user = AppUtil.getCurrentLoginUser();
+        if (!user.isPresent())
+        {
+            throw new ServerSideBusinessException("用户信息不存在！", HttpStatus.NOT_FOUND);
+        }
+
+        /*钢瓶责任人关联*/
+        gasCynUserRelDao.bindUser(gasCylinder.getId(),user.get().getId());
+
     }
 
 
@@ -252,6 +263,51 @@ public class GasCylinderServiceImpl implements GasCylinderService
 
         /*更新数据*/
         gasCylinderDao.update(newGasCylinder);
+    }
+
+    @Override
+    @OperationLog(desc = "修改钢瓶业务状态信息")
+    public void updateSvcStatus(String number,Integer serviceStatus,String srcUserId,String targetUserId)
+    {
+       /*参数校验*/
+        if (number == null || number.trim().length() == 0 )
+        {
+            throw new ServerSideBusinessException("钢瓶编号不能为空！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        /*钢瓶是否存在*/
+        Optional<GasCylinder> gasCylinderOptional = findByNumber(number);
+        if (!gasCylinderOptional.isPresent())
+        {
+            throw new ServerSideBusinessException("钢瓶信息不存在！", HttpStatus.NOT_FOUND);
+        }
+
+        /*用户是否存在*/
+        User srcUser = userDao.findByUserId(srcUserId);
+        if (srcUser == null)
+        {
+            throw new ServerSideBusinessException("用户不存在！", HttpStatus.NOT_FOUND);
+        }
+
+        User targetUser = userDao.findByUserId(targetUserId);
+        if (targetUser == null)
+        {
+            throw new ServerSideBusinessException("用户不存在！", HttpStatus.NOT_FOUND);
+        }
+
+        /*钢瓶当前责任人校验*/
+        if (gasCylinderOptional.get().getUser() == null || gasCylinderOptional.get().getUser().getId() != srcUser.getId() )
+        {
+            throw new ServerSideBusinessException("该钢瓶原责任人校验错误！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        /*钢瓶业务状态修改*/
+        gasCylinderDao.updateSvcStatus(gasCylinderOptional.get().getId(),serviceStatus);
+
+        /*关联责任人是否存在，不存在则增加关联责任人，若存在则更新*/
+        GasCynUserRel gasCynUserRel = gasCynUserRelDao.findBindRel(gasCylinderOptional.get().getId());
+        gasCynUserRelDao.updateBindedUser(gasCynUserRel.getId(),targetUser.getId());
+
     }
 
     @Override

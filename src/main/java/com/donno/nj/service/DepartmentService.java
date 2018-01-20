@@ -14,9 +14,13 @@ public interface DepartmentService
 
     List<Department> retrieve(Map params);
 
+    List<Department> retrieveSubDepartment(Map params);
+
     void create(Department department);
 
     Integer count(Map params);
+
+    Integer countSubDepartment(Map params);
 
     void update(Integer id, Department newDepartment);
 

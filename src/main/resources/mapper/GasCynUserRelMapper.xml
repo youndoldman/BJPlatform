@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--钢瓶与责任人关系-->
+
+<mapper namespace="com.donno.nj.dao.GasCynUserRelDao">
+
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.GasCynUserRel">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <association property="gasCylinder" column="cylinder_idx" select="com.donno.nj.dao.GasCylinderDao.findById">
+        </association>
+        <association property="user" column="user_idx" select="com.donno.nj.dao.UserDao.findById">
+        </association>
+    </resultMap>
+
+    <sql id="TblCylinderUser">
+        t_cylinder_user
+    </sql>
+
+
+    <!--绑定钢瓶与用户-->
+    <insert id="bindUser">
+        INSERT  INTO t_cylinder_user(cylinder_idx,user_idx)
+        VALUES( #{gasCylinderIdx},#{userIdx})
+    </insert>
+
+
+
+    <!--绑定钢瓶与用户关系修改-->
+    <update id="update">
+        UPDATE <include refid="TblCylinderUser"/>
+        <set>
+            user_idx = #{userIdx}
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <delete id="deleteByIdx" parameterType="java.lang.Integer">
+    DELETE FROM t_cylinder_user WHERE id= #{id}
+    </delete>
+
+
+    <!--查找钢瓶绑定关系-->
+    <select id="findBindRel" resultMap="DetailResultMap">
+        SELECT  *
+        FROM t_cylinder_user
+        WHERE
+        t_cylinder_auxiliary.cylinder_idx = #{gasCylinderIdx}
+    </select>
+
+
+
+
+</mapper>

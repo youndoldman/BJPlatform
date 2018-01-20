@@ -39,8 +39,21 @@ public class DepartmentServiceImpl implements DepartmentService
     }
 
     @Override
+    public List<Department> retrieveSubDepartment(Map params) {
+        return departmentDao.getSubDepList(params);
+    }
+
+
+
+    @Override
     public Integer count(Map params) {
         return departmentDao.count(params);
+    }
+
+    @Override
+    public Integer countSubDepartment(Map params)
+    {
+        return departmentDao.countSubDep(params);
     }
 
     @Override
