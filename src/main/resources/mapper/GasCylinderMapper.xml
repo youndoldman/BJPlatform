@@ -26,6 +26,9 @@
         <association property="locationDevice" column="id" select="com.donno.nj.dao.GasCylinderBindRelationDao.findLocateDevByCylinderId">
         </association>
 
+        <association property="user" column="id" select="com.donno.nj.dao.GasCynUserRelDao.findLiableUserByCylinderId">
+        </association>
+
     </resultMap>
 
     <sql id="TblGasCylinder">
@@ -74,7 +77,7 @@
 
     <update id="updateSvcStatus">
         UPDATE <include refid="TblGasCylinder"/>
-        SET service_status = #{serviceStatus.index}
+        SET service_status = #{serviceStatus}
         WHERE id = #{id}
     </update>
 
@@ -139,6 +142,11 @@
         <if test="lifeStatus != null">AND  lifeStatus = #{lifeStatus}</if>
 
         <if test="serviceStatus != null">AND  serviceStatus = #{serviceStatus}</if>
+
+        <if test="liableUserId != null">AND id in (select cylinder_idx from t_cylinder_user where user_idx =  ( select id from t_user WHERE user_id =  #{liableUserId} ))  </if>
+
+        <if test="liableDepartmentCode != null">AND id in (select cylinder_idx from t_cylinder_user where user_idx in ( select user_idx from t_sysuser where department_idx = (select id from t_department where code = #{liableDepartmentCode})  ))  </if>
+
 
 
     </select>

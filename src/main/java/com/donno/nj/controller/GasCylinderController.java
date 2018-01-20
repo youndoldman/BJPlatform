@@ -60,12 +60,12 @@ public class GasCylinderController
             params.putAll(ImmutableMap.of("serviceStatus", serviceStatus));
         }
 
-        if (liableUserId != null)
+        if (liableUserId.trim().length() != 0)
         {
             params.putAll(ImmutableMap.of("liableUserId", liableUserId));
         }
 
-        if (liableDepartmentCode != null)
+        if (liableDepartmentCode.trim().length() != 0)
         {
             params.putAll(ImmutableMap.of("liableDepartmentCode", liableDepartmentCode));
         }
@@ -106,11 +106,11 @@ public class GasCylinderController
 
 
     @OperationLog(desc = "修改钢瓶业务状态")
-    @RequestMapping(value = "/api/GasCylinder/ServiceStatus/{number}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/GasCylinder/TakeOver/{number}", method = RequestMethod.PUT)
     public ResponseEntity updateCynSvcStatus(@PathVariable("number") String number,
-                                             @RequestParam(value = "srcUerId", defaultValue = "") String srcUerId,
-                                             @RequestParam(value = "targetUserId", defaultValue = "") String targetUserId,
-                                             @RequestParam(value = "serviceStatus", required = false) Integer serviceStatus)
+                                             @RequestParam(value = "srcUerId", defaultValue = "",required = true) String srcUerId,
+                                             @RequestParam(value = "targetUserId", defaultValue = "",required = true) String targetUserId,
+                                             @RequestParam(value = "serviceStatus", required = true) Integer serviceStatus)
     {
         ResponseEntity responseEntity;
         gasCylinderService.updateSvcStatus(number,serviceStatus,srcUerId,targetUserId);

@@ -84,7 +84,7 @@ public class DepartmentController
     }
 
 
-    @OperationLog(desc = "创建客户级别信息")
+    @OperationLog(desc = "创建部门信息")
     @RequestMapping(value = "/api/Department", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody Department department, UriComponentsBuilder ucBuilder)
     {
