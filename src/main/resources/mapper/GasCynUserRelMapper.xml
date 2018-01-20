@@ -14,6 +14,8 @@
         </association>
         <association property="user" column="user_idx" select="com.donno.nj.dao.UserDao.findById">
         </association>
+
+
     </resultMap>
 
     <sql id="TblCylinderUser">
@@ -30,7 +32,16 @@
 
 
     <!--绑定钢瓶与用户关系修改-->
-    <update id="update">
+    <!--<update id="update">-->
+        <!--UPDATE <include refid="TblCylinderUser"/>-->
+        <!--<set>-->
+            <!--user_idx = #{userIdx}-->
+        <!--</set>-->
+        <!--WHERE id = #{id}-->
+    <!--</update>-->
+
+    <!--绑定钢瓶与用户关系修改-->
+    <update id="updateBindedUser">
         UPDATE <include refid="TblCylinderUser"/>
         <set>
             user_idx = #{userIdx}
@@ -44,14 +55,27 @@
     </delete>
 
 
-    <!--查找钢瓶绑定关系-->
+    <!--查找钢瓶-责任人关系-->
     <select id="findBindRel" resultMap="DetailResultMap">
         SELECT  *
         FROM t_cylinder_user
         WHERE
-        t_cylinder_auxiliary.cylinder_idx = #{gasCylinderIdx}
+        cylinder_idx = #{gasCylinderIdx}
     </select>
 
+
+    <!--钢瓶责任人-->
+    <select id="findLiableUserByCylinderId" resultMap="com.donno.nj.dao.UserDao.BaseResultMap">
+        SELECT t_user.*,t_group.id as group_id,t_group.code as group_code,t_group.name as group_name
+        FROM t_user,t_cylinder_user,t_gas_cylinder,t_group
+        where
+        (
+        t_user.id  = t_cylinder_user.user_idx
+        AND   t_gas_cylinder.id  = t_cylinder_user.cylinder_idx
+        AND t_cylinder_user.cylinder_idx = #{gasCylinderIdx}
+        AND t_user.group_idx = t_group.id
+        )
+    </select>
 
 
 
