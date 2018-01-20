@@ -115,9 +115,9 @@ commonModule.constant('NavItem', {
             icon: "fa-group"
         }, {
             index: 1,
-            name: "统计报表",
+            name: "库存管理",
             target: "_blank",
-            href: "",
+            href: "./shopCenter.htm#/ShopManage/stockControl",
             icon: "fa-plane"
         }]
     },

@@ -77,6 +77,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             currentCustomer:null,
             CustomerList: [],
             CustomerOrderHistory: [],
+            CustomerAutoReportList:[ //不间断供气客户
+            ]
         };
 
 
@@ -297,7 +299,18 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 $scope.temp.selectedGoods = $scope.temp.goodsList[0];
             });
 
-        }
+        };
+        var searchCustomerTest = function () {
+            //清空表格
+            var queryParams = {
+                pageNo: 1,
+                pageSize: 25
+            };
+            //以后修改，这里为了演示方便
+            CustomerManageService.retrieveCustomers(queryParams).then(function (customers) {
+                $scope.vm.CustomerAutoReportList = customers.items;
+            });
+        };
 
         var init = function () {
             $scope.pagerCustomer.pageSize=2;
@@ -314,6 +327,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 $scope.temp.selectedGoodsType = $scope.temp.goodsTypesList[0];
                 $scope.goodsTypeChange();
             });
+            //不间断供气测试
+            searchCustomerTest();
 
         };
 
