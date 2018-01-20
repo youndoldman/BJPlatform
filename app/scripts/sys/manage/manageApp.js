@@ -30,6 +30,19 @@ var manageApp = angular.module('ManageApp', ['ui.router', 'CommonModule', 'angul
                     rootService.updateActiveNavL2(NavItem.ManageCenter.menuItems[0]);
                 }
             })
+            .state('manage.department',{
+                url:'/department',
+                views: {
+                    "content@manage": {
+                        templateUrl: '../pages/manage/department.htm',
+                        controller: 'DepartmentCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.ManageCenter.menuItems[1]);
+                }
+            })
             .state('manage.users.detail',{
                 url:'/users/{id: int}',
                 views: {
@@ -57,7 +70,7 @@ var manageApp = angular.module('ManageApp', ['ui.router', 'CommonModule', 'angul
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.ManageCenter.menuItems[1]);
+                    rootService.updateActiveNavL2(NavItem.ManageCenter.menuItems[2]);
                 }
             });
 

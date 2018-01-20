@@ -81,9 +81,7 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
         return promise.wrap($http.delete(customersUri + "/" + customer.userId));
     };
 
-    this.retrieveDepartment = function () {
-        return promise.wrap($http.get(departmentUri));
-    };
+
 
     this.retrieveGroups = function () {
         return promise.wrap($http.get(groupsUri));
