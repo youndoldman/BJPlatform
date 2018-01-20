@@ -329,6 +329,13 @@ public class GasCylinderServiceImpl implements GasCylinderService
             gasCylinderBindRelationDao.unBindLocationDev(id,locationDevice.getId());
         }
 
+        /*钢瓶责任人关系表删除*/
+        GasCynUserRel gasCynUserRel = gasCynUserRelDao.findBindRel(id);
+        if (gasCynUserRel != null)
+        {
+            gasCynUserRelDao.delete(gasCynUserRel.getId());
+        }
+
         /*钢瓶位置信息表信息删除*/
 
         /*钢瓶轨迹信息表信息删除*/

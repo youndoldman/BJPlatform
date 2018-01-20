@@ -140,16 +140,13 @@ public class DepartmentServiceImpl implements DepartmentService
     @Override
     public void delete(Map params)
     {
-        List<Department> departments = retrieve(params);
+        List<Department> departments = retrieveSubDepartment(params);
         for(Department dep : departments)
         {
             /*检查是否有子部门，如果有子部门，需要先删除子部门*/
-            Map depParam = new HashMap<String,String>();
-            depParam.putAll(ImmutableMap.of("parentDepartment", dep));
-            Integer departmentCount = count(depParam);
-            if (departmentCount > 0)
+            if((dep.getLstSubDepartment() != null) && (dep.getLstSubDepartment().size() > 0))
             {
-                throw new ServerSideBusinessException("部门有下级部门存在，请先删除下级部门", HttpStatus.NOT_ACCEPTABLE);
+
             }
 
              /*检查部门下是否有用户，如果有用户需要提示先删除用户*/
