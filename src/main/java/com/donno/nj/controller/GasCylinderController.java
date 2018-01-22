@@ -108,12 +108,12 @@ public class GasCylinderController
     @OperationLog(desc = "修改钢瓶业务状态")
     @RequestMapping(value = "/api/GasCylinder/TakeOver/{number}", method = RequestMethod.PUT)
     public ResponseEntity updateCynSvcStatus(@PathVariable("number") String number,
-                                             @RequestParam(value = "srcUerId", defaultValue = "",required = true) String srcUerId,
+                                             @RequestParam(value = "srcUserId", defaultValue = "",required = true) String srcUserId,
                                              @RequestParam(value = "targetUserId", defaultValue = "",required = true) String targetUserId,
                                              @RequestParam(value = "serviceStatus", required = true) Integer serviceStatus)
     {
         ResponseEntity responseEntity;
-        gasCylinderService.updateSvcStatus(number,serviceStatus,srcUerId,targetUserId);
+        gasCylinderService.updateSvcStatus(number,serviceStatus,srcUserId,targetUserId);
         responseEntity = ResponseEntity.ok().build();
 
         return responseEntity;
