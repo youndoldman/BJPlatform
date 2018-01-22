@@ -10,17 +10,22 @@ import java.util.Map;
 @Transactional
 public interface CloudUserService
 {
-//    List<CloudUser> retrieve(Map params);
-//
-//    Integer count(Map params);
-//
-//    void create(CloudUser user);
-//
-//    void update(Integer id, CloudUser newUser);
-//
-//    void delete(Integer id);
+    Optional<CloudUser> findByCloudUserId(String cloudUserId);
 
-//    void bindPanvaUser(String cloudUserId,String panvaUserId);
-//
-//    void unbindPanvaUser(String cloudUserId,String panvaUserId);
+    List<CloudUser> retrieve(Map params);
+
+    Integer count(Map params);
+
+    void create(CloudUser cloudUser);
+
+    void update(String userId, CloudUser newCloudUser);
+
+    void delete(Integer id);
+
+    void bindPanvaUser(String cloudUserId,String panvaUserId);
+
+    void unBindPanvaUser(String cloudUserId,String panvaUserId);
 }
+
+
+

@@ -32,15 +32,6 @@
 
 
     <!--绑定钢瓶与用户关系修改-->
-    <!--<update id="update">-->
-        <!--UPDATE <include refid="TblCylinderUser"/>-->
-        <!--<set>-->
-            <!--user_idx = #{userIdx}-->
-        <!--</set>-->
-        <!--WHERE id = #{id}-->
-    <!--</update>-->
-
-    <!--绑定钢瓶与用户关系修改-->
     <update id="updateBindedUser">
         UPDATE <include refid="TblCylinderUser"/>
         <set>

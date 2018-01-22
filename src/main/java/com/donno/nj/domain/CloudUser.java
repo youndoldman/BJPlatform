@@ -1,10 +1,13 @@
 package com.donno.nj.domain;
 
 
+import com.google.common.base.MoreObjects;
+
+import java.io.Serializable;
 import java.util.Date;
 
 
-public class CloudUser
+public class CloudUser implements Serializable
 {
     protected Integer id;
     protected String userId;
@@ -89,4 +92,18 @@ public class CloudUser
         this.updateTime = updateTime;
     }
 
+
+
+    @Override
+    public String toString()
+    {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("userId", userId)
+                .add("password",password)
+                .add("note", note)
+                .add("createTime", createTime)
+                .add("updateTime", updateTime)
+                .toString();
+    }
 }

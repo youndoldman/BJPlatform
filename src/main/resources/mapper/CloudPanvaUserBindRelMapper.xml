@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--钢瓶与定位终端关系-->
+
+<mapper namespace="com.donno.nj.dao.CloudPanvaUserBindRelationDao">
+
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.CloudPanvaUserBindRelation">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+
+        <association property="cloudUser" column="cloud_user_idx" select="com.donno.nj.dao.CloudUserDao.findById">
+        </association>
+        <association property="panvaUser" column="panva_user_idx" select="com.donno.nj.dao.UserDao.findById">
+        </association>
+    </resultMap>
+
+    <sql id="TblCloudPanvaUserRel">
+        t_cloud_panva_user_rel
+    </sql>
+
+
+    <!--绑定云客服与系统用户-->
+    <insert id="bindCloudPannaUser">
+        INSERT  INTO t_cloud_panva_user_rel(cloud_user_idx,panva_user_idx)
+        VALUES( #{cloudUserIdx},#{panvaUserIdx})
+    </insert>
+
+    <!--钢瓶与定位终端解绑定-->
+    <delete id="unBindCloudPannaUser">
+        DELETE  from t_cloud_panva_user_rel
+        WHERE  cloud_user_idx = #{cloudUserIdx} and   panva_user_idx = #{panvaUserIdx}
+    </delete>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+    DELETE FROM t_cloud_panva_user_rel WHERE id= #{id}
+    </delete>
+
+
+    <!--查找云客服绑定的系统用户-->
+    <select id="findPanvaUserByCloudUserIdx" resultMap="com.donno.nj.dao.UserDao.BaseResultMap">
+        SELECT t_user.*
+        FROM t_user,t_cloud_user,t_cloud_panva_user_rel
+        where
+        (
+        t_user.id  = t_cloud_panva_user_rel.panva_user_idx
+        AND   t_cloud_user.id  = t_cloud_panva_user_rel.cloud_user_idx
+        AND t_cloud_panva_user_rel.cloud_user_idx = #{cloudUserIdx}
+        )
+    </select>
+
+   <!--查找系统用户绑定的云客服-->
+    <select id="findCloudUserByPanvaUserIdx" resultMap="com.donno.nj.dao.CloudUserDao.DetailResultMap">
+        SELECT t_cloud_user.*
+        FROM t_user,t_cloud_user,t_cloud_panva_user_rel
+        where
+        (
+        t_user.id  = t_cloud_panva_user_rel.panva_user_idx
+        AND   t_cloud_user.id  = t_cloud_panva_user_rel.cloud_user_idx
+        AND t_cloud_panva_user_rel.panva_user_idx = #{panvaUserIdx}
+        )
+    </select>
+
+
+
+    <!--查找云客服与系统用户绑定关系-->
+    <select id="findBindRelation" resultMap="DetailResultMap">
+        SELECT  *
+        FROM t_cloud_panva_user_rel
+        WHERE
+        t_cloud_panva_user_rel.cloud_user_idx = #{cloudUserIdx} and t_cloud_panva_user_rel.panva_user_idx  = #{panvaUserIdx}
+    </select>
+
+
+</mapper>
