@@ -81,7 +81,7 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
             UserService.retrieveUsers(queryParams).then(function (users) {
                 $scope.pager.update($scope.q, users.total, queryParams.pageNo);
                 $scope.vm.userList = _.map(users.items, UserService.toViewModel);
-                console.log($scope.vm.userList);
+                //console.log($scope.vm.userList);
             });
         };
 
@@ -114,8 +114,8 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
         });
         $scope.chart.$chartContainer.on('click', '.node', function() {
             var $this = $(this);
-            $scope.q.selectDepartment.code = $this.find('.content').text();
-            $scope.q.selectDepartment.name = $this.find('.title').text();
+            $scope.vm.user.department.code = $this.find('.content').text();
+            $scope.vm.user.department.name = $this.find('.title').text();
             //查询完整的部门路径
             retriveDepartmentInfo();
         });
@@ -129,11 +129,6 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
 
     });
 
-
-
-    $scope.q = {
-        selectDepartment:{name:null,code:null},
-    };
     var departmentConvertToDataSoure = function (department) {
         var chartColors = ["middle-level","product-dept","rd-dept","pipeline1","frontend1"];
         var random = Math.floor(Math.random()*5);
@@ -146,7 +141,6 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
     var retrieveRootDepartment = function () {
         UserService.retrieveDepartmentLower("root").then(function (rootDepartment) {
             $scope.vm.rootDepartment = rootDepartment.items[0];
-            console.log($scope.vm.rootDepartment);
             $scope.dataSource = departmentConvertToDataSoure($scope.vm.rootDepartment);
             redrawDepartment();
         });
@@ -186,13 +180,14 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
 
 
         $scope.vm.user = _.clone(initVal);
-        console.log($scope.vm.user);
+        if($scope.vm.user.department==null){
+            $scope.vm.user.department = {code:null,name:null};
+        }
         if(title == "修改用户") {
             $scope.isModify = true;
         }
         UserService.retrieveGroups().then(function (userGroups) {
             $scope.userGroups = _.map(userGroups.items, UserService.toViewModelGroup);
-            console.log($scope.userGroups);
             if(title == "新增用户") {
                 $scope.vm.user.userGroup = $scope.userGroups[0];
             }else {
@@ -223,16 +218,17 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
 
     };
     var refleshSelectInfo = function(){
-        $scope.q.selectDepartment = $scope.q.selectDepartment;
-        $scope.vm.user.department = $scope.q.selectDepartment;
+        $scope.vm.user.department = $scope.vm.user.department
         $scope.vm.departmentInfo = $scope.vm.departmentInfo;
 
     };
     //查询完整的部门路径
     var retriveDepartmentInfo = function(){
         if($scope.vm.user.department!=null){
+            console.log($scope.vm.user.department);
             UserService.retrieveDepartmentUpper($scope.vm.user.department.code).then(function (department) {
-            $scope.vm.departmentInfo = $scope.vm.user.department.name;
+                console.log($scope.vm.user.department);
+                $scope.vm.departmentInfo = $scope.vm.user.department.name;
             var tempDepartment = department.items[0];
             while(tempDepartment.parentDepartment!=null){
                 tempDepartment = tempDepartment.parentDepartment;

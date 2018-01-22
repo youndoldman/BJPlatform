@@ -29,6 +29,7 @@ commonModule.constant('URI', {
         'subdistrict':'http://restapi.amap.com/v3/config/district',//高德地图行政区域接口
         'geocode':'http://restapi.amap.com/v3/geocode/geo',//高德地图逆地址解码接口
         'bottle': '../../../api/GasCylinder',//钢瓶接口
+        'bottleHandOver': '../../../api/GasCylinder/TakeOver',//钢瓶责任交接
         'gpsBind': '../../../api/GasCylinder/Bind',//定位终端绑定接口
         'gpsUnBind': '../../../api/GasCylinder/UnBind',//定位终端解除绑定接口
         'bottleSpecQuery': '../../../api/GasCylinderSpec'//钢瓶规格查询
@@ -111,7 +112,7 @@ commonModule.constant('NavItem', {
         }]
     },
     'ShopCenter': {
-        roles:[],
+        roles:[1,5],
         name: "门店管理",
         href: "./shopCenter.htm",
         menuItems: [{
@@ -128,7 +129,7 @@ commonModule.constant('NavItem', {
         }]
     },
     'CustomService': {
-        roles:[],
+        roles:[1,2],
         name: "客服业务",
         href: "./customService.htm",
         menuItems: [{
@@ -157,7 +158,7 @@ commonModule.constant('NavItem', {
         }]
     },
     'RoutineCenter': {
-        roles:[],
+        roles:[1],
         name: "日常事务",
         href: "./routineCenter.htm",
         menuItems: [{
@@ -198,7 +199,7 @@ commonModule.constant('NavItem', {
         }]
     },
     'FinanceCenter': {
-        roles:[],
+        roles:[1],
         name: "财务管理",
         href: "./financeCenter.htm",
         menuItems: [{
@@ -222,7 +223,7 @@ commonModule.constant('NavItem', {
             }]
     },
     'DecisionCenter': {
-        roles:[],
+        roles:[1],
         name: "决策分析",
         href: "./decisionCenter.htm",
         menuItems: [{
@@ -245,8 +246,8 @@ commonModule.constant('NavItem', {
         }]
     },
     'GasCenter': {
-        roles:[],
-        name: "钢瓶管理",
+        roles:[1,6],
+        name: "钢检管理",
         href: "./gasCenter.htm",
         menuItems: [{
             index: 0,
@@ -258,6 +259,11 @@ commonModule.constant('NavItem', {
             name: "钢瓶档案",
             href: "./gasCenter.htm#/bottles/list",
             icon: "fa-building"
+        },{
+            index: 1,
+            name: "库存管理",
+            href: "./gasCenter.htm#/bottles/stock",
+            icon: "fa-magnet"
         }]
     },
     //'AppCenter': {

@@ -39,6 +39,20 @@ var bottleApp = angular.module('BottleApp', ['ui.router', 'CommonModule', 'angul
                 onEnter: function (rootService, NavItem) {
                     rootService.updateActiveNavL2(NavItem.GasCenter.menuItems[1]);
                 }
+            })
+
+            .state('bottles.stock',{
+                url:'/stock',
+                views: {
+                    "content@bottles": {
+                        templateUrl: '../pages/bottle/centerStock.htm',
+                        controller: 'CenterStockCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.GasCenter.menuItems[2]);
+                }
             });
         $httpProvider.interceptors.push('HttpInterceptor');
     }]).run(['$rootScope', 'rootService', 'NavItem', function ($rootScope, rootService, NavItem) {

@@ -1,9 +1,9 @@
 'use strict';
 
-shopManageApp.controller('ShopStockCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
-    'rootService', 'pager', 'udcModal', 'ShopStockService','sessionStorage', function ($scope, $rootScope, $filter, $location, Constants,
+bottleApp.controller('CenterStockCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
+    'rootService', 'pager', 'udcModal', 'CenterStockService','sessionStorage', function ($scope, $rootScope, $filter, $location, Constants,
 
-                                                                      rootService, pager, udcModal, ShopStockService, sessionStorage) {
+                                                                      rootService, pager, udcModal, CenterStockService, sessionStorage) {
         var currentUser = sessionStorage.getCurUser();
 
         var gotoPage = function (pageNo) {
@@ -29,8 +29,8 @@ shopManageApp.controller('ShopStockCtrl', ['$scope', '$rootScope', '$filter', '$
 
         $scope.initPopUp = function () {
             udcModal.show({
-                templateUrl: "./shopManage/shopStockModal.htm",
-                controller: "ShopStockModalCtrl",
+                templateUrl: "./bottle/centerStockModal.htm",
+                controller: "CenterStockModalCtrl",
                 inputs: {
                     title: '门店入库',
                     initVal: {}
@@ -48,8 +48,8 @@ shopManageApp.controller('ShopStockCtrl', ['$scope', '$rootScope', '$filter', '$
 
         $scope.modify = function (bottle) {
             udcModal.show({
-                templateUrl: "./shopManage/shopStockModal.htm",
-                controller: "ShopStockModalCtrl",
+                templateUrl: "./bottle/centerStockModal.htm",
+                controller: "CenterStockModalCtrl",
                 inputs: {
                     title: '门店出库',
                     initVal: bottle
@@ -70,7 +70,7 @@ shopManageApp.controller('ShopStockCtrl', ['$scope', '$rootScope', '$filter', '$
                 liableDepartmentCode:currentUser.department.code
             };
 
-            ShopStockService.retrieveBottles(queryParams).then(function (bottles) {
+            CenterStockService.retrieveBottles(queryParams).then(function (bottles) {
                 $scope.pager.update($scope.q, bottles.total, queryParams.pageNo);
                 $scope.vm.bottleList = bottles.items;
             });
@@ -88,7 +88,7 @@ shopManageApp.controller('ShopStockCtrl', ['$scope', '$rootScope', '$filter', '$
 
     }]);
 
-shopManageApp.controller('ShopStockModalCtrl', ['$scope', 'close', 'ShopStockService', 'title', 'initVal', 'udcModal','sessionStorage',function ($scope, close, ShopStockService, title, initVal, udcModal,sessionStorage) {
+bottleApp.controller('CenterStockModalCtrl', ['$scope', 'close', 'CenterStockService', 'title', 'initVal', 'udcModal','sessionStorage',function ($scope, close, CenterStockService, title, initVal, udcModal,sessionStorage) {
     $scope.modalTitle = title;
     $scope.isModify = false;
     $scope.vm = {
@@ -113,7 +113,7 @@ shopManageApp.controller('ShopStockModalCtrl', ['$scope', 'close', 'ShopStockSer
             targetUserId:$scope.vm.handOver.destUser,
             serviceStatus:$scope.vm.handOver.nextStatus
         };
-        ShopStockService.handOverBottle($scope.vm.handOver.bottleNumber,handOverParams).then(function () {
+        CenterStockService.handOverBottle($scope.vm.handOver.bottleNumber,handOverParams).then(function () {
             if(isModify){
                 udcModal.info({"title": "处理结果", "message": "门店出库成功 "});
             }else {
