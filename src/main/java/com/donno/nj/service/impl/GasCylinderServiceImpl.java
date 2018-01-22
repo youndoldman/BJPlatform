@@ -296,7 +296,7 @@ public class GasCylinderServiceImpl implements GasCylinderService
         }
 
         /*钢瓶当前责任人校验*/
-        if (gasCylinderOptional.get().getUser() == null || gasCylinderOptional.get().getUser().getId() != srcUser.getId() )
+        if (gasCylinderOptional.get().getUser() == null || !gasCylinderOptional.get().getUser().getId().equals(srcUser.getId() ))
         {
             throw new ServerSideBusinessException("该钢瓶原责任人校验错误！", HttpStatus.NOT_ACCEPTABLE);
         }
