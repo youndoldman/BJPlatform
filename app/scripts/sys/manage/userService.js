@@ -41,9 +41,6 @@ manageApp.service('UserService', ['$http', 'URI', 'promiseWrapper', function ($h
 
 
 
-    this.retrieveDepartment = function () {
-        return promise.wrap($http.get(departmentUri));
-    };
 
     this.retrieveGroups = function () {
         return promise.wrap($http.get(groupsUri));
@@ -69,6 +66,27 @@ manageApp.service('UserService', ['$http', 'URI', 'promiseWrapper', function ($h
     this.deleteUser = function (user) {
         return promise.wrap($http.delete(usersUri + "?userId=" + user.userId));
     };
+
+    //查询部门信息(下级递归)
+    this.retrieveDepartmentLower = function (code) {
+        return promise.wrap($http.get(departmentUri + "/Lower"+"?code=" +code));
+    };
+
+    //查询部门信息(上级递归)
+    this.retrieveDepartmentUpper = function (code) {
+        return promise.wrap($http.get(departmentUri + "/Upper"+"?code=" +code));
+    };
+
+    //增加部门
+    this.createDepartment = function (department) {
+        return promise.wrap($http.post(departmentUri, department));
+    };
+
+    //删除部门
+    this.deleteDepartment = function (department) {
+        return promise.wrap($http.delete(departmentUri+"?code="+department.code));
+    };
+
 
 }]);
 

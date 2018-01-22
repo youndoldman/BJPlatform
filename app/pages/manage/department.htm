@@ -1,0 +1,48 @@
+<div class="ribbon">
+    <a href=""><span class="home fa fa-home"></span></a>
+    <ol class="breadcrumb">
+        <li>云南百江燃气有限公司组织架构</li>
+    </ol>
+</div>
+
+<div>
+    <div id="chart-container"></div>
+    <div class="col-md-6">
+        <div class="panel panel-primary" style="height: 200px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">部门增加</h3>
+            </div>
+
+            <div class="panel-body" style="margin-top: 20px">
+                <div class="inline-group">
+                    <label>所选部门:</label>
+                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.selectDepartment.name"> </label>
+                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.selectDepartment.code"> </label>
+                    <button type="button" class="btn btn-sm btn-success pull-right" ng-click="addDepartment()"><i class="fa fa-plus"></i> 新增 </button>
+                    <p/>
+                    <label>增加部门:</label>
+                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.addDepartment.name" placeholder="部门名称"> </label>
+                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.addDepartment.code" placeholder="部门编码"> </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="panel panel-primary" style="height: 200px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">部门删除</h3>
+            </div>
+
+            <div class="panel-body" style="margin-top: 20px">
+                <div class="inline-group">
+                    <label>所选部门:</label>
+                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.selectDepartment.name"> </label>
+                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.selectDepartment.code"> </label>
+                    <button type="button" class="btn btn-sm btn-success pull-right" ng-click="deleteDepartment()"><i class="fa fa-minus"></i> 删除 </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

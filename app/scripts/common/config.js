@@ -98,10 +98,16 @@ commonModule.constant('NavItem', {
             icon: "fa-group"
         }, {
             index: 1,
+            name: "组织架构",
+            target: "_blank",
+            href: "./manageCenter.htm#/manage/department",
+            icon: "fa-gears"
+        }, {
+            index: 2,
             name: "商城管理",
             target: "_blank",
             href: "./manageCenter.htm#/manage/goods",
-            icon: "fa-gears"
+            icon: "fa-plane"
         }]
     },
     'ShopCenter': {

@@ -101,16 +101,70 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
 
     }]);
 
-manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title', 'initVal', function ($scope, close, UserService, title, initVal) {
+manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title', 'initVal','$timeout','$interval', function ($scope, close, UserService, title, initVal,$timeout,$interval) {
+    $scope.dataSource = {};
+    $scope.chart = null;
+    var chartInitial = function() {
+        $scope.chart = $('#chart-container').orgchart({
+            'data' : $scope.dataSource,
+            'chartClass': 'edit-state',
+            'exportFilename': 'SportsChart',
+            'parentNodeSymbol': 'fa-th-large',
+            'nodeContent': 'title'
+        });
+        $scope.chart.$chartContainer.on('click', '.node', function() {
+            var $this = $(this);
+            $scope.q.selectDepartment.code = $this.find('.content').text();
+            $scope.q.selectDepartment.name = $this.find('.title').text();
+            //查询完整的部门路径
+            retriveDepartmentInfo();
+        });
+    }
+    var redrawDepartment = function(){
+        $scope.chart.init({ 'data': $scope.dataSource });
+    };
+    $timeout(function() {
+        chartInitial();
+        retrieveRootDepartment();
+
+    });
+
+
+
+    $scope.q = {
+        selectDepartment:{name:null,code:null},
+    };
+    var departmentConvertToDataSoure = function (department) {
+        var chartColors = ["middle-level","product-dept","rd-dept","pipeline1","frontend1"];
+        var random = Math.floor(Math.random()*5);
+        var data = {name:department.name,title:department.code,children:[],className:chartColors[random]};
+        for (var i=0; i<department.lstSubDepartment.length;i++){
+            data.children.push(departmentConvertToDataSoure(department.lstSubDepartment[i]))
+        }
+        return data;
+    };
+    var retrieveRootDepartment = function () {
+        UserService.retrieveDepartmentLower("root").then(function (rootDepartment) {
+            $scope.vm.rootDepartment = rootDepartment.items[0];
+            console.log($scope.vm.rootDepartment);
+            $scope.dataSource = departmentConvertToDataSoure($scope.vm.rootDepartment);
+            redrawDepartment();
+        });
+    };
+    //================================================
+
+
+
     $scope.modalTitle = title;
     $scope.vm = {
         user: {
-        }
+        },
+        departmentInfo:"",
+        rootDepartment: {},
     };
     $scope.isModify = false;
 
     $scope.userGroups = [];
-    $scope.departments = [];
 
     $scope.close = function (result) {
         close(result, 500);
@@ -129,6 +183,8 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
     };
 
     var init = function () {
+
+
         $scope.vm.user = _.clone(initVal);
         console.log($scope.vm.user);
         if(title == "修改用户") {
@@ -149,20 +205,42 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
             }
 
         });
-        UserService.retrieveDepartment().then(function (departments) {
-            $scope.departments = _.map(departments.items, UserService.toViewModelDepartment);
-            if(title == "新增用户") {
-                $scope.vm.user.department = $scope.departments[0];
-            }else {
-                for(var i=0; i<$scope.departments.length; i++){
-                    if($scope.vm.user.department.id == $scope.departments[i].id) {
-                        $scope.vm.user.department = $scope.departments[i];
-                        break;
-                    }
-                }
-            }
-        });
+        if(title == "新增用户") {
+
+        }else{
+            //查询完整的部门路径
+            retriveDepartmentInfo();
+
+        }
+
+
+
+
+        //规避不同作用域的BUG
+        $scope.timer = $interval( function(){
+            refleshSelectInfo()
+        }, 100);
+
     };
+    var refleshSelectInfo = function(){
+        $scope.q.selectDepartment = $scope.q.selectDepartment;
+        $scope.vm.user.department = $scope.q.selectDepartment;
+        $scope.vm.departmentInfo = $scope.vm.departmentInfo;
+
+    };
+    //查询完整的部门路径
+    var retriveDepartmentInfo = function(){
+        if($scope.vm.user.department!=null){
+            UserService.retrieveDepartmentUpper($scope.vm.user.department.code).then(function (department) {
+            $scope.vm.departmentInfo = $scope.vm.user.department.name;
+            var tempDepartment = department.items[0];
+            while(tempDepartment.parentDepartment!=null){
+                tempDepartment = tempDepartment.parentDepartment;
+                $scope.vm.departmentInfo = $scope.vm.departmentInfo+"-"+tempDepartment.name;
+            }
+        })
+        }
+    }
 
     init();
 }]);
