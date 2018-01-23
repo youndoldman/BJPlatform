@@ -3,7 +3,7 @@
 bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
     'rootService', 'pager', 'udcModal', 'BottleService', function ($scope, $rootScope, $filter, $location, Constants,
 
-                                                          rootService, pager, udcModal, BottleService) {
+                                                                   rootService, pager, udcModal, BottleService) {
         var gotoPage = function (pageNo) {
             $scope.pager.setCurPageNo(pageNo);
             searchBottles();
@@ -63,8 +63,8 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
             })
         };
 
-        $scope.delete = function (user) {
-            udcModal.confirm({"title": "删除钢瓶", "message": "是否永久删除钢瓶信息 " + user.name})
+        $scope.delete = function (bottle) {
+            udcModal.confirm({"title": "删除钢瓶", "message": "是否永久删除钢瓶信息 " + bottle.number})
                 .then(function (result) {
                     if (result) {
                         BottleService.deleteBottle(bottle).then(function () {
@@ -84,7 +84,9 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
             BottleService.retrieveBottles(queryParams).then(function (bottles) {
                 $scope.pager.update($scope.q, bottles.total, queryParams.pageNo);
                 $scope.vm.bottleList = bottles.items;
+                console.log($scope.vm.bottleList);
             });
+
 
         };
 
@@ -106,10 +108,15 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
     $scope.vm = {
         bottle: {},
         config:{
-            status:[{value:0,name:"未启用"},
+            lifeStatus:[{value:0,name:"未启用"},
                 {value:1,name:"已启用"},
                 {value:2,name:"已停用"},
                 {value:3,name:"已作废"}],
+            serviceStatus:[{value:0,name:"气站库存"},
+                {value:1,name:"门店库存"},
+                {value:2,name:"在途运输"},
+                {value:3,name:"在途派送"},
+                {value:4,name:"在途运输"}],
             specs:[],
         }
     };
@@ -159,12 +166,16 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
                 }
             }else {
                 $scope.vm.bottle.spec = $scope.vm.config.specs[0];
-                $scope.vm.bottle.status = $scope.vm.config.status[0].value;
+
             }
         })
         if($scope.isModify) {
             //钢瓶状态格式化
-            $scope.vm.bottle.status = $scope.vm.bottle.status.index;
+            $scope.vm.bottle.lifeStatus = $scope.vm.bottle.lifeStatus.index;
+            $scope.vm.bottle.serviceStatus = $scope.vm.bottle.serviceStatus.index;
+        } else{
+            $scope.vm.bottle.lifeStatus = $scope.vm.config.lifeStatus[1].value;
+            $scope.vm.bottle.serviceStatus = $scope.vm.config.serviceStatus[0].value;
         }
 
     };

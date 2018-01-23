@@ -22,13 +22,14 @@
             <th width="5%">ID</th>
             <th width="10%">钢瓶编码</th>
             <th width="10%">钢瓶规格</th>
-            <th width="10%">定位终端编码</th>
-            <th width="10%">定位终端电量</th>
+            <th width="5%">定位终端</th>
+            <th width="5%">电量</th>
             <th width="10%">生产日期</th>
             <th width="10%">上次钢检日期</th>
             <th width="10%">下次钢检日期</th>
             <th width="10%">报废日期</th>
-            <th width="5%">状态</th>
+            <th width="5%">启用状态</th>
+            <th width="5%">工作状态</th>
             <th width="10%">操作</th>
         </tr>
         </thead>
@@ -44,7 +45,8 @@
             <td class="message">{{bottle.verifyDate}}</td>
             <td class="message">{{bottle.nextVerifyDate}}</td>
             <td class="message">{{bottle.scrapDate}}</td>
-            <td class="message">{{bottle.status.name}}</td>
+            <td class="message">{{bottle.lifeStatus.name}}</td>
+            <td class="message">{{bottle.serviceStatus.name}}</td>
 
             <td class="operate">
                 <button title="详情" ng-click="location(bottle.location|lonFilter, bottle.location|lanFilter)" type="button" class="btn btn-primary btn-outline btn-xs">

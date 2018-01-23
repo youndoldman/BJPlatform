@@ -27,9 +27,6 @@ manageApp.controller('GoodsTypeModalCtrl', ['$scope', 'close', 'GoodsService', '
         }
     };
 
-
-
-
     var init = function () {
         $scope.vm.goodsType = _.clone(initVal);
         $scope.vm.goodsOldCode = $scope.vm.goodsType.code;
