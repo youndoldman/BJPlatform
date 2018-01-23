@@ -298,7 +298,6 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 $scope.temp.goodsList = goods.items;
                 $scope.temp.selectedGoods = $scope.temp.goodsList[0];
             });
-
         };
         var searchCustomerTest = function () {
             //清空表格
@@ -315,8 +314,6 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         var init = function () {
             $scope.pagerCustomer.pageSize=2;
             $scope.pagerHistory.pageSize=2;
-            //呼叫中心初始化
-            callCenterLogin();
             $scope.pagerCustomer.update($scope.qCustomer, 0, 1);
             $scope.pagerHistory.update($scope.qHistory, 0, 1);
             //查询商品类型

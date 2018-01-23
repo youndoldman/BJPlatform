@@ -27,7 +27,7 @@ bottleApp.service('BottleService', ['$http', 'URI', 'promiseWrapper', function (
     };
 
     this.deleteBottle = function (bottle) {
-        return promise.wrap($http.delete(bottlesUri + "/" + bottle.id));
+        return promise.wrap($http.delete(bottlesUri + "/" + bottle.number));
     };
 
     //绑定定位终端至钢瓶

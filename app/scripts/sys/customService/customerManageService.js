@@ -12,7 +12,15 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     var geocodeUri = URI.resources.geocode;
     var customerCallinUri = URI.resources.customerCallin;
     var key = MISC.keys.gaodeKey;
+    var CloudUserUri = URI.resources.cloudUser;
 
+
+
+
+    //查询云客服账号
+    this.retrieveCloudUsers = function (params) {
+        return promise.wrap($http.get(CloudUserUri, {params: params}));
+    };
 
 
 

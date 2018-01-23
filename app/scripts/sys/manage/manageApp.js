@@ -72,7 +72,20 @@ var manageApp = angular.module('ManageApp', ['ui.router', 'CommonModule', 'angul
                 onEnter: function (rootService, NavItem) {
                     rootService.updateActiveNavL2(NavItem.ManageCenter.menuItems[2]);
                 }
-            });
+            })
+            .state('manage.cloudUser',{
+            url:'/cloudUser',
+            views: {
+                "content@manage": {
+                    templateUrl: '../pages/manage/cloudUserList.htm',
+                    controller: 'CloudUserListCtrl',
+                    resolve: {}
+                }
+            },
+            onEnter: function (rootService, NavItem) {
+                rootService.updateActiveNavL2(NavItem.ManageCenter.menuItems[3]);
+            }
+        });
 
         $httpProvider.interceptors.push('HttpInterceptor');
     }]).run(['$rootScope', 'rootService', 'NavItem', function ($rootScope, rootService, NavItem) {

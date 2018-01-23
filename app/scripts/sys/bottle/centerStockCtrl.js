@@ -32,7 +32,7 @@ bottleApp.controller('CenterStockCtrl', ['$scope', '$rootScope', '$filter', '$lo
                 templateUrl: "./bottle/centerStockModal.htm",
                 controller: "CenterStockModalCtrl",
                 inputs: {
-                    title: '门店入库',
+                    title: '充气站入库',
                     initVal: {}
                 }
             }).then(function (result) {
@@ -51,7 +51,7 @@ bottleApp.controller('CenterStockCtrl', ['$scope', '$rootScope', '$filter', '$lo
                 templateUrl: "./bottle/centerStockModal.htm",
                 controller: "CenterStockModalCtrl",
                 inputs: {
-                    title: '门店出库',
+                    title: '充气站出库',
                     initVal: bottle
                 }
             }).then(function (result) {
@@ -97,7 +97,6 @@ bottleApp.controller('CenterStockModalCtrl', ['$scope', 'close', 'CenterStockSer
             bottleNumber:null,
             srcUser:null,
             destUser:null,
-            nextStatus:null
         },
         reasons:null,
         selectReason:null
@@ -108,39 +107,37 @@ bottleApp.controller('CenterStockModalCtrl', ['$scope', 'close', 'CenterStockSer
     };
 
     $scope.submit = function () {
-        var handOverParams = {
-            srcUserId:$scope.vm.handOver.srcUser,
-            targetUserId:$scope.vm.handOver.destUser,
-            serviceStatus:$scope.vm.handOver.nextStatus
-        };
-        CenterStockService.handOverBottle($scope.vm.handOver.bottleNumber,handOverParams).then(function () {
-            if(isModify){
-                udcModal.info({"title": "处理结果", "message": "门店出库成功 "});
+        CenterStockService.handOverBottle($scope.vm.handOver.bottleNumber,$scope.vm.handOver.srcUser,
+            $scope.vm.handOver.destUser,$scope.vm.selectReason.value).then(function () {
+            if($scope.isModify){
+                udcModal.info({"title": "处理结果", "message": "充气站出库成功 "});
             }else {
-                udcModal.info({"title": "处理结果", "message": "门店入库成功 "});
+                udcModal.info({"title": "处理结果", "message": "充气站入库成功 "});
             }
             //$scope.close(true);
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": value.message});
         })
+
     };
 
     var init = function () {
         var currentUser = sessionStorage.getCurUser();
-        console.log($scope.currentUser);
         $scope.vm.bottle = _.clone(initVal);
         if ($scope.vm.bottle==null){
             $scope.vm.handOver.bottleNumber = null;
         } else{
             $scope.vm.handOver.bottleNumber = $scope.vm.bottle.number;
         }
-        if (title == "门店出库"){
+        if (title == "充气站出库"){
             $scope.isModify = true;
             $scope.vm.handOver.srcUser = currentUser.userId;
-            $scope.vm.reasons = [{name:"钢瓶调拨",value:"2"},{name:"钢瓶配送",value:"3"}];
+            $scope.vm.reasons = [{name:"钢瓶调拨",value:"2"}];
             $scope.vm.selectReason = $scope.vm.reasons[0];
         } else {
             $scope.isModify = false;
             $scope.vm.handOver.destUser = currentUser.userId;
-            $scope.vm.reasons = [{name:"门店库存",value:"1"}];
+            $scope.vm.reasons = [{name:"充气站库存",value:"1"}];
             $scope.vm.selectReason = $scope.vm.reasons[0];
         }
     };

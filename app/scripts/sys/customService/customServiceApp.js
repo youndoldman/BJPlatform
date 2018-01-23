@@ -21,7 +21,7 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                 views: {
                     "head@CustomService": {
                         templateUrl: '../pages/customService/webphone.htm',
-                        controller: '',
+                        controller: 'WebPhoneCtrl',
                         resolve: {}
                     },
                     "content@CustomService": {

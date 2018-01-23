@@ -11,7 +11,7 @@
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label-large">钢瓶编码：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="number" class="form-control" ng-model="vm.bottle.number"  ng-disabled="true" required>
+                            <input type="text" name="number" class="form-control" ng-model="vm.bottle.number"  ng-disabled="isModify" required>
                         </div>
                         <label class="input-tips" ng-show="bottleForm.number.$error.required || bottleForm.number.$invalid">&nbsp;*&nbsp;必填项</label>
                     </div>
@@ -46,9 +46,15 @@
                         </div>
                     </div>
                     <div class="input-group pdb15">
-                        <label class="col-sm-4 control-label input-label-large">状态：</label>
+                        <label class="col-sm-4 control-label input-label-large">启用状态：</label>
                         <div class="col-sm-8 input-width">
-                            <select name="status" ng-model="vm.bottle.status" ng-options="status.value as status.name for status in vm.config.status" class="form-control" ng-selected=""></select>
+                            <select name="status" ng-model="vm.bottle.lifeStatus" ng-options="lifeStatus.value as lifeStatus.name for lifeStatus in vm.config.lifeStatus" class="form-control" ng-selected=""></select>
+                        </div>
+                    </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label-large">工作状态：</label>
+                        <div class="col-sm-8 input-width">
+                            <select name="status" ng-model="vm.bottle.serviceStatus" ng-options="serviceStatus.value as serviceStatus.name for serviceStatus in vm.config.serviceStatus" class="form-control" ng-selected=""></select>
                         </div>
                     </div>
                     <div class="input-group pdb15" ng-if="isModify">
