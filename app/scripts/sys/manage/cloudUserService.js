@@ -26,11 +26,11 @@ manageApp.service('CloudUserService', ['$http', 'URI', 'promiseWrapper', functio
 
     //绑定用户
     this.bindUser = function (cloudUser, panvaUserId) {
-        return promise.wrap($http.put(cloudUserBindUri + "?userId=" + cloudUser.userId+"?panvaUserId="+panvaUserId));
+        return promise.wrap($http.put(cloudUserBindUri + "?userId=" + cloudUser.userId+"&panvaUserId="+panvaUserId));
     };
     //解除绑定
     this.unBindUser = function (cloudUser, panvaUserId) {
-        return promise.wrap($http.put(cloudUserUnBindUri + "?userId=" + cloudUser.userId+"?panvaUserId="+panvaUserId));
+        return promise.wrap($http.put(cloudUserUnBindUri + "?userId=" + cloudUser.userId+"&panvaUserId="+panvaUserId));
     };
 
 
