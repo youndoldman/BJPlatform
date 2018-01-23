@@ -80,8 +80,8 @@ public class CloudUserController
 
 
     @OperationLog(desc = "修改云客服用户信息")
-    @RequestMapping(value = "/api/CloudUser/{userId}", method = RequestMethod.PUT)
-    public ResponseEntity update(@PathVariable("userId") String userId,
+    @RequestMapping(value = "/api/CloudUser", method = RequestMethod.PUT)
+    public ResponseEntity update(@RequestParam(value = "userId", defaultValue = "") String userId,
                                  @RequestBody CloudUser newUser)
     {
         ResponseEntity responseEntity;
@@ -101,8 +101,8 @@ public class CloudUserController
     }
 
     @OperationLog(desc = "删除云用户信息")
-    @RequestMapping(value = "/api/CloudUser/{userId}", method = RequestMethod.DELETE)
-    public ResponseEntity delete(@PathVariable("userId") String userId )
+    @RequestMapping(value = "/api/CloudUser", method = RequestMethod.DELETE)
+    public ResponseEntity delete(@RequestParam(value = "userId", defaultValue = "") String userId)
     {
         ResponseEntity responseEntity;
 
@@ -123,8 +123,8 @@ public class CloudUserController
 
 
     @OperationLog(desc = "云客服绑定系统用户")
-    @RequestMapping(value = "/api/CloudUser/Bind/{userId}", method = RequestMethod.PUT)
-    public ResponseEntity bindLocationDev(@PathVariable("userId") String userId,
+    @RequestMapping(value = "/api/CloudUser/Bind", method = RequestMethod.PUT)
+    public ResponseEntity bindLocationDev(@RequestParam(value = "userId", defaultValue = "") String userId,
                                           @RequestParam(value = "panvaUserId", defaultValue = "") String panvaUserId)
     {
         ResponseEntity responseEntity;
@@ -137,8 +137,8 @@ public class CloudUserController
 
 
     @OperationLog(desc = "解除绑定系统用户")
-    @RequestMapping(value = "/api/CloudUser/UnBind/{userId}", method = RequestMethod.PUT)
-    public ResponseEntity unBindLocationDev(@PathVariable("userId") String userId,
+    @RequestMapping(value = "/api/CloudUser/UnBind", method = RequestMethod.PUT)
+    public ResponseEntity unBindLocationDev(@RequestParam(value = "userId", defaultValue = "") String userId,
                                             @RequestParam(value = "panvaUserId", defaultValue = "") String panvaUserId)
     {
         ResponseEntity responseEntity;
