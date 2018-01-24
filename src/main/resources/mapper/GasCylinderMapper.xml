@@ -108,9 +108,9 @@
 
         <if test="specCode != null">AND  spec_idx =  ( select id from t_gas_cylinder_spec where code = #{specCode} ) </if>
 
-        <if test="lifeStatus != null">AND  lifeStatus = #{lifeStatus}</if>
+        <if test="lifeStatus != null">AND  life_status = #{lifeStatus}</if>
 
-        <if test="serviceStatus != null">AND  serviceStatus = #{serviceStatus}</if>
+        <if test="serviceStatus != null">AND  service_status = #{serviceStatus}</if>
 
         <if test="liableUserId != null">AND id in (select cylinder_idx from t_cylinder_user where user_idx =  ( select id from t_user WHERE user_id =  #{liableUserId} ))  </if>
 
@@ -139,9 +139,9 @@
 
         <if test="specCode != null">AND  spec_idx =  ( select id from t_gas_cylinder_spec where code = #{specCode} ) </if>
 
-        <if test="lifeStatus != null">AND  lifeStatus = #{lifeStatus}</if>
+        <if test="lifeStatus != null">AND  life_status = #{lifeStatus}</if>
 
-        <if test="serviceStatus != null">AND  serviceStatus = #{serviceStatus}</if>
+        <if test="serviceStatus != null">AND  service_status = #{serviceStatus}</if>
 
         <if test="liableUserId != null">AND id in (select cylinder_idx from t_cylinder_user where user_idx =  ( select id from t_user WHERE user_id =  #{liableUserId} ))  </if>
 

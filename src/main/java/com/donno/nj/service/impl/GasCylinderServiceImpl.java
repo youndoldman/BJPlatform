@@ -308,6 +308,8 @@ public class GasCylinderServiceImpl implements GasCylinderService
         GasCynUserRel gasCynUserRel = gasCynUserRelDao.findBindRel(gasCylinderOptional.get().getId());
         gasCynUserRelDao.updateBindedUser(gasCynUserRel.getId(),targetUser.getId());
 
+        /*操作历史*/
+
     }
 
     @Override
