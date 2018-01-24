@@ -83,10 +83,7 @@
         <appender-ref ref="debugLogger"/>
     </logger>
 
- 
-    <!--<logger name="com.donno.nj.dao" additivity="false" level="DEBUG" >-->
-        <!--<appender-ref ref="debugLogger"/>-->
-    <!--</logger>-->
+
 
     <root level="INFO">
         <appender-ref ref="infoAppender"/>
