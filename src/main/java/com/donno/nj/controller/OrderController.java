@@ -299,7 +299,7 @@ public class OrderController
         /*创建订单入库*/
         orderService.create(order);
 
-        URI uri = ucBuilder.path("/api/Orders/{id}").buildAndExpand(order.getId()).toUri();
+        URI uri = ucBuilder.path("/api/Orders/{orderSn}").buildAndExpand(order.getOrderSn()).toUri();
         responseEntity = ResponseEntity.created(uri).build();
 
         return responseEntity;
