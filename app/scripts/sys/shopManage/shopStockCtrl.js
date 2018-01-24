@@ -78,7 +78,6 @@ shopManageApp.controller('ShopStockCtrl', ['$scope', '$rootScope', '$filter', '$
         };
 
 
-
         var init = function () {
             //查询钢瓶
             searchBottles();
@@ -94,7 +93,6 @@ shopManageApp.controller('ShopStockModalCtrl', ['$scope', 'close', 'ShopStockSer
     $scope.vm = {
         bottle: {},
         handOver:{
-            bottleNumber:null,
             srcUser:null,
             destUser:null,
             nextStatus:null
@@ -113,19 +111,22 @@ shopManageApp.controller('ShopStockModalCtrl', ['$scope', 'close', 'ShopStockSer
             targetUserId:$scope.vm.handOver.destUser,
             serviceStatus:$scope.vm.handOver.nextStatus
         };
-        ShopStockService.handOverBottle($scope.vm.handOver.bottleNumber,handOverParams).then(function () {
-            if(isModify){
+        ShopStockService.handOverBottle($scope.vm.handOver.bottleNumber,$scope.vm.handOver.srcUser,
+            $scope.vm.handOver.destUser,$scope.vm.selectReason.value).then(function () {
+            if($scope.isModify){
                 udcModal.info({"title": "处理结果", "message": "门店出库成功 "});
             }else {
                 udcModal.info({"title": "处理结果", "message": "门店入库成功 "});
             }
             //$scope.close(true);
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": value.message});
         })
+
     };
 
     var init = function () {
         var currentUser = sessionStorage.getCurUser();
-        console.log($scope.currentUser);
         $scope.vm.bottle = _.clone(initVal);
         if ($scope.vm.bottle==null){
             $scope.vm.handOver.bottleNumber = null;

@@ -32,7 +32,12 @@ commonModule.constant('URI', {
         'bottleHandOver': '../../../api/GasCylinder/TakeOver',//钢瓶责任交接
         'gpsBind': '../../../api/GasCylinder/Bind',//定位终端绑定接口
         'gpsUnBind': '../../../api/GasCylinder/UnBind',//定位终端解除绑定接口
-        'bottleSpecQuery': '../../../api/GasCylinderSpec'//钢瓶规格查询
+        'bottleSpecQuery': '../../../api/GasCylinderSpec',//钢瓶规格查询
+        'cloudUser': '../../../api/CloudUser',//云客服用户接口
+        'cloudUserBind': '../../../api/CloudUser/Bind',//云客服用户绑定接口
+        'cloudUserUnBind': '../../../api/CloudUser/UnBind'//云客服用户解除绑定接口
+
+
 
 
 
@@ -109,6 +114,12 @@ commonModule.constant('NavItem', {
             target: "_blank",
             href: "./manageCenter.htm#/manage/goods",
             icon: "fa-plane"
+        }, {
+            index: 3,
+            name: "云客服账号",
+            target: "_blank",
+            href: "./manageCenter.htm#/manage/cloudUser",
+            icon: "fa-github"
         }]
     },
     'ShopCenter': {
