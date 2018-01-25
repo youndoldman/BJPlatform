@@ -23,6 +23,8 @@ commonModule.constant('URI', {
         'login':'../../../api/sysusers/login',//系统用户登录接口
         'logout':'../../../api/sysusers/logout',//系统用户登出接口
         'orders':'../../../api/Orders',　　　　　//订气订单接口
+        'orderCancel':'../../../api/CancelOrder',　　　　　//订气作废接口
+
         'taskOrders':'../../../api/TaskOrders',//任务订单接口
         'taskOrdersDeal':'../../../api/TaskOrders/Process',//任务订单办理接口
         'goods': '../../../api/Goods',//商品

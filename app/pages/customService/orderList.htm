@@ -100,7 +100,7 @@
                 <button title="指派" ng-if="order.taskId" ng-click="assign(order)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="">指派</i>
                 </button>
-                <button title="作废" ng-click="delete(order)" type="button" class="btn btn-primary btn-outline btn-xs">
+                <button title="作废" ng-if="order.orderStatus!=3&&order.orderStatus!=4" ng-click="delete(order)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="">作废</i>
                 </button>
             </td>

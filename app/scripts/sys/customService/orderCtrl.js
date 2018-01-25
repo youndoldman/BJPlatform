@@ -121,10 +121,12 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
             udcModal.confirm({"title": "作废", "message": "是否作废该订单信息,订单编号: " + order.orderSn})
                 .then(function (result) {
                     if (result) {
-                        //OrderService.deleteCustomer(customer).then(function () {
-                        //    searchCustomer();
-                        //    udcModal.info({"title": "处理结果", "message": "删除客户信息成功 "});
-                        //});
+                        OrderService.ordelCancel(order.orderSn).then(function (value) {
+                            searchOrder();
+                            udcModal.info({"title": "处理结果", "message": "作废订单成功"});
+                        }, function(value) {
+                            udcModal.info({"title": "处理结果", "message": "作废订单失败 "+value.message});
+                        })
                     }
                 })
         };
