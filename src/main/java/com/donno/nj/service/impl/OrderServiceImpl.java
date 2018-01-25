@@ -298,7 +298,10 @@ public class OrderServiceImpl implements OrderService
         orderDao.update(order);
 
         /*结束订单流程*/
-        workFlowService.deleteProcess(orderSn);
+        if(workFlowService.deleteProcess(orderSn) != 0)
+        {
+            throw new ServerSideBusinessException("订单作废失败！", HttpStatus.NOT_ACCEPTABLE);
+        }
 
         /*退款*/
     }
