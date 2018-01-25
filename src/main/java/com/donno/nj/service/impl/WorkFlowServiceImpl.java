@@ -61,6 +61,7 @@ public class WorkFlowServiceImpl implements WorkFlowService
             identityService.setAuthenticatedUserId(strUserID);
             processInstance = runtimeService.startProcessInstanceByKey(wfType.getName(), strBuinessKey, variables);
             identityService.setAuthenticatedUserId(null);
+
         }catch (Exception e)
         {
             DebugLogger.log(e.getMessage());
@@ -101,10 +102,12 @@ public class WorkFlowServiceImpl implements WorkFlowService
 
             Process curProcess = new Process();
 
+
             //对应的流程号
             String processInstanceId = task.getProcessInstanceId();
             curProcess.setId(processInstanceId);
             //对应的流程表索引
+
             ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).active().singleResult();
             String businessKey = processInstance.getBusinessKey();
             curProcess.setBuinessKey(businessKey);
@@ -133,6 +136,9 @@ public class WorkFlowServiceImpl implements WorkFlowService
             return -1;
         }
     }
+
+
+
 
     //查询对应用户启动的历史流程
     @Override
@@ -204,6 +210,20 @@ public class WorkFlowServiceImpl implements WorkFlowService
 
             DebugLogger.log(e.getMessage());
             throw new ServerSideBusinessException("查询流程图 异常错误");
+        }
+    }
+
+
+    //流程作废 buinessKey-关联用户表的订单号等索键值
+    @Override
+    public int deleteProcess(String buinessKey) {
+        try {
+            ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceBusinessKey(buinessKey).singleResult();
+            runtimeService.deleteProcessInstance(processInstance.getId(),"流程作废");//删除流程
+            return 0;
+        } catch (Exception e) {
+            DebugLogger.log(e.getMessage());
+            return -1;
         }
     }
 }

@@ -303,7 +303,7 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
         $scope.location = function (longitude,latitude) {
             $scope.map.clearMap( );
             var iconBottle = new AMap.Icon({
-                image : '../../images/icon/bottle.ico',//24px*24px
+                image : '../images/icon/bottle.ico',//24px*24px
                 //icon可缺省，缺省时为默认的蓝色水滴图标，
                 size : new AMap.Size(50,50),
                 imageSize : new AMap.Size(50,50)

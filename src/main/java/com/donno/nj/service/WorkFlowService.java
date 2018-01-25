@@ -27,4 +27,7 @@ public interface WorkFlowService
 
     //查询流程图
     byte[] getImageByProcessId(String strProcessID);
+
+    //流程作废 buinessKey-关联用户表的订单号等索键值
+    int deleteProcess(String buinessKey);
 }
