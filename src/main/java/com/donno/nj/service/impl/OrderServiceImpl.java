@@ -287,13 +287,18 @@ public class OrderServiceImpl implements OrderService
     {
         Order order = orderDao.findById(id);
 
+        if (order == null)
+        {
+            throw new ServerSideBusinessException("订单不存在！", HttpStatus.NOT_FOUND);
+        }
+
         order.setOrderStatus( OrderStatus.OSCanceled.getIndex());
 
         /*更新订单状态为作废*/
         orderDao.update(order);
 
         /*结束订单流程*/
-
+        workFlowService.deleteProcess(order.getOrderSn());
 
         /*退款*/
     }

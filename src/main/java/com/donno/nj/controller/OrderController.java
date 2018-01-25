@@ -346,7 +346,7 @@ public class OrderController
 
 
     @OperationLog(desc = "订单作废")
-    @RequestMapping(value = "/api/cancelOrder/{orderSn}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/CancelOrder/{orderSn}", method = RequestMethod.PUT)
     public ResponseEntity cancelOrder(@PathVariable("orderSn") String orderSn)
     {
         ResponseEntity responseEntity;
