@@ -150,11 +150,26 @@ public class PayController {
         }
     }
 
-    @RequestMapping(value = "/api/pay/refund", method = RequestMethod.GET)
-    public ResponseEntity testQRCode(HttpServletRequest request, @RequestParam(value = "totalFee") String totalFee,
+    @RequestMapping(value = "/api/pay/doRefundOffical", method = RequestMethod.GET)
+    public ResponseEntity doRefundOffical(HttpServletRequest request, @RequestParam(value = "totalFee") String totalFee,
                                      @RequestParam(value = "outTradeNo") String outTradeNo) throws IOException {
         try {
-            boolean result = weiXinPayService.doRefund(outTradeNo, totalFee);
+            boolean result = weiXinPayService.doRefundOffical(outTradeNo, totalFee);
+            if (result){
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }else {
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+            }
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+        }
+    }
+
+    @RequestMapping(value = "/api/pay/doRefundMicroApp", method = RequestMethod.GET)
+    public ResponseEntity doRefundMicroApp(HttpServletRequest request, @RequestParam(value = "totalFee") String totalFee,
+                                     @RequestParam(value = "outTradeNo") String outTradeNo) throws IOException {
+        try {
+            boolean result = weiXinPayService.doRefundMicroApp(outTradeNo, totalFee);
             if (result){
                 return ResponseEntity.status(HttpStatus.OK).build();
             }else {

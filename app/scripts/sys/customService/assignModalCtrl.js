@@ -34,7 +34,7 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
     //目的地址初始化
     var destNationInitial = function() {
         var iconDest = new AMap.Icon({
-            image : '../../images/icon/home.ico',//24px*24px
+            image : '../images/icon/home.ico',//24px*24px
             //icon可缺省，缺省时为默认的蓝色水滴图标，
             size : new AMap.Size(50,50),
             imageSize : new AMap.Size(50,50)
@@ -128,7 +128,7 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
     //地图上标绘配送工
     var markOnlineWorkers = function(){
         var iconWorker = new AMap.Icon({
-            image : '../../images/icon/worker.ico',//24px*24px
+            image : '../images/icon/worker.ico',//24px*24px
             //icon可缺省，缺省时为默认的蓝色水滴图标，
             size : new AMap.Size(50,50),
             imageSize : new AMap.Size(50,50)

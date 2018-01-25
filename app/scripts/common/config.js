@@ -3,9 +3,10 @@
 
 commonModule.constant('MISC', {
     'keys': {
-        'gaodeKey': 'a44d27e0bf7b64770dad4664e3ba92b1',
+        'gaodeKey': 'eb79fa54c36eb2021e515ea789bb4bde',
     }
 });
+
 
 commonModule.constant('URI', {
     'resources': {

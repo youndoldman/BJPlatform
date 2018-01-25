@@ -67,7 +67,8 @@ shopManageApp.controller('ShopStockCtrl', ['$scope', '$rootScope', '$filter', '$
                 number: $scope.q.bottleNumber,
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize,
-                liableDepartmentCode:currentUser.department.code
+                liableDepartmentCode:currentUser.department.code,
+                serviceStatus:1
             };
 
             ShopStockService.retrieveBottles(queryParams).then(function (bottles) {
@@ -106,11 +107,6 @@ shopManageApp.controller('ShopStockModalCtrl', ['$scope', 'close', 'ShopStockSer
     };
 
     $scope.submit = function () {
-        var handOverParams = {
-            srcUserId:$scope.vm.handOver.srcUser,
-            targetUserId:$scope.vm.handOver.destUser,
-            serviceStatus:$scope.vm.handOver.nextStatus
-        };
         ShopStockService.handOverBottle($scope.vm.handOver.bottleNumber,$scope.vm.handOver.srcUser,
             $scope.vm.handOver.destUser,$scope.vm.selectReason.value).then(function () {
             if($scope.isModify){
@@ -134,8 +130,9 @@ shopManageApp.controller('ShopStockModalCtrl', ['$scope', 'close', 'ShopStockSer
             $scope.vm.handOver.bottleNumber = $scope.vm.bottle.number;
         }
         if (title == "门店出库"){
+            console.log($scope.vm.bottle);
             $scope.isModify = true;
-            $scope.vm.handOver.srcUser = currentUser.userId;
+            $scope.vm.handOver.srcUser = $scope.vm.bottle.user.userId;
             $scope.vm.reasons = [{name:"钢瓶调拨",value:"2"},{name:"钢瓶配送",value:"3"}];
             $scope.vm.selectReason = $scope.vm.reasons[0];
         } else {

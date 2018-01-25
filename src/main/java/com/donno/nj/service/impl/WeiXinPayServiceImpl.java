@@ -145,12 +145,42 @@ public class WeiXinPayServiceImpl implements WeiXinPayService
         }
     }
 
-    //退款 out_trade_no-退款订单号 total_fee-退款金额
+    //公众号退款 out_trade_no-退款订单号 total_fee-退款金额
     @Override
-    public boolean doRefund(String out_trade_no, String total_fee) {
+    public boolean doRefundOffical(String out_trade_no, String total_fee) {
 
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("appid", wxPayConfigImpl.getOfficialID());
+        data.put("out_refund_no", WXPayUtil.generateNonceStr());
+
+
+        data.put("out_trade_no", out_trade_no);
+        data.put("out_refund_no", out_trade_no);
+        data.put("total_fee", total_fee);
+        data.put("refund_fee", total_fee);
+        data.put("refund_fee_type", "CNY");
+
+
+        try {
+            Map<String, String> r = wxpay.refund(data);
+            if(r.containsKey("result_code")) {
+                if (r.get("result_code").equals("SUCCESS")) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (java.lang.Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    //小程序退款 out_trade_no-退款订单号 total_fee-退款金额
+    @Override
+    public boolean doRefundMicroApp(String out_trade_no, String total_fee) {
+
+        HashMap<String, String> data = new HashMap<String, String>();
+        data.put("appid", wxPayConfigImpl.getAppID());
         data.put("out_refund_no", WXPayUtil.generateNonceStr());
 
 

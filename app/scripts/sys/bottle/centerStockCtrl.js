@@ -67,7 +67,8 @@ bottleApp.controller('CenterStockCtrl', ['$scope', '$rootScope', '$filter', '$lo
                 number: $scope.q.bottleNumber,
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize,
-                liableDepartmentCode:currentUser.department.code
+                liableDepartmentCode:currentUser.department.code,
+                serviceStatus:0
             };
 
             CenterStockService.retrieveBottles(queryParams).then(function (bottles) {
@@ -107,6 +108,7 @@ bottleApp.controller('CenterStockModalCtrl', ['$scope', 'close', 'CenterStockSer
     };
 
     $scope.submit = function () {
+
         CenterStockService.handOverBottle($scope.vm.handOver.bottleNumber,$scope.vm.handOver.srcUser,
             $scope.vm.handOver.destUser,$scope.vm.selectReason.value).then(function () {
             if($scope.isModify){
@@ -131,7 +133,7 @@ bottleApp.controller('CenterStockModalCtrl', ['$scope', 'close', 'CenterStockSer
         }
         if (title == "充气站出库"){
             $scope.isModify = true;
-            $scope.vm.handOver.srcUser = currentUser.userId;
+            $scope.vm.handOver.srcUser = $scope.vm.bottle.user.userId;
             $scope.vm.reasons = [{name:"钢瓶调拨",value:"2"}];
             $scope.vm.selectReason = $scope.vm.reasons[0];
         } else {
