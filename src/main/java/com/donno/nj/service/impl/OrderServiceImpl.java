@@ -283,9 +283,9 @@ public class OrderServiceImpl implements OrderService
 
     @Override
     @OperationLog(desc = "订单作废")
-    public void cancelOrder(Integer id)
+    public void cancelOrder(String orderSn)
     {
-        Order order = orderDao.findById(id);
+        Order order = orderDao.findBySn(orderSn);
 
         if (order == null)
         {
@@ -298,7 +298,7 @@ public class OrderServiceImpl implements OrderService
         orderDao.update(order);
 
         /*结束订单流程*/
-        workFlowService.deleteProcess(order.getOrderSn());
+        workFlowService.deleteProcess(orderSn);
 
         /*退款*/
     }

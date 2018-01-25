@@ -354,7 +354,7 @@ public class OrderController
         Optional<Order> orderOptional = orderService.findBySn(orderSn);
         if (orderOptional.isPresent())
         {
-            orderService.cancelOrder(orderOptional.get().getId());
+            orderService.cancelOrder(orderSn);
             responseEntity = ResponseEntity.noContent().build();
         }
         else
