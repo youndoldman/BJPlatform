@@ -92,7 +92,7 @@ public class OrderServiceImpl implements OrderService
         /*默认为0*/
         if (order.getOrderStatus() == null)
         {
-            order.setOrderStatus(0);
+            order.setOrderStatus(OrderStatus.OSUnprocessed.getIndex());
         }
 
         /*默认为待支付*/
@@ -279,6 +279,23 @@ public class OrderServiceImpl implements OrderService
 
         /*删除订单详细表*/
         orderDetailDao.deleteByOrderIdx(id);
+    }
+
+    @Override
+    @OperationLog(desc = "订单作废")
+    public void cancelOrder(Integer id)
+    {
+        Order order = orderDao.findById(id);
+
+        order.setOrderStatus( OrderStatus.OSCanceled.getIndex());
+
+        /*更新订单状态为作废*/
+        orderDao.update(order);
+
+        /*结束订单流程*/
+
+
+        /*退款*/
     }
 
     @OperationLog(desc = "订单修改历史信息")

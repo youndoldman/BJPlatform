@@ -24,6 +24,8 @@ public interface OrderService
 
     void deleteById(Integer id);
 
+    void cancelOrder(Integer id);
+
     void OrderOperHistory(Order order,Integer orderStatus) ;
 
     void weixinPayOk(String orderSn,String weixinSn,Integer amount);

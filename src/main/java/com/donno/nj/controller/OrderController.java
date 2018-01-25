@@ -114,7 +114,6 @@ public class OrderController
         {
             orderOptional.get().setOrderStatus(orderStatus);
 
-
             Map<String, Object> variables = new HashMap<String, Object>();
 
             Optional<Group>  group = groupService.findByCode(ServerConstantValue.GP_CUSTOMER_SERVICE);
@@ -345,6 +344,26 @@ public class OrderController
         return responseEntity;
     }
 
+
+    @OperationLog(desc = "订单作废")
+    @RequestMapping(value = "/api/cancelOrder/{orderSn}", method = RequestMethod.PUT)
+    public ResponseEntity cancelOrder(@PathVariable("orderSn") String orderSn)
+    {
+        ResponseEntity responseEntity;
+
+        Optional<Order> orderOptional = orderService.findBySn(orderSn);
+        if (orderOptional.isPresent())
+        {
+            orderService.cancelOrder(orderOptional.get().getId());
+            responseEntity = ResponseEntity.noContent().build();
+        }
+        else
+        {
+            responseEntity = ResponseEntity.notFound().build();
+        }
+
+        return responseEntity;
+    }
 
 
 
