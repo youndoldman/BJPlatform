@@ -54,6 +54,7 @@ public class OrderController
                                             @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                             @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
     {
+        int totalTaskCount = workFlowService.getTasksByUserId(userId);
         List<Task> taskList = workFlowService.getTasksByUserId(userId,pageNo,pageSize);
 
         List<Task> taskListNoOrder = new ArrayList<Task>();
@@ -88,7 +89,7 @@ public class OrderController
         }
 
 
-        return ResponseEntity.ok(ListRep.assemble(taskList, taskList.size()));
+        return ResponseEntity.ok(ListRep.assemble(taskList, totalTaskCount));
     }
 
     @RequestMapping(value = "/api/TaskOrders/Process/{taskId}", method = RequestMethod.GET, produces = "application/json")

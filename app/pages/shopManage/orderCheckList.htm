@@ -9,7 +9,7 @@
 
     <div class="toolbar">
         <form role="form">
-            <div class="">
+            <div class="row">
                 <div class="col-md-3">
                     <div class='input-group date' id='datetimepickerStart'>
                         <span class="input-group-addon ">起始时间</span>
@@ -34,7 +34,7 @@
                     <label class="input"><select  ng-model="q.orderStatus" ng-options="orderStatus.value for orderStatus in vm.orderStatus" class="form-control" ng-selected="" ng-change="orderStatusSearchChange()"></select></label>
                 </div>
             </div>
-            <div class="" style="margin-top: 10px">
+            <div class="row" style="margin-top: 10px">
                 <div class="inline-group col-md-12">
                     <label class="input">订单号：</label>
                     <label class="input"><input type="text" class="form-control input-sm" ng-model="q.orderSn" ng-change="search()" placeholder="订单号"> </label>
@@ -54,45 +54,57 @@
         <thead>
         <tr>
             <th width="1%"></th>
-            <th width="10%">订单编号</th>
-            <th width="7%">接入方式</th>
-            <th width="7%">支付方式</th>
-            <th width="7%">订单客户</th>
-            <th width="4%">状态</th>
-            <th width="12%">预约时间</th>
+            <th width="3%">序号</th>
+            <th width="8%">订单编号</th>
+            <th width="5%">接入方式</th>
+            <th width="5%">支付方式</th>
+            <th width="5%">订单客户</th>
+
+
             <th width="20%">收货地址</th>
             <th width="5%">收货人</th>
-            <th width="7%">联系电话</th>
-            <th width="12%">订单时间</th>
+            <th width="5%">配送员</th>
+            <th width="5%">订单状态</th>
+            <th width="5%">支付状态</th>
+            <th width="5%">金额(元)</th>
+            <th width="9%">创建时间</th>
+            <th width="9%">预约时间</th>
             <th width="15%">操作</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="order in vm.orderList" ng-class="{danger:order.timeSpan>10&&order.orderStatus==0}">
             <td></td>
+            <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
             <td class="message">{{order.orderSn}}</td>
             <td class="message">{{order.accessType.name}}</td>
             <td class="message">{{order.payType.name}}</td>
             <td class="message">{{order.customer.userId}}</td>
-            <td class="message">{{order.orderStatus}}</td>
-            <td class="message">{{order.reserveTime}}</td>
+
+
             <td class="message">{{order.recvAddr.province}}{{order.recvAddr.city}}{{order.recvAddr.county}}{{order.recvAddr.detail}}</td>
-            <td class="message">{{order.recvName}}</td>
-            <td class="message">{{order.recvPhone}}</td>
+            <td class="message" title="电话：{{order.recvPhone}}">{{order.recvName}}</td>
+
+            <td class="message" title="电话：{{order.dispatcher.mobilePhone}} 工号：{{order.dispatcher.jobNumber}}">{{order.dispatcher.name}}</td>
+            <td class="message">{{vm.orderStatusDisplay[order.orderStatus]}}</td>
+            <td class="message">{{order.payStatus.name}}</td>
+            <td class="message">{{order.orderAmount}}</td>
             <td class="message">{{order.createTime}}</td>
+            <td class="message">{{order.reserveTime}}</td>
+
             <td class="operate">
                 <button title="详情" ng-click="viewDetails(order)" type="button" class="btn btn-primary btn-outline btn-xs">
-                    <i class="fa fa-info-circle"></i>
+                    <i class="">详情</i>
                 </button>
                 <!--<button title="修改" ng-click="modify(order)" type="button" class="btn btn-primary btn-outline btn-xs">-->
-                    <!--<i class="fa fa-edit"></i>-->
+                <!--<i class="fa fa-edit"></i>-->
                 <!--</button>-->
 
-                <button title="确认" ng-if="order.taskId" ng-click="check(order)" type="button" class="btn btn-primary btn-outline btn-xs">
-                    <i class="fa fa-arrows"></i>
+                <button title="核单" ng-if="order.taskId" ng-click="check(order)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <i class="">核单</i>
                 </button>
                 <!--<button title="作废" ng-click="delete(order)" type="button" class="btn btn-primary btn-outline btn-xs">-->
-                    <!--<i class="fa fa-trash-o"></i>-->
+                <!--<i class="fa fa-trash-o"></i>-->
                 <!--</button>-->
             </td>
         </tr>

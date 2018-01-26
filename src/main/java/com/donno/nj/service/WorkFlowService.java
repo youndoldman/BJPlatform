@@ -16,6 +16,9 @@ public interface WorkFlowService
     //查询当前任务 strUserID－启动流程的用户ID pageNo-页数 pageSize-页容量
     List<Task> getTasksByUserId(String strUserID, int pageNo, int pageSize);
 
+    //查询当前任务的总数
+    int getTasksByUserId(String strUserID);
+
     //办理任务 strTaskId－任务ID,variables-同意还是不同意等审批结论
     int completeTask(String strTaskId, Map<String, Object> variables);
 

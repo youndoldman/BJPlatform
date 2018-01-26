@@ -4,6 +4,10 @@ manageApp.controller('GoodsModalCtrl', ['$scope', 'close', 'GoodsService', 'titl
         goods: {},
         goodsTypesList:[],
     };
+    $scope.config = {
+        goodsStatusList:[{name:"正常上市",value:0},{name:"暂停销售",value:1},{name:"商品下架",value:2}]
+    };
+
     $scope.isModify = false;
 
     $scope.close = function (result) {
@@ -31,9 +35,13 @@ manageApp.controller('GoodsModalCtrl', ['$scope', 'close', 'GoodsService', 'titl
         $scope.vm.goods = _.clone(initVal);
         if(title == "修改商品") {
             $scope.isModify = true;
+            console.log($scope.vm.goods.status);
         }
         else {
             $scope.isModify = false;
+            //商品状态初始化
+            $scope.vm.goods.status = $scope.config.goodsStatusList[0].value;
+            console.log($scope.vm.goods.status);
         }
         //查询商品类型
         var queryParams = {

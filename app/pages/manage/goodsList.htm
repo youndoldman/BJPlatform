@@ -74,16 +74,16 @@
             <thead>
             <tr>
                 <th width="1%"></th>
-                <td width="5%">ID</td>
+                <td width="5%">序号</td>
                 <td width="8%">商品号</td>
-                <td width="12%">商品名称</td>
-                <td width="10%">商品类型</td>
-                <td width="10%">商品规格</td>
-                <td width="5%">单位</td>
-                <td width="5%">重量</td>
-                <td width="9%">价格</td>
-                <td width="10%">有效期</td>
-                <td width="5%">状态</td>
+                <td width=10%">商品名称</td>
+                <td width="8%">商品类型</td>
+                <td width="8%">商品规格</td>
+                <td width="8%">单位</td>
+                <td width="8%">重量(公斤)</td>
+                <td width="8%">价格(元)</td>
+                <td width="8%">有效期(天)</td>
+                <td width="8%">状态</td>
                 <td width="10%">说明</td>
                 <td width="10%">操 作</td>
             </tr>
@@ -91,7 +91,7 @@
             <tbody>
             <tr ng-repeat="good in vm.goodsList">
                 <td></td>
-                <td class="message">{{good.id}}</td>
+                <td class="message">{{$index+1+pagerGoods.pageSize*(pagerGoods.getCurPageNo()-1)}}</td>
                 <td class="message">{{good.code}}</td>
                 <td class="message">{{good.name}}</td>
                 <td class="message">{{good.goodsType.name}}</td>
@@ -100,7 +100,7 @@
                 <td class="message">{{good.weight}}</td>
                 <td class="message">{{good.price}}</td>
                 <td class="message">{{good.lifeExpectancy}}</td>
-                <td class="message">{{good.status}}</td>
+                <td class="message">{{config.goodsStatusList[good.status].name}}</td>
                 <td class="message">{{good.note}}</td>
                 <td class="operate">
                     <button title="修改" ng-click="modifyGoods(good)" type="button" class="btn btn-primary btn-outline btn-xs">

@@ -5,7 +5,13 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
                                                           rootService, pager, udcModal, OrderService,sessionStorage) {
         var gotoPage = function (pageNo) {
             $scope.pager.setCurPageNo(pageNo);
-            searchOrder();
+            //如果是派送的订单就调用任务订单接口，这样才能拿到taskId
+            if($scope.q.orderStatus.key==0){
+                searchTaskOrder();
+
+            } else{
+                searchOrder();
+            }
         };
 
         $(function () {
@@ -140,13 +146,31 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
                 orderSn:$scope.q.orderSn,
                 orderStatus:$scope.q.orderStatus.key,
                 pageNo: $scope.pager.getCurPageNo(),
-                pageSize: $scope.pager.pageSize
+                pageSize: $scope.pager.pageSize,
+                orderBy:"id desc"
             };
             console.log(queryParams);
 
             OrderService.retrieveOrders(queryParams).then(function (orders) {
                 $scope.pager.update($scope.q, orders.total, queryParams.pageNo);
                 $scope.vm.orderList = orders.items;
+            });
+        };
+
+        var searchTaskOrder = function () {
+            //查询需要进行强制派单的订单
+            var queryParams = {
+                orderStatus:0,//待派送
+                pageNo: $scope.pager.getCurPageNo(),
+                pageSize: $scope.pager.pageSize
+            };
+            var curUser = sessionStorage.getCurUser();
+            OrderService.retrieveTaskOrders(curUser.userId, queryParams).then(function (tasks) {
+                $scope.pager.update($scope.q, tasks.total, queryParams.pageNo);
+                $scope.vm.taskList = tasks.items;
+                //任务到订单数组的结构转换
+                $scope.vm.orderList= _.map(tasks.items, OrderService.toViewModelTaskOrders);;
+
             });
         };
 
@@ -162,19 +186,7 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
                 return;
             };
             if($scope.q.orderStatus.key==0){
-            //查询需要进行强制派单的订单
-                var queryParams = {
-                    pageNo: $scope.pager.getCurPageNo(),
-                    pageSize: $scope.pager.pageSize
-                };
-                var curUser = sessionStorage.getCurUser();
-                OrderService.retrieveTaskOrders(curUser.userId).then(function (tasks) {
-                    $scope.pager.update($scope.q, tasks.total, queryParams.pageNo);
-                    $scope.vm.taskList = tasks.items;
-                    //任务到订单数组的结构转换
-                    $scope.vm.orderList= _.map(tasks.items, OrderService.toViewModelTaskOrders);;
-
-                });
+                searchTaskOrder();
 
             } else{
                 searchOrder();

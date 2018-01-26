@@ -22,6 +22,10 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
             goodsType:""
         };
 
+        $scope.config = {
+            goodsStatusList:[{name:"正常上市",value:"0"},{name:"暂停销售",value:"1"},{name:"商品下架",value:"2"}]
+        };
+
 
         $scope.vm = {
             goodsTypesList: [],

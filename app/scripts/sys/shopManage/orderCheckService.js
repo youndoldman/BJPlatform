@@ -67,10 +67,9 @@ shopManageApp.service('OrderCheckService', ['$http', 'URI', 'promiseWrapper','MI
 
 
     //查询需要进行处理的任务订单
-    this.retrieveTaskOrders = function (userId) {
-        return promise.wrap($http.get(taskOrdersUri+'/'+userId+"?orderStatus=2"));
+    this.retrieveTaskOrders = function (userId, params) {
+        return promise.wrap($http.get(taskOrdersUri+'/'+userId,{params: params}));
     };
-
 
     //确认订单
     this.checkOrder = function (params,taskId) {

@@ -77,7 +77,7 @@ public class WorkFlowServiceImpl implements WorkFlowService
         // 根据当前人的ID查询
         TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(strUserID).orderByTaskCreateTime().desc();
 
-        List<Task> tasks = taskQuery.listPage(pageNo, pageSize);
+        List<Task> tasks = taskQuery.listPage((pageNo-1)*pageSize, pageSize);
         List<com.donno.nj.domain.Task>currentTaskList = new ArrayList<com.donno.nj.domain.Task>();
 
         for (Task task : tasks) {
@@ -91,6 +91,15 @@ public class WorkFlowServiceImpl implements WorkFlowService
             currentTaskList.add(myTask);
         }
         return currentTaskList;
+    }
+    //查询当前任务的总数
+    @Override
+    public int getTasksByUserId(String strUserID) {
+        // 根据当前人的ID查询
+        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(strUserID).orderByTaskCreateTime().desc();
+
+        int count = taskQuery.list().size();
+        return count;
     }
 
     //查询当前任务对应的流程

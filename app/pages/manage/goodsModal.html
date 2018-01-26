@@ -61,7 +61,7 @@
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label">状态：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="number" name="status" class="form-control" ng-model="vm.goods.status"  required>
+                            <select name="status" ng-model="vm.goods.status" ng-options="status.value as status.name  for status in config.goodsStatusList" class="form-control" ng-selected=""></select>
                         </div>
                     </div>
                     <div class="input-group pdb15">
