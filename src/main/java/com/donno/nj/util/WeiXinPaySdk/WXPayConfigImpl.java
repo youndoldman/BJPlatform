@@ -11,12 +11,12 @@ public class WXPayConfigImpl extends WXPayConfig{
     private static WXPayConfigImpl INSTANCE;
 
     private WXPayConfigImpl() throws Exception{
-        String certPath = "D://apiclient_cert.p12";
-        File file = new File(certPath);
-        InputStream certStream = new FileInputStream(file);
-        this.certData = new byte[(int) file.length()];
-        certStream.read(this.certData);
-        certStream.close();
+//        String certPath = "D://apiclient_cert.p12";
+//        File file = new File(certPath);
+//        InputStream certStream = new FileInputStream(file);
+//        this.certData = new byte[(int) file.length()];
+//        certStream.read(this.certData);
+//        certStream.close();
     }
 
     public static WXPayConfigImpl getInstance() throws Exception{
