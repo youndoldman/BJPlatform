@@ -30,7 +30,7 @@ public class GasCylinder implements Serializable
 
     private User user;
 
-
+    private Department userDepartment;
 
     private String  note;
     private Date createTime;
@@ -104,6 +104,11 @@ public class GasCylinder implements Serializable
     public User getUser()
     {
         return user;
+    }
+
+    public Department getUserDepartment()
+    {
+        return userDepartment;
     }
 
     public String getNote()
@@ -185,6 +190,11 @@ public class GasCylinder implements Serializable
     public void setUser(User user)
     {
         this.user = user;
+    }
+
+    public void setUserDepartment(Department userDepartment)
+    {
+        this.userDepartment = userDepartment;
     }
 
     public void setNote(String note)

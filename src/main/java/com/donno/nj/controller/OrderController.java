@@ -54,7 +54,7 @@ public class OrderController
                                             @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                             @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
     {
-        List<Task> taskList = workFlowService.getTasksByUserId(userId);
+        List<Task> taskList = workFlowService.getTasksByUserId(userId,pageNo,pageSize);
 
         List<Task> taskListNoOrder = new ArrayList<Task>();
         for (Task task:taskList)

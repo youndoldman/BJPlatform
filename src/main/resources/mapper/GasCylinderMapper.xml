@@ -29,6 +29,10 @@
         <association property="user" column="id" select="com.donno.nj.dao.GasCynUserRelDao.findLiableUserByCylinderId">
         </association>
 
+        <association property="userDepartment" column="id" select="com.donno.nj.dao.GasCynUserRelDao.findUserDepByCylinderId">
+        </association>
+
+
     </resultMap>
 
     <sql id="TblGasCylinder">
