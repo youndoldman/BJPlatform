@@ -286,13 +286,13 @@ public class GasCylinderServiceImpl implements GasCylinderService
         User srcUser = userDao.findByUserId(srcUserId);
         if (srcUser == null)
         {
-            throw new ServerSideBusinessException("用户不存在！", HttpStatus.NOT_FOUND);
+            throw new ServerSideBusinessException("原用户不存在！", HttpStatus.NOT_FOUND);
         }
 
         User targetUser = userDao.findByUserId(targetUserId);
         if (targetUser == null)
         {
-            throw new ServerSideBusinessException("用户不存在！", HttpStatus.NOT_FOUND);
+            throw new ServerSideBusinessException("目的用户不存在！", HttpStatus.NOT_FOUND);
         }
 
         /*钢瓶当前责任人校验*/

@@ -68,6 +68,25 @@
         )
     </select>
 
-
-
+    <!--钢瓶责任人所属部门-->
+    <select id="findUserDepByCylinderId" resultMap="com.donno.nj.dao.DepartmentDao.BaseResultMap">
+        SELECT t_department.*
+        FROM t_department
+        where
+        (
+            t_department.id =
+            (
+                SELECT t_sysuser.department_idx FROM t_sysuser WHERE
+                (
+                   t_sysuser.user_idx =
+                   (
+                       SELECT t_cylinder_user.user_idx FROM t_cylinder_user WHERE
+                      (
+                            t_cylinder_user.cylinder_idx = #{gasCylinderIdx}
+                      )
+                   )
+                )
+             )
+        )
+    </select>
 </mapper>
