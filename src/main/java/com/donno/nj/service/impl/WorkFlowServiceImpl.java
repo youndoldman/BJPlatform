@@ -73,11 +73,11 @@ public class WorkFlowServiceImpl implements WorkFlowService
 
     //查询当前任务
     @Override
-    public List<com.donno.nj.domain.Task> getTasksByUserId(String strUserID) {
+    public List<com.donno.nj.domain.Task> getTasksByUserId(String strUserID, int pageNo, int pageSize) {
         // 根据当前人的ID查询
-        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(strUserID).orderByTaskCreateTime().asc();
+        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(strUserID).orderByTaskCreateTime().desc();
 
-        List<Task> tasks = taskQuery.list();
+        List<Task> tasks = taskQuery.listPage(pageNo, pageSize);
         List<com.donno.nj.domain.Task>currentTaskList = new ArrayList<com.donno.nj.domain.Task>();
 
         for (Task task : tasks) {

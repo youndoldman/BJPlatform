@@ -13,8 +13,8 @@ public interface WorkFlowService
     //启动流程 wfType－流程类型　　strUserID－启动流程的用户ID  strBuinessKey-自己流程表的流程索引值
     int createWorkFlow(WorkFlowTypes wfType, String strUserID, Map<String, Object> variables,String strBuinessKey);
 
-    //查询当前任务 strUserID－启动流程的用户ID
-    List<Task> getTasksByUserId(String strUserID);
+    //查询当前任务 strUserID－启动流程的用户ID pageNo-页数 pageSize-页容量
+    List<Task> getTasksByUserId(String strUserID, int pageNo, int pageSize);
 
     //办理任务 strTaskId－任务ID,variables-同意还是不同意等审批结论
     int completeTask(String strTaskId, Map<String, Object> variables);
