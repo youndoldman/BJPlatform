@@ -9,7 +9,7 @@ import java.io.Serializable;
 public enum GasCynServiceStatus implements IEnum,Serializable
 {
 
-    StationStock("气站库存", 0),StoreStock("门店库存", 1),Transporting("在途运输", 2),Dispatching("在途派送", 3),CustomerUsing("客户使用", 4),EmptyCynRetrieve("空瓶回收", 5);
+    UnUsed("待使用", 0),StationStock("气站库存", 1),StoreStock("门店库存", 2),Transporting("在途运输", 3),Dispatching("在途派送", 4),CustomerUsing("客户使用", 5),EmptyCynRetrieve("空瓶回收", 6);
 
     // 成员变量
     private String name;

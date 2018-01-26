@@ -96,7 +96,7 @@ public class GasCylinderServiceImpl implements GasCylinderService
             throw new ServerSideBusinessException("钢瓶信息已经存在！", HttpStatus.CONFLICT);
         }
 
-        gasCylinder.setServiceStatus(GasCynServiceStatus.StationStock);
+        gasCylinder.setServiceStatus(GasCynServiceStatus.UnUsed);
         gasCylinderDao.insert(gasCylinder);
 
         /*当前用户获取*/

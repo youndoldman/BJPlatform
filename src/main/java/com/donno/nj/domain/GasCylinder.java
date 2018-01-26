@@ -30,6 +30,8 @@ public class GasCylinder implements Serializable
 
     private User user;
 
+
+
     private String  note;
     private Date createTime;
     private Date updateTime;
