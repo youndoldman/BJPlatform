@@ -13,7 +13,7 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
 
         $scope.q = {
             userName: null,
-            userGroup:{code:null}
+            userGroup:{name:"全选",code:null}
         };
 
         $scope.vm = {
@@ -88,6 +88,15 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
         var retrieveUserGroups = function(){
             UserService.retrieveGroups().then(function (userGroups) {
                 $scope.vm.userGroups = _.map(userGroups.items, UserService.toViewModelGroup);
+                //剔除客户
+                for(var i=0; i<$scope.vm.userGroups.length;i++){
+                    if($scope.vm.userGroups[i].code=="00004"){//客户
+                        $scope.vm.userGroups.splice(i,1);
+                    }
+                }
+                //增加全选
+                $scope.vm.userGroups.unshift({name:"全选",code:null});
+                $scope.q.userGroup = $scope.vm.userGroups[0];
             });
         };
 
@@ -188,6 +197,13 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
         }
         UserService.retrieveGroups().then(function (userGroups) {
             $scope.userGroups = _.map(userGroups.items, UserService.toViewModelGroup);
+            //剔除客户
+            for(var i=0; i<$scope.userGroups.length;i++){
+                if($scope.userGroups[i].code=="00004"){//客户
+                    $scope.userGroups.splice(i,1);
+                }
+            }
+
             if(title == "新增用户") {
                 $scope.vm.user.userGroup = $scope.userGroups[0];
             }else {

@@ -7,6 +7,7 @@ bottleApp.service('BottleService', ['$http', 'URI', 'promiseWrapper', function (
     var gpsBindUri = URI.resources.gpsBind;//定位终端绑定接口
     var gpsUnBindUri = URI.resources.gpsUnBind;//定位终端解除绑定接口
     var bottleSpecQueryUri = URI.resources.bottleSpecQuery;//钢瓶规格查询
+    var departmentUri = URI.resources.department;//部门查询接口
 
     this.toViewModel = function (bottleFromApi) {
         return {
@@ -42,6 +43,11 @@ bottleApp.service('BottleService', ['$http', 'URI', 'promiseWrapper', function (
     //钢瓶规格查询
     this.retrieveBottleSpecs = function () {
         return promise.wrap($http.get(bottleSpecQueryUri));
+    };
+
+    //查询部门信息(下级递归)
+    this.retrieveDepartmentLower = function (code) {
+        return promise.wrap($http.get(departmentUri + "/Lower"+"?code=" +code));
     };
 }]);
 

@@ -21,7 +21,7 @@
         <tr>
 
             <th width="1%"></th>
-            <th width="5%">ID</th>
+            <th width="5%">序号</th>
             <th width="20%">云客服账号</th>
             <th width="20%">云客服密码</th>
             <th width="20%">绑定用户</th>
@@ -32,7 +32,7 @@
         <tbody>
         <tr ng-repeat="cloudUser in vm.cloudUserList">
             <td></td>
-            <td class="message">{{cloudUser.id}}</td>
+            <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
             <td class="message">{{cloudUser.userId}}</td>
             <td class="message">{{cloudUser.password}}</td>
             <td class="message">{{cloudUser.panvaUser.userId}}</td>

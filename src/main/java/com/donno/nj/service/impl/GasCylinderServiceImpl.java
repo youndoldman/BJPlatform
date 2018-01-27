@@ -103,7 +103,7 @@ public class GasCylinderServiceImpl implements GasCylinderService
         Optional<User> user = AppUtil.getCurrentLoginUser();
         if (!user.isPresent())
         {
-            throw new ServerSideBusinessException("用户信息不存在！", HttpStatus.NOT_FOUND);
+            throw new ServerSideBusinessException("会话失效,请重新登录！", HttpStatus.UNAUTHORIZED);
         }
 
         /*钢瓶责任人关联*/
@@ -282,12 +282,23 @@ public class GasCylinderServiceImpl implements GasCylinderService
             throw new ServerSideBusinessException("钢瓶信息不存在！", HttpStatus.NOT_FOUND);
         }
 
-        /*用户是否存在*/
-        User srcUser = userDao.findByUserId(srcUserId);
-        if (srcUser == null)
+        /*如果钢瓶业务状态为待使用，则不校验原责任人*/
+        if (gasCylinderOptional.get().getServiceStatus().getIndex() != GasCynServiceStatus.UnUsed.getIndex())
         {
-            throw new ServerSideBusinessException("原用户不存在！", HttpStatus.NOT_FOUND);
+            /*用户是否存在*/
+            User srcUser = userDao.findByUserId(srcUserId);
+            if (srcUser == null)
+            {
+                throw new ServerSideBusinessException("原用户不存在！", HttpStatus.NOT_FOUND);
+            }
+
+            /*钢瓶当前责任人校验*/
+            if (gasCylinderOptional.get().getUser() == null || !gasCylinderOptional.get().getUser().getId().equals(srcUser.getId()))
+            {
+                throw new ServerSideBusinessException("该钢瓶原责任人校验错误！", HttpStatus.NOT_ACCEPTABLE);
+            }
         }
+
 
         User targetUser = userDao.findByUserId(targetUserId);
         if (targetUser == null)
@@ -295,11 +306,16 @@ public class GasCylinderServiceImpl implements GasCylinderService
             throw new ServerSideBusinessException("目的用户不存在！", HttpStatus.NOT_FOUND);
         }
 
-        /*钢瓶当前责任人校验*/
-        if (gasCylinderOptional.get().getUser() == null || !gasCylinderOptional.get().getUser().getId().equals(srcUser.getId() ))
-        {
-            throw new ServerSideBusinessException("该钢瓶原责任人校验错误！", HttpStatus.NOT_ACCEPTABLE);
-        }
+        /*如果钢瓶业务状态为待使用，则不校验原责任人*/
+//        if (gasCylinderOptional.get().getServiceStatus().getIndex() == GasCynServiceStatus.UnUsed.getIndex())
+//        {
+//            /*钢瓶当前责任人校验*/
+//            if (gasCylinderOptional.get().getUser() == null || !gasCylinderOptional.get().getUser().getId().equals(srcUser.getId()))
+//            {
+//                throw new ServerSideBusinessException("该钢瓶原责任人校验错误！", HttpStatus.NOT_ACCEPTABLE);
+//            }
+//        }
+
 
         /*钢瓶业务状态修改*/
         gasCylinderDao.updateSvcStatus(gasCylinderOptional.get().getId(),serviceStatus);

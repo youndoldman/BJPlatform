@@ -1,7 +1,6 @@
 <div class="ribbon">
     <a href=""><span class="home fa fa-home"></span></a>
     <ol class="breadcrumb">
-        <li><a href="userCenter.htm">用户中心</a></li>
         <li>用户列表</li>
     </ol>
 </div>
@@ -13,7 +12,7 @@
             <div class="inline-group">
                 <label class="input"><input type="text" class="form-control input-sm" ng-model="q.userName" ng-change="search()" placeholder="用户名称"> </label>
                 <button type="submit" class="btn btn-sm btn-primary" ng-click="search()"><i class="fa fa-search"></i> 搜索 </button>
-                <label class="input col-sm-offset-7">角色：<select  class="input-sm" ng-model="q.userGroup" ng-options="userGroup.name for userGroup in vm.userGroups" class="form-control" ng-selected="" ng-change="search()"></select></label>
+                <label class="input col-sm-offset-1">角色：<select  class="input-sm" ng-model="q.userGroup" ng-options="userGroup.name for userGroup in vm.userGroups" class="form-control" ng-selected="" ng-change="search()"></select></label>
                 <button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUp()"><i class="fa fa-plus"></i> 新增用户 </button>
             </div>
         </form>
@@ -23,7 +22,7 @@
         <tr>
 
             <th width="1%"></th>
-            <th width="5%">ID</th>
+            <th width="5%">序号</th>
             <th width="8%">用户名</th>
             <th width="8%">密码</th>
             <th width="8%">姓名</th>
@@ -40,7 +39,7 @@
         <tbody>
         <tr ng-repeat="user in vm.userList">
             <td></td>
-            <td class="message">{{user.id}}</td>
+            <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
             <td class="message">{{user.userId}}</td>
             <td class="message">{{user.password}}</td>
             <td class="message">{{user.name}}</td>

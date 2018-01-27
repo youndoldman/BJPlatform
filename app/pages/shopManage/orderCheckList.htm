@@ -9,7 +9,7 @@
 
     <div class="toolbar">
         <form role="form">
-            <div class="row">
+            <div class="">
                 <div class="col-md-3">
                     <div class='input-group date' id='datetimepickerStart'>
                         <span class="input-group-addon ">起始时间</span>
@@ -34,7 +34,7 @@
                     <label class="input"><select  ng-model="q.orderStatus" ng-options="orderStatus.value for orderStatus in vm.orderStatus" class="form-control" ng-selected="" ng-change="orderStatusSearchChange()"></select></label>
                 </div>
             </div>
-            <div class="row" style="margin-top: 10px">
+            <div class="" style="margin-top: 10px">
                 <div class="inline-group col-md-12">
                     <label class="input">订单号：</label>
                     <label class="input"><input type="text" class="form-control input-sm" ng-model="q.orderSn" ng-change="search()" placeholder="订单号"> </label>

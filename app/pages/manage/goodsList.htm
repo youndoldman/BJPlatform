@@ -19,7 +19,7 @@
             <thead>
             <tr>
                 <th width="1%"></th>
-                <td width="9%">ID</td>
+                <td width="9%">序号</td>
                 <td width="20%">类型编码</td>
                 <td width="20%">类型名称</td>
                 <td width="30%">说 明</td>
@@ -29,7 +29,7 @@
             <tbody>
             <tr ng-repeat="goodsType in vm.goodsTypesList">
                 <td></td>
-                <td class="message">{{goodsType.id}}</td>
+                <td class="message">{{$index+1+pagerGoodsTypes.pageSize*(pagerGoodsTypes.getCurPageNo()-1)}}</td>
                 <td class="message">{{goodsType.code}}</td>
                 <td class="message">{{goodsType.name}}</td>
                 <td class="message">{{goodsType.note}}</td>

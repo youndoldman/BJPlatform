@@ -68,7 +68,7 @@ shopManageApp.controller('ShopStockCtrl', ['$scope', '$rootScope', '$filter', '$
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize,
                 liableDepartmentCode:currentUser.department.code,
-                serviceStatus:1
+                serviceStatus:2
             };
 
             ShopStockService.retrieveBottles(queryParams).then(function (bottles) {
@@ -130,15 +130,14 @@ shopManageApp.controller('ShopStockModalCtrl', ['$scope', 'close', 'ShopStockSer
             $scope.vm.handOver.bottleNumber = $scope.vm.bottle.number;
         }
         if (title == "门店出库"){
-            console.log($scope.vm.bottle);
             $scope.isModify = true;
             $scope.vm.handOver.srcUser = $scope.vm.bottle.user.userId;
-            $scope.vm.reasons = [{name:"钢瓶调拨",value:"2"},{name:"钢瓶配送",value:"3"}];
+            $scope.vm.reasons = [{name:"钢瓶调拨",value:"3"},{name:"钢瓶配送",value:"4"}];
             $scope.vm.selectReason = $scope.vm.reasons[0];
         } else {
             $scope.isModify = false;
             $scope.vm.handOver.destUser = currentUser.userId;
-            $scope.vm.reasons = [{name:"门店库存",value:"1"}];
+            $scope.vm.reasons = [{name:"门店库存",value:"2"}];
             $scope.vm.selectReason = $scope.vm.reasons[0];
         }
     };

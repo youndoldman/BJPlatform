@@ -41,10 +41,13 @@
     </update>
 
 
-    <delete id="deleteByIdx" parameterType="java.lang.Integer">
-    DELETE FROM t_cylinder_user WHERE id= #{id}
-    </delete>
+    <!--<delete id="deleteByIdx" parameterType="java.lang.Integer">-->
+    <!--DELETE FROM t_cylinder_user WHERE id= #{id}-->
+    <!--</delete>-->
 
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM t_cylinder_user WHERE id= #{id}
+    </delete>
 
     <!--查找钢瓶-责任人关系-->
     <select id="findBindRel" resultMap="DetailResultMap">

@@ -87,6 +87,11 @@ manageApp.service('UserService', ['$http', 'URI', 'promiseWrapper', function ($h
         return promise.wrap($http.delete(departmentUri+"?code="+department.code));
     };
 
+    //修改部门
+    this.modifyDepartment = function (originalDepartment, destDepartment) {
+        return promise.wrap($http.put(departmentUri+"?code="+originalDepartment.code, destDepartment));
+    };
+
 
 }]);
 

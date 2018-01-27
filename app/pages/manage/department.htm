@@ -7,7 +7,7 @@
 
 <div>
     <div id="chart-container"></div>
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="panel panel-primary" style="height: 200px;">
             <div class="panel-heading">
                 <h3 class="panel-title">部门增加</h3>
@@ -16,8 +16,8 @@
             <div class="panel-body" style="margin-top: 20px">
                 <div class="inline-group">
                     <label>所选部门:</label>
-                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.selectDepartment.name"> </label>
-                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.selectDepartment.code"> </label>
+                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.selectDepartment.name" ng-disabled="true"> </label>
+                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.selectDepartment.code" ng-disabled="true"> </label>
                     <button type="button" class="btn btn-sm btn-success pull-right" ng-click="addDepartment()"><i class="fa fa-plus"></i> 新增 </button>
                     <p/>
                     <label>增加部门:</label>
@@ -27,8 +27,27 @@
             </div>
         </div>
     </div>
+    <div class="col-md-4">
+        <div class="panel panel-primary" style="height: 200px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">部门修改</h3>
+            </div>
 
-    <div class="col-md-6">
+            <div class="panel-body" style="margin-top: 20px">
+                <div class="inline-group">
+                    <label>所选部门:</label>
+                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.selectDepartment.name" ng-disabled="true"> </label>
+                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.selectDepartment.code" ng-disabled="true"> </label>
+                    <button type="button" class="btn btn-sm btn-success pull-right" ng-click="modifyDepartment()"><i class="fa fa-plus"></i> 修改 </button>
+                    <p/>
+                    <label>修改部门:</label>
+                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.modifyDepartment.name" placeholder="部门名称"> </label>
+                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.modifyDepartment.code" placeholder="部门编码"> </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
         <div class="panel panel-primary" style="height: 200px;">
             <div class="panel-heading">
                 <h3 class="panel-title">部门删除</h3>
@@ -37,8 +56,8 @@
             <div class="panel-body" style="margin-top: 20px">
                 <div class="inline-group">
                     <label>所选部门:</label>
-                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.selectDepartment.name"> </label>
-                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.selectDepartment.code"> </label>
+                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.selectDepartment.name" ng-disabled="true"> </label>
+                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.selectDepartment.code" ng-disabled="true"> </label>
                     <button type="button" class="btn btn-sm btn-success pull-right" ng-click="deleteDepartment()"><i class="fa fa-minus"></i> 删除 </button>
                 </div>
             </div>

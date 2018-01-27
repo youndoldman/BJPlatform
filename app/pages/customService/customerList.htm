@@ -20,7 +20,7 @@
         <thead>
         <tr>
             <th width="1%"></th>
-            <th width="5%">ID</th>
+            <th width="5%">序号</th>
             <th width="9%">客户编号</th>
             <th width="10%">客户名称</th>
             <th width="10%">密码</th>
@@ -34,7 +34,7 @@
         <tbody>
         <tr ng-repeat="customer in vm.customerList">
             <td></td>
-            <td class="message">{{customer.id}}</td>
+            <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
             <td class="message">{{customer.userId}}</td>
             <td class="message">{{customer.name}}</td>
             <td class="message">{{customer.password}}</td>

@@ -60,6 +60,7 @@ shopManageApp.controller('OrderCheckCtrl', ['$scope', '$rootScope', '$filter', '
             orderList: [],
             orderStatus:[{key:null,value:"全部订单"},{key:0,value:"待派送"},{key:1,value:"派送中"},{key:2,value:"已签收"},
                 {key:3,value:"已完成"},{key:4,value:"作废"}],
+            orderStatusDisplay:["待派送","派送中","已签收","已完成","作废"]
         };
         $scope.q = {
             startTime:null,

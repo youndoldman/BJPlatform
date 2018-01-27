@@ -17,7 +17,9 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
         var historyQ = $scope.pager.getQ();
 
         $scope.q = {
-            bottleNumber: historyQ.bottleNumber || ""
+            number: null,
+            liableUserId: null,
+            liableDepartmentCode: null
         };
 
         $scope.vm = {
@@ -28,6 +30,23 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
             $scope.pager.setCurPageNo(1);
             searchBottles();
         };
+
+        $scope.initDepartmentSelect = function () {
+            udcModal.show({
+                templateUrl: "./bottle/departmentSelectModal.htm",
+                controller: "DepartmentSelectModalCtrl",
+                inputs: {
+                    title: '百江燃气组织架构',
+                    initVal: {}
+                }
+            }).then(function (result) {
+                if (result!=null) {
+                    $scope.q.liableDepartmentCode = result.code;
+                    searchBottles();
+                }
+            })
+        };
+
 
         $scope.initPopUp = function () {
             udcModal.show({
@@ -76,9 +95,11 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
 
         var searchBottles = function () {
             var queryParams = {
-                number: $scope.q.bottleNumber,
+                number: $scope.q.number,
                 pageNo: $scope.pager.getCurPageNo(),
-                pageSize: $scope.pager.pageSize
+                pageSize: $scope.pager.pageSize,
+                liableUserId: $scope.q.liableUserId,
+                liableDepartmentCode: $scope.q.liableDepartmentCode
             };
 
             BottleService.retrieveBottles(queryParams).then(function (bottles) {
@@ -117,7 +138,7 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
                 {value:2,name:"在途运输"},
                 {value:3,name:"在途派送"},
                 {value:4,name:"在途运输"}],
-            specs:[],
+            specs:[]
         }
     };
 
@@ -129,6 +150,8 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
         if (bottle.name != "" && title == "新增钢瓶") {
             BottleService.createBottle(bottle).then(function () {
                 $scope.close(true);
+            }, function(value) {
+                udcModal.info({"title": "错误信息", "message": value.message});
             })
         } else if (bottle.name != "" && title == "修改钢瓶") {
             //去除定位终端字段，才能提交
@@ -136,6 +159,8 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
             BottleService.modifyBottle(bottle).then(function () {
                 udcModal.info({"title": "处理结果", "message": "修改钢瓶信息成功 "});
                 $scope.close(true);
+            }, function(value) {
+                udcModal.info({"title": "错误信息", "message": value.message});
             })
         }
     };
@@ -185,6 +210,8 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
             $scope.vm.bottle.locationDevice = null;
             $scope.isBinded = false;
             udcModal.info({"title": "处理结果", "message": "解除绑定成功 "});
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": "解除绑定失败"});
         })
     };
     //绑定
@@ -192,6 +219,8 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
         BottleService.bindBottle($scope.vm.bottle, $scope.vm.bottle.locationDevice.number).then(function () {
             $scope.isBinded = true;
             udcModal.info({"title": "处理结果", "message": "绑定成功 "});
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": "绑定失败"});
         })
     };
 

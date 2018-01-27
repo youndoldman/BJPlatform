@@ -30,7 +30,8 @@ manageApp.controller('DepartmentCtrl', ['$scope', '$rootScope', '$filter', '$loc
 
         $scope.q = {
             selectDepartment:{name:null,code:null},
-            addDepartment:{name:null,code:null}
+            addDepartment:{name:null,code:null},
+            modifyDepartment:{name:null,code:null}
         };
 
         $scope.vm = {
@@ -77,15 +78,28 @@ manageApp.controller('DepartmentCtrl', ['$scope', '$rootScope', '$filter', '$loc
             UserService.createDepartment($scope.q.addDepartment).then(function () {
                 udcModal.info({"title": "处理结果", "message": "增加部门成功"});
                 retrieveRootDepartment();
-            });
+            }, function(value) {
+                udcModal.info({"title": "错误信息", "message": value.message});
+            })
         };
         //删除部门
         $scope.deleteDepartment = function(){
             UserService.deleteDepartment($scope.q.selectDepartment).then(function () {
                 udcModal.info({"title": "处理结果", "message": "删除部门成功"});
                 retrieveRootDepartment();
-            });
-        }
+            }, function(value) {
+                udcModal.info({"title": "错误信息", "message": value.message});
+            })
+        };
+        //修改部门
+        $scope.modifyDepartment = function(){
+            UserService.modifyDepartment($scope.q.selectDepartment, $scope.q.modifyDepartment).then(function () {
+                udcModal.info({"title": "处理结果", "message": "修改部门成功"});
+                retrieveRootDepartment();
+            }, function(value) {
+                udcModal.info({"title": "错误信息", "message": value.message});
+            })
+        };
 
 
         init();

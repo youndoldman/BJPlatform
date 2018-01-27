@@ -9,9 +9,9 @@
     <div class="toolbar">
         <form role="form">
             <div class="inline-group">
-                <label class="input"><input type="text" class="form-control input-sm" ng-model="q.userName" ng-change="search()" placeholder="钢瓶编码"> </label>
-                <button type="submit" class="btn btn-sm btn-primary" ng-click=""><i class="fa fa-search"></i> 搜索 </button>
-                <button type="button" class="btn btn-sm btn-success pull-right" ng-click="modify(null)"><i class="fa fa-minus"></i> 出库 </button>
+                <label class="input"><input type="text" class="form-control input-sm" ng-model="q.bottleNumber" ng-change="search()" placeholder="钢瓶编码"> </label>
+                <button type="submit" class="btn btn-sm btn-primary" ng-click="search()"><i class="fa fa-search"></i> 搜索 </button>
+                <!--<button type="button" class="btn btn-sm btn-success pull-right" ng-click="modify(null)"><i class="fa fa-minus"></i> 出库 </button>-->
                 <button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUp()"><i class="fa fa-plus"></i> 入库 </button>
             </div>
         </form>
@@ -20,7 +20,7 @@
         <thead>
         <tr>
             <th width="1%"></th>
-            <th width="5%">ID</th>
+            <th width="5%">序号</th>
             <th width="10%">钢瓶编码</th>
             <th width="10%">钢瓶规格</th>
             <th width="5%">定位终端</th>
@@ -37,7 +37,7 @@
         <tbody>
         <tr ng-repeat="bottle in vm.bottleList">
             <td></td>
-            <td class="message">{{bottle.id}}</td>
+            <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
             <td class="message">{{bottle.number}}</td>
             <td class="message">{{bottle.spec.name}}</td>
             <td class="message">{{bottle.locationDevice.number}}</td>

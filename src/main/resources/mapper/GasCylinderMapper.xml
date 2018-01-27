@@ -107,7 +107,7 @@
     WHERE
         id > 0
 
-        <if test="number != null">AND  number = #{number}</if>
+        <if test="number != null">AND number like CONCAT(CONCAT('%', #{number}), '%')  </if>
 
         <if test="specCode != null">AND  spec_idx =  ( select id from t_gas_cylinder_spec where code = #{specCode} ) </if>
 
@@ -138,7 +138,8 @@
         FROM <include refid="TblGasCylinder"/>
         WHERE
         id > 0
-        <if test="number != null">AND  number = #{number}</if>
+
+        <if test="number != null">AND number like CONCAT(CONCAT('%', #{number}), '%')  </if>
 
         <if test="specCode != null">AND  spec_idx =  ( select id from t_gas_cylinder_spec where code = #{specCode} ) </if>
 
