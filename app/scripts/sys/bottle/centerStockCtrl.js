@@ -133,7 +133,10 @@ bottleApp.controller('CenterStockModalCtrl', ['$scope', 'close', 'CenterStockSer
         }
         if (title == "充气站出库"){
             $scope.isModify = true;
-            $scope.vm.handOver.srcUser = $scope.vm.bottle.user.userId;
+            if($scope.vm.bottle!=null){//有档案出库
+                $scope.vm.handOver.srcUser = $scope.vm.bottle.user.userId;
+            }
+
             $scope.vm.reasons = [{name:"钢瓶调拨",value:"3"}];
             $scope.vm.selectReason = $scope.vm.reasons[0];
         } else {
