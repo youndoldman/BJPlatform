@@ -254,6 +254,7 @@
         </if>
 
         <if test="payStatus != null">pay_status = #{payStatus.index},</if>
+        <if test="payType != null">pay_type = #{payType.index},</if>
         <if test="recvName != null">recv_name = #{recvName},</if>
         <if test="recvPhone != null">recv_phone = #{recvPhone},</if>
         <if test="urgent != null">urgent = #{urgent},</if>
