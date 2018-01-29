@@ -130,8 +130,10 @@ shopManageApp.controller('ShopStockModalCtrl', ['$scope', 'close', 'ShopStockSer
             $scope.vm.handOver.bottleNumber = $scope.vm.bottle.number;
         }
         if (title == "门店出库"){
+            if($scope.vm.bottle!=null){//有档案出库
+                $scope.vm.handOver.srcUser = $scope.vm.bottle.user.userId;
+            }
             $scope.isModify = true;
-            $scope.vm.handOver.srcUser = $scope.vm.bottle.user.userId;
             $scope.vm.reasons = [{name:"钢瓶调拨",value:"3"},{name:"钢瓶配送",value:"4"}];
             $scope.vm.selectReason = $scope.vm.reasons[0];
         } else {

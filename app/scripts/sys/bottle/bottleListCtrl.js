@@ -123,6 +123,74 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
     }]);
 
 bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'title', 'initVal', 'udcModal',function ($scope, close, BottleService, title, initVal, udcModal) {
+    //时间空间
+    $(function () {
+        $('#datetimepickerProductionDate').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+            locale: moment.locale('zh-cn'),
+            //sideBySide:true,
+            showTodayButton:true,
+            toolbarPlacement:'top',
+
+        });
+        $('#datetimepickerVerifyDate').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+            locale: moment.locale('zh-cn'),
+            //sideBySide:true,
+            showTodayButton:true,
+            toolbarPlacement:'top',
+
+        });
+        $('#datetimepickerNextVerifyDate').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+            locale: moment.locale('zh-cn'),
+            //sideBySide:true,
+            showTodayButton:true,
+            toolbarPlacement:'top',
+
+        });
+        $('#datetimepickerScrapDate').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+            locale: moment.locale('zh-cn'),
+            //sideBySide:true,
+            showTodayButton:true,
+            toolbarPlacement:'top',
+
+        });
+    });
+    $(function () {
+        $('#datetimepickerProductionDate').datetimepicker()
+            .on('dp.change', function (ev) {
+                var date = ev.date._d;
+                var month = date.getMonth()+1;
+                $scope.vm.bottle.productionDate = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                    +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+            });
+        $('#datetimepickerVerifyDate').datetimepicker()
+            .on('dp.change', function (ev) {
+                var date = ev.date._d;
+                var month = date.getMonth()+1;
+                $scope.vm.bottle.verifyDate = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                    +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+            });
+        $('#datetimepickerNextVerifyDate').datetimepicker()
+            .on('dp.change', function (ev) {
+                var date = ev.date._d;
+                var month = date.getMonth()+1;
+                $scope.vm.bottle.nextVerifyDate = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                    +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+            });
+        $('#datetimepickerScrapDate').datetimepicker()
+            .on('dp.change', function (ev) {
+                var date = ev.date._d;
+                var month = date.getMonth()+1;
+                $scope.vm.bottle.scrapDate = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                    +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+            });
+    });
+
+
+
     $scope.modalTitle = title;
     $scope.isModify = false;
     $scope.isBinded = false;//是否绑定定位终端

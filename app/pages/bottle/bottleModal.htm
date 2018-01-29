@@ -21,28 +21,33 @@
                             <select name="spec" ng-model="vm.bottle.spec" ng-options="spec.name for spec in vm.config.specs" class="form-control" ng-selected=""></select>
                         </div>
                     </div>
-                    <div class="input-group pdb15">
+
+
+                    <div class="input-group pdb15" >
                         <label class="col-sm-4 control-label input-label-large">生产日期：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="productionDate" class="form-control" ng-model="vm.bottle.productionDate"  required>
+                            <input type="text"   id="datetimepickerProductionDate" name="productionDate" class="form-control" ng-model="vm.bottle.productionDate" required>
                         </div>
                     </div>
+
+
+
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label-large">上次钢检日期：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="verifyDate" class="form-control" ng-model="vm.bottle.verifyDate"  required>
+                            <input type="text" id='datetimepickerVerifyDate' name="verifyDate" class="form-control" ng-model="vm.bottle.verifyDate"  required>
                         </div>
                     </div>
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label-large">下次钢检日期：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="nextVerifyDate" class="form-control" ng-model="vm.bottle.nextVerifyDate"  required>
+                            <input type="text" id='datetimepickerNextVerifyDate' name="nextVerifyDate" class="form-control" ng-model="vm.bottle.nextVerifyDate"  required>
                         </div>
                     </div>
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label-large">报废日期：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="scrapDate" class="form-control" ng-model="vm.bottle.scrapDate"  required>
+                            <input type="text" id='datetimepickerScrapDate' name="scrapDate" class="form-control" ng-model="vm.bottle.scrapDate"  required>
                         </div>
                     </div>
                     <div class="input-group pdb15">
@@ -67,6 +72,10 @@
                     </div>
 
                 </div>
+
+
+
+
 
 
                 <div class="modal-footer">
