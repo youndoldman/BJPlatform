@@ -140,6 +140,7 @@ public class OrderServiceImpl implements OrderService
         }
 
 
+
         //生成定单编号
         Date curDate = new Date();
         String dateFmt =  new SimpleDateFormat("yyyyMMddHHmmssSSS").format(curDate);

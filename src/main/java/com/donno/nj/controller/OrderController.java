@@ -54,6 +54,7 @@ public class OrderController
                                             @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                             @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
     {
+
         int totalTaskCount = workFlowService.getTasksCountByUserId(userId,orderStatus);
         List<Task> taskList = workFlowService.getTasksByUserId(userId,orderStatus,pageNo,pageSize);
 
@@ -201,6 +202,7 @@ public class OrderController
                                    @RequestParam(value = "addrDetail", defaultValue = "") String addrDetail,
                                    @RequestParam(value = "recvName", defaultValue = "") String recvName,
                                    @RequestParam(value = "recvPhone", defaultValue = "") String recvPhone,
+                                   @RequestParam(value = "dispatcherId", defaultValue = "") String dispatcherId,
                                    @RequestParam(value = "startTime", defaultValue = "") String startTime,
                                    @RequestParam(value = "endTime", defaultValue = "") String endTime,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
@@ -282,6 +284,13 @@ public class OrderController
         {
             params.putAll(ImmutableMap.of("endTime", endTime));
         }
+
+        if ( dispatcherId != null && dispatcherId.trim().length() > 0 )
+        {
+            params.putAll(ImmutableMap.of("dispatcherId", dispatcherId));
+        }
+
+
 
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 

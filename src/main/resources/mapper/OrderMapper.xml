@@ -113,6 +113,10 @@
             AND  recv_phone = #{recvPhone}
         </if>
 
+        <if test="dispatcherId != null">
+            AND  ( t_order.id in (SELECT order_idx FROM  t_order_dispatcher WHERE  dispatcher_idx = (  SELECT id FROM t_user WHERE user_id = #{dispatcherId} )))
+        </if>
+
         <if test="addrProvince != null">
             AND  addr_province = #{addrProvince}
         </if>
@@ -149,6 +153,7 @@
         <!--<if test="orderBy == null">-->
             <!--ORDER BY   id DESC-->
         <!--</if>-->
+
 
 
 
@@ -203,6 +208,10 @@
 
         <if test="addrProvince != null">
             AND  addr_province = #{addrProvince}
+        </if>
+
+        <if test="dispatcherId != null">
+            AND  ( t_order.id in (SELECT order_idx FROM  t_order_dispatcher WHERE  dispatcher_idx = (  SELECT id FROM t_user WHERE user_id = #{dispatcherId} )))
         </if>
 
         <if test="addrCity != null">
