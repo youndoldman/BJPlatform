@@ -126,7 +126,7 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
     //时间空间
     $(function () {
         $('#datetimepickerProductionDate').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm',
+            format: 'YYYY-MM-DD',
             locale: moment.locale('zh-cn'),
             //sideBySide:true,
             showTodayButton:true,
@@ -134,7 +134,7 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
 
         });
         $('#datetimepickerVerifyDate').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm',
+            format: 'YYYY-MM-DD',
             locale: moment.locale('zh-cn'),
             //sideBySide:true,
             showTodayButton:true,
@@ -142,7 +142,7 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
 
         });
         $('#datetimepickerNextVerifyDate').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm',
+            format: 'YYYY-MM-DD',
             locale: moment.locale('zh-cn'),
             //sideBySide:true,
             showTodayButton:true,
@@ -150,7 +150,7 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
 
         });
         $('#datetimepickerScrapDate').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm',
+            format: 'YYYY-MM-DD',
             locale: moment.locale('zh-cn'),
             //sideBySide:true,
             showTodayButton:true,

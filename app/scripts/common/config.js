@@ -163,105 +163,106 @@ commonModule.constant('NavItem', {
             target: "_blank",
             href: "./customService.htm#/CustomService/customerManage",
             icon: "fa-plane"
-        }, {
-            index: 3,
-            name: "统计报表",
-            target: "_blank",
-            href: "",
-            icon: "fa-plane"
+        //}, {
+        //    index: 3,
+        //    name: "统计报表",
+        //    target: "_blank",
+        //    href: "",
+        //    icon: "fa-plane"
         }]
     },
-    'RoutineCenter': {
-        roles:[1],
-        name: "日常事务",
-        href: "./routineCenter.htm",
-        menuItems: [{
-            index: 0,
-            name: "请假流程",
-            href: "./routineCenter.htm#/routine/holiday",
-            icon: "fa-group"
-        }, {
-            index: 1,
-            name: "报销流程",
-            target: "_blank",
-            href: "./routineCenter.htm#/routine/expence",
-            icon: "fa-gears"
-        }, {
-            index: 2,
-            name: "采购流程",
-            target: "_blank",
-            href: "",
-            icon: "fa-github"
-        }, {
-            index: 3,
-            name: "出差流程",
-            target: "_blank",
-            href: "",
-            icon: "fa-cloud"
-        }, {
-            index: 4,
-            name: "建言献策",
-            target: "_blank",
-            href: "",
-            icon: "fa-reorder"
-        }, {
-            index: 5,
-            name: "我的任务",
-            target: "_blank",
-            href: "./routineCenter.htm#/routine/mytask",
-            icon: "fa-reorder"
-        }]
-    },
-    'FinanceCenter': {
-        roles:[1],
-        name: "财务管理",
-        href: "./financeCenter.htm",
-        menuItems: [{
-            index: 0,
-            name: "总账报表",
-            href: "./financeCenter.htm#/finance/ledger",
-            icon: "fa-group"
-        }, {
-            index: 1,
-            name: "凭证记录",
-            target: "_blank",
-            href: "./financeCenter.htm#/finance/voucher",
-            icon: "fa-gears"
-        },
-            {
-                index: 2,
-                name: "工资报表",
-                target: "_blank",
-                href: "./financeCenter.htm#/finance/wages",
-                icon: "fa-plane"
-            }]
-    },
-    'DecisionCenter': {
-        roles:[1],
-        name: "决策分析",
-        href: "./decisionCenter.htm",
-        menuItems: [{
-            index: 0,
-            name: "成本分析",
-            href: "./decisionCenter.htm#/decision/cost",
-            icon: "fa-group"
-        }, {
-            index: 1,
-            name: "销售分析",
-            target: "_blank",
-            href: "./decisionCenter.htm#/decision/sales",
-            icon: "fa-plane"
-        }, {
-            index: 2,
-            name: "市场分析",
-            target: "_blank",
-            href: "./decisionCenter.htm#/decision/market",
-            icon: "fa-magnet"
-        }]
-    },
+    //'RoutineCenter': {
+    //    roles:[1],
+    //    name: "日常事务",
+    //    href: "./routineCenter.htm",
+    //    menuItems: [{
+    //        index: 0,
+    //        name: "请假流程",
+    //        href: "./routineCenter.htm#/routine/holiday",
+    //        icon: "fa-group"
+    //    }, {
+    //        index: 1,
+    //        name: "报销流程",
+    //        target: "_blank",
+    //        href: "./routineCenter.htm#/routine/expence",
+    //        icon: "fa-gears"
+    //    }, {
+    //        index: 2,
+    //        name: "采购流程",
+    //        target: "_blank",
+    //        href: "",
+    //        icon: "fa-github"
+    //    }, {
+    //        index: 3,
+    //        name: "出差流程",
+    //        target: "_blank",
+    //        href: "",
+    //        icon: "fa-cloud"
+    //    }, {
+    //        index: 4,
+    //        name: "建言献策",
+    //        target: "_blank",
+    //        href: "",
+    //        icon: "fa-reorder"
+    //    }, {
+    //        index: 5,
+    //        name: "我的任务",
+    //        target: "_blank",
+    //        href: "./routineCenter.htm#/routine/mytask",
+    //        icon: "fa-reorder"
+    //    }]
+    //},
+    //'FinanceCenter': {
+    //    roles:[1],
+    //    name: "财务管理",
+    //    href: "./financeCenter.htm",
+    //    menuItems: [{
+    //        index: 0,
+    //        name: "总账报表",
+    //        href: "./financeCenter.htm#/finance/ledger",
+    //        icon: "fa-group"
+    //    }, {
+    //        index: 1,
+    //        name: "凭证记录",
+    //        target: "_blank",
+    //        href: "./financeCenter.htm#/finance/voucher",
+    //        icon: "fa-gears"
+    //    },
+    //        {
+    //            index: 2,
+    //            name: "工资报表",
+    //            target: "_blank",
+    //            href: "./financeCenter.htm#/finance/wages",
+    //            icon: "fa-plane"
+    //        }]
+    //},
+    //'DecisionCenter': {
+    //    roles:[1],
+    //    name: "决策分析",
+    //    href: "./decisionCenter.htm",
+    //    menuItems: [{
+    //        index: 0,
+    //        name: "成本分析",
+    //        href: "./decisionCenter.htm#/decision/cost",
+    //        icon: "fa-group"
+    //    }, {
+    //        index: 1,
+    //        name: "销售分析",
+    //        target: "_blank",
+    //        href: "./decisionCenter.htm#/decision/sales",
+    //        icon: "fa-plane"
+    //    }, {
+    //        index: 2,
+    //        name: "市场分析",
+    //        target: "_blank",
+    //        href: "./decisionCenter.htm#/decision/market",
+    //        icon: "fa-magnet"
+    //    }]
+    //},
+
     'GasCenter': {
         roles:[1,6],
-        name: "钢检管理",
+        name: "钢瓶管理",
         href: "./gasCenter.htm",
         menuItems: [{
             index: 0,

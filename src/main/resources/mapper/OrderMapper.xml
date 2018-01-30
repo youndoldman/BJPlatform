@@ -24,7 +24,7 @@
         <result column="latitude" property="recvLatitude" jdbcType="DOUBLE"/>
         <result column="recv_name" property="recvName" jdbcType="VARCHAR"/>
         <result column="recv_phone" property="recvPhone" jdbcType="VARCHAR"/>
-        <result column="reserve_time" property="reserveTime" jdbcType="DATE"/>
+        <result column="reserve_time" property="reserveTime" jdbcType="TIMESTAMP"/>
         <result column="comment" property="comment" jdbcType="VARCHAR"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>

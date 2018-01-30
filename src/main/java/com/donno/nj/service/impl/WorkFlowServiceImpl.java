@@ -73,9 +73,10 @@ public class WorkFlowServiceImpl implements WorkFlowService
 
     //查询当前任务
     @Override
-    public List<com.donno.nj.domain.Task> getTasksByUserId(String strUserID, int pageNo, int pageSize) {
+    public List<com.donno.nj.domain.Task> getTasksByUserId(String strUserID, int iTaskIndex, int pageNo, int pageSize) {
+        String[] strTaskIndexMaps = {"a", "b", "c", "d", "e"};
         // 根据当前人的ID查询
-        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(strUserID).orderByTaskCreateTime().desc();
+        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(strUserID).taskDefinitionKey(strTaskIndexMaps[iTaskIndex]).orderByTaskCreateTime().desc();
 
         List<Task> tasks = taskQuery.listPage((pageNo-1)*pageSize, pageSize);
         List<com.donno.nj.domain.Task>currentTaskList = new ArrayList<com.donno.nj.domain.Task>();
@@ -94,9 +95,11 @@ public class WorkFlowServiceImpl implements WorkFlowService
     }
     //查询当前任务的总数
     @Override
-    public int getTasksByUserId(String strUserID) {
+    public int getTasksCountByUserId(String strUserID, int iTaskIndex) {
+        String[] strTaskIndexMaps = {"a", "b", "c", "d", "e"};
         // 根据当前人的ID查询
-        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(strUserID).orderByTaskCreateTime().desc();
+        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(strUserID).taskDefinitionKey(strTaskIndexMaps[iTaskIndex]).orderByTaskCreateTime().desc();
+        //TaskQuery taskQuerys = taskService.createTaskQuery().taskCandidateOrAssigned(strUserID).;
 
         int count = taskQuery.list().size();
         return count;
