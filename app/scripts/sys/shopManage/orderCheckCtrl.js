@@ -102,7 +102,7 @@ shopManageApp.controller('OrderCheckCtrl', ['$scope', '$rootScope', '$filter', '
                 }
             }).then(function (result) {
                 if (result) {
-                    searchOrder();
+                    searchTaskOrder();
                 }
             })
         };
