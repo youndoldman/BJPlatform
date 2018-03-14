@@ -5,13 +5,7 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
                                                           rootService, pager, udcModal, OrderService,sessionStorage) {
         var gotoPage = function (pageNo) {
             $scope.pager.setCurPageNo(pageNo);
-            //如果是派送的订单就调用任务订单接口，这样才能拿到taskId
-            if($scope.q.orderStatus.key==0){
-                searchTaskOrder();
-
-            } else{
-                searchOrder();
-            }
+            searchOrder();
         };
 
         $(function () {
@@ -22,7 +16,6 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
                 //sideBySide:true,
                 showTodayButton:true,
                 toolbarPlacement:'top',
-
             });
             $('#datetimepickerEnd').datetimepicker({
                 format: 'YYYY-MM-DD HH:mm',
@@ -40,6 +33,7 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
                     var month = date.getMonth()+1;
                     $scope.q.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
                         +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                    console.log("changed")
                 });
             $('#datetimepickerEnd').datetimepicker()
                 .on('dp.change', function (ev) {
@@ -49,6 +43,13 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
                         +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
                 });
         });
+        //清除时间范围
+        $scope.deleteTimeRange = function () {
+            $scope.q.startTime = null;
+            $scope.q.endTime = null;
+        };
+
+
 
         $scope.pager = pager.init('OrderCtrl', gotoPage);
         var historyQ = $scope.pager.getQ();
@@ -59,8 +60,8 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
             taskList:[],
             orderList: [],
             orderStatus:[{key:null,value:"全部订单"},{key:0,value:"待派送"},{key:1,value:"派送中"},{key:2,value:"待核单"},
-                {key:3,value:"已完成"},{key:4,value:"作废"}],
-            orderStatusDisplay:["待派送","派送中","待核单","已完成","作废"]
+                {key:3,value:"已完成"},{key:4,value:"已作废"}],
+            orderStatusDisplay:["待派送","派送中","待核单","已完成","已作废"]
         };
         $scope.q = {
             startTime:null,
@@ -149,7 +150,6 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
                 pageSize: $scope.pager.pageSize,
                 orderBy:"id desc"
             };
-            console.log(queryParams);
 
             OrderService.retrieveOrders(queryParams).then(function (orders) {
                 $scope.pager.update($scope.q, orders.total, queryParams.pageNo);
@@ -157,22 +157,6 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
             });
         };
 
-        var searchTaskOrder = function () {
-            //查询需要进行强制派单的订单
-            var queryParams = {
-                orderStatus:0,//待派送
-                pageNo: $scope.pager.getCurPageNo(),
-                pageSize: $scope.pager.pageSize
-            };
-            var curUser = sessionStorage.getCurUser();
-            OrderService.retrieveTaskOrders(curUser.userId, queryParams).then(function (tasks) {
-                $scope.pager.update($scope.q, tasks.total, queryParams.pageNo);
-                $scope.vm.taskList = tasks.items;
-                //任务到订单数组的结构转换
-                $scope.vm.orderList= _.map(tasks.items, OrderService.toViewModelTaskOrders);;
-
-            });
-        };
 
         var init = function () {
             searchOrder();
@@ -185,13 +169,7 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
             if ($scope.q.orderStatus==null) {
                 return;
             };
-            if($scope.q.orderStatus.key==0){
-                searchTaskOrder();
-
-            } else{
-                searchOrder();
-            }
-
+            searchOrder();
         }
 
     }]);

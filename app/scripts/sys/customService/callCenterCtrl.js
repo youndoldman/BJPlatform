@@ -327,6 +327,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             //不间断供气测试
             searchCustomerTest();
 
+
         };
 
         init();
