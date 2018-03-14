@@ -34,6 +34,19 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                     rootService.updateActiveNavL2(NavItem.CustomService.menuItems[0]);
                 }
             })
+            .state('CustomService.orderDelivery',{
+                url:'/orderDelivery',
+                views: {
+                    "content@CustomService": {
+                        templateUrl: '../pages/customService/orderDeliveryList.htm',
+                        controller: 'OrderDeliveryCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[1]);
+                }
+            })
             .state('CustomService.orderManage',{
                 url:'/orderManage',
                 views: {
@@ -44,7 +57,7 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[1]);
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[2]);
                 }
             })
             .state('CustomService.customerManage',{
@@ -57,7 +70,19 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[2]);
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[3]);
+                }
+            }).state('CustomService.report1',{
+                url:'/report1',
+                views: {
+                    "content@CustomService": {
+                        templateUrl: '../pages/customService/report1.htm',
+                        controller: 'Report1Ctrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[4]);
                 }
             });
 

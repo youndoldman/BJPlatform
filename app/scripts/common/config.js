@@ -38,7 +38,10 @@ commonModule.constant('URI', {
         'bottleSpecQuery': '../../../api/GasCylinderSpec',//钢瓶规格查询
         'cloudUser': '../../../api/CloudUser',//云客服用户接口
         'cloudUserBind': '../../../api/CloudUser/Bind',//云客服用户绑定接口
-        'cloudUserUnBind': '../../../api/CloudUser/UnBind'//云客服用户解除绑定接口
+        'cloudUserUnBind': '../../../api/CloudUser/UnBind',//云客服用户解除绑定接口
+
+        'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
+        'ktyReport1': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/zhongdian/report1'//科天云获取坐席-工作组及直拨电话统计报表
 
 
 
@@ -151,24 +154,30 @@ commonModule.constant('NavItem', {
             name: "呼叫中心",
             href: "./customService.htm#/CustomService/callCenter",
             icon: "fa-group"
-        }, {
+        },  {
             index: 1,
-            name: "订单管理",
+            name: "订单配送",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/orderDelivery",
+            icon: "fa-gears"
+        }, {
+            index: 2,
+            name: "订单查询",
             target: "_blank",
             href: "./customService.htm#/CustomService/orderManage",
             icon: "fa-gears"
         }, {
-            index: 2,
+            index: 3,
             name: "客户管理",
             target: "_blank",
             href: "./customService.htm#/CustomService/customerManage",
             icon: "fa-plane"
-        //}, {
-        //    index: 3,
-        //    name: "统计报表",
-        //    target: "_blank",
-        //    href: "",
-        //    icon: "fa-plane"
+        }, {
+            index: 4,
+            name: "统计报表1",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/report1",
+            icon: "fa-plane"
         }]
     },
     //'RoutineCenter': {
