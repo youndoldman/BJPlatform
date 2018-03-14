@@ -23,7 +23,7 @@ public interface TableStoreService
     void batchWriteRow(List<GasCylinderPosition> gasCylinderPositionList);
 
     //迭代器查询方法 code－钢瓶码 startTime-开始时间 endTime-结束时间
-    List<GasCylinderPosition> getRangeByIterator(java.lang.String code, java.lang.String startTime, java.lang.String endTime);
+    List<GasCylinderPosition>    getRangeByIterator(java.lang.String code, java.lang.String startTime, java.lang.String endTime);
 
     //普通查询方法 code－钢瓶码 startTime-开始时间 endTime-结束时间
     List<GasCylinderPosition>  getRange(String code, String startTime, String endTime);
