@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface TableStoreService
 {
-
     void createTable();
     void updateTable();
     void describeTable();
