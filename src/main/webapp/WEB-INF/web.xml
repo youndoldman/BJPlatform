@@ -62,13 +62,4 @@
     </servlet-mapping>
 
 
-    <servlet>
-        <servlet-name>AdjustPriceExecutorServiceImpl</servlet-name>
-        <servlet-class>com.donno.nj.service.impl.AdjustPriceExecutorServiceImpl</servlet-class>
-        <init-param>
-            <param-name>contextConfigLocation</param-name>
-            <param-value></param-value>
-        </init-param>
-        <load-on-startup>2</load-on-startup>
-    </servlet>
 </web-app>

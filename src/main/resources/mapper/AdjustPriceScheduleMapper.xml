@@ -66,10 +66,18 @@
         </if>
 
 
-        <if test="startTime != null"  >
-        <if test="endTime != null">
-            AND  (effect_time  BETWEEN #{startTime}  and #{endTime} )
+        <!--<if test="startTime != null"  >-->
+        <!--<if test="endTime != null">-->
+            <!--AND  (effect_time  BETWEEN #{startTime}  and #{endTime} )-->
+        <!--</if>-->
+        <!--</if>-->
+
+        <if test="endTime != null"  >
+            AND  ( effect_time > #{startTime} )
         </if>
+
+        <if test="endTime != null"  >
+            AND  ( #{endTime} > effect_time)
         </if>
 
 
@@ -103,10 +111,17 @@
         </if>
 
 
+        <if test="endTime != null"  >
+            AND  ( effect_time > #{startTime} )
+        </if>
+
+        <if test="endTime != null"  >
+            AND  ( #{endTime} > effect_time)
+        </if>
+
+
         <if test="startTime != null"  >
-            <if test="endTime != null">
-                AND  (create_time  BETWEEN #{startTime}  and #{endTime} )
-            </if>
+            AND  (effect_time > #{startTime})
         </if>
 
     </select>

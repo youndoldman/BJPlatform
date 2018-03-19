@@ -175,4 +175,36 @@ public class AdjustPriceScheduleServiceImpl implements AdjustPriceScheduleServic
         adjustPriceScheduleDetailDao.deleteByScheduleIdx(id);
     }
 
+    @Override
+    @OperationLog(desc = "执行调价任务")
+    public void adjustPrice()
+    {
+        /*查询待调价计划*/
+        Map params = new HashMap<String,String>();
+        params.putAll(ImmutableMap.of("status", AdjustPriceScheduleStatus.APSWaitForForce.getIndex()));
+        params.putAll(ImmutableMap.of("endTime", new Date()));
+        List<AdjustPriceSchedule> schedules = retrieve(params);
+
+        for (AdjustPriceSchedule schedule:schedules)
+        {
+            for (AdjustPriceDetail adjustPriceDetail:schedule.getAdjustPriceDetailList())
+            {
+                /*更改商品价格*/
+                Goods goods = adjustPriceDetail.getGoods();
+                if(goods!= null)
+                {
+                    goods.setPrice(adjustPriceDetail.getPrice());
+                    goodsDao.update(goods);
+
+                    /*操作日志记录*/
+                }
+
+            }
+
+            /*调价计划表修改为已调价*/
+            schedule.setStatus(AdjustPriceScheduleStatus.APSEffecitve);
+            update(schedule.getId(),schedule);
+        }
+    }
+
 }

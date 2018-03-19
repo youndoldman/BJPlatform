@@ -9,4 +9,5 @@ import org.apache.ibatis.annotations.Param;
 public interface AdjustPriceScheduleDao extends BaseDao<AdjustPriceSchedule>
 {
     AdjustPriceSchedule findByName(String name);
+
 }

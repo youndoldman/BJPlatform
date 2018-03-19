@@ -24,4 +24,6 @@ public interface AdjustPriceScheduleService
     void update(Integer id, AdjustPriceSchedule newAdjustPriceSchedule);
 
     void deleteById(Integer id);
+
+    void adjustPrice();
 }
