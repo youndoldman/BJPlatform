@@ -72,7 +72,7 @@
         <!--</if>-->
         <!--</if>-->
 
-        <if test="endTime != null"  >
+        <if test="startTime != null"  >
             AND  ( effect_time > #{startTime} )
         </if>
 
@@ -111,7 +111,7 @@
         </if>
 
 
-        <if test="endTime != null"  >
+        <if test="startTime != null"  >
             AND  ( effect_time > #{startTime} )
         </if>
 
@@ -119,10 +119,6 @@
             AND  ( #{endTime} > effect_time)
         </if>
 
-
-        <if test="startTime != null"  >
-            AND  (effect_time > #{startTime})
-        </if>
 
     </select>
 
