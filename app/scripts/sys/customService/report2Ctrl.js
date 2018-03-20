@@ -1,8 +1,11 @@
+/**
+ * Created by Administrator on 2018/3/15.
+ */
 'use strict';
 
-customServiceApp.controller('Report1Ctrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
+customServiceApp.controller('Report2Ctrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
     'rootService', 'pager', 'udcModal', 'KtyService', 'sessionStorage',function ($scope, $rootScope, $filter, $location, Constants,
-                                                          rootService, pager, udcModal, KtyService,sessionStorage) {
+                                                                                 rootService, pager, udcModal, KtyService,sessionStorage) {
         $(function () {
 
             $('#datetimepickerStart').datetimepicker({
@@ -31,13 +34,10 @@ customServiceApp.controller('Report1Ctrl', ['$scope', '$rootScope', '$filter', '
                 });
             $('#datetimepickerEnd').datetimepicker()
                 .on('dp.change', function (ev) {
-                    //var date = new Date();
-                    //console.log(date);
                     var date = ev.date._d;
                     var month = date.getMonth()+1;
                     $scope.q.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
                         +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-                    //console.log($scope.q.endTime);
                 });
         });
 
@@ -83,7 +83,7 @@ customServiceApp.controller('Report1Ctrl', ['$scope', '$rootScope', '$filter', '
                     begin: $scope.q.startTime,
                     end: $scope.q.endTime
                 };
-                KtyService.retrieveReport1(queryParams, $scope.q.token).then(function (response) {
+                KtyService.retrieveReport2(queryParams, $scope.q.token).then(function (response) {
                     $scope.vm.dataList = response.data;
                 }, function(value) {
                     $scope.vm.dataList = null;

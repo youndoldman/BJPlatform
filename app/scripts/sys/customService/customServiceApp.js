@@ -84,7 +84,73 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                 onEnter: function (rootService, NavItem) {
                     rootService.updateActiveNavL2(NavItem.CustomService.menuItems[4]);
                 }
-            });
+            })
+            .state('CustomService.report2',{
+                url:'/report2',
+                views: {
+                    "content@CustomService": {
+                        templateUrl: '../pages/customService/report2.html',
+                        controller: 'Report2Ctrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[5]);
+                }
+            })
+            .state('CustomService.report3',{
+            url:'/report3',
+            views: {
+                "content@CustomService": {
+                    templateUrl: '../pages/customService/report3.html',
+                    controller: 'Report3Ctrl',
+                    resolve: {}
+                }
+            },
+            onEnter: function (rootService, NavItem) {
+                rootService.updateActiveNavL2(NavItem.CustomService.menuItems[6]);
+            }
+        })
+            .state('CustomService.report4',{
+                url:'/report4',
+                views: {
+                    "content@CustomService": {
+                        templateUrl: '../pages/customService/report4.html',
+                        controller: 'Report4Ctrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[7]);
+                }
+            })
+            .state('CustomService.report5',{
+                url:'/report5',
+                views: {
+                    "content@CustomService": {
+                        templateUrl: '../pages/customService/report5.html',
+                        controller: 'Report5Ctrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[8]);
+                }
+            })
+            .state('CustomService.report6',{
+                url:'/report6',
+                views: {
+                    "content@CustomService": {
+                        templateUrl: '../pages/customService/report6.html',
+                        controller: 'Report6Ctrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[9]);
+                }
+            })
+        ;
 
         $httpProvider.interceptors.push('HttpInterceptor');
     }]).run(['$rootScope', 'rootService', 'NavItem', function ($rootScope, rootService, NavItem) {

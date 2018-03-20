@@ -1,0 +1,125 @@
+<style>
+    .tableContentAdjust{
+        text-align: center;
+        vertical-align: middle;
+    }
+</style>
+<div class="ribbon">
+    <a href=""><span class="home fa fa-home"></span></a>
+    <ol class="breadcrumb">
+        <li>工作组-来话等待时长统计报表</li>
+    </ol>
+</div>
+
+<div class="table-wrapper">
+    <div class="toolbar">
+        <form role="form">
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="input"><input type="text" class="form-control input-md" ng-model="q.workSet" placeholder="工作组号"> </label>
+                    <!--<label class="input"><input type="text" class="form-control input-md" ng-model="q.userId" placeholder="坐席工号"> </label>-->
+                </div>
+                <div class="col-md-4">
+                    <label class="input">时间范围：</label>
+                    <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>
+                    <label class="input">—</label>
+                    <label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control" ng-model="q.endTime"></label>
+                </div>
+                <div class="col-md-3">
+                    <label class="input">日期类型：</label>
+                    <label class="input"><select  ng-model="q.type" ng-options="type for type in vm.types" class="form-control" ng-selected=""></select></label>
+                    <label class="input">间隔数：</label>
+                    <label class="input"><select  ng-model="q.interval" ng-options="interval for interval in vm.intervals" class="form-control" ng-selected=""></select></label>
+                </div>
+                <div class="col-md-2">
+                    <button ng-click="search()" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> 搜索 </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <table class="table table-striped table-hover props table-sm table-bordered table-condensed">
+        <thead>
+        <tr>
+            <td width="6.25%" rowspan="3" class="message tableContentAdjust" >开始时间</td>
+            <td width="6.25%" rowspan="3" class="message tableContentAdjust">工作组</td>
+            <td width="6.25%" rowspan="3" class="message tableContentAdjust">总拨入电话</td>
+            <td width="31.25%" colspan="5" class="message tableContentAdjust">应答</td>
+            <td width="31.25%" colspan="5" class="message tableContentAdjust">放弃</td>
+            <td width="18.75%" colspan="3" class="message tableContentAdjust">溢出/转接</td>
+        </tr>
+
+        <tr>
+            <td width="6.25%" rowspan="2" class="message tableContentAdjust">电话</td>
+            <td width="6.25%" rowspan="2" class="message tableContentAdjust">等待时间</td>
+            <td width="6.25%" rowspan="2" class="message tableContentAdjust">平均等待时间</td>
+            <td width="13%" colspan="2" class="message tableContentAdjust">是否SLT</td>
+
+            <td width="13%" colspan="2" class="message tableContentAdjust">放弃在</td>
+            <td width="13%" colspan="3" class="message tableContentAdjust">总计放弃</td>
+
+            <td width="6.25%" rowspan="2" class="message tableContentAdjust">电话</td>
+            <td width="6.25%" rowspan="2" class="message tableContentAdjust">等待时间</td>
+            <td width="6.25%" rowspan="2" class="message tableContentAdjust">平均等待时间</td>
+        </tr>
+
+        <tr>
+            <td width="6.25%" class="message tableContentAdjust">电话</td>
+            <td width="6.25%" class="message tableContentAdjust">%</td>
+
+            <td width="6.25%" class="message tableContentAdjust">队列</td>
+            <td width="6.25%" class="message tableContentAdjust">振铃</td>
+
+            <td width="6.25%" class="message tableContentAdjust">电话</td>
+            <td width="6.25%" class="message tableContentAdjust">等待时间</td>
+            <td width="6.25%" class="message tableContentAdjust">平均等待时间</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in vm.dataList">
+            <td class="message">{{item.date}}</td>
+            <td class="message">{{item.workSetName}}</td>
+            <td class="message">{{item.totalCallCount}}</td>
+            <td class="message">{{item.answerCallDetail.count}}</td>
+            <td class="message">{{item.answerCallDetail.totalOperationInSec}}</td>
+            <td class="message">{{item.answerCallDetail.avgOperationInSec}}</td>
+            <td class="message">{{item.stl.count}}</td>
+            <td class="message">{{item.stl.hitRate}}</td>
+            <td class="message">{{item.rejectInQueue}}</td>
+            <td class="message">{{item.rejectInBelling}}</td>
+            <td class="message">{{item.rejectCallDetail.count}}</td>
+            <td class="message">{{item.rejectCallDetail.totalOperationInSec}}</td>
+            <td class="message">{{item.rejectCallDetail.avgOperationInSec}}</td>
+            <td class="message">{{item.transferCallDetail.count}}</td>
+            <td class="message">{{item.transferCallDetail.totalOperationInSec}}</td>
+            <td class="message">{{item.transferCallDetail.avgOperationInSec}}</td>
+        </tr>
+
+        <tr>
+            <td width="13%" colspan="2" class="message tableContentAdjust">小计</td>
+
+            <td width="6.25%" class="message tableContentAdjust"></td>
+            <td width="6.25%" class="message tableContentAdjust"></td>
+            <td width="6.25%" class="message tableContentAdjust"></td>
+            <td width="6.25%"  class="message tableContentAdjust"></td>
+
+            <td width="6.25%"  class="message tableContentAdjust"></td>
+            <td width="6.25%"  class="message tableContentAdjust"></td>
+            <td width="6.25%"  class="message tableContentAdjust"></td>
+            <td width="6.25%"  class="message tableContentAdjust"></td>
+
+            <td width="6.25%"  class="message tableContentAdjust"></td>
+            <td width="6.25%"  class="message tableContentAdjust"></td>
+            <td width="6.25%"  class="message tableContentAdjust"></td>
+            <td width="6.25%" class="message tableContentAdjust"></td>
+            <td width="6.25%"  class="message tableContentAdjust"></td>
+            <td width="6.25%" class="message tableContentAdjust"></td>
+        </tr>
+
+        </tbody>
+    </table>
+    <!--<div class="toolbar">-->
+    <!--<form role="form">-->
+    <!--<button type="submit" class="btn btn-sm btn-primary pull-right">提交申请</button>-->
+    <!--</form>-->
+    <!--</div>-->
+</div>

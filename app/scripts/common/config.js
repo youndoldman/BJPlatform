@@ -41,9 +41,12 @@ commonModule.constant('URI', {
         'cloudUserUnBind': '../../../api/CloudUser/UnBind',//云客服用户解除绑定接口
 
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
-        'ktyReport1': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/zhongdian/report1'//科天云获取坐席-工作组及直拨电话统计报表
-
-
+        'ktyReport1': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/zhongdian/report1',//科天云获取坐席-工作组及直拨电话统计报表
+        'ktyReport2': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/zhongdian/report2',//科天云获取坐席-操作状态统计报表
+        'ktyReport3': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/zhongdian/report3',//科天云获取工作组-来话等待时长统计报表
+        'ktyReport4': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/zhongdian/report4',//科天云获取工作组-来话处理时长统计报表
+        'ktyReport5': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/zhongdian/report5',//科天云获取工作组-来话等待时长分析报表
+        'ktyReport6': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/zhongdian/report6',//科天云获取工作组-来话应答/放弃/溢出分析报表
 
 
 
@@ -174,11 +177,42 @@ commonModule.constant('NavItem', {
             icon: "fa-plane"
         }, {
             index: 4,
-            name: "统计报表1",
+            name: "坐席报表1",
             target: "_blank",
             href: "./customService.htm#/CustomService/report1",
             icon: "fa-plane"
-        }]
+        }, {
+            index: 5,
+            name: "坐席报表2",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/report2",
+            icon: "fa-plane"
+        }, {
+            index: 6,
+            name: "工作组报表3",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/report3",
+            icon: "fa-plane"
+        }, {
+            index: 7,
+            name: "工作组报表4",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/report4",
+            icon: "fa-plane"
+        }, {
+            index: 8,
+            name: "工作组报表5",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/report5",
+            icon: "fa-plane"
+        }, {
+            index: 9,
+            name: "工作组报表6",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/report6",
+            icon: "fa-plane"
+            }
+        ]
     },
     //'RoutineCenter': {
     //    roles:[1],

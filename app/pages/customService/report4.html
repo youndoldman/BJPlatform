@@ -7,7 +7,7 @@
 <div class="ribbon">
     <a href=""><span class="home fa fa-home"></span></a>
     <ol class="breadcrumb">
-        <li>坐席-电话统计报表</li>
+        <li>工作组-来话处理时长统计报表</li>
     </ol>
 </div>
 
@@ -16,8 +16,8 @@
         <form role="form">
             <div class="row">
                 <div class="col-md-3">
-                    <label class="input"><input type="text" class="form-control input-md" ng-model="q.userName" placeholder="坐席名"> </label>
-                    <label class="input"><input type="text" class="form-control input-md" ng-model="q.userId" placeholder="坐席工号"> </label>
+                    <label class="input"><input type="text" class="form-control input-md" ng-model="q.workSet" placeholder="工作组号"> </label>
+                    <!--<label class="input"><input type="text" class="form-control input-md" ng-model="q.userId" placeholder="坐席工号"> </label>-->
                 </div>
                 <div class="col-md-4">
                     <label class="input">时间范围：</label>
@@ -40,50 +40,62 @@
     <table class="table table-striped table-hover props table-sm table-bordered table-condensed">
         <thead>
         <tr>
-            <td width="12.5%" rowspan="2" class="message tableContentAdjust" >日期</td>
-            <td width="12.5%" rowspan="2" class="message tableContentAdjust">坐席</td>
-            <td width="25%" colspan="4" class="message tableContentAdjust">所有电话</td>
-            <td width="25%" colspan="4" class="message tableContentAdjust">拨入电话</td>
-            <td width="25%" colspan="4" class="message tableContentAdjust">拨出电话</td>
+            <td width="6%" rowspan="3" class="message tableContentAdjust" >日期</td>
+            <td width="6%" rowspan="3" class="message tableContentAdjust">工作组</td>
+            <td width="6%" rowspan="3" class="message tableContentAdjust">总计电话</td>
+            <td width="24%" colspan="4" class="message tableContentAdjust">应答电话</td>
+            <td width="24%" colspan="4" class="message tableContentAdjust">放弃电话</td>
+            <td width="12%" colspan="2" class="message tableContentAdjust">溢出/转接</td>
+            <td width="6%" rowspan="3" class="message tableContentAdjust">语音留言数量</td>
+            <td width="6%" rowspan="3" class="message tableContentAdjust">总计队列中电话</td>
         </tr>
 
         <tr>
-            <td width="6.25%" class="message tableContentAdjust">呼叫总计</td>
-            <td width="6.25%" class="message tableContentAdjust">接通率</td>
-            <td width="6.25%" class="message tableContentAdjust">通话总计</td>
-            <td width="6.25%"  class="message tableContentAdjust">平均通话</td>
+            <td width="6%" rowspan="2" class="message tableContentAdjust">电话</td>
+            <td width="6%" rowspan="2" class="message tableContentAdjust">%</td>
+            <td width="6%" rowspan="2" class="message tableContentAdjust">通话时间</td>
+            <td width="6%" rowspan="2" class="message tableContentAdjust">平均通话</td>
 
-            <td width="6.25%"  class="message tableContentAdjust">电话</td>
-            <td width="6.25%"  class="message tableContentAdjust">%</td>
-            <td width="6.25%"  class="message tableContentAdjust">通话总计</td>
-            <td width="6.25%"  class="message tableContentAdjust">平均通话</td>
+            <td width="6%" rowspan="2" class="message tableContentAdjust">电话</td>
+            <td width="6%" rowspan="2" class="message tableContentAdjust">%</td>
+            <td width="12%" colspan="2" class="message tableContentAdjust">放弃在</td>
 
-            <td width="6.25%"  class="message tableContentAdjust">电话</td>
-            <td width="6.25%"  class="message tableContentAdjust">%</td>
-            <td width="6.25%"  class="message tableContentAdjust">通话总计</td>
-            <td width="6.25%" class="message tableContentAdjust">平均通话</td>
+            <td width="6%" rowspan="2" class="message tableContentAdjust">电话</td>
+            <td width="6%" rowspan="2" class="message tableContentAdjust">%</td>
+
+        </tr>
+
+        <tr>
+            <td width="6%" class="message tableContentAdjust">队列</td>
+            <td width="6%" class="message tableContentAdjust">振铃</td>
+
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="item in vm.dataList">
             <td class="message">{{item.date}}</td>
-            <td class="message">{{item.agentUserId}}</td>
+            <td class="message">{{item.workSetName}}</td>
             <td class="message">{{item.totalCallCount}}</td>
-            <td class="message"></td>
-            <td class="message">{{item.totalCallTime}}</td>
-            <td class="message">{{item.avgCallTime}}</td>
-            <td class="message">{{item.inBoundData.count}}</td>
-            <td class="message">{{item.inBoundData.hitRate}}</td>
-            <td class="message">{{item.inBoundData.totalOperationInSec}}</td>
-            <td class="message">{{item.inBoundData.avgOperationInSec}}</td>
-            <td class="message">{{item.outBoundData.count}}</td>
-            <td class="message">{{item.outBoundData.hitRate}}</td>
-            <td class="message">{{item.outBoundData.totalOperationInSec}}</td>
-            <td class="message">{{item.outBoundData.avgOperationInSec}}</td>
+
+            <td class="message">{{item.answerCallDetail.count}}</td>
+            <td class="message">{{item.answerCallDetail.hitRate}}</td>
+            <td class="message">{{item.answerCallDetail.totalOperationInSec}}</td>
+            <td class="message">{{item.answerCallDetail.avgOperationInSec}}</td>
+
+            <td class="message">{{item.rejectCallDetail.count}}</td>
+            <td class="message">{{item.rejectCallDetail.hitRate}}</td>
+            <td class="message">{{item.rejectInQueue}}</td>
+            <td class="message">{{item.rejectInBelling}}</td>
+
+            <td class="message">{{item.transferCallDetail.count}}</td>
+            <td class="message">{{item.transferCallDetail.hitRate}}</td>
+
+            <td class="message">{{item.voiceMailCount}}</td>
+            <td class="message">{{item.totalInQueue}}</td>
         </tr>
 
         <tr>
-            <td width="25%" colspan="2" class="message tableContentAdjust">小计</td>
+            <td width="13%" colspan="2" class="message tableContentAdjust">小计</td>
 
             <td width="6.25%" class="message tableContentAdjust"></td>
             <td width="6.25%" class="message tableContentAdjust"></td>
@@ -99,6 +111,7 @@
             <td width="6.25%"  class="message tableContentAdjust"></td>
             <td width="6.25%"  class="message tableContentAdjust"></td>
             <td width="6.25%" class="message tableContentAdjust"></td>
+            <td width="6.25%"  class="message tableContentAdjust"></td>
         </tr>
 
         </tbody>
