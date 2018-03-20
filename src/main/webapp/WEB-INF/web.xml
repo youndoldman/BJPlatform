@@ -54,8 +54,12 @@
         </init-param>
         <load-on-startup>2</load-on-startup>
     </servlet>
+
+
     <servlet-mapping>
         <servlet-name>dispatcherServlet</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
+
 </web-app>
