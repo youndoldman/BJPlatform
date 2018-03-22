@@ -36,6 +36,9 @@ public class DiscountStrategyServiceImpl implements DiscountStrategyService
     @Autowired
     private  CustomerTypeDao customerTypeDao;
 
+    @Autowired
+    private  DiscountConditionTypeDao discountConditionTypeDao;
+
     @Override
     public Optional<DiscountStrategy> findByName(String name) {
         return Optional.fromNullable(discountStrategyDao.findByName(name));
@@ -71,17 +74,33 @@ public class DiscountStrategyServiceImpl implements DiscountStrategyService
             throw new ServerSideBusinessException("优惠策略信息为空！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        /*用户级别策略检查*/
-        if (discountStrategy.getDiscountConditionType() == DiscountConditionType.DCTCustomerLevel)
+        if (discountStrategy.getDiscountType() == null)
         {
-            checkCustomerLevel(discountStrategy.getDiscountConditionValue());
+            throw new ServerSideBusinessException("优惠类型信息为空！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        /*用户类型策略检查*/
-        if (discountStrategy.getDiscountConditionType() == DiscountConditionType.DCTCustomerType)
+        if (discountStrategy.getDiscountConditionType() == null)
         {
-            checkCustomerType(discountStrategy.getDiscountConditionValue());
+            throw new ServerSideBusinessException("优惠策略类型信息为空！", HttpStatus.NOT_ACCEPTABLE);
         }
+
+        if (discountStrategy.getStartTime() == null)
+        {
+            throw new ServerSideBusinessException("开始时间为空！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (discountStrategy.getEndTime() == null)
+        {
+            throw new ServerSideBusinessException("结束时间为空！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (discountStrategy.getUseType() == null)
+        {
+            throw new ServerSideBusinessException("优惠策略使用方式为空！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        /*策略类型检查*/
+        checkConditionType(discountStrategy);
 
          /*插入优惠策略总表*/
         discountStrategyDao.insert(discountStrategy);
@@ -109,16 +128,10 @@ public class DiscountStrategyServiceImpl implements DiscountStrategyService
 
         newDiscountStrategy.setId(id);
 
-        /*用户级别策略检查*/
-        if (newDiscountStrategy.getDiscountConditionType() == DiscountConditionType.DCTCustomerLevel)
+        /*策略类型检查*/
+        if (discountStrategy.getDiscountConditionType() != null)
         {
-            checkCustomerLevel(newDiscountStrategy.getDiscountConditionValue());
-        }
-
-        /*用户类型策略检查*/
-        if (newDiscountStrategy.getDiscountConditionType() == DiscountConditionType.DCTCustomerType)
-        {
-            checkCustomerType(newDiscountStrategy.getDiscountConditionValue());
+            checkConditionType(discountStrategy);
         }
 
        /*更新主表数据*/
@@ -144,6 +157,8 @@ public class DiscountStrategyServiceImpl implements DiscountStrategyService
         discountDetailDao.deleteByDiscountStrategyIdx(id);
     }
 
+
+
     @OperationLog(desc = "检查优惠方案，未生效方案触发")
     public void DiscountTrigger()
     {
@@ -158,6 +173,29 @@ public class DiscountStrategyServiceImpl implements DiscountStrategyService
             /*优惠方案状态修改为已生效，生效后不允许修改*/
             strategy.setDiscountStrategyStatus(DiscountStrategyStatus.DSSEffecitve);
             update(strategy.getId(),strategy);
+        }
+    }
+
+    public void checkConditionType(DiscountStrategy discountStrategy)
+    {
+        DiscountConditionType discountConditionType = discountStrategy.getDiscountConditionType();
+        if (discountConditionType.getCode() == null || discountConditionType.getCode().trim().length() == 0)
+        {
+            throw new ServerSideBusinessException("优惠策略类型信息不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
+        if (discountConditionTypeDao.findByCode(discountConditionType.getCode()) == null)
+        {
+            throw new ServerSideBusinessException("优惠策略类型信息错误！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        /*用户级别策略检查*/
+        if (discountConditionType.getCode().compareTo(ServerConstantValue.DISCOUNT_CONDITION_TYPE_CUSTOMER_LEVEL) == 0)
+        {
+            checkCustomerLevel(discountStrategy.getDiscountConditionValue());
+        }
+        else if (discountConditionType.getCode().compareTo(ServerConstantValue.DISCOUNT_CONDITION_TYPE_CUSTOMER_TYPE) == 0)/*用户类型策略检查*/
+        {
+            checkCustomerType(discountStrategy.getDiscountConditionValue());
         }
     }
 
@@ -207,15 +245,17 @@ public class DiscountStrategyServiceImpl implements DiscountStrategyService
 
     public void insertDetail(DiscountStrategy discountStrategy)
     {
-        for(DiscountDetail discountDetail: discountStrategy.getDiscountDetails())
+        if (discountStrategy.getDiscountDetails() != null)
         {
+            for(DiscountDetail discountDetail: discountStrategy.getDiscountDetails())
+            {
             /*校验商品信息是否存在*/
-            checkGoods(discountDetail.getGoods());
-            discountDetail.setDiscountStrategyIdx(discountStrategy.getId());
-            discountDetail.setGoods(discountDetail.getGoods());
+                checkGoods(discountDetail.getGoods());
+                discountDetail.setDiscountStrategyIdx(discountStrategy.getId());
+                discountDetail.setGoods(discountDetail.getGoods());
 
-            discountDetailDao.insert(discountDetail);
+                discountDetailDao.insert(discountDetail);
+            }
         }
     }
-
 }

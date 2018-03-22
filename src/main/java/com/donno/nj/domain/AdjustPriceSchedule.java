@@ -12,7 +12,7 @@ public class AdjustPriceSchedule implements Serializable
     private String  name;
     private Date effectTime;//生效时间
     private AdjustPriceScheduleStatus status;//调价计划状态
-    List<AdjustPriceDetail> adjustPriceDetailList;
+    private List<AdjustPriceDetail> adjustPriceDetailList;
     protected String note;
     protected Date createTime;
     protected Date updateTime;
