@@ -71,6 +71,9 @@ customServiceApp.controller('Report4Ctrl', ['$scope', '$rootScope', '$filter', '
             searchData();
         };
 
+        $scope.printPage = function () {
+            window.print();
+        };
 
         var searchData = function () {
             //先登录授权，拿到token、orgId、userId
@@ -90,7 +93,7 @@ customServiceApp.controller('Report4Ctrl', ['$scope', '$rootScope', '$filter', '
                     $scope.vm.dataList = response.data;
                 }, function(value) {
                     $scope.vm.dataList = null;
-                    udcModal.info({"title": "查询失败", "message": value.message});
+                    udcModal.info({"title": "查询失败", "message": "请输入相关的查询条件"});
                 });
             }, function(value) {
                 udcModal.info({"title": "连接结果", "message": "认证失败 "+value.message});
@@ -101,7 +104,7 @@ customServiceApp.controller('Report4Ctrl', ['$scope', '$rootScope', '$filter', '
 
 
         var init = function () {
-            searchData();
+            //searchData();
         };
         init();
     }]);

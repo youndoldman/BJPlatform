@@ -149,8 +149,7 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                 onEnter: function (rootService, NavItem) {
                     rootService.updateActiveNavL2(NavItem.CustomService.menuItems[9]);
                 }
-            })
-        ;
+            });
 
         $httpProvider.interceptors.push('HttpInterceptor');
     }]).run(['$rootScope', 'rootService', 'NavItem', function ($rootScope, rootService, NavItem) {

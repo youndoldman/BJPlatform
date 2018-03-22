@@ -1,9 +1,11 @@
+
 <style>
     .tableContentAdjust{
         text-align: center;
         vertical-align: middle;
     }
 </style>
+
 <div class="ribbon">
     <a href=""><span class="home fa fa-home"></span></a>
     <ol class="breadcrumb">
@@ -22,8 +24,8 @@
                 <div class="col-md-4">
                     <label class="input">时间范围：</label>
                     <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>
-                    <label class="input">—</label>
-                    <label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control" ng-model="q.endTime"></label>
+                    <label class="input">至</label>
+                    <label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control" ng-model="q.endTime" placeholder={{data.endTime}}></label>
                 </div>
                 <div class="col-md-3">
                     <label class="input">日期类型：</label>
@@ -31,8 +33,11 @@
                     <label class="input">间隔数：</label>
                     <label class="input"><select  ng-model="q.interval" ng-options="interval for interval in vm.intervals" class="form-control" ng-selected=""></select></label>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
                     <button ng-click="search()" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> 搜索 </button>
+                </div>
+                <div class="col-md-1">
+                    <button ng-click="printPage()" class="btn btn-sm btn-primary"><i class="fa fa-print"></i>打印</button>
                 </div>
             </div>
         </form>
@@ -47,7 +52,7 @@
             <td width="25%" colspan="4" class="message tableContentAdjust">拨出电话</td>
         </tr>
 
-        <tr>
+        <tr >
             <td width="6.25%" class="message tableContentAdjust">呼叫总计</td>
             <td width="6.25%" class="message tableContentAdjust">接通率</td>
             <td width="6.25%" class="message tableContentAdjust">通话总计</td>
@@ -65,7 +70,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="item in vm.dataList">
+        <tr  ng-repeat="item in vm.dataList">
             <td class="message">{{item.date}}</td>
             <td class="message">{{item.agentUserId}}</td>
             <td class="message">{{item.totalCallCount}}</td>
@@ -82,7 +87,7 @@
             <td class="message">{{item.outBoundData.avgOperationInSec}}</td>
         </tr>
 
-        <tr>
+        <tr >
             <td width="25%" colspan="2" class="message tableContentAdjust">小计</td>
 
             <td width="6.25%" class="message tableContentAdjust"></td>
@@ -103,9 +108,5 @@
 
         </tbody>
     </table>
-    <!--<div class="toolbar">-->
-    <!--<form role="form">-->
-    <!--<button type="submit" class="btn btn-sm btn-primary pull-right">提交申请</button>-->
-    <!--</form>-->
-    <!--</div>-->
 </div>
+
