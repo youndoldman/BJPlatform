@@ -15,8 +15,9 @@
     <!-- Custom styles for this template -->
     <link href="../styles/stylesheets/global.css" rel="stylesheet">
     <link href="../lib/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet">
-    <script src="../scripts/util/browser-checker.js"></script>
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
 
+    <script src="../scripts/util/browser-checker.js"></script>
     <script src="../lib/jquery/jquery-2.0.2.min.js"></script>
     <script src="../lib/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
     <script src="../lib/underscore/underscore-min.js"></script>
@@ -111,17 +112,24 @@
         .hangup-disabled{background: url(../images/web-phone/hangup1.png) no-repeat}
         .hangup:hover{border:1px solid #b1defd;background-color:#e6f3fc;}
 
+        @media print {
+            .noprint { display: none }
+            table,th,td{
+                border: 1px solid grey;
+            }
+        }
     </style>
 
 </head>
 <body>
 
-<div nj-header></div>
+<div class="noprint" nj-header ></div>
 <div class="container main">
     <div class="row">
-        <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1" nj-menu></div>
+        <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1 noprint" nj-menu></div>
         <div class="col-xs-12 col-sm-11 col-md-11 col-lg-11 ">
-            <div ui-view></div>
+            <div ui-view>
+            </div>
         </div>
     </div>
 </div>

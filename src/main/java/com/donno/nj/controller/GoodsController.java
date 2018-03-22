@@ -2,6 +2,7 @@ package com.donno.nj.controller;
 
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
+import com.donno.nj.domain.AdjustPriceHistory;
 import com.donno.nj.domain.Goods;
 import com.donno.nj.domain.GoodsType;
 import com.donno.nj.representation.ListRep;
@@ -122,5 +123,21 @@ public class GoodsController
         }
 
         return responseEntity;
+    }
+
+    @RequestMapping(value = "/api/Goods/PriceHistory", method = RequestMethod.GET, produces = "application/json")
+    @OperationLog(desc = "获取商品调价历史")
+    public ResponseEntity retrieve(@RequestParam(value = "code", defaultValue = "") String code)
+    {
+        Map params = new HashMap<String,String>();
+
+        if (code.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("code", code));
+        }
+
+        List<AdjustPriceHistory> adjustPriceHistorys = goodsService.retrieveAdjustPriceHistory(params);
+        Integer count = adjustPriceHistorys.size();
+        return ResponseEntity.ok(ListRep.assemble(adjustPriceHistorys, count));
     }
 }

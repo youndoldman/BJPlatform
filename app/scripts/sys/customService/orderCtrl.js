@@ -59,17 +59,28 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
         $scope.vm = {
             taskList:[],
             orderList: [],
+
+            payStatus: [{key:null,value:"全部状态"},{key:"PSUnpaid",value:"待支付"},{key:"PSPaied",value:"已支付"}
+                ,{key:"PSRefounding",value:"退款中"},{key:"PSRefounded",value:"已退款"}],
+            accessType: [{key:null,value:"全部来源"},{key:"ATWeixin",value:"微信"},{key:"ATCustomService",value:"客服"}],
+
+            payType: [{key:null,value:"全部方式"},{key:"PTOnLine",value:"线上支付"},{key:"PTOffline",value:"线下支付"}],
             orderStatus:[{key:null,value:"全部订单"},{key:0,value:"待派送"},{key:1,value:"派送中"},{key:2,value:"待核单"},
                 {key:3,value:"已完成"},{key:4,value:"已作废"}],
             orderStatusDisplay:["待派送","派送中","待核单","已完成","已作废"]
         };
         $scope.q = {
+            dispatcherId:null,
             startTime:null,
             endTime:null,
             orderSn:null,
             callInPhone:null,
             userId:null,
             orderStatus:$scope.vm.orderStatus[0],
+            accessType:$scope.vm.accessType[0],
+            payStatus:$scope.vm.payStatus[0],
+            payType:$scope.vm.payType[0],
+
         };
 
         $scope.search = function () {
@@ -142,10 +153,16 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
             var queryParams = {
                 startTime:$scope.q.startTime,
                 endTime:$scope.q.endTime,
+                dispatcherId:$scope.q.dispatcherId,
+
                 callInPhone:$scope.q.callInPhone,
                 userId:$scope.q.userId,
                 orderSn:$scope.q.orderSn,
                 orderStatus:$scope.q.orderStatus.key,
+                accessType:$scope.q.accessType.key,
+                payStatus:$scope.q.payStatus.key,
+                payType:$scope.q.payType.key,
+
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize,
                 orderBy:"id desc"
@@ -169,6 +186,31 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
             if ($scope.q.orderStatus==null) {
                 return;
             };
+            $scope.pager.setCurPageNo(1);
+            searchOrder();
+        };
+        //订单来源查询改变
+        $scope.accessTypeSearchChange = function () {
+            if ($scope.q.accessType==null) {
+                return;
+            };
+            $scope.pager.setCurPageNo(1);
+            searchOrder();
+        };
+        //支付状态查询改变
+        $scope.payStatusSearchChange = function () {
+            if ($scope.q.payStatus==null) {
+                return;
+            };
+            $scope.pager.setCurPageNo(1);
+            searchOrder();
+        };
+        //支付方式查询改变
+        $scope.payTypeSearchChange = function () {
+            if ($scope.q.payType==null) {
+                return;
+            };
+            $scope.pager.setCurPageNo(1);
             searchOrder();
         }
 

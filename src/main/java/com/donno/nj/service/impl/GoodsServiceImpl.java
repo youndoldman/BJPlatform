@@ -5,6 +5,7 @@ import com.donno.nj.dao.GoodsDao;
 import com.donno.nj.dao.GoodsTypeDao;
 import com.donno.nj.dao.OrderDao;
 import com.donno.nj.dao.OrderDetailDao;
+import com.donno.nj.domain.AdjustPriceHistory;
 import com.donno.nj.domain.Goods;
 import com.donno.nj.domain.GoodsType;
 import com.donno.nj.domain.Group;
@@ -60,7 +61,7 @@ public class GoodsServiceImpl implements GoodsService
     {
         /*参数校验*/
         if (goods == null || goods.getCode() == null || goods.getName() == null ||
-        goods.getCode().trim().length() == 0 || goods.getName().trim().length() == 0 ||
+                goods.getCode().trim().length() == 0 || goods.getName().trim().length() == 0 ||
                 goods.getSpecifications() == null || goods.getSpecifications().trim().length() == 0 ||
                 goods.getUnit() == null || goods.getUnit().trim().length() == 0 ||
                 goods.getPrice() == null  || goods.getStatus() == null
@@ -181,4 +182,15 @@ public class GoodsServiceImpl implements GoodsService
 
         goodsDao.deleteByIdx(id);
     }
+
+
+
+    @Override
+    @OperationLog(desc = "查询商品信息")
+    public List<AdjustPriceHistory> retrieveAdjustPriceHistory(Map params)
+    {
+        List<AdjustPriceHistory> AdjustPriceHistorys = goodsDao.getAdjustPriceHistory(params);
+        return AdjustPriceHistorys;
+    }
+
 }

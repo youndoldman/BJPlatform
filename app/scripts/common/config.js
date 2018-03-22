@@ -29,6 +29,7 @@ commonModule.constant('URI', {
         'taskOrdersDeal':'../../../api/TaskOrders/Process',//任务订单办理接口
         'goods': '../../../api/Goods',//商品
         'goodsTypes': '../../../api/GoodsTypes',//商品类型
+        'goodsPriceHistory': '../../../api/Goods/PriceHistory',//商品价格历史
         'subdistrict':'http://restapi.amap.com/v3/config/district',//高德地图行政区域接口
         'geocode':'http://restapi.amap.com/v3/geocode/geo',//高德地图逆地址解码接口
         'bottle': '../../../api/GasCylinder',//钢瓶接口
@@ -39,6 +40,7 @@ commonModule.constant('URI', {
         'cloudUser': '../../../api/CloudUser',//云客服用户接口
         'cloudUserBind': '../../../api/CloudUser/Bind',//云客服用户绑定接口
         'cloudUserUnBind': '../../../api/CloudUser/UnBind',//云客服用户解除绑定接口
+        'adjustPriceSchedules': '../../../api/AdjustPriceSchedules',//调价接口
 
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
         'ktyReport1': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/zhongdian/report1',//科天云获取坐席-工作组及直拨电话统计报表
@@ -279,29 +281,29 @@ commonModule.constant('NavItem', {
     //            icon: "fa-plane"
     //        }]
     //},
-    //'DecisionCenter': {
-    //    roles:[1],
-    //    name: "决策分析",
-    //    href: "./decisionCenter.htm",
-    //    menuItems: [{
-    //        index: 0,
-    //        name: "成本分析",
-    //        href: "./decisionCenter.htm#/decision/cost",
-    //        icon: "fa-group"
-    //    }, {
-    //        index: 1,
-    //        name: "销售分析",
-    //        target: "_blank",
-    //        href: "./decisionCenter.htm#/decision/sales",
-    //        icon: "fa-plane"
-    //    }, {
-    //        index: 2,
-    //        name: "市场分析",
-    //        target: "_blank",
-    //        href: "./decisionCenter.htm#/decision/market",
-    //        icon: "fa-magnet"
-    //    }]
-    //},
+    'DecisionCenter': {
+        roles:[1],
+        name: "决策分析",
+        href: "./decisionCenter.htm",
+        menuItems: [{
+            index: 0,
+            name: "成本分析",
+            href: "./decisionCenter.htm#/decision/cost",
+            icon: "fa-group"
+        }, {
+            index: 1,
+            name: "销售分析",
+            target: "_blank",
+            href: "./decisionCenter.htm#/decision/sales",
+            icon: "fa-plane"
+        }, {
+            index: 2,
+            name: "市场分析",
+            target: "_blank",
+            href: "./decisionCenter.htm#/decision/market",
+            icon: "fa-magnet"
+        }]
+    },
 
     'GasCenter': {
         roles:[1,6],

@@ -16,6 +16,9 @@
         </association>
     </resultMap>
 
+
+
+
     <sql id="TblAdjPriceDetail">
         t_adjust_price_detail
     </sql>
@@ -39,6 +42,13 @@
     </delete>
 
     <select id="findByAdjustPriceScheduleIdx" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblAdjPriceDetail"/>
+        WHERE
+        schedule_idx =  #{idx}
+    </select>
+
+    <select id="historyFindByGoodsCode" resultMap="DetailResultMap">
         SELECT *
         FROM <include refid="TblAdjPriceDetail"/>
         WHERE
