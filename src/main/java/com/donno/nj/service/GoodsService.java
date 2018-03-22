@@ -1,5 +1,6 @@
 package com.donno.nj.service;
 
+import com.donno.nj.domain.AdjustPriceHistory;
 import com.donno.nj.domain.Goods;
 import com.google.common.base.Optional;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,4 +22,6 @@ public interface GoodsService
     void update(String code, Goods newGoods);
 
     void deleteById(Integer id);
+
+    List<AdjustPriceHistory> retrieveAdjustPriceHistory(Map params);
 }

@@ -5,50 +5,11 @@ shopManageApp.controller('OrderCheckCtrl', ['$scope', '$rootScope', '$filter', '
                                                           rootService, pager, udcModal, OrderCheckService,sessionStorage) {
         var gotoPage = function (pageNo) {
             $scope.pager.setCurPageNo(pageNo);
-            if($scope.q.orderStatus.key==2){
                 //查询需要进行确认的订单
-                searchTaskOrder();
-
-            } else{
-                searchOrder();
-            }
+            searchTaskOrder();
         };
 
-        $(function () {
 
-            $('#datetimepickerStart').datetimepicker({
-                format: 'YYYY-MM-DD HH:mm',
-                locale: moment.locale('zh-cn'),
-                //sideBySide:true,
-                showTodayButton:true,
-                toolbarPlacement:'top',
-
-            });
-            $('#datetimepickerEnd').datetimepicker({
-                format: 'YYYY-MM-DD HH:mm',
-                locale: moment.locale('zh-cn'),
-                //sideBySide:true,
-                showTodayButton:true,
-                toolbarPlacement:'top',
-
-            });
-        });
-        $(function () {
-            $('#datetimepickerStart').datetimepicker()
-                .on('dp.change', function (ev) {
-                    var date = ev.date._d;
-                    var month = date.getMonth()+1;
-                    $scope.q.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
-                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-                });
-            $('#datetimepickerEnd').datetimepicker()
-                .on('dp.change', function (ev) {
-                    var date = ev.date._d;
-                    var month = date.getMonth()+1;
-                    $scope.q.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
-                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-                });
-        });
 
         $scope.pager = pager.init('OrderCtrl', gotoPage);
         var historyQ = $scope.pager.getQ();
@@ -71,10 +32,7 @@ shopManageApp.controller('OrderCheckCtrl', ['$scope', '$rootScope', '$filter', '
             orderStatus:$scope.vm.orderStatus[3],
         };
 
-        $scope.search = function () {
-            $scope.pager.setCurPageNo(1);
-            searchOrder();
-        };
+
 
         $scope.initPopUp = function () {
 
@@ -107,26 +65,6 @@ shopManageApp.controller('OrderCheckCtrl', ['$scope', '$rootScope', '$filter', '
             })
         };
 
-        var searchOrder = function () {
-            var queryParams = {
-                startTime:$scope.q.startTime,
-                endTime:$scope.q.endTime,
-                callInPhone:$scope.q.callInPhone,
-                userId:$scope.q.userId,
-                orderSn:$scope.q.orderSn,
-                orderStatus:$scope.q.orderStatus.key,
-                pageNo: $scope.pager.getCurPageNo(),
-                pageSize: $scope.pager.pageSize,
-                orderBy:"id desc"
-            };
-            console.log(queryParams);
-
-            OrderCheckService.retrieveOrders(queryParams).then(function (orders) {
-                $scope.pager.update($scope.q, orders.total, queryParams.pageNo);
-                $scope.vm.orderList = orders.items;
-            });
-        };
-
         var searchTaskOrder = function () {
             //查询需要进行强制派单的订单
             var queryParams = {
@@ -145,22 +83,8 @@ shopManageApp.controller('OrderCheckCtrl', ['$scope', '$rootScope', '$filter', '
         };
 
 
-        //订单状态查询改变
-        $scope.orderStatusSearchChange = function () {
-            if ($scope.q.orderStatus==null) {
-                return;
-            };
-            if($scope.q.orderStatus.key==2){
-            //查询需要进行确认的订单
-                searchTaskOrder();
-
-            } else{
-                searchOrder();
-            }
-
-        };
         var init = function () {
-            $scope.orderStatusSearchChange();
+            searchTaskOrder();
         };
 
         init();

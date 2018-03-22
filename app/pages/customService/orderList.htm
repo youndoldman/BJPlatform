@@ -10,36 +10,56 @@
     <div class="toolbar">
         <form role="form">
             <div class="row">
-                <div class="col-md-2">
-                    <label class="input">订单状态：</label>
-                    <label class="input"><select  ng-model="q.orderStatus" ng-options="orderStatus.value for orderStatus in vm.orderStatus" class="form-control" ng-selected="" ng-change="orderStatusSearchChange()"></select></label>
+                <div class="col-md-11">
+                    <div class="col-md-8">
+                        <label class="input">订单状态：</label>
+                        <label class="input"><select  ng-model="q.orderStatus" ng-options="orderStatus.value for orderStatus in vm.orderStatus" class="form-control" ng-selected="" ng-change="orderStatusSearchChange()"></select></label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="input">订单来源：</label>
+                        <label class="input"><select  ng-model="q.accessType" ng-options="accessType.value for accessType in vm.accessType" class="form-control" ng-selected="" ng-change="accessTypeSearchChange()"></select></label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="input">支付方式：</label>
+                        <label class="input"><select  ng-model="q.payType" ng-options="payType.value for payType in vm.payType" class="form-control" ng-selected="" ng-change="payTypeSearchChange()"></select></label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="input">支付状态：</label>
+                        <label class="input"><select  ng-model="q.payStatus" ng-options="payStatus.value for payStatus in vm.payStatus" class="form-control" ng-selected="" ng-change="payStatusSearchChange()"></select></label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="input">订单编号：</label>
+                        <label class="input"><input type="text"  class="form-control" ng-model="q.orderSn"></label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="input">订单客户：</label>
+                        <label class="input"><input type="text"  class="form-control" ng-model="q.userId"></label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="input">配送人员：</label>
+                        <label class="input"><input type="text"  class="form-control" ng-model="q.dispatcherId"></label>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="input">时间：</label>
+                        <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>
+                        <label class="input">—</label>
+                        <label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control" ng-model="q.endTime"></label>
+                        <button title="删除时间" ng-click="deleteTimeRange()" type="button" class="btn btn-primary btn-outline btn-xs">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <label class="input">时间范围：</label>
-                    <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>
-                    <label class="input">—</label>
-                    <label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control" ng-model="q.endTime"></label>
-                    <button title="删除时间" ng-click="deleteTimeRange()" type="button" class="btn btn-primary btn-outline btn-xs">
-                        <i class="fa fa-trash-o"></i>
-                    </button>
-                </div>
-                <div class="col-md-4">
-                    <button  ng-click="search()" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> 搜索 </button>
+                <div class="col-md-1">
+                    <button  ng-click="search()" class="btn btn-md btn-primary pull-right"><i class="fa fa-search"></i> 搜索 </button>
                 </div>
             </div>
             <!--<div class="row" style="margin-top: 10px">-->
-                <!--<div class="inline-group col-md-12">-->
-                    <!--<label class="input">订单号：</label>-->
-                    <!--<label class="input"><input type="text" class="form-control input-sm" ng-model="q.orderSn" ng-change="search()" placeholder="订单号"> </label>-->
+            <!--<div class="inline-group col-md-12">-->
+            <!--<label class="input">订单号：</label>-->
+            <!--<label class="input"><input type="text" class="form-control input-sm" ng-model="q.orderSn" ng-change="search()" placeholder="订单号"> </label>-->
 
-                    <!--<label class="input">客户编号：</label>-->
-                    <!--<label class="input"><input type="text" class="form-control input-sm" ng-model="q.userId" ng-change="search()" placeholder="客户编号"> </label>-->
+            <!--<label class="input">客户编号：</label>-->
+            <!--<label class="input"><input type="text" class="form-control input-sm" ng-model="q.userId" ng-change="search()" placeholder="客户编号"> </label>-->
 
-                    <!--<label class="input">呼入电话：</label>-->
-                    <!--<label class="input"><input type="text" class="form-control input-sm" ng-model="q.callInPhone" ng-change="search()" placeholder="呼入电话"> </label>-->
+            <!--<label class="input">呼入电话：</label>-->
+            <!--<label class="input"><input type="text" class="form-control input-sm" ng-model="q.callInPhone" ng-change="search()" placeholder="呼入电话"> </label>-->
 
-                    <!--<button type="submit" class="btn btn-md btn-primary pull-right" ng-click="search()"><i class="fa fa-search"></i> 搜索 </button>-->
-                <!--</div>-->
+            <!--<button type="submit" class="btn btn-md btn-primary pull-right" ng-click="search()"><i class="fa fa-search"></i> 搜索 </button>-->
+            <!--</div>-->
             <!--</div>-->
         </form>
     </div>
@@ -49,6 +69,7 @@
             <th width="1%"></th>
             <th width="3%">序号</th>
             <th width="8%">订单编号</th>
+            <th width="5%">订单状态</th>
             <th width="5%">接入方式</th>
             <th width="5%">支付方式</th>
             <th width="5%">订单客户</th>
@@ -57,7 +78,7 @@
             <th width="20%">收货地址</th>
             <th width="5%">收货人</th>
             <th width="5%">配送员</th>
-            <th width="5%">订单状态</th>
+
             <th width="5%">支付状态</th>
             <th width="5%">金额(元)</th>
             <th width="9%">创建时间</th>
@@ -70,6 +91,7 @@
             <td></td>
             <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
             <td class="message">{{order.orderSn}}</td>
+            <td class="message">{{vm.orderStatusDisplay[order.orderStatus]}}</td>
             <td class="message">{{order.accessType.name}}</td>
             <td class="message">{{order.payType.name}}</td>
             <td class="message">{{order.customer.userId}}</td>
@@ -78,18 +100,18 @@
             <td class="message">{{order.recvAddr.province}}{{order.recvAddr.city}}{{order.recvAddr.county}}{{order.recvAddr.detail}}</td>
             <td class="message" title="电话：{{order.recvPhone}}">{{order.recvName}}</td>
 
-            <td class="message" title="电话：{{order.dispatcher.mobilePhone}} 工号：{{order.dispatcher.jobNumber}}">{{order.dispatcher.name}}</td>
-            <td class="message">{{vm.orderStatusDisplay[order.orderStatus]}}</td>
+            <td class="message" title="姓名：{{order.dispatcher.name}} 电话：{{order.dispatcher.mobilePhone}} 工号：{{order.dispatcher.jobNumber}}">{{order.dispatcher.userId}}</td>
+
             <td class="message">{{order.payStatus.name}}</td>
             <td class="message">{{order.orderAmount}}</td>
             <td class="message">{{order.createTime}}</td>
             <td class="message">{{order.reserveTime}}</td>
             <td class="operate">
-                <button title="详情" ng-click="modify(order)" type="button" class="btn btn-primary btn-outline btn-xs">
+                <button title="详情" ng-click="viewDetails(order)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="">详情</i>
                 </button>
                 <!--<button title="修改" ng-click="modify(order)" type="button" class="btn btn-primary btn-outline btn-xs">-->
-                    <!--<i class="fa fa-edit"></i>-->
+                <!--<i class="fa fa-edit"></i>-->
                 <!--</button>-->
                 <button title="指派" ng-if="order.taskId" ng-click="assign(order)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="">指派</i>
@@ -103,5 +125,4 @@
     </table>
     <div ng-if="vm.userList.length == 0" nj-table-no-data></div>
     <div nj-pager pager="pager"></div>
-    <div id="aaaa" style="width:500px; height:300px"></div>
 </div>
