@@ -121,7 +121,6 @@ public class GasCylinderController
 
 
 
-
     @OperationLog(desc = "删除钢瓶信息")
     @RequestMapping(value = "/api/GasCylinder/{number}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable("number") String number)

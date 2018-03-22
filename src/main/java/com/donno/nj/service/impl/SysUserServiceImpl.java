@@ -2,14 +2,12 @@ package com.donno.nj.service.impl;
 
 
 
-import com.donno.nj.dao.SysUserDao;
-import com.donno.nj.dao.UserDao;
-import com.donno.nj.dao.DepartmentDao;
-import com.donno.nj.dao.UserPositionDao;
+import com.donno.nj.dao.*;
 import com.donno.nj.domain.*;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.service.SysUserService;
 
+import com.donno.nj.service.TableStoreService;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Date;
 import java.util.ArrayList;
-
+import java.util.Date;
+import java.text.SimpleDateFormat;
 @Service
 public class SysUserServiceImpl extends UserServiceImpl implements SysUserService
 {
@@ -35,6 +34,12 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
 
     @Autowired
     private UserPositionDao userPositionDao;
+
+    @Autowired
+    private GasCylinderDao gasCylinderDao;
+
+    @Autowired
+    private TableStoreService tableStoreService;
 
 
     @Override
@@ -137,6 +142,31 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
                     userPosition.setId(targetPosition.get(0).getId());
                     userPositionDao.update(userPosition);
                 }
+
+                /*查询用户名下的钢瓶，更新钢瓶的位置信息*/
+                List<GasCylinderPosition> gasCylinderPosList = new ArrayList<GasCylinderPosition>();
+
+                params.clear();
+                params.putAll(ImmutableMap.of("liableUserId", userId));
+                List<GasCylinder> gasCylinderLst= gasCylinderDao.getList(params);
+                for (GasCylinder gasCylinder:gasCylinderLst)
+                {
+                    GasCylinderPosition gasPosition = new GasCylinderPosition();
+                    gasPosition.setCode(gasCylinder.getNumber());
+                    String position =  gasCylinder.getLongitude().toString();
+                    position.concat(",");
+                    position.concat(gasCylinder.getLatitude().toString());
+                    gasPosition.setLocation(position);
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+                    gasPosition.setCreateTime(df.format(new Date()));
+
+                    gasCylinderPosList.add(gasPosition);
+                }
+
+                if (gasCylinderPosList.size() > 0)
+                {
+                    tableStoreService.batchWriteRow(gasCylinderPosList);
+                }
             }
             else
             {
@@ -147,8 +177,6 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
         {
             throw new ServerSideBusinessException("用户信息不能为空！",HttpStatus.NOT_ACCEPTABLE);
         }
-
-
     }
 
     @Override
