@@ -6,20 +6,17 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="start_time" property="startTime" jdbcType="VARCHAR"/>
-        <result column="start_time" property="startTime" jdbcType="VARCHAR"/>
+        <result column="end_time" property="endTime" jdbcType="VARCHAR"/>
         <result column="discount_type" property="discountType" jdbcType="INTEGER" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
         <result column="use_type" property="useType" jdbcType="INTEGER" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
-
         <result column="status" property="discountStrategyStatus" jdbcType="INTEGER" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
-
         <result column="note" property="note" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
-
-        <association property="discountCondition" column="discount_condition_type_idx" select="com.donno.nj.dao.DiscountConditionTypeDao.findById">
+        <result column="condition_value" property="discountConditionValue" jdbcType="VARCHAR"/>
+        <association property="discountConditionType" column="discount_condition_type_idx" select="com.donno.nj.dao.DiscountConditionTypeDao.findById">
         </association>
-
-        <collection property="discountDetailList" column="id" ofType="com.donno.nj.domain.DiscountDetail" select="com.donno.nj.dao.DiscountDetailDao.findByStrategyIdx">
+        <collection property="discountDetails" column="id" ofType="com.donno.nj.domain.DiscountDetail" select="com.donno.nj.dao.DiscountDetailDao.findByStrategyIdx">
         </collection>
     </resultMap>
 
@@ -29,7 +26,7 @@
 
 
     <sql id="InsertColumnList">
-        name,start_time,end_time,discount_type,discount_condition_type_idx,conditon_value,use_type,status,note
+        name,start_time,end_time,discount_type,discount_condition_type_idx,condition_value,use_type,status,note
     </sql>
 
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
@@ -68,7 +65,7 @@
 
 
         <if test="status != null">
-            AND  status = #{status.index}
+            AND  status = #{status}
         </if>
 
         <if test="conditionTypeCode != null">
@@ -76,19 +73,19 @@
         </if>
 
         <if test="discountType != null">
-            AND  discount_type = #{discountType.index}
+            AND  discount_type = #{discountType}
         </if>
 
         <if test="useType != null">
-            AND  use_type = #{useType.index}
+            AND  use_type = #{useType}
         </if>
 
         <if test="startTime != null"  >
-            AND  ( start_time > #{startTime} )
+            AND  ( start_time >= #{startTime} )
         </if>
 
         <if test="endTime != null"  >
-            AND  ( #{endTime} > end_time)
+            AND  ( #{endTime} >= end_time)
         </if>
 
 
@@ -120,7 +117,7 @@
 
 
         <if test="status != null">
-            AND  status = #{status.index}
+            AND  status = #{status}
         </if>
 
         <if test="conditionTypeCode != null">
@@ -128,19 +125,19 @@
         </if>
 
         <if test="discountType != null">
-            AND  discount_type = #{discountType.index}
+            AND  discount_type = #{discountType}
         </if>
 
         <if test="useType != null">
-            AND  use_type = #{useType.index}
+            AND  use_type = #{useType}
         </if>
 
         <if test="startTime != null"  >
-            AND  ( start_time > #{startTime} )
+            AND  ( start_time >= #{startTime} )
         </if>
 
         <if test="endTime != null"  >
-            AND  ( #{endTime} > end_time)
+            AND  ( #{endTime} >= end_time)
         </if>
 
 
@@ -152,15 +149,14 @@
         <if test="name != null">name = #{name},</if>
         <if test="startTime != null">start_time = #{startTime},</if>
         <if test="endTime != null">end_time = #{endTime},</if>
-        <if test="status != null">status = #{status.index},</if>
         <if test="discountType != null">discount_type = #{discountType.index},</if>
         <if test="discountConditionType != null">
             <if test="discountConditionType.id != null">discount_condition_type_idx = #{discountConditionType.id},</if>
         </if>
-        <if test="discountConditionValue != null">conditon_value = #{discountConditionValue},</if>
+        <if test="discountConditionValue != null">condition_value = #{discountConditionValue},</if>
 
-        <if test="useType != null">use_type = #{useType},</if>
-        <if test="discountStrategyStatus != null">status = #{discountStrategyStatus},</if>
+        <if test="useType != null">use_type = #{useType.index},</if>
+        <if test="discountStrategyStatus != null">status = #{discountStrategyStatus.index},</if>
 
         <if test="note != null">note = #{note}</if>
     </set>

@@ -14,7 +14,7 @@ public class DiscountStrategy implements Serializable
     private Date endTime;//起始时间
 
     private DiscountType discountType;//折扣类型
-    private DiscountConditionType discountConditionType;//折扣条件
+    private DiscountConditionType discountConditionType;//折扣条件类型
     private String discountConditionValue;  //折扣条件取值
 
     private DiscountUseType useType;
@@ -65,7 +65,10 @@ public class DiscountStrategy implements Serializable
         return discountConditionType;
     }
 
-    public String getDiscountConditionValue(){return discountConditionValue;}
+    public String getDiscountConditionValue()
+    {
+        return discountConditionValue;
+    }
 
     public DiscountUseType getUseType()
     {
@@ -91,7 +94,6 @@ public class DiscountStrategy implements Serializable
     {
         return  updateTime;
     }
-
 
     public void setId(Integer id)
     {
@@ -123,7 +125,7 @@ public class DiscountStrategy implements Serializable
         this.discountConditionType = discountConditionType;
     }
 
-    public void setEndTime(DiscountUseType useType)
+    public void setUseType(DiscountUseType useType)
     {
         this.useType = useType;
     }
@@ -143,7 +145,6 @@ public class DiscountStrategy implements Serializable
         this.discountDetails = discountDetails;
     }
 
-
     public void setNote(String note)
     {
         this.note = note;
@@ -158,7 +159,6 @@ public class DiscountStrategy implements Serializable
     {
         this.updateTime = updateTime;
     }
-
 
     @Override
     public String toString()

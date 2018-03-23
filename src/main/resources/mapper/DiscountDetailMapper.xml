@@ -5,7 +5,7 @@
 
     <resultMap id="DetailResultMap" type="com.donno.nj.domain.DiscountDetail">
         <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="discount_strategy_idx" property="adjPriceScheduleIdx" jdbcType="INTEGER"/>
+        <result column="discount_strategy_idx" property="discountStrategyIdx" jdbcType="INTEGER"/>
         <result column="discount" property="discount" jdbcType="FLOAT"/>
 
         <result column="note" property="note" jdbcType="VARCHAR"/>
@@ -27,14 +27,14 @@
 
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         INSERT IGNORE INTO <include refid="TblDiscountDetail"/>(<include refid="InsertColumnList"/>)
-        VALUES( #{adjPriceScheduleIdx},#{goods.id},#{discount},#{note} )
+        VALUES( #{discountStrategyIdx},#{goods.id},#{discount},#{note} )
     </insert>
 
     <delete id="delete" parameterType="java.lang.Integer">
         DELETE FROM <include refid="TblDiscountDetail"/> WHERE id= #{id}
     </delete>
 
-    <delete id="deleteByStrategyIdx" parameterType="java.lang.Integer">
+    <delete id="deleteByDiscountStrategyIdx" parameterType="java.lang.Integer">
         DELETE FROM <include refid="TblDiscountDetail"/> WHERE discount_strategy_idx= #{id}
     </delete>
 

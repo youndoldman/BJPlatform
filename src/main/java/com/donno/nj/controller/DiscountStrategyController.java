@@ -1,8 +1,6 @@
 package com.donno.nj.controller;
-
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
-import com.donno.nj.domain.*;
 import com.donno.nj.domain.DiscountStrategy;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.*;
@@ -12,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
-
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,10 +25,10 @@ public class DiscountStrategyController
     @RequestMapping(value = "/api/DiscountStrategies", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取商品列表")
     public ResponseEntity retrieve(@RequestParam(value = "name", defaultValue = "") String name,
-                                   @RequestParam(value = "status", required = false) DiscountStrategyStatus status,
+                                   @RequestParam(value = "status", required = false) Integer status,
                                    @RequestParam(value = "conditionTypeCode", defaultValue = "") String conditionTypeCode,
-                                   @RequestParam(value = "discountType", required = false) DiscountType discountType,
-                                   @RequestParam(value = "useType", required = false) DiscountUseType useType,
+                                   @RequestParam(value = "discountType", required = false) Integer discountType,
+                                   @RequestParam(value = "useType", required = false) Integer useType,
                                    @RequestParam(value = "startTime", defaultValue = "") String startTime,
                                    @RequestParam(value = "endTime", defaultValue = "") String endTime,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
@@ -90,7 +86,7 @@ public class DiscountStrategyController
         ResponseEntity responseEntity;
 
         /*创建优惠策略*/
-        //discountStrategyService.create(discountStrategy);
+        discountStrategyService.create(discountStrategy);
 
         URI uri = ucBuilder.path("/api/DiscountStrategies/{id}").buildAndExpand(discountStrategy.getId()).toUri();
         responseEntity = ResponseEntity.created(uri).build();

@@ -12,7 +12,7 @@ public enum DiscountStrategyStatus implements IEnum
     private int index;
 
     // 构造方法
-    DiscountStrategyStatus(String name, int index) {
+     DiscountStrategyStatus(String name, int index) {
         this.name = name;
         this.index = index;
     }
@@ -43,5 +43,5 @@ public enum DiscountStrategyStatus implements IEnum
     public void setIndex(int index) {
         this.index = index;
     }
-};
+}
 
