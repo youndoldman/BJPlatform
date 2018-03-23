@@ -11,15 +11,16 @@ public class DiscountStrategy implements Serializable
     private Integer id;
     private String  name;
     private Date startTime;//起始时间
-    private Date endtime;//起始时间
+    private Date endTime;//起始时间
 
     private DiscountType discountType;//折扣类型
-    private DiscountConditionType discountConditionType;//折扣条件
+    private DiscountConditionType discountConditionType;//折扣条件类型
     private String discountConditionValue;  //折扣条件取值
 
+    private DiscountUseType useType;
     private DiscountStrategyStatus discountStrategyStatus;
 
-    List<DiscountDetail> discountDetails;
+    private List<DiscountDetail> discountDetails;
 
     protected String note;
     protected Date createTime;
@@ -44,9 +45,9 @@ public class DiscountStrategy implements Serializable
         return startTime;
     }
 
-    public Date getEndtime()
+    public Date getEndTime()
     {
-        return endtime;
+        return endTime;
     }
 
     public DiscountType getDiscountType()
@@ -64,7 +65,15 @@ public class DiscountStrategy implements Serializable
         return discountConditionType;
     }
 
-    public String getDiscountConditionValue(){return discountConditionValue;}
+    public String getDiscountConditionValue()
+    {
+        return discountConditionValue;
+    }
+
+    public DiscountUseType getUseType()
+    {
+        return useType;
+    }
 
     public List<DiscountDetail> getDiscountDetails()
     {
@@ -86,7 +95,6 @@ public class DiscountStrategy implements Serializable
         return  updateTime;
     }
 
-
     public void setId(Integer id)
     {
         this.id = id;
@@ -102,9 +110,9 @@ public class DiscountStrategy implements Serializable
         this.startTime = startTime;
     }
 
-    public void setEndtime(Date endtime)
+    public void setEndTime(Date endTime)
     {
-        this.endtime = endtime;
+        this.endTime = endTime;
     }
 
     public  void setDiscountType(DiscountType discountType)
@@ -115,6 +123,11 @@ public class DiscountStrategy implements Serializable
     public  void setDiscountConditionType(DiscountConditionType discountConditionType)
     {
         this.discountConditionType = discountConditionType;
+    }
+
+    public void setUseType(DiscountUseType useType)
+    {
+        this.useType = useType;
     }
 
     public void  setDiscountConditionValue(String discountConditionValue)
@@ -132,7 +145,6 @@ public class DiscountStrategy implements Serializable
         this.discountDetails = discountDetails;
     }
 
-
     public void setNote(String note)
     {
         this.note = note;
@@ -148,12 +160,14 @@ public class DiscountStrategy implements Serializable
         this.updateTime = updateTime;
     }
 
-
     @Override
     public String toString()
     {
         return MoreObjects.toStringHelper(this)
                 .add("name", name)
+                .add("startTime", startTime)
+                .add("endTime", endTime)
+                .add("discountType", discountType.getName())
                 .add("note", note)
                 .add("createTime", createTime)
                 .add("updateTime", updateTime)

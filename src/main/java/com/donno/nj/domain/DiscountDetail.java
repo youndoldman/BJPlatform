@@ -77,7 +77,7 @@ public class DiscountDetail implements Serializable
     }
 
 
-    public void setDiscount(Float price)
+    public void setDiscount(Float discount)
     {
         this.discount = discount;
     }

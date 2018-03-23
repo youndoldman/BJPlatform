@@ -29,4 +29,7 @@ public interface ServerConstantValue
     public String GP_CUSTOMER_SERVICE = "00002";
     public String GP_DISPATCH = "00003";
 
+    /*优惠策略类型*/
+    public String DISCOUNT_CONDITION_TYPE_CUSTOMER_LEVEL = "00001";
+    public String DISCOUNT_CONDITION_TYPE_CUSTOMER_TYPE = "00002";
 }
