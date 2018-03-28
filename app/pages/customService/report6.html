@@ -61,30 +61,18 @@
         </thead>
         <tbody>
         <tr ng-repeat="item in vm.dataList">
-            <td class="message">{{item.date}}</td>
-            <td class="message">{{item.totalCallCount}}</td>
+            <td class="message tableContentAdjust">{{item.date}}</td>
+            <td class="message tableContentAdjust">{{item.totalCallCount}}</td>
 
-            <td class="message">{{item.answerCallDetail.count}}</td>
-            <td class="message">{{item.answerCallDetail.hitRate}}</td>
+            <td class="message tableContentAdjust">{{item.answerCallDetail.count}}</td>
+            <td class="message tableContentAdjust">{{item.answerCallDetail.hitRate}}</td>
 
-            <td class="message">{{item.rejectCallDetail.count}}</td>
-            <td class="message">{{item.rejectCallDetail.hitRate}}</td>
+            <td class="message tableContentAdjust">{{item.rejectCallDetail.count}}</td>
+            <td class="message tableContentAdjust">{{item.rejectCallDetail.hitRate}}</td>
 
-            <td class="message">{{item.transferCallDetail.count}}</td>
-            <td class="message">{{item.transferCallDetail.hitRate}}</td>
+            <td class="message tableContentAdjust">{{item.transferCallDetail.count}}</td>
+            <td class="message tableContentAdjust">{{item.transferCallDetail.hitRate}}</td>
 
-        </tr>
-
-        <tr>
-            <td width="13%" colspan="2" class="message tableContentAdjust">小计</td>
-
-            <td width="6.25%" class="message tableContentAdjust"></td>
-            <td width="6.25%" class="message tableContentAdjust"></td>
-            <td width="6.25%" class="message tableContentAdjust"></td>
-            <td width="6.25%"  class="message tableContentAdjust"></td>
-
-            <td width="6.25%"  class="message tableContentAdjust"></td>
-            <td width="6.25%"  class="message tableContentAdjust"></td>
         </tr>
 
         </tbody>

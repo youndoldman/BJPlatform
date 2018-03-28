@@ -18,14 +18,14 @@
         <form role="form">
             <div class="row">
                 <div class="col-md-3">
-                    <label class="input"><input type="text" class="form-control input-md" ng-model="q.userName" placeholder="坐席名"> </label>
+                    <!--<label class="input"><input type="text" class="form-control input-md" ng-model="q.userName" placeholder="坐席名"> </label>-->
                     <label class="input"><input type="text" class="form-control input-md" ng-model="q.userId" placeholder="坐席工号"> </label>
                 </div>
                 <div class="col-md-4">
                     <label class="input">时间范围：</label>
                     <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>
                     <label class="input">至</label>
-                    <label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control" ng-model="q.endTime" placeholder={{data.endTime}}></label>
+                    <label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control" ng-model="q.endTime"></label>
                 </div>
                 <div class="col-md-3">
                     <label class="input">日期类型：</label>
@@ -71,39 +71,39 @@
         </thead>
         <tbody>
         <tr  ng-repeat="item in vm.dataList">
-            <td class="message">{{item.date}}</td>
-            <td class="message">{{item.agentUserId}}</td>
-            <td class="message">{{item.totalCallCount}}</td>
-            <td class="message"></td>
-            <td class="message">{{item.totalCallTime}}</td>
-            <td class="message">{{item.avgCallTime}}</td>
-            <td class="message">{{item.inBoundData.count}}</td>
-            <td class="message">{{item.inBoundData.hitRate}}</td>
-            <td class="message">{{item.inBoundData.totalOperationInSec}}</td>
-            <td class="message">{{item.inBoundData.avgOperationInSec}}</td>
-            <td class="message">{{item.outBoundData.count}}</td>
-            <td class="message">{{item.outBoundData.hitRate}}</td>
-            <td class="message">{{item.outBoundData.totalOperationInSec}}</td>
-            <td class="message">{{item.outBoundData.avgOperationInSec}}</td>
+            <td class="message tableContentAdjust">{{item.date}}</td>
+            <td class="message tableContentAdjust">{{item.agentUserId}}</td>
+            <td class="message tableContentAdjust">{{item.totalCallData.count}}</td>
+            <td class="message tableContentAdjust">{{item.totalCallData.hitRate}}</td>
+            <td class="message tableContentAdjust">{{item.totalCallData.totalOperationInSec}}</td>
+            <td class="message tableContentAdjust">{{item.totalCallData.avgOperationInSec}}</td>
+            <td class="message tableContentAdjust">{{item.inBoundData.count}}</td>
+            <td class="message tableContentAdjust">{{item.inBoundData.hitRate}}</td>
+            <td class="message tableContentAdjust">{{item.inBoundData.totalOperationInSec}}</td>
+            <td class="message tableContentAdjust">{{item.inBoundData.avgOperationInSec}}</td>
+            <td class="message tableContentAdjust">{{item.outBoundData.count}}</td>
+            <td class="message tableContentAdjust">{{item.outBoundData.hitRate}}</td>
+            <td class="message tableContentAdjust">{{item.outBoundData.totalOperationInSec}}</td>
+            <td class="message tableContentAdjust">{{item.outBoundData.avgOperationInSec}}</td>
         </tr>
 
-        <tr >
+        <tr>
             <td width="25%" colspan="2" class="message tableContentAdjust">小计</td>
 
-            <td width="6.25%" class="message tableContentAdjust"></td>
-            <td width="6.25%" class="message tableContentAdjust"></td>
-            <td width="6.25%" class="message tableContentAdjust"></td>
-            <td width="6.25%"  class="message tableContentAdjust"></td>
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.totalCallData.count}}</td>
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.totalCallData.hitRate}}</td>
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.totalCallData.totalOperationInSec}}</td>
+            <td width="6.25%"  class="message tableContentAdjust">{{vm.lastDataList.totalCallData.avgOperationInSec}}</td>
 
-            <td width="6.25%"  class="message tableContentAdjust"></td>
-            <td width="6.25%"  class="message tableContentAdjust"></td>
-            <td width="6.25%"  class="message tableContentAdjust"></td>
-            <td width="6.25%"  class="message tableContentAdjust"></td>
+            <td width="6.25%"  class="message tableContentAdjust">{{vm.lastDataList.inBoundData.count}}</td>
+            <td width="6.25%"  class="message tableContentAdjust">{{vm.lastDataList.inBoundData.hitRate}}</td>
+            <td width="6.25%"  class="message tableContentAdjust">{{vm.lastDataList.inBoundData.totalOperationInSec}}</td>
+            <td width="6.25%"  class="message tableContentAdjust">{{vm.lastDataList.inBoundData.avgOperationInSec}}</td>
 
-            <td width="6.25%"  class="message tableContentAdjust"></td>
-            <td width="6.25%"  class="message tableContentAdjust"></td>
-            <td width="6.25%"  class="message tableContentAdjust"></td>
-            <td width="6.25%" class="message tableContentAdjust"></td>
+            <td width="6.25%"  class="message tableContentAdjust">{{vm.lastDataList.outBoundData.count}}</td>
+            <td width="6.25%"  class="message tableContentAdjust">{{vm.lastDataList.outBoundData.hitRate}}</td>
+            <td width="6.25%"  class="message tableContentAdjust">{{vm.lastDataList.outBoundData.totalOperationInSec}}</td>
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.outBoundData.avgOperationInSec}}</td>
         </tr>
 
         </tbody>

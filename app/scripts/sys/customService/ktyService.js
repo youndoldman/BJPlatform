@@ -26,27 +26,32 @@ customServiceApp.service('KtyService', ['$http', 'URI', 'promiseWrapper','MISC',
         return promise.wrap($http.get(ktyReport2Uri,{
             params: params,headers : {'token':token}}));
     }
+    ////获取工作组-来话等待时长统计报表
+    //this.retrieveReport3 = function (workSet,type,interval,begin,end,token) {
+    //    return promise.wrap($http.get(ktyReport3Uri+'/'+workSet+'/'+type+'/'+interval+'/'+begin+'/'+end,{
+    //        headers : {'token':token}}));
+    //}
     //获取工作组-来话等待时长统计报表
-    this.retrieveReport3 = function (workSet,type,interval,begin,end,token) {
-        return promise.wrap($http.get(ktyReport3Uri+'/'+workSet+'/'+type+'/'+interval+'/'+begin+'/'+end,{
-            headers : {'token':token}}));
+    this.retrieveReport3 = function (params,token) {
+        return promise.wrap($http.get(ktyReport3Uri,{
+            params: params,headers : {'token':token}}));
     }
     //获取工作组-来话处理时长统计报表
-    this.retrieveReport4 = function (workSet,type,interval,begin,end,token) {
-        return promise.wrap($http.get(ktyReport4Uri+'/'+workSet+'/'+type+'/'+interval+'/'+begin+'/'+end,{
-            headers : {'token':token}}));
+    this.retrieveReport4 = function (params,token) {
+        return promise.wrap($http.get(ktyReport4Uri,{
+            params: params,headers : {'token':token}}));
     }
     //获取工作组-来话处理时长统计报表
-    this.retrieveReport5 = function (workSet,type,interval,cutPoint,begin,end,token) {
-        return promise.wrap($http.get(ktyReport5Uri+'/'+workSet+'/'+type+'/'+interval+'/'+cutPoint+'/'+begin+'/'+end,{
-            headers : {'token':token}}));
+    this.retrieveReport5 = function (params,token) {
+        return promise.wrap($http.get(ktyReport5Uri,{
+            params: params,headers : {'token':token}}));
     }
 
     //获取工作组-来话应答/放弃/溢出分析报表
-    this.retrieveReport6 = function (workSet,type,interval,begin,end,token) {
-        return promise.wrap($http.get(ktyReport6Uri + '/' + workSet + '/' + type + '/' + interval + '/' + begin + '/' + end, {
-            headers: {'token': token}
-        }));
+    this.retrieveReport6 = function (params,token) {
+        return promise.wrap($http.get(ktyReport6Uri,{
+            params: params,headers : {'token':token}}));
     }
+
 }]);
 

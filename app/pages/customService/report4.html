@@ -76,45 +76,47 @@
         </thead>
         <tbody>
         <tr ng-repeat="item in vm.dataList">
-            <td class="message">{{item.date}}</td>
-            <td class="message">{{item.workSetName}}</td>
-            <td class="message">{{item.totalCallCount}}</td>
+            <td class="message tableContentAdjust">{{item.date}}</td>
+            <td class="message tableContentAdjust">{{item.workSetName}}</td>
+            <td class="message tableContentAdjust">{{item.totalCallCount}}</td>
 
-            <td class="message">{{item.answerCallDetail.count}}</td>
-            <td class="message">{{item.answerCallDetail.hitRate}}</td>
-            <td class="message">{{item.answerCallDetail.totalOperationInSec}}</td>
-            <td class="message">{{item.answerCallDetail.avgOperationInSec}}</td>
+            <td class="message tableContentAdjust">{{item.answerCallDetail.count}}</td>
+            <td class="message tableContentAdjust">{{item.answerCallDetail.hitRate}}</td>
+            <td class="message tableContentAdjust">{{item.answerCallDetail.totalOperationInSec}}</td>
+            <td class="message tableContentAdjust">{{item.answerCallDetail.avgOperationInSec}}</td>
 
-            <td class="message">{{item.rejectCallDetail.count}}</td>
-            <td class="message">{{item.rejectCallDetail.hitRate}}</td>
-            <td class="message">{{item.rejectInQueue}}</td>
-            <td class="message">{{item.rejectInBelling}}</td>
+            <td class="message tableContentAdjust">{{item.rejectCallDetail.count}}</td>
+            <td class="message tableContentAdjust">{{item.rejectCallDetail.hitRate}}</td>
+            <td class="message tableContentAdjust">{{item.rejectInQueue}}</td>
+            <td class="message tableContentAdjust">{{item.rejectInBelling}}</td>
 
-            <td class="message">{{item.transferCallDetail.count}}</td>
-            <td class="message">{{item.transferCallDetail.hitRate}}</td>
+            <td class="message tableContentAdjust">{{item.transferCallDetail.count}}</td>
+            <td class="message tableContentAdjust">{{item.transferCallDetail.hitRate}}</td>
 
-            <td class="message">{{item.voiceMailCount}}</td>
-            <td class="message">{{item.totalInQueue}}</td>
+            <td class="message tableContentAdjust">{{item.voiceMailCount}}</td>
+            <td class="message tableContentAdjust">{{item.totalInQueue}}</td>
         </tr>
 
         <tr>
             <td width="13%" colspan="2" class="message tableContentAdjust">小计</td>
 
-            <td width="6.25%" class="message tableContentAdjust"></td>
-            <td width="6.25%" class="message tableContentAdjust"></td>
-            <td width="6.25%" class="message tableContentAdjust"></td>
-            <td width="6.25%"  class="message tableContentAdjust"></td>
 
-            <td width="6.25%"  class="message tableContentAdjust"></td>
-            <td width="6.25%"  class="message tableContentAdjust"></td>
-            <td width="6.25%"  class="message tableContentAdjust"></td>
-            <td width="6.25%"  class="message tableContentAdjust"></td>
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.totalCallCount}}</td>
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.answerCallDetail.count}}</td>
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.answerCallDetail.hitRate}}</td>
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.answerCallDetail.totalOperationInSec}}</td>
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.answerCallDetail.avgOperationInSec}}</td>
 
-            <td width="6.25%"  class="message tableContentAdjust"></td>
-            <td width="6.25%"  class="message tableContentAdjust"></td>
-            <td width="6.25%"  class="message tableContentAdjust"></td>
-            <td width="6.25%" class="message tableContentAdjust"></td>
-            <td width="6.25%"  class="message tableContentAdjust"></td>
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.rejectCallDetail.count}}</td>
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.rejectCallDetail.hitRate}}</td>
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.rejectInQueue}}</td>
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.rejectInBelling}}</td>
+
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.transferCallDetail.count}}</td>
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.transferCallDetail.hitRate}}</td>
+
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.voiceMailCount}}</td>
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.totalInQueue}}</td>
         </tr>
 
         </tbody>

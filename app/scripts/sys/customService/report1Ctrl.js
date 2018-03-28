@@ -63,6 +63,7 @@ customServiceApp.controller('Report1Ctrl', ['$scope', '$rootScope', '$filter', '
 
         $scope.vm = {
             dataList: [],
+            lastDataList:[],
             types:["daily","hourly"],
             intervals:["1","2","3","4","5"]
         };
@@ -98,8 +99,8 @@ customServiceApp.controller('Report1Ctrl', ['$scope', '$rootScope', '$filter', '
             KtyService.authenticate("58531181@qq.com","123456").then(function (response) {
                 $scope.q.token = response.data.token;
                 var queryParams = {
-                    agentUserId: $scope.q.userId,
-                    agentUserName: $scope.q.userName,
+                    agentUserIds: $scope.q.userId,
+                    //agentUserName: $scope.q.userName,
                     type: $scope.q.type,
                     interval: $scope.q.interval,
                     begin: $scope.q.startTime,
@@ -107,25 +108,76 @@ customServiceApp.controller('Report1Ctrl', ['$scope', '$rootScope', '$filter', '
                 };
                 KtyService.retrieveReport1(queryParams, $scope.q.token).then(function (response) {
                     $scope.vm.dataList = response.data;
+                    $scope.vm.lastDataList = $scope.vm.dataList[$scope.vm.dataList.length-1];
+                    //console.log($scope.vm.lastDataList);
+                    $scope.vm.dataList .splice($scope.vm.dataList.length-1, 1);
                 }, function(value) {
-                    $scope.vm.dataList = null;
-                    //udcModal.info({"title": "查询失败", "message": value.message});
-                    udcModal.info({"title": "查询失败", "message": "请输入相关的查询条件"});
+                    //$scope.vm.dataList = null;
+                    //udcModal.info({"title": "查询失败", "message": "请输入相关的查询条件"});
+                    if(value.code == "40007")
+                    {
+                        $scope.vm.dataList = null;
+                        udcModal.info({"title": "查询失败", "message": "未找到呼叫记录"});
+                    }
+                    else if(value.code == "40021")
+                    {
+                        $scope.vm.dataList = null;
+                        udcModal.info({"title": "查询失败", "message": "未找到指定部门人员信息"});
+                    }
+                    else if(value.code == "40025")
+                    {
+                        $scope.vm.dataList = null;
+                        udcModal.info({"title": "查询失败", "message": "参数异常"});
+                    }
+                    else if(value.code == "40026")
+                    {
+                        $scope.vm.dataList = null;
+                        udcModal.info({"title": "查询失败", "message": "时间范围长度超出限制（最大三个月间隔）"});
+                    }
+                    else if(value.code == "50000")
+                    {
+                        $scope.vm.dataList = null;
+                        udcModal.info({"title": "查询失败", "message": "系统内部错误"});
+                    }
                 });
             }, function(value) {
-                udcModal.info({"title": "连接结果", "message": "认证失败 "+ value.message});
+                if(value.code == "40001")
+                {
+                    $scope.vm.dataList = null;
+                    udcModal.info({"title": "连接结果", "message": "用户名或密码不正确"});
+                }
+                else if(value.code == "40002")
+                {
+                    $scope.vm.dataList = null;
+                    udcModal.info({"title": "连接结果", "message": "用户名或密码为空"});
+                }
+                else if(value.code == "40003")
+                {
+                    $scope.vm.dataList = null;
+                    udcModal.info({"title": "连接结果", "message": "用户权限不正确"});
+                }
+                else if(value.code == "40004")
+                {
+                    $scope.vm.dataList = null;
+                    udcModal.info({"title": "连接结果", "message": "用户认证不存在或已过期"});
+                }
+                else if(value.code == "50000")
+                {
+                    $scope.vm.dataList = null;
+                    udcModal.info({"title": "连接结果", "message": "系统内部错误"});
+                }
             })
         };
 
         var init = function () {
             //searchData();
-            var currentDate = new Date();
-            var currentMonth = currentDate.getMonth()+1;
-            $scope.data.endTime = currentDate.getFullYear()+"-"+currentMonth+"-"+currentDate.getDate()+" "
-                +currentDate.getHours()+":"+currentDate.getMinutes()+":"+currentDate.getSeconds();
-            //console.log($scope.data.endTime);
-            //默认结束时间为当前时间
-            $scope.q.endTime = $scope.data.endTime;
+            //var currentDate = new Date();
+            //var currentMonth = currentDate.getMonth()+1;
+            //$scope.data.endTime = currentDate.getFullYear()+"-"+currentMonth+"-"+currentDate.getDate()+" "
+            //    +currentDate.getHours()+":"+currentDate.getMinutes()+":"+currentDate.getSeconds();
+            ////console.log($scope.data.endTime);
+            ////默认结束时间为当前时间
+            //$scope.q.endTime = $scope.data.endTime;
         };
         init();
     }]);

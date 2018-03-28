@@ -16,7 +16,7 @@
         <form role="form">
             <div class="row">
                 <div class="col-md-3">
-                    <label class="input"><input type="text" class="form-control input-md" ng-model="q.userName" placeholder="坐席名"> </label>
+                    <!--<label class="input"><input type="text" class="form-control input-md" ng-model="q.userName" placeholder="坐席名"> </label>-->
                     <label class="input"><input type="text" class="form-control input-md" ng-model="q.userId" placeholder="坐席工号"> </label>
                 </div>
                 <div class="col-md-4">
@@ -55,24 +55,24 @@
         </thead>
         <tbody>
         <tr ng-repeat="item in vm.dataList">
-            <td class="message">{{item.date}}</td>
-            <td class="message">{{item.agentUserId}}</td>
-            <td class="message">{{item.totalCallTime}}</td>
-            <td class="message">{{item.avgCallTime}}</td>
-            <td class="message">{{item.inBoundData.count}}</td>
-            <td class="message">{{item.inBoundData.hitRate}}</td>
-            <td class="message">{{item.inBoundData.totalOperationInSec}}</td>
+            <td class="message tableContentAdjust">{{item.date}}</td>
+            <td class="message tableContentAdjust">{{item.agentCode}}</td>
+            <td class="message tableContentAdjust">{{item.onlineTime}}</td>
+            <td class="message tableContentAdjust">{{item.callingTime}}</td>
+            <td class="message tableContentAdjust">{{item.readyTime}}</td>
+            <td class="message tableContentAdjust">{{item.notReadyTime}}</td>
+            <td class="message tableContentAdjust">{{item.busyTime}}</td>
 
         </tr>
 
         <tr>
             <td width="25%" colspan="2" class="message tableContentAdjust">小计</td>
 
-            <td width="6.25%" class="message tableContentAdjust"></td>
-            <td width="6.25%" class="message tableContentAdjust"></td>
-            <td width="6.25%" class="message tableContentAdjust"></td>
-            <td width="6.25%"  class="message tableContentAdjust"></td>
-            <td width="6.25%"  class="message tableContentAdjust"></td>
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.onlineTime}}</td>
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.callingTime}}</td>
+            <td width="6.25%" class="message tableContentAdjust">{{vm.lastDataList.readyTime}}</td>
+            <td width="6.25%"  class="message tableContentAdjust">{{vm.lastDataList.notReadyTime}}</td>
+            <td width="6.25%"  class="message tableContentAdjust">{{vm.lastDataList.busyTime}}</td>
         </tr>
 
         </tbody>
