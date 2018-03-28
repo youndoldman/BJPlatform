@@ -64,6 +64,7 @@ decisionApp.directive('price', ['DecisionService', function(DecisionService)  {
                             saveAsImage : {show: true}
                         }
                     },
+
                     // 图例
                     legend: {
                         data: legend,
