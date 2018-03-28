@@ -1,0 +1,101 @@
+﻿<div class="modal" tabindex="-1">
+    <div class="modal-dialog"  style=" width: 1000px;">
+        <div class="modal-content">
+            <form name="userForm" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="close(false)" data-dismiss="modal"
+                            aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">&nbsp;{{modalTitle}}&nbsp;</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="input-group pdb15">
+                                <div class="row" style="margin-top: 15px">
+                                    <label class="col-md-2 control-label input-label">计划名称：</label>
+                                    <div class="col-md-3 input-width-sm">
+                                        <input type="text"  class="form-control" ng-model="vm.currentPriceAjustment.name" ></input>
+                                    </div>
+                                    <label class="col-md-2 control-label input-label">执行时间：</label>
+                                    <div class="col-md-3 input-width-sm">
+                                        <input type="text"  id="datetimepickerStartExcute"  class="form-control" ng-model="vm.currentPriceAjustment.effectTime"></input>
+                                    </div>
+                                </div>
+
+                                <div class="row" style="margin-top: 15px">
+                                    <label class="col-md-2 control-label input-label">类型：</label>
+                                    <div class="col-md-3 input-width-sm">
+                                        <select name="goodsType" ng-model="temp.selectedGoodsType" ng-options="goodsType.name for goodsType in temp.goodsTypesList" class="form-control" ng-selected="" ng-change="goodsTypeChange()"></select>
+                                    </div>
+
+                                    <label class="col-md-2 control-label input-label">商品：</label>
+                                    <div class="col-md-3 input-width-sm">
+                                        <select name="goods" ng-model="temp.selectedGoods" ng-options="goods.name for goods in temp.goodsList" class="form-control" ng-selected="" ng-change="goodsChange()"></select>
+                                    </div>
+
+                                    <button type="button" class="btn btn-sm btn-success pull-right" ng-click="addToCart()"><i class="fa fa-plus"></i> 添加调价列表 </button>
+                                </div>
+
+                                <div class="row" style="margin-top: 15px">
+                                    <label class="col-md-2 control-label input-label">现价：</label>
+                                    <div class="col-md-3 input-width-sm">
+                                        <input type="number"  class="form-control" ng-model="temp.selectedGoods.price" disabled></input>
+                                    </div>
+                                    <label class="col-md-2 control-label input-label">调价：</label>
+                                    <div class="col-md-3 input-width-sm">
+                                        <input type="number"  class="form-control" ng-model="temp.adjustGoodsPrice" ></input>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                        <div class="row" >
+                            <table class="table table-bordered table-hover .table-condensed">
+
+                                <thead>
+                                <tr>
+                                    <td style="background: lightblue;text-align: center" width="8%">序号</td>
+                                    <td style="background: lightblue;text-align: center" width="8%">商品号</td>
+                                    <td style="background: lightblue;text-align: center" width="12%">商品名称</td>
+                                    <td style="background: lightblue;text-align: center" width="10%">商品类型</td>
+                                    <td style="background: lightblue;text-align: center" width="10%">商品规格</td>
+                                    <td style="background: lightblue;text-align: center" width="9%">现价</td>
+                                    <td style="background: lightblue;text-align: center" width="10%">调价</td>
+                                    <td style="background: lightblue;text-align: center" width="5%">操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="adjustPriceDetail in vm.currentPriceAjustment.adjustPriceDetailList">
+                                    <td class="message">{{$index+1}}</td>
+                                    <td class="message">{{adjustPriceDetail.goods.code}}</td>
+                                    <td class="message">{{adjustPriceDetail.goods.name}}</td>
+                                    <td class="message">{{adjustPriceDetail.goods.goodsType.name}}</td>
+                                    <td class="message">{{adjustPriceDetail.goods.specifications}}</td>
+                                    <td class="message">{{adjustPriceDetail.goods.price}}</td>
+                                    <td class="message">{{adjustPriceDetail.price}}</td>
+                                    <td class="operate">
+                                        <button title="删除" ng-click="deleteGoodsFromCart(adjustPriceDetail)" type="button" class="btn btn-primary btn-outline btn-xs">
+                                            <i class="fa fa-trash-o"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="submit" ng-click="submit(vm.currentPriceAjustment);" class="btn btn-primary" data-dismiss="modal">保存</button>
+                    <button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -7,6 +7,9 @@ manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper', function ($
 
     var goodsUri = URI.resources.goods;
     var goodsTypesUri = URI.resources.goodsTypes;
+    var goodsPriceAdjustmentUri = URI.resources.adjustPriceSchedules;
+
+
 
     this.toViewModelGoods = function (goodsFromApi) {
         return {
@@ -43,6 +46,8 @@ manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper', function ($
 
 
 
+
+
     this.deleteGoods = function (goods) {
         return promise.wrap($http.delete(goodsUri + "/" + goods.code));
     };
@@ -65,6 +70,26 @@ manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper', function ($
 
     this.modifyGoods = function (goods) {
         return promise.wrap($http.put(goodsUri + "/" + goods.code, goods));
+    };
+
+    //添加调价策略
+    this.createAdjustPriceSchedules = function (adjustPriceSchedules) {
+        return promise.wrap($http.post(goodsPriceAdjustmentUri, adjustPriceSchedules));
+    };
+
+    //修改调价策略
+    this.modifyAdjustPriceSchedules = function (adjustPriceSchedules) {
+        return promise.wrap($http.put(goodsPriceAdjustmentUri + "/" + adjustPriceSchedules.id, adjustPriceSchedules));
+    };
+
+    //修改调价策略
+    this.deleteAdjustPriceSchedules = function (adjustPriceSchedules) {
+        return promise.wrap($http.delete(goodsPriceAdjustmentUri + "/" + adjustPriceSchedules.id));
+    };
+
+    //查询调价策略
+    this.retrieveAdjustPriceSchedules = function (params) {
+        return promise.wrap($http.get(goodsPriceAdjustmentUri, {params: params}));
     };
 
 }]);

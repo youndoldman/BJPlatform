@@ -3,6 +3,43 @@
 manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
     'rootService', 'pager', 'udcModal', 'GoodsService','Upload','URI', function ($scope, $rootScope, $filter, $location, Constants,
                                                                  rootService, pager, udcModal, GoodsService,Upload,URI) {
+
+        $(function () {
+
+            $('#datetimepickerStart').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
+            $('#datetimepickerEnd').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+
+            });
+        });
+        $(function () {
+            $('#datetimepickerStart').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.adjustStartTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
+            $('#datetimepickerEnd').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.adjustEndTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
+        });
+
+
         var gotoPageGoodsType = function (pageNo) {
             $scope.pagerGoodsTypes.setCurPageNo(pageNo);
             searchGoodsTypes();
@@ -12,14 +49,24 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
             searchGoods();
         };
 
+        var gotoPageGoodsPriceAdjustment = function (pageNo) {
+            $scope.pagerGoodsPriceAdjustment.setCurPageNo(pageNo);
+            $scope.searchGoodsPriceAdjustment();
+        };
+
         $scope.pagerGoodsTypes = pager.init('GoodsListCtrl', gotoPageGoodsType);
 
         $scope.pagerGoods = pager.init('GoodsListCtrl', gotoPageGoods);
 
+        $scope.pagerGoodsPriceAdjustment = pager.init('GoodsListCtrl', gotoPageGoodsPriceAdjustment);
+
         var historyQ = $scope.pagerGoodsTypes.getQ();
 
         $scope.q = {
-            goodsType:""
+            goodsType:"",
+            adjustName:null,     //调价计划名称
+            adjustStartTime:null,//调价计划开始时间
+            adjustEndTime:null   //调价计划结束时间
         };
 
         $scope.config = {
@@ -29,7 +76,8 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
 
         $scope.vm = {
             goodsTypesList: [],
-            goodsList: []
+            goodsList: [],
+            goodsPriceAdjustmentList:[]
         };
         $scope.search = function () {
             $scope.pagerGoods.setCurPageNo(1);
@@ -46,11 +94,59 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
                 }
             }).then(function (result) {
                 if (result) {
-                    console.log("新增商品");
                     searchGoods();
                 }
             })
         };
+
+
+        $scope.initPopUpGoodsPriceAdjustment = function () {
+            udcModal.show({
+                templateUrl: "./manage/goodsPriceAdjustmentModal.htm",
+                controller: "GoodsPriceAdjustmentModalCtrl",
+                inputs: {
+                    title: '新增调价策略',
+                    initVal: {}
+                }
+            }).then(function (result) {
+                if (result) {
+                    $scope.searchGoodsPriceAdjustment();
+                }
+            })
+        };
+        //修改调价策略
+        $scope.modifyGoodsPriceAdjustment = function (goodsPriceAdjustment) {
+            udcModal.show({
+                templateUrl: "./manage/goodsPriceAdjustmentModal.htm",
+                controller:  "GoodsPriceAdjustmentModalCtrl",
+                inputs: {
+                    title: '修改调价策略',
+                    initVal: goodsPriceAdjustment
+                }
+            }).then(function (result) {
+                if (result) {
+                    $scope.searchGoodsPriceAdjustment();
+                }
+            })
+        };
+
+        //删除调价策略
+        $scope.deleteGoodsPriceAdjustment = function (goodsPriceAdjustment) {
+            udcModal.confirm({"title": "删除调价策略", "message": "是否永久删除调价策略 " + goodsPriceAdjustment.name})
+                .then(function (result) {
+                    if (result) {
+                        GoodsService.deleteAdjustPriceSchedules(goodsPriceAdjustment).then(function () {
+                            udcModal.info({"title": "处理结果", "message": "删除调价策略成功 "});
+                            $scope.searchGoodsPriceAdjustment();
+                        }, function(value) {
+                            udcModal.info({"title": "处理结果", "message": "删除调价策略失败 "+value.message});
+                        })
+                    }
+                })
+
+
+        };
+
 
 
         $scope.modifyGoods = function (goods) {
@@ -152,10 +248,31 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
             });
         };
 
+        //查询调价记录
+        $scope.searchGoodsPriceAdjustment = function () {
+            var queryParams = {
+                name:$scope.q.adjustName,     //调价计划名称
+                startTime:$scope.q.adjustStartTime,//调价计划开始时间
+                endTime:$scope.q.adjustEndTime,   //调价计划结束时间
+
+                pageNo: $scope.pagerGoodsPriceAdjustment.getCurPageNo(),
+                pageSize: $scope.pagerGoodsPriceAdjustment.pageSize
+            };
+
+            GoodsService.retrieveAdjustPriceSchedules(queryParams).then(function (goodsPriceAdjustmentList) {
+                $scope.pagerGoodsPriceAdjustment.update($scope.q, goodsPriceAdjustmentList.total, queryParams.pageNo);
+                $scope.vm.goodsPriceAdjustmentList = goodsPriceAdjustmentList.items;
+            });
+        };
+
 
         var init = function () {
+            $scope.pagerGoodsPriceAdjustment.pageSize=5;
+            $scope.pagerGoodsTypes.pageSize=10;
+            $scope.pagerGoods.pageSize=10;
             searchGoodsTypes();
             searchGoods();
+            $scope.searchGoodsPriceAdjustment();
         };
 
         init();

@@ -3,23 +3,23 @@ package com.donno.nj.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum DiscountStrategyStatus implements IEnum
+public enum DiscountUseType implements IEnum
 {
-    DSSWaitForForce("待生效", 0), DSSEffecitve("已生效", 1),DSSInvalid("已废除", 2);
+    DUTExclusive("排他 ", 0), DUTGroup("叠加", 1);
 
     // 成员变量
     private String name;
     private int index;
 
     // 构造方法
-     DiscountStrategyStatus(String name, int index) {
+    DiscountUseType(String name, int index) {
         this.name = name;
         this.index = index;
     }
 
     // 普通方法
     public static String getName(int index) {
-        for (DiscountStrategyStatus c : DiscountStrategyStatus.values()) {
+        for (DiscountUseType c : DiscountUseType.values()) {
             if (c.getIndex() == index) {
                 return c.name;
             }

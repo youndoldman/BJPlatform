@@ -140,7 +140,15 @@
 
     </select>
 
-
-
+    <select id="getAdjustPriceHistory" resultType="com.donno.nj.domain.AdjustPriceHistory">
+        SELECT *
+        FROM (select a.code,a.price,t_adjust_price_schedule.effect_time from (select t_adjust_price_detail.*,t_goods.code from
+        t_adjust_price_detail inner join t_goods on t_adjust_price_detail.goods_idx=t_goods.id) as a inner join t_adjust_price_schedule on
+        a.schedule_idx= t_adjust_price_schedule.id) as b
+        WHERE
+        code IS NOT NULL
+        <if test="code != null">AND  code = #{code}</if>
+        ORDER BY code,effect_time
+    </select>
 
 </mapper>

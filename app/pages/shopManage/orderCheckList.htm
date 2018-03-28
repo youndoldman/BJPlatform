@@ -29,10 +29,10 @@
                     <!--</div>-->
                 <!--</div>-->
 
-                <div class="col-sm-8 input-width">
-                    <label class="input">订单状态：</label>
-                    <label class="input"><select  ng-model="q.orderStatus" ng-options="orderStatus.value for orderStatus in vm.orderStatus" class="form-control" ng-selected="" ng-change="orderStatusSearchChange()"></select></label>
-                </div>
+                <!--<div class="col-sm-8 input-width">-->
+                    <!--<label class="input">订单状态：</label>-->
+                    <!--<label class="input"><select  ng-model="q.orderStatus" ng-options="orderStatus.value for orderStatus in vm.orderStatus" class="form-control" ng-selected="" ng-change="orderStatusSearchChange()"></select></label>-->
+                <!--</div>-->
             </div>
             <!--<div class="" style="margin-top: 10px">-->
                 <!--<div class="inline-group col-md-12">-->
@@ -56,6 +56,7 @@
             <th width="1%"></th>
             <th width="3%">序号</th>
             <th width="8%">订单编号</th>
+            <th width="5%">订单状态</th>
             <th width="5%">接入方式</th>
             <th width="5%">支付方式</th>
             <th width="5%">订单客户</th>
@@ -64,7 +65,7 @@
             <th width="20%">收货地址</th>
             <th width="5%">收货人</th>
             <th width="5%">配送员</th>
-            <th width="5%">订单状态</th>
+
             <th width="5%">支付状态</th>
             <th width="5%">金额(元)</th>
             <th width="9%">创建时间</th>
@@ -77,6 +78,7 @@
             <td></td>
             <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
             <td class="message">{{order.orderSn}}</td>
+            <td class="message">{{vm.orderStatusDisplay[order.orderStatus]}}</td>
             <td class="message">{{order.accessType.name}}</td>
             <td class="message">{{order.payType.name}}</td>
             <td class="message">{{order.customer.userId}}</td>
@@ -86,7 +88,7 @@
             <td class="message" title="电话：{{order.recvPhone}}">{{order.recvName}}</td>
 
             <td class="message" title="电话：{{order.dispatcher.mobilePhone}} 工号：{{order.dispatcher.jobNumber}}">{{order.dispatcher.name}}</td>
-            <td class="message">{{vm.orderStatusDisplay[order.orderStatus]}}</td>
+
             <td class="message">{{order.payStatus.name}}</td>
             <td class="message">{{order.orderAmount}}</td>
             <td class="message">{{order.createTime}}</td>

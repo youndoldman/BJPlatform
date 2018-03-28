@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.DiscountStrategyDao">
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.DiscountStrategy">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="start_time" property="startTime" jdbcType="VARCHAR"/>
+        <result column="end_time" property="endTime" jdbcType="VARCHAR"/>
+        <result column="discount_type" property="discountType" jdbcType="INTEGER" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+        <result column="use_type" property="useType" jdbcType="INTEGER" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+        <result column="status" property="discountStrategyStatus" jdbcType="INTEGER" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="condition_value" property="discountConditionValue" jdbcType="VARCHAR"/>
+        <association property="discountConditionType" column="discount_condition_type_idx" select="com.donno.nj.dao.DiscountConditionTypeDao.findById">
+        </association>
+        <collection property="discountDetails" column="id" ofType="com.donno.nj.domain.DiscountDetail" select="com.donno.nj.dao.DiscountDetailDao.findByStrategyIdx">
+        </collection>
+    </resultMap>
+
+    <sql id="TblDiscountStrategy">
+        t_discount_strategy
+    </sql>
+
+
+    <sql id="InsertColumnList">
+        name,start_time,end_time,discount_type,discount_condition_type_idx,condition_value,use_type,status,note
+    </sql>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO <include refid="TblDiscountStrategy"/>(<include refid="InsertColumnList"/>)
+        VALUES( #{name},#{startTime},#{endTime},#{discountType.index},#{discountConditionType.id},#{discountConditionValue},#{useType.index},#{discountStrategyStatus.index},#{note} )
+    </insert>
+
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM <include refid="TblDiscountStrategy"/> WHERE id= #{id}
+    </delete>
+
+    <select id="findByName" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblDiscountStrategy"/>
+        WHERE
+        name =  #{name}
+    </select>
+
+    <select id="findById" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblDiscountStrategy"/>
+        WHERE
+        id =  #{id}
+    </select>
+
+    <select id="getList" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblDiscountStrategy"/>
+    WHERE
+        id > 0
+
+        <if test="name != null">
+        AND  name like CONCAT(CONCAT('%', #{name}), '%')
+        </if>
+
+
+        <if test="status != null">
+            AND  status = #{status}
+        </if>
+
+        <if test="conditionTypeCode != null">
+            AND  discount_condition_type_idx = select id from t_discount_condition_type where code = #{conditionTypeCode}
+        </if>
+
+        <if test="discountType != null">
+            AND  discount_type = #{discountType}
+        </if>
+
+        <if test="useType != null">
+            AND  use_type = #{useType}
+        </if>
+
+        <if test="startTime != null"  >
+            AND  ( start_time >= #{startTime} )
+        </if>
+
+        <if test="endTime != null"  >
+            AND  ( #{endTime} >= end_time)
+        </if>
+
+
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+
+        </if>
+
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+    <select id="count" resultType="Integer">
+        SELECT count(*)
+        FROM <include refid="TblDiscountStrategy"/>
+        WHERE
+        id > 0
+
+
+        <if test="name != null">
+            AND  name like CONCAT(CONCAT('%', #{name}), '%')
+        </if>
+
+
+        <if test="status != null">
+            AND  status = #{status}
+        </if>
+
+        <if test="conditionTypeCode != null">
+            AND  discount_condition_type_idx = select id from t_discount_condition_type where code = #{conditionTypeCode}
+        </if>
+
+        <if test="discountType != null">
+            AND  discount_type = #{discountType}
+        </if>
+
+        <if test="useType != null">
+            AND  use_type = #{useType}
+        </if>
+
+        <if test="startTime != null"  >
+            AND  ( start_time >= #{startTime} )
+        </if>
+
+        <if test="endTime != null"  >
+            AND  ( #{endTime} >= end_time)
+        </if>
+
+
+    </select>
+
+    <update id="update">
+    UPDATE <include refid="TblDiscountStrategy"/>
+    <set>
+        <if test="name != null">name = #{name},</if>
+        <if test="startTime != null">start_time = #{startTime},</if>
+        <if test="endTime != null">end_time = #{endTime},</if>
+        <if test="discountType != null">discount_type = #{discountType.index},</if>
+        <if test="discountConditionType != null">
+            <if test="discountConditionType.id != null">discount_condition_type_idx = #{discountConditionType.id},</if>
+        </if>
+        <if test="discountConditionValue != null">condition_value = #{discountConditionValue},</if>
+
+        <if test="useType != null">use_type = #{useType.index},</if>
+        <if test="discountStrategyStatus != null">status = #{discountStrategyStatus.index},</if>
+
+        <if test="note != null">note = #{note}</if>
+    </set>
+    WHERE id = #{id}
+    </update>
+
+</mapper>

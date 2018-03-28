@@ -66,18 +66,12 @@
         </if>
 
 
-        <!--<if test="startTime != null"  >-->
-        <!--<if test="endTime != null">-->
-            <!--AND  (effect_time  BETWEEN #{startTime}  and #{endTime} )-->
-        <!--</if>-->
-        <!--</if>-->
-
         <if test="startTime != null"  >
-            AND  ( effect_time > #{startTime} )
+            AND  ( effect_time >= #{startTime} )
         </if>
 
         <if test="endTime != null"  >
-            AND  ( #{endTime} > effect_time)
+            AND  ( #{endTime} >= effect_time)
         </if>
 
 
@@ -110,13 +104,12 @@
             AND  status = #{status}
         </if>
 
-
         <if test="startTime != null"  >
-            AND  ( effect_time > #{startTime} )
+            AND  ( effect_time >= #{startTime} )
         </if>
 
         <if test="endTime != null"  >
-            AND  ( #{endTime} > effect_time)
+            AND  ( #{endTime} >= effect_time)
         </if>
 
 
