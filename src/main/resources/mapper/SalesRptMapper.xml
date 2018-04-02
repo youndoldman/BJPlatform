@@ -32,7 +32,7 @@
             and (t_customer_type.code = #{customerTypeCode})
         </if>
         <if test="startDate != null">
-            and ( t_order.pay_time >= #{startDate}    )
+            and ( t_order.pay_time >= #{startDate})
         </if>
         <if test="endDate != null">
             and ( #{endDate} > t_order.pay_time   )

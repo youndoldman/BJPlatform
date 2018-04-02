@@ -14,4 +14,6 @@ public interface GasCyrDailyStockRptService
     List<GasCyrDailyStockRpt> retrieve(Map params);
 
    Integer count(Map params);
+
+
 }

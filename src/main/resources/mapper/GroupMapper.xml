@@ -11,8 +11,6 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-
-
     <sql id="TableName">
         t_group
     </sql>
