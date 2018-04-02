@@ -376,6 +376,7 @@ public class OrderServiceImpl implements OrderService
 
         /*订单状态更改为已支付*/
         order.setPayStatus(PayStatus.PSPaied);
+        order.setPayTime(new Date());
         orderDao.update(order);
 
         /*订单号与微信订单号关联*/

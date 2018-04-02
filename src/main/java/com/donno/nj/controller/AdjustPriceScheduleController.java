@@ -26,7 +26,7 @@ public class AdjustPriceScheduleController
     private AdjustPriceScheduleService adjustPriceScheduleService;
 
     @RequestMapping(value = "/api/AdjustPriceSchedules", method = RequestMethod.GET, produces = "application/json")
-    @OperationLog(desc = "获取订单列表")
+    @OperationLog(desc = "获取调价计划列表")
     public ResponseEntity retrieve(@RequestParam(value = "name", defaultValue = "") String name,
                                    @RequestParam(value = "status", required = false) Integer status,
                                    @RequestParam(value = "startTime", defaultValue = "") String startTime,

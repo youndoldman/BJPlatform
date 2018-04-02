@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.GasCylinderSvcStatusOpHisDao">
+
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.GasCylinderSvcStatusOpHis">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+
+    </resultMap>
+
+    <sql id="TblGasCylinderSvcOpHis">
+        t_gas_cyr_svc_status_op_his
+    </sql>
+
+    <sql id="InsertColumnList">
+        gas_cyr_idx,gas_cyr_svc_status,src_user_idx,target_user_idx,op_time
+    </sql>
+
+    <insert id="insert"  keyProperty="id" useGeneratedKeys="true">
+        INSERT IGNORE INTO <include refid="TblGasCylinderSvcOpHis"/>(<include refid="InsertColumnList"/>)
+        VALUES( #{gasCylinder.id},#{serviceStatus.index}, #{srcUser.id} , #{targetUser.id},#{optime})
+    </insert>
+
+
+</mapper>

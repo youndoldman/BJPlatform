@@ -5,7 +5,7 @@
 
     <resultMap id="DetailResultMap" type="com.donno.nj.domain.GasCylinder">
         <id column="id" property="id" jdbcType="INTEGER"/>
-       <result column="number" property="number" jdbcType="VARCHAR"/>
+        <result column="number" property="number" jdbcType="VARCHAR"/>
 
         <result column="production_date" property="productionDate" jdbcType="TIMESTAMP"/>
         <result column="verify_date" property="verifyDate" jdbcType="TIMESTAMP"/>
@@ -105,32 +105,32 @@
     SELECT *
     FROM <include refid="TblGasCylinder"/>
     WHERE
-        id > 0
+    id > 0
 
-        <if test="number != null">AND number like CONCAT(CONCAT('%', #{number}), '%')  </if>
+    <if test="number != null">AND number like CONCAT(CONCAT('%', #{number}), '%')  </if>
 
-        <if test="specCode != null">AND  spec_idx =  ( select id from t_gas_cylinder_spec where code = #{specCode} ) </if>
+    <if test="specCode != null">AND  spec_idx =  ( select id from t_gas_cylinder_spec where code = #{specCode} ) </if>
 
-        <if test="lifeStatus != null">AND  life_status = #{lifeStatus}</if>
+    <if test="lifeStatus != null">AND  life_status = #{lifeStatus}</if>
 
-        <if test="serviceStatus != null">AND  service_status = #{serviceStatus}</if>
+    <if test="serviceStatus != null">AND  service_status = #{serviceStatus}</if>
 
-        <if test="liableUserId != null">AND id in (select cylinder_idx from t_cylinder_user where user_idx =  ( select id from t_user WHERE user_id =  #{liableUserId} ))  </if>
+    <if test="liableUserId != null">AND id in (select cylinder_idx from t_cylinder_user where user_idx =  ( select id from t_user WHERE user_id =  #{liableUserId} ))  </if>
 
-        <if test="liableDepartmentCode != null">AND id in (select cylinder_idx from t_cylinder_user where user_idx in ( select user_idx from t_sysuser where department_idx = (select id from t_department where code = #{liableDepartmentCode})  ))  </if>
+    <if test="liableDepartmentCode != null">AND id in (select cylinder_idx from t_cylinder_user where user_idx in ( select user_idx from t_sysuser where department_idx = (select id from t_department where code = #{liableDepartmentCode})  ))  </if>
 
-        <if test="orderBy != null">
-            <if test="orderBy != ''">
-                ORDER BY   ${orderBy}
-            </if>
+    <if test="orderBy != null">
+        <if test="orderBy != ''">
+            ORDER BY   ${orderBy}
         </if>
+    </if>
 
-        <if test="limit != null" >
-            <if test="offset != null" >
-                limit #{limit} offset #{offset};
-            </if>
+    <if test="limit != null" >
+        <if test="offset != null" >
+            limit #{limit} offset #{offset};
         </if>
-    </select>
+    </if>
+</select>
 
 
     <select id="count" resultType="Integer">

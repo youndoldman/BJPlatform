@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.GasCylinderStockInOutStaticsDao">
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.GasCylinderStockInOutStatics">
+        <result column="stock_type" property="stockType" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+        <result column="amount" property="amount" jdbcType="INTEGER"/>
+
+        <association property="department" column="department_code" select="com.donno.nj.dao.DepartmentDao.findByCode">
+        </association>
+
+        <association property="gasCylinderSpec" column="gas_cys_spec_code" select="com.donno.nj.dao.GasCylinderSpecDao.findByCode">
+        </association>
+    </resultMap>
+
+    <select id="getStatics" resultMap="DetailResultMap">
+        select t_department.code as department_code,  t_gas_cylinder_spec.code as gas_cys_spec_code, t_gas_cylinder_in_out.stock_type as stock_type,sum(amount) as amount
+        from t_gas_cylinder_in_out,t_gas_cylinder,t_gas_cylinder_spec ,t_cylinder_user,t_sysuser,t_department
+        where (t_gas_cylinder_in_out.gas_cyr_idx = t_gas_cylinder.id and t_gas_cylinder.spec_idx = t_gas_cylinder_spec.id)
+        and   t_cylinder_user.cylinder_idx = t_gas_cylinder.id
+        and   t_cylinder_user.user_idx = t_sysuser.user_idx
+        and   t_department.id = t_sysuser.department_idx
+        and ( op_time BETWEEN #{startTime}  and #{endTime} )
+
+        <if test="stockType != null">
+            and stock_type = #{stockType.index}
+        </if>
+        group by t_department.id,t_gas_cylinder_spec.id ,t_gas_cylinder_in_out.stock_type
+    </select>
+
+</mapper>

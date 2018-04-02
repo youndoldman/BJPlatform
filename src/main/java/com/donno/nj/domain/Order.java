@@ -38,6 +38,7 @@ public class Order implements Serializable
 
     private String  note;
     private Date createTime;
+    private Date payTime;//支付时间
     private Date updateTime;
 
     List<OrderDetail> orderDetailList;
@@ -149,6 +150,11 @@ public class Order implements Serializable
     public List<OrderDetail> getOrderDetailList()
     {
         return orderDetailList;
+    }
+
+    public  Date getPayTime()
+    {
+        return  payTime;
     }
 
     public String getNote()
@@ -266,6 +272,11 @@ public class Order implements Serializable
     public void setComment(String comment)
     {
         this.comment = comment;
+    }
+
+    public void setPayTime(Date payTime)
+    {
+        this.payTime = payTime;
     }
 
     public void setNote(String note)

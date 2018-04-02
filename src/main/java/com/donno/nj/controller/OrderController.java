@@ -31,10 +31,8 @@ public class OrderController
     @Autowired
     private OrderService orderService;
 
-
     @Autowired
     private WorkFlowService workFlowService;
-
 
     @Autowired
     private OrderOpHistoryService orderOpHistoryService;
@@ -81,7 +79,6 @@ public class OrderController
                 }
             }
         }
-
 
         /*移除不符合查询条件订单的任务*/
         for (Task task:taskListNoOrder)

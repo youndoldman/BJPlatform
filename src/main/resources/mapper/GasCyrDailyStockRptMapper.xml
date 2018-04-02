@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.GasCyrDailyStockRptDao">
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.GasCyrDailyStockRpt">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="stock_in_amount" property="stockInAmount" jdbcType="INTEGER"/>
+        <result column="stock_out_amount" property="stockOutAmount" jdbcType="INTEGER"/>
+        <result column="stock_amount" property="stockAmount" jdbcType="INTEGER"/>
+        <result column="month_stock_in_amount" property="monthStockInAmount" jdbcType="INTEGER"/>
+        <result column="daily_date" property="date" jdbcType="INTEGER"/>
+        <association property="department" column="department_idx" select="com.donno.nj.dao.DepartmentDao.findById">
+        </association>
+        <association property="gasCylinderSpec" column="gas_cyr_spec_idx" select="com.donno.nj.dao.GasCylinderSpecDao.findById">
+        </association>
+    </resultMap>
+
+    <sql id="TblGasCyrStockDailyRpt">
+        t_gas_cyr_stock_daily_rpt
+    </sql>
+
+    <sql id="InsertColumnList">
+        department_idx,gas_cyr_spec_idx,stock_in_amount,stock_out_amount,stock_amount,month_stock_in_amount,daily_date
+    </sql>
+
+    <insert id="insert"  keyProperty="id" useGeneratedKeys="true">
+        INSERT IGNORE INTO <include refid="TblGasCyrStockDailyRpt"/>(<include refid="InsertColumnList"/>)
+        VALUES( #{department.id},#{gasCylinderSpec.id},#{stockInAmount}, #{stockOutAmount} , #{stockAmount},#{monthStockInAmount},#{date})
+    </insert>
+
+
+    <select id="getList" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblGasCyrStockDailyRpt"/>
+        WHERE
+        id > 0
+
+        <if test="departmentCode != null">
+            AND department_idx = (select id from t_department where code = #{departmentCode})
+        </if>
+
+        <if test="specCode != null">
+            AND  gas_cyr_spec_idx = (select id from t_gas_cylinder_spec where code = #{specCode})
+        </if>
+
+        <if test="date != null">
+            AND  daily_date = DATE_FORMAT(#{date},'%Y-%m-%d')
+        </if>
+
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+    <select id="count" resultType="Integer">
+        SELECT COUNT(*)
+        FROM <include refid="TblGasCyrStockDailyRpt"/>
+        WHERE
+        id > 0
+
+        <if test="departmentCode != null">
+            AND department_idx = (select id from t_department where code = #{departmentCode})
+        </if>
+
+        <if test="specCode != null">
+            AND  gas_cyr_spec_idx = (select id from t_gas_cylinder_spec where code = #{specCode})
+        </if>
+
+        <if test="date != null">
+            AND  daily_date = DATE_FORMAT(#{date},'%Y-%m-%d')
+        </if>
+    </select>
+
+
+
+
+    <select id="findByDaily" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblGasCyrStockDailyRpt"/>
+        WHERE
+        id > 0
+
+        <if test="departmentCode != null">
+            AND department_idx = (select id from t_department where code = #{departmentCode})
+        </if>
+
+        <if test="specCode != null">
+            AND  gas_cyr_spec_idx = (select id from t_gas_cylinder_spec where code = #{specCode})
+        </if>
+        <if test="date != null">
+            AND  daily_date = DATE_FORMAT(#{date},'%Y-%m-%d')
+        </if>
+    </select>
+
+
+
+
+    <update id="update">
+        UPDATE <include refid="TblGasCyrStockDailyRpt"/>
+        <set>
+            <if test="stockInAmount != null">stock_in_amount = #{stockInAmount},</if>
+            <if test="stockOutAmount != null">stock_out_amount = #{stockOutAmount},</if>
+            <if test="stockAmount != null">stock_amount = #{stockAmount},</if>
+            <if test="monthStockInAmount != null">month_stock_in_amount = #{monthStockInAmount},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

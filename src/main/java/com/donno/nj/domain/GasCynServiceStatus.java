@@ -34,6 +34,7 @@ public enum GasCynServiceStatus implements IEnum,Serializable
         return null;
     }
 
+
     // get set 方法
     public String getName()
     {

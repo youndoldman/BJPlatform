@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +38,12 @@ public class GasCylinderServiceImpl implements GasCylinderService
 
     @Autowired
     private GasCynUserRelDao gasCynUserRelDao;
+
+    @Autowired
+    GasCylinderSvcStatusOpHisDao gasCylinderSvcStatusOpHisDao;
+
+    @Autowired
+    GasCylinderInOutDao gasCylinderInOutDao;
 
     @Override
     public Optional<GasCylinder> findByNumber(String number)
@@ -275,6 +283,12 @@ public class GasCylinderServiceImpl implements GasCylinderService
             throw new ServerSideBusinessException("钢瓶编号不能为空！", HttpStatus.NOT_ACCEPTABLE);
         }
 
+        /*serviceStatus 取值检查*/
+        if (serviceStatus < 0 || serviceStatus >= GasCynServiceStatus.values().length)
+        {
+            throw new ServerSideBusinessException("业务状态信息错误！", HttpStatus.NOT_FOUND);
+        }
+
         /*钢瓶是否存在*/
         Optional<GasCylinder> gasCylinderOptional = findByNumber(number);
         if (!gasCylinderOptional.isPresent())
@@ -283,10 +297,11 @@ public class GasCylinderServiceImpl implements GasCylinderService
         }
 
         /*如果钢瓶业务状态为待使用，则不校验原责任人*/
+        User srcUser = new User();
         if (gasCylinderOptional.get().getServiceStatus().getIndex() != GasCynServiceStatus.UnUsed.getIndex())
         {
             /*用户是否存在*/
-            User srcUser = userDao.findByUserId(srcUserId);
+            srcUser = userDao.findByUserId(srcUserId);
             if (srcUser == null)
             {
                 throw new ServerSideBusinessException("原用户不存在！", HttpStatus.NOT_FOUND);
@@ -325,7 +340,43 @@ public class GasCylinderServiceImpl implements GasCylinderService
         gasCynUserRelDao.updateBindedUser(gasCynUserRel.getId(),targetUser.getId());
 
         /*操作历史*/
+        if (gasCylinderOptional.get().getServiceStatus().getIndex() != GasCynServiceStatus.UnUsed.getIndex())
+        {
+            GasCylinderSvcStatusOpHis gasCylinderSvcStatusOpHis = new GasCylinderSvcStatusOpHis();
+            gasCylinderSvcStatusOpHis.setGasCylinder(gasCylinderOptional.get());
+            gasCylinderSvcStatusOpHis.setServiceStatus(GasCynServiceStatus.values()[serviceStatus]);
+            gasCylinderSvcStatusOpHis.setSrcUser(srcUser);
+            gasCylinderSvcStatusOpHis.setTargetUser(targetUser);
+            gasCylinderSvcStatusOpHis.setOptime(new Date() );
+            gasCylinderSvcStatusOpHisDao.insert(gasCylinderSvcStatusOpHis);
 
+            /*入库信息*/
+            if ( ((gasCylinderOptional.get().getServiceStatus().getIndex() == GasCynServiceStatus.Transporting.getIndex()) && (serviceStatus == GasCynServiceStatus.StoreStock.getIndex()))
+                  || ((gasCylinderOptional.get().getServiceStatus().getIndex() == GasCynServiceStatus.Dispatching.getIndex()) && (serviceStatus == GasCynServiceStatus.StoreStock.getIndex())) )
+            {
+                GasCylinderInOut gasCylinderInOut = new GasCylinderInOut();
+                gasCylinderInOut.setSrcUser(srcUser);
+                gasCylinderInOut.setTargetUser(targetUser);
+                gasCylinderInOut.setGasCylinder(gasCylinderOptional.get());
+                gasCylinderInOut.setStockType(StockType.STStockIn);
+                gasCylinderInOut.setAmount(1);
+                gasCylinderInOut.setOptime(new Date());
+                gasCylinderInOutDao.insert(gasCylinderInOut);
+            }
+
+            /*出库信息*/
+            if ( ((gasCylinderOptional.get().getServiceStatus().getIndex() == GasCynServiceStatus.StoreStock.getIndex()) && (serviceStatus == GasCynServiceStatus.Dispatching.getIndex())))
+            {
+                GasCylinderInOut gasCylinderInOut = new GasCylinderInOut();
+                gasCylinderInOut.setSrcUser(srcUser);
+                gasCylinderInOut.setTargetUser(targetUser);
+                gasCylinderInOut.setGasCylinder(gasCylinderOptional.get());
+                gasCylinderInOut.setStockType(StockType.STStockOut);
+                gasCylinderInOut.setAmount(1);
+                gasCylinderInOut.setOptime(new Date());
+                gasCylinderInOutDao.insert(gasCylinderInOut);
+            }
+        }
     }
 
     @Override
