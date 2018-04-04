@@ -1,0 +1,202 @@
+
+<style>
+    .tableContentAdjust{
+        text-align: center;
+        vertical-align:center;
+    }
+    .fontSize{
+        font-size: large;
+        margin-top: 7px;
+    }
+    .bkColor1{
+        background-color:#FFE4E1;
+    }
+    .bkColor2{
+        background-color:#E0EEE0;
+    }
+    .bkColor3{
+        background-color:#B2DFEE;
+    }
+    @media print {
+        .noprint { display: none }
+        table,th,td{
+            border: 1px solid #C7C7C7;
+        }
+    }
+</style>
+
+<div class="ribbon">
+    <a href=""><span class="home fa fa-home"></span></a>
+    <ol class="breadcrumb">
+        <li>直营门店销售日报表</li>
+    </ol>
+</div>
+
+<div class="table-wrapper">
+    <div class="toolbar">
+        <form role="form">
+            <div class="row">
+                <div class="col-md-10">
+                    <label class="input fontSize pull-left">{{q.currentTime}}</label>
+                </div>
+                <!--<div class="col-md-4">-->
+                    <!--<label class="input">时间范围：</label>-->
+                    <!--<label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>-->
+                    <!--<label class="input">至</label>-->
+                    <!--<label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control" ng-model="q.endTime"></label>-->
+                <!--</div>-->
+                <!--<div class="col-md-3">-->
+                    <!--<label class="input">日期类型：</label>-->
+                    <!--<label class="input"><select  ng-model="q.type" ng-options="type for type in vm.types" class="form-control" ng-selected=""></select></label>-->
+                    <!--<label class="input">间隔数：</label>-->
+                    <!--<label class="input"><select  ng-model="q.interval" ng-options="interval for interval in vm.intervals" class="form-control" ng-selected=""></select></label>-->
+                <!--</div>-->
+                <!--<div class="col-md-1">-->
+                    <!--<button ng-click="search()" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> 搜索 </button>-->
+                <!--</div>-->
+                <div class="col-md-1 pull-right noprint">
+                    <button ng-click="printPage()" class="btn btn-sm btn-primary noprint"><i class="fa fa-print"></i>打印</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <table class="table table-striped table-hover props table-sm table-bordered table-condensed">
+        <thead>
+        <tr>
+            <td width="5.6%" colspan="2" class="message tableContentAdjust">编报部门</td>
+            <td width="5.6%" colspan="2" class="message tableContentAdjust">XXX门店</td>
+            <td width="50.4%" colspan="18" class="message tableContentAdjust bkColor1">LPG销售情况</td>
+            <td width="16.8%" colspan="6" class="message tableContentAdjust bkColor2">LPG销售往来管理</td>
+            <td width="19.6%" colspan="7" class="message tableContentAdjust bkColor3">LPG销售现金管理</td>
+        </tr>
+        <tr>
+            <td width="5.6%" colspan="2" class="message tableContentAdjust">品名项目</td>
+
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust">上日库存</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust">今日调入数量</td>
+
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor1">本月累计调入</td>
+
+            <td width="39.2%" colspan="14" class="message tableContentAdjust bkColor1">今日实际销售</td>
+
+            <td width="5.6%" colspan="2" class="message tableContentAdjust bkColor1">月累计销售</td>
+
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor1">今日实际库存</td>
+
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor2">上日 赊销 结余</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor2">今日 赊销 回款</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor2">今日 赊销 结余</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor2">上日 月结 结余</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor2">今日 月结 回款</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor2">今日 月结 结余</td>
+
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">上日 现金 库存</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">现金 销款</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">往日 赊销</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">往日 月结</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">气票 款</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">今日 存银 行款</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">今日 结存 现金</td>
+        </tr>
+        <tr>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust">品名</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust">规格</td>
+
+            <td width="5.6%" colspan="2" class="message tableContentAdjust bkColor1">现金销售</td>
+            <td width="5.6%" colspan="2" class="message tableContentAdjust bkColor1">电子支付</td>
+            <td width="5.6%" colspan="2" class="message tableContentAdjust bkColor1">赊销</td>
+            <td width="5.6%" colspan="2" class="message tableContentAdjust bkColor1">月结</td>
+            <td width="5.6%" colspan="2" class="message tableContentAdjust bkColor1">气票</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">优惠券</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">数量累计</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">金额累计</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">今日均价</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">数量</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">金额</td>
+        </tr>
+        <tr>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">数量</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">金额</td>
+
+            <td width="2.8%" class="message tableContentAdjust bkColor1">数量</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">金额</td>
+
+            <td width="2.8%" class="message tableContentAdjust bkColor1">数量</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">金额</td>
+
+            <td width="2.8%" class="message tableContentAdjust bkColor1">数量</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">金额</td>
+
+            <td width="2.8%" class="message tableContentAdjust bkColor1">数量</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">金额</td>
+        </tr>
+
+
+        </thead>
+        <tbody>
+        <tr  ng-repeat="item in vm.dataList">
+            <!--<td class="message tableContentAdjust">{{item.date}}</td>-->
+            <!--<td class="message tableContentAdjust">{{item.agentUserId}}</td>-->
+            <!--<td class="message tableContentAdjust">{{item.totalCallData.count}}</td>-->
+            <!--<td class="message tableContentAdjust">{{item.totalCallData.hitRate}}</td>-->
+            <!--<td class="message tableContentAdjust">{{item.totalCallData.totalOperationInSec}}</td>-->
+            <!--<td class="message tableContentAdjust">{{item.totalCallData.avgOperationInSec}}</td>-->
+            <!--<td class="message tableContentAdjust">{{item.inBoundData.count}}</td>-->
+            <!--<td class="message tableContentAdjust">{{item.inBoundData.hitRate}}</td>-->
+            <!--<td class="message tableContentAdjust">{{item.inBoundData.totalOperationInSec}}</td>-->
+            <!--<td class="message tableContentAdjust">{{item.inBoundData.avgOperationInSec}}</td>-->
+            <!--<td class="message tableContentAdjust">{{item.outBoundData.count}}</td>-->
+            <!--<td class="message tableContentAdjust">{{item.outBoundData.hitRate}}</td>-->
+            <!--<td class="message tableContentAdjust">{{item.outBoundData.totalOperationInSec}}</td>-->
+            <!--<td class="message tableContentAdjust">{{item.outBoundData.avgOperationInSec}}</td>-->
+        </tr>
+
+        <tr>
+            <td width="5.6%" colspan="2" class="message tableContentAdjust">小计</td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+

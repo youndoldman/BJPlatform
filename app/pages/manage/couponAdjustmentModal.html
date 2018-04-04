@@ -1,4 +1,4 @@
-﻿<div class="modal" tabindex="-1">
+<div class="modal" tabindex="-1">
     <div class="modal-dialog"  style=" width: 1000px;">
         <div class="modal-content">
             <form name="userForm" novalidate>
@@ -13,23 +13,54 @@
                         <div class="row">
                             <div class="input-group pdb15">
                                 <div class="row" style="margin-top: 15px">
-                                    <label class="col-md-2 control-label input-label">计划名称：</label>
+                                    <label class="col-md-2 control-label input-label">优惠名称：</label>
                                     <div class="col-md-3 input-width-sm">
-                                        <input type="text"  class="form-control" ng-model="vm.currentPriceAjustment.name" >
+                                        <input type="text"  class="form-control" ng-model="q.name">
                                     </div>
-                                    <label class="col-md-2 control-label input-label">执行时间：</label>
+
+                                    <label class="col-md-2 control-label input-label">优惠类型：</label>
                                     <div class="col-md-3 input-width-sm">
-                                        <input type="text"  id="datetimepickerStartExcute"  class="form-control" ng-model="vm.currentPriceAjustment.effectTime">
+                                        <select name="discountType" ng-model="discountType" ng-options="discountType for discountType in vm.discountType" class="form-control" ng-selected="" ng-change="discountTypeChange()"></select>
                                     </div>
                                 </div>
 
                                 <div class="row" style="margin-top: 15px">
-                                    <label class="col-md-2 control-label input-label">类型：</label>
+                                    <label class="col-md-2 control-label input-label">开始时间：</label>
+                                    <div class="col-md-3 input-width-sm">
+                                        <input type="text"  id="datetimepickerStartCoupon"  class="form-control" ng-model="q.startTime">
+                                    </div>
+
+                                    <label class="col-md-2 control-label input-label">结束时间：</label>
+                                    <div class="col-md-3 input-width-sm">
+                                        <input type="text"  id="datetimepickerEndCoupon"  class="form-control" ng-model="q.endTime">
+                                    </div>
+                                </div>
+
+                                <div class="row" style="margin-top: 15px">
+                                        <label class="col-md-2 control-label input-label">条件类型：</label>
+                                        <div class="col-md-3 input-width-sm">
+                                            <select name="discountConditionType" ng-model="type" ng-options="discountConditionType for discountConditionType in vm.discountConditionType" class="form-control" ng-selected=""ng-change="selectChange()" ></select>
+                                        </div>
+
+                                        <label class="col-md-2 control-label input-label">条件取值：</label>
+                                        <div class="col-md-3 input-width-sm">
+                                            <select name="discountConditionValue" ng-model="value" ng-options="x.name for x in temp.customersList" class="form-control" ng-selected="" ng-change="customersLevelTypeChange()"></select>
+                                        </div>
+                                    </div>
+
+                                <div class="row" style="margin-top: 15px">
+                                        <label class="col-md-2 control-label input-label">使用方式：</label>
+                                        <div class="col-md-3 input-width-sm">
+                                            <select name="useType" ng-model="useType" ng-options="useType for useType in vm.useType" class="form-control" ng-selected=""ng-change="useTypeSelectChange()" ></select>
+                                        </div>
+                                    </div>
+
+                                <div class="row" style="margin-top: 15px">
+                                    <label class="col-md-2 control-label input-label">商品类型：</label>
                                     <div class="col-md-3 input-width-sm">
                                         <select name="goodsType" ng-model="temp.selectedGoodsType" ng-options="goodsType.name for goodsType in temp.goodsTypesList" class="form-control" ng-selected="" ng-change="goodsTypeChange()"></select>
                                     </div>
-
-                                    <label class="col-md-2 control-label input-label">商品：</label>
+                                    <label class="col-md-2 control-label input-label">商品规格：</label>
                                     <div class="col-md-3 input-width-sm">
                                         <select name="goods" ng-model="temp.selectedGoods" ng-options="goods.name for goods in temp.goodsList" class="form-control" ng-selected="" ng-change="goodsChange()"></select>
                                     </div>
@@ -42,20 +73,18 @@
                                     <div class="col-md-3 input-width-sm">
                                         <input type="number"  class="form-control" ng-model="temp.selectedGoods.price" disabled>
                                     </div>
-                                    <label class="col-md-2 control-label input-label">调价：</label>
+                                    <label class="col-md-2 control-label input-label">{{vm.discountText }}</label>
                                     <div class="col-md-3 input-width-sm">
                                         <input type="number"  class="form-control" ng-model="temp.adjustGoodsPrice" >
                                     </div>
+
                                 </div>
 
                             </div>
-
-
                         </div>
 
-                        <div class="row" >
+                        <div class="row">
                             <table class="table table-bordered table-hover .table-condensed">
-
                                 <thead>
                                 <tr>
                                     <td style="background: lightblue;text-align: center" width="8%">序号</td>
@@ -64,12 +93,12 @@
                                     <td style="background: lightblue;text-align: center" width="10%">商品类型</td>
                                     <td style="background: lightblue;text-align: center" width="10%">商品规格</td>
                                     <td style="background: lightblue;text-align: center" width="9%">现价</td>
-                                    <td style="background: lightblue;text-align: center" width="10%">调价</td>
+                                    <td style="background: lightblue;text-align: center" width="10%">{{vm.discountText}}</td>
                                     <td style="background: lightblue;text-align: center" width="5%">操作</td>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="adjustPriceDetail in vm.currentPriceAjustment.adjustPriceDetailList">
+                                <tr ng-repeat="adjustPriceDetail in vm.currentPriceAdjustment.adjustPriceDetailList">
                                     <td class="message">{{$index+1}}</td>
                                     <td class="message">{{adjustPriceDetail.goods.code}}</td>
                                     <td class="message">{{adjustPriceDetail.goods.name}}</td>
@@ -92,7 +121,7 @@
 
 
                 <div class="modal-footer">
-                    <button type="submit" ng-click="submit(vm.currentPriceAjustment);" class="btn btn-primary" data-dismiss="modal">保存</button>
+                    <button type="submit" ng-click="submit(q);" class="btn btn-primary" data-dismiss="modal">保存</button>
                     <button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </form>

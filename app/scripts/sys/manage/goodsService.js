@@ -9,7 +9,10 @@ manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper', function ($
     var goodsTypesUri = URI.resources.goodsTypes;
     var goodsPriceAdjustmentUri = URI.resources.adjustPriceSchedules;
 
+    var customerTypeUri = URI.resources.customerType;
+    var customerLevelUri = URI.resources.customerLevel;
 
+    var discountStrategiesUri = URI.resources.discountStrategies;
 
     this.toViewModelGoods = function (goodsFromApi) {
         return {
@@ -43,10 +46,14 @@ manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper', function ($
     this.retrieveGoodsTypes = function (params) {
         return promise.wrap($http.get(goodsTypesUri, {params: params}));
     };
-
-
-
-
+//客户类型查询
+    this.retrieveCustomerTypes = function (params) {
+        return promise.wrap($http.get(customerTypeUri, {params: params}));
+    };
+//客户级别查询
+    this.retrieveCustomerLevel= function (params) {
+        return promise.wrap($http.get(customerLevelUri, {params: params}));
+    };
 
     this.deleteGoods = function (goods) {
         return promise.wrap($http.delete(goodsUri + "/" + goods.code));
@@ -82,7 +89,7 @@ manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper', function ($
         return promise.wrap($http.put(goodsPriceAdjustmentUri + "/" + adjustPriceSchedules.id, adjustPriceSchedules));
     };
 
-    //修改调价策略
+    //删除调价策略
     this.deleteAdjustPriceSchedules = function (adjustPriceSchedules) {
         return promise.wrap($http.delete(goodsPriceAdjustmentUri + "/" + adjustPriceSchedules.id));
     };
@@ -92,5 +99,21 @@ manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper', function ($
         return promise.wrap($http.get(goodsPriceAdjustmentUri, {params: params}));
     };
 
+    //添加优惠策略
+    this.createDiscountStrategies = function (adjustDiscountStrategies) {
+        return promise.wrap($http.post(discountStrategiesUri, adjustDiscountStrategies));
+    };
+    //修改优惠策略
+    this.modifyDiscountStrategies = function (id, adjustDiscountStrategies) {
+        return promise.wrap($http.put(discountStrategiesUri + "/" + id, adjustDiscountStrategies));
+    };
+    //删除优惠策略
+    this.deleteDiscountStrategies = function (adjustDiscountStrategies) {
+        return promise.wrap($http.delete(discountStrategiesUri + "/" + adjustDiscountStrategies.id));
+    };
+    //查询优惠策略
+    this.retrieveDiscountStrategies = function (params) {
+        return promise.wrap($http.get(discountStrategiesUri,{params: params}));
+    };
 }]);
 

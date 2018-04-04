@@ -23,12 +23,12 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
                     +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
             });
     });
+
     $scope.vm = {
         currentPriceAjustment: {
             name:null,
             effectTime:null,
             adjustPriceDetailList:[]
-
         }
     };
 
@@ -78,8 +78,7 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
             $scope.isModify = false;
         }
         //查询商品类型
-        var queryParams = {
-        };
+        var queryParams = {};
         GoodsService.retrieveGoodsTypes(queryParams).then(function (goodsTypes) {
             $scope.temp.goodsTypesList = goodsTypes.items;
             $scope.temp.selectedGoodsType = $scope.temp.goodsTypesList[0];

@@ -17,8 +17,13 @@ commonModule.constant('URI', {
         'groups': '../../../api/groups',//组接口
         'customers': '../../../api/customers',//客户接口
         'customerSource': '../../../api/CustomerSource',//客户来源查询接口
-        'customerLevel': '../../../api/CustomerLevel',//客户等级查询接口
-        'customerType': '../../../api/CustomerType',//客户类型查询接口
+        //实际使用地址
+        //'customerLevel': '../../../api/CustomerLevel',//客户等级查询接口
+        //'customerType': '../../../api/CustomerType',//客户类型查询接口
+        'customerLevel': 'http://120.78.241.67/api/CustomerLevel',//客户等级查询接口
+        'customerType': 'http://120.78.241.67/api/CustomerType',//客户类型查询接口
+        'discountStrategies':'http://120.78.241.67/api/DiscountStrategies',//优惠策略接口
+
         'customerCallin':'../../../api/CustomerCallIn',//电话关联的客户资料查询接口
         'login':'../../../api/sysusers/login',//系统用户登录接口
         'logout':'../../../api/sysusers/logout',//系统用户登出接口
@@ -27,8 +32,11 @@ commonModule.constant('URI', {
 
         'taskOrders':'../../../api/TaskOrders',//任务订单接口
         'taskOrdersDeal':'../../../api/TaskOrders/Process',//任务订单办理接口
-        'goods': '../../../api/Goods',//商品
-        'goodsTypes': '../../../api/GoodsTypes',//商品类型
+        //'goods': '../../../api/Goods',//商品
+        //'goodsTypes': '../../../api/GoodsTypes',//商品类型
+        'goods': 'http://120.78.241.67/api/Goods',//商品
+        'goodsTypes': 'http://120.78.241.67/api/GoodsTypes',//商品类型
+
         'goodsPriceHistory': '../../../api/Goods/PriceHistory',//商品价格历史
         'subdistrict':'http://restapi.amap.com/v3/config/district',//高德地图行政区域接口
         'geocode':'http://restapi.amap.com/v3/geocode/geo',//高德地图逆地址解码接口
@@ -40,7 +48,10 @@ commonModule.constant('URI', {
         'cloudUser': '../../../api/CloudUser',//云客服用户接口
         'cloudUserBind': '../../../api/CloudUser/Bind',//云客服用户绑定接口
         'cloudUserUnBind': '../../../api/CloudUser/UnBind',//云客服用户解除绑定接口
-        'adjustPriceSchedules': '../../../api/AdjustPriceSchedules',//调价接口
+        //'adjustPriceSchedules': '../../../api/AdjustPriceSchedules',//调价接口
+        'adjustPriceSchedules': 'http://120.78.241.67/api/AdjustPriceSchedules',//调价接口
+
+
 
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
         'ktyReport1': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/agent/call',//科天云获取坐席-工作组及直拨电话统计报表
@@ -182,37 +193,73 @@ commonModule.constant('NavItem', {
             name: "坐席报表1",
             target: "_blank",
             href: "./customService.htm#/CustomService/report1",
-            icon: "fa-plane"
+            icon: "fa-table"
         }, {
             index: 5,
             name: "坐席报表2",
             target: "_blank",
             href: "./customService.htm#/CustomService/report2",
-            icon: "fa-plane"
+            icon: "fa-table"
         }, {
             index: 6,
             name: "工作组报表3",
             target: "_blank",
             href: "./customService.htm#/CustomService/report3",
-            icon: "fa-plane"
+            icon: "fa-table"
         }, {
             index: 7,
             name: "工作组报表4",
             target: "_blank",
             href: "./customService.htm#/CustomService/report4",
-            icon: "fa-plane"
+            icon: "fa-table"
         }, {
             index: 8,
             name: "工作组报表5",
             target: "_blank",
             href: "./customService.htm#/CustomService/report5",
-            icon: "fa-plane"
+            icon: "fa-table"
         }, {
             index: 9,
             name: "工作组报表6",
             target: "_blank",
             href: "./customService.htm#/CustomService/report6",
-            icon: "fa-plane"
+            icon: "fa-table"
+        }, {
+            index: 10,
+            name: "门店销售",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/storeDailySales",
+            icon: "fa-table"
+        }, {
+            index: 11,
+            name: "钢检瓶情况",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/checkBottle",
+            icon: "fa-table"
+        }, {
+            index: 12,
+            name: "销售统计表",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/dailyMonthlySales",
+            icon: "fa-table"
+        }, {
+            index: 13,
+            name: "LPG销售情况",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/LPGSales",
+            icon: "fa-table"
+        }, {
+            index: 14,
+            name: "LPG销售往来",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/LPGSalesBalance",
+            icon: "fa-table"
+        }, {
+            index: 14,
+            name: "LPG销售现金",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/LPGSalesCash",
+            icon: "fa-table"
             }
         ]
     },

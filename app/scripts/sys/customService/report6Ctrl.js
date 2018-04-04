@@ -46,7 +46,7 @@ customServiceApp.controller('Report6Ctrl', ['$scope', '$rootScope', '$filter', '
             searchData();
         };
 
-        $scope.pager = pager.init('Report1Ctrl', gotoPage);
+        $scope.pager = pager.init('Report6Ctrl', gotoPage);
         var historyQ = $scope.pager.getQ();
 
         $scope.q = {

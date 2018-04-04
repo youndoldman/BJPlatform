@@ -1,3 +1,10 @@
+<style>
+    .marginAdjust{
+        margin-top:inherit;
+        margin-left:100px;
+    }
+</style>
+
 <div class="col-md-4">
     <div class="ribbon">
         <a href=""><span class="home fa fa-home"></span></a>
@@ -51,6 +58,7 @@
 
     </div>
 </div>
+
 <div class="col-md-8">
     <div class="ribbon">
         <a href=""><span class="home fa fa-home"></span></a>
@@ -120,7 +128,8 @@
 
     </div>
 </div>
-<div class="col-md-12" style="margin-top: 10px">
+
+<div class="col-md-6" style="margin-top: 10px">
     <div class="ribbon">
         <a href=""><span class="home fa fa-home"></span></a>
         <ol class="breadcrumb">
@@ -180,11 +189,81 @@
         </table>
         <div ng-if="vm.userList.length == 0" nj-table-no-data></div>
         <div nj-pager pager="pagerGoodsPriceAdjustment"></div>
-
-
     </div>
 </div>
 
+<div class="col-md-6" style="margin-top: 10px">
+    <div class="ribbon">
+        <a href=""><span class="home fa fa-home"></span></a>
+        <ol class="breadcrumb">
+            <li>优惠策略列表</li>
+        </ol>
+    </div>
 
+    <div class="table-wrapper table-bordered" style="height: 400px">
+        <div class="toolbar">
+            <form role="form">
+                <div class="inline-group">
+                    <label class="input"><input type="text" class="form-control input-sm" placeholder="输入优惠名称" ng-model="q.couponName" > </label>
+                    <label class="input">时间：</label>
+                    <label class="input"><input type="text"  id="couponPickerStart"  class="form-control" ng-model="q.couponStartTime" ></label>
+                    <label class="input">-</label>
+                    <label class="input"><input type="text"  id="couponPickerEnd"  class="form-control" ng-model="q.couponEndTime" ></label>
+                    <button type="submit" class="btn btn-sm btn-primary" ng-click="searchCouponAdjustment()"><i class="fa fa-search"></i>搜索</button>
+                    <button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUpCouponAdjustment()"><i class="fa fa-plus"></i> 新增优惠策略 </button>
+
+                    <label class="input">优惠类型：</label>
+                    <label class="input "><select  ng-model="q.discountType" ng-options="discountType for discountType in vm.discountTypes" class="form-control" ng-selected="" ng-change="discountTypeChange()"></select></label>
+                    <label class="input">使用方式：</label>
+                    <label class="input"><select  ng-model="q.useType" ng-options="useType for useType in vm.useTypes" class="form-control" ng-selected="" ng-change="useTypeChange()"></select></label>
+                    <label class="input">状态：</label>
+                    <label class="input"><select ng-model="q.status" ng-options="status for status in vm.status" class="form-control" ng-selected="" ng-change="statusChange()"></select></label>
+
+                </div>
+            </form>
+        </div>
+
+        <table class="table table-striped table-hover props table-sm">
+            <thead>
+            <tr>
+                <th width="1%"></th>
+                <td width="5%">序号</td>
+                <td width="10%">优惠名称</td>
+                <td width="10%">开始时间</td>
+                <td width="10%">结束时间</td>
+                <td width="10%">优惠类型</td>
+                <td width="10%">条件类型</td>
+                <td width="10%">使用方式</td>
+                <td width="10%">状态</td>
+                <td width="10%">操 作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="couponAdjustment in vm.couponAdjustmentList">
+                <td></td>
+                <td class="message">{{$index+1+pagerGoods.pageSize*(pagerGoods.getCurPageNo()-1)}}</td>
+                <td class="message">{{couponAdjustment.name}}</td>
+                <td class="message">{{couponAdjustment.startTime}}</td>
+                <td class="message">{{couponAdjustment.endTime}}</td>
+                <td class="message">{{couponAdjustment.discountType.name}}</td>
+                <td class="message">{{couponAdjustment.discountConditionType.name}}</td>
+                <td class="message">{{couponAdjustment.useType.name}}</td>
+                <td class="message">{{couponAdjustment.discountStrategyStatus.name}}</td>
+                <td class="operate">
+                    <button title="修改" ng-click="modifyCouponAdjustment(couponAdjustment)" type="button" class="btn btn-primary btn-outline btn-xs">
+                        <i class="fa fa-edit"></i>
+                    </button>
+                    <button title="删除" ng-click="deleteCouponAdjustment(couponAdjustment)" type="button" class="btn btn-primary btn-outline btn-xs">
+                        <i class="fa fa-trash-o"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div ng-if="vm.userList.length == 0" nj-table-no-data></div>
+        <div nj-pager pager="pagerCouponAdjustment"></div>
+
+    </div>
+</div>
 
 
