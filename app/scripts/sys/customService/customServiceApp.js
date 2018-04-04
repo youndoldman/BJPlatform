@@ -149,7 +149,86 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                 onEnter: function (rootService, NavItem) {
                     rootService.updateActiveNavL2(NavItem.CustomService.menuItems[9]);
                 }
-            });
+            })
+            .state('CustomService.storeDailySales',{
+                url:'/storeDailySales',
+                views: {
+                    "content@CustomService": {
+                        templateUrl: '../pages/customService/storeDailySales.html',
+                        controller: 'storeDailySalesCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[10]);
+                }
+            })
+            .state('CustomService.checkBottle',{
+                url:'/checkBottle',
+                views: {
+                    "content@CustomService": {
+                        templateUrl: '../pages/customService/checkBottle.html',
+                        controller: 'checkBottleCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[11]);
+                }
+            })
+            .state('CustomService.dailyMonthlySales',{
+                url:'/dailyMonthlySales',
+                views: {
+                    "content@CustomService": {
+                        templateUrl: '../pages/customService/dailyMonthlySales.html',
+                        controller: 'dailyMonthlySalesCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[12]);
+                }
+            })
+            .state('CustomService.LPGSales',{
+                url:'/LPGSales',
+                views: {
+                    "content@CustomService": {
+                        templateUrl: '../pages/customService/LPGSales.html',
+                        controller: 'LPGSalesCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[13]);
+                }
+            })
+            .state('CustomService.LPGSalesBalance',{
+                url:'/LPGSalesBalance',
+                views: {
+                    "content@CustomService": {
+                        templateUrl: '../pages/customService/LPGSalesBalance.html',
+                        controller: 'LPGSalesBalanceCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[14]);
+                }
+            })
+            .state('CustomService.LPGSalesCash',{
+                url:'/LPGSalesCash',
+                views: {
+                    "content@CustomService": {
+                        templateUrl: '../pages/customService/LPGSalesCash.html',
+                        controller: 'LPGSalesCashCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[15]);
+                }
+            })
+        ;
 
         $httpProvider.interceptors.push('HttpInterceptor');
     }]).run(['$rootScope', 'rootService', 'NavItem', function ($rootScope, rootService, NavItem) {

@@ -5,7 +5,6 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
                                                                  rootService, pager, udcModal, GoodsService,Upload,URI) {
 
         $(function () {
-
             $('#datetimepickerStart').datetimepicker({
                 format: 'YYYY-MM-DD HH:mm',
                 locale: moment.locale('zh-cn'),
@@ -19,8 +18,23 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
                 //sideBySide:true,
                 showTodayButton:true,
                 toolbarPlacement:'top',
-
             });
+            //优惠计划
+            $('#couponPickerStart').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
+            $('#couponPickerEnd').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
+
         });
         $(function () {
             $('#datetimepickerStart').datetimepicker()
@@ -35,6 +49,21 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
                     var date = ev.date._d;
                     var month = date.getMonth()+1;
                     $scope.q.adjustEndTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
+
+            $('#couponPickerStart').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.couponStartTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
+            $('#couponPickerEnd').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.couponEndTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
                         +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
                 });
         });
@@ -54,11 +83,18 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
             $scope.searchGoodsPriceAdjustment();
         };
 
+        var gotoPageCouponAdjustment = function (pageNo) {
+            $scope.pagerCouponAdjustment.setCurPageNo(pageNo);
+            $scope.searchCouponAdjustment();
+        };
+
         $scope.pagerGoodsTypes = pager.init('GoodsListCtrl', gotoPageGoodsType);
 
         $scope.pagerGoods = pager.init('GoodsListCtrl', gotoPageGoods);
 
         $scope.pagerGoodsPriceAdjustment = pager.init('GoodsListCtrl', gotoPageGoodsPriceAdjustment);
+
+        $scope.pagerCouponAdjustment = pager.init('GoodsListCtrl', gotoPageCouponAdjustment);
 
         var historyQ = $scope.pagerGoodsTypes.getQ();
 
@@ -66,7 +102,14 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
             goodsType:"",
             adjustName:null,     //调价计划名称
             adjustStartTime:null,//调价计划开始时间
-            adjustEndTime:null   //调价计划结束时间
+            adjustEndTime:null,   //调价计划结束时间
+
+            couponName:null,     //优惠计划名称
+            couponStartTime:null,//优惠计划开始时间
+            couponEndTime:null,   //优惠计划结束时间
+            discountType:null,
+            useType:null,
+            status:null,
         };
 
         $scope.config = {
@@ -77,7 +120,12 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
         $scope.vm = {
             goodsTypesList: [],
             goodsList: [],
-            goodsPriceAdjustmentList:[]
+            goodsPriceAdjustmentList:[],
+
+            couponAdjustmentList:[],
+            discountTypes:["直减", "百分比折扣"],
+            useTypes:["排他型", "叠加型"],
+            status:["待生效","已生效","作废"],
         };
         $scope.search = function () {
             $scope.pagerGoods.setCurPageNo(1);
@@ -114,6 +162,22 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
                 }
             })
         };
+
+        $scope.initPopUpCouponAdjustment = function () {
+            udcModal.show({
+                templateUrl: "./manage/couponAdjustmentModal.html",
+                controller: "couponAdjustmentModalCtrl",
+                inputs: {
+                    title: '新增优惠策略',
+                    initVal: {}
+                }
+            }).then(function (result) {
+                if (result) {
+                    $scope.searchCouponAdjustment();
+                }
+            })
+        };
+
         //修改调价策略
         $scope.modifyGoodsPriceAdjustment = function (goodsPriceAdjustment) {
             udcModal.show({
@@ -143,11 +207,39 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
                         })
                     }
                 })
-
-
         };
 
+        //修改优惠策略
+        $scope.modifyCouponAdjustment = function (couponAdjustment) {
+            console.info(couponAdjustment);
+            udcModal.show({
+                templateUrl: "./manage/couponAdjustmentModal.html",
+                controller:  "couponAdjustmentModalCtrl",
+                inputs: {
+                    title: '修改优惠策略',
+                    initVal: couponAdjustment
+                }
+            }).then(function (result) {
+                if (result) {
+                    $scope.searchCouponAdjustment();
+                }
+            })
+        };
 
+        //删除优惠策略
+        $scope.deleteCouponAdjustment = function (couponAdjustment) {
+            udcModal.confirm({"title": "删除优惠策略", "message": "是否永久删除优惠策略 " + couponAdjustment.name})
+                .then(function (result) {
+                    if (result) {
+                        GoodsService.deleteDiscountStrategies(couponAdjustment).then(function () {
+                            udcModal.info({"title": "处理结果", "message": "删除优惠策略成功 "});
+                            $scope.searchCouponAdjustment();
+                        }, function(value) {
+                            udcModal.info({"title": "处理结果", "message": "删除优惠策略失败 "+value.message});
+                        })
+                    }
+                })
+        };
 
         $scope.modifyGoods = function (goods) {
             udcModal.show({
@@ -258,21 +350,76 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
                 pageNo: $scope.pagerGoodsPriceAdjustment.getCurPageNo(),
                 pageSize: $scope.pagerGoodsPriceAdjustment.pageSize
             };
-
             GoodsService.retrieveAdjustPriceSchedules(queryParams).then(function (goodsPriceAdjustmentList) {
                 $scope.pagerGoodsPriceAdjustment.update($scope.q, goodsPriceAdjustmentList.total, queryParams.pageNo);
                 $scope.vm.goodsPriceAdjustmentList = goodsPriceAdjustmentList.items;
             });
         };
+//搜索优惠类型
+        $scope.discountTypeChange = function(){
+            //console.info($scope.q.discountType)
+        }
+        //查询优惠记录
+        $scope.searchCouponAdjustment = function () {
+            var queryParams = {
+                name:$scope.q.couponName,     //优惠计划名称
+                startTime:$scope.q.couponStartTime,//调价优惠开始时间
+                endTime:$scope.q.couponEndTime,   //调价优惠结束时间
+                pageNo: $scope.pagerCouponAdjustment.getCurPageNo(),
+                pageSize: $scope.pagerCouponAdjustment.pageSize
+            };
+
+            if($scope.q.discountType == "直减")
+            {
+                queryParams.discountType = 0;
+            }
+            else if($scope.q.discountType == "百分比折扣")
+            {
+                queryParams.discountType = 1;
+            }
+
+            if($scope.q.useType == "排他型")
+            {
+                queryParams.useType = 0;
+            }
+            else if($scope.q.useType == "叠加型")
+            {
+                queryParams.useType = 1;
+            }
+
+            if($scope.q.status == "待生效")
+            {
+                queryParams.status = 0;
+            }
+            else if($scope.q.status == "已生效")
+            {
+                queryParams.status = 1;
+            }
+            else if($scope.q.status == "作废")
+            {
+                queryParams.status = 2;
+            }
+            //console.info(queryParams);
+            GoodsService.retrieveDiscountStrategies(queryParams).then(function (couponAdjustmentList) {
+                //console.info(couponAdjustmentList);
+                $scope.pagerCouponAdjustment.update($scope.q, couponAdjustmentList.total, queryParams.pageNo);
+                $scope.vm.couponAdjustmentList = couponAdjustmentList.items;
+            });
+        };
 
 
         var init = function () {
+            $scope.pagerCouponAdjustment.pageSize=5;
+
+            $scope.pagerGoodsTypes.pageSize=10;
             $scope.pagerGoodsPriceAdjustment.pageSize=5;
             $scope.pagerGoodsTypes.pageSize=10;
             $scope.pagerGoods.pageSize=10;
             searchGoodsTypes();
             searchGoods();
             $scope.searchGoodsPriceAdjustment();
+
+            $scope.searchCouponAdjustment();
         };
 
         init();
