@@ -46,10 +46,10 @@ public class WXPayConfigImpl extends WXPayConfig{
         return "panva95007panva95007panva95007PA";
     }//商户号秘钥
     public String getSeverIP() {
-        return "118.31.77.228";
+        return "120.78.241.67";
     }//服务器IP
     public String getNotifyUrl() {
-        return "https://www.yunnanbaijiang.com/api/payCallBack";
+        return "https://www.yunnanbaijiang.com/api/pay/notify";
     }//服务器回调地址
 
     public InputStream getCertStream() {
