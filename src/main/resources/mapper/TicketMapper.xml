@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.TicketDao">
+    <resultMap id="BaseResultMap" type="com.donno.nj.domain.Ticket">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+
+        <result column="price" property="price" jdbcType="DOUBLE"/>
+        <result column="use_status" property="ticketStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+        <result column="exp_time_start" property="startDate" jdbcType="TIMESTAMP"/>
+        <result column="exp_time_end" property="endDate" jdbcType="TIMESTAMP"/>
+        <result column="use_time" property="useTime" jdbcType="TIMESTAMP"/>
+
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+
+        <association property="spec" column="spec_idx" select="com.donno.nj.dao.GasCylinderSpecDao.findById">
+        </association>
+
+        <association property="customer" column="customer_idx" select="com.donno.nj.dao.UserDao.findById">
+        </association>
+
+        <association property="operator" column="oper_idx" select="com.donno.nj.dao.UserDao.findById">
+        </association>
+
+    </resultMap>
+
+    <sql id="TableName">
+        t_ticket
+    </sql>
+
+
+    <sql id="QueryColumnList">
+       id,customer_idx,spec_idx, oper_idx,price,  exp_time_start,exp_time_end,use_status,use_time, note,create_time,update_time
+    </sql>
+
+    <sql id="InsertColumnList">
+       customer_idx,spec_idx, oper_idx,price,  exp_time_start,exp_time_end,use_status,use_time, note
+    </sql>
+
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT <include refid="QueryColumnList"/>
+        FROM <include refid="TableName"/>
+        WHERE
+          id = #{id}
+    </select>
+
+
+    <sql id="getListCondition">
+        <where>
+            id > 0
+            <if test="customerUserId != null">
+                and customer_idx = (SELECT  id from t_user where user_id = #{customerUserId})
+            </if>
+            <if test="operatorUserId != null">
+                and oper_idx = (SELECT  id from t_user where user_id = #{operatorUserId})
+            </if>
+
+            <if test="useStatus != null">
+                and use_status = #{useStatus}
+            </if>
+
+            <if test="specCode != null">
+                and spec_idx = (SELECT  id from t_gas_cylinder_spec where code = #{specCode})
+            </if>
+        </where>
+    </sql>
+
+    <select id="getList" resultMap="BaseResultMap">
+        SELECT <include refid="QueryColumnList"/>
+        FROM <include refid="TableName"/>
+        <include refid="getListCondition"/>
+
+
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+
+    </select>
+
+    <select id="count" resultType="Integer">
+        SELECT COUNT(*)
+        FROM  <include refid="TableName"/>
+        <include refid="getListCondition"/>
+    </select>
+
+    <insert id="insert">
+        INSERT IGNORE INTO <include refid="TableName"/>(<include refid="InsertColumnList"/>)
+        VALUES( (select id from t_user where user_id = #{customer.userId} ),
+        (select id from t_gas_cylinder_spec where code = #{spec.code} ),
+        (select id from t_user where user_id = #{operator.userId} ),
+        #{price},#{startDate},#{endDate},#{ticketStatus.index},#{useTime},#{note})
+    </insert>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM <include refid="TableName"/>
+        WHERE
+        id = #{id}
+    </delete>
+
+    <update id="update">
+        UPDATE <include refid="TableName"/>
+        <set>
+            <if test="customer != null">customer_idx = (SELECT  id from t_user where user_id = #{customer.userId}),</if>
+            <if test="operator != null">oper_idx = (SELECT  id from t_user where user_id = #{operator.userId}),</if>
+            <if test="spec != null">spec_idx = (SELECT  id from t_gas_cylinder_spec where code = #{spec.code}),</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="ticketStatus != null">use_status = #{ticketStatus.index},</if>
+            <if test="useTime != null">use_time = #{useTime},</if>
+            <if test="startDate != null">exp_time_start = #{startDate},</if>
+            <if test="endDate != null">exp_time_end = #{endDate},</if>
+            <if test="note != null">note = #{note}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>

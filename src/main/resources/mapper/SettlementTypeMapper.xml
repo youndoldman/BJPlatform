@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.SettlementTypeDao">
+    <resultMap id="BaseResultMap" type="com.donno.nj.domain.SettlementType">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <id column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="TableName">
+        t_settlement_type
+    </sql>
+
+    <sql id="QueryColumnList">
+        id,code,name, note,create_time,update_time
+    </sql>
+
+    <sql id="InsertColumnList">
+       code,name, note
+    </sql>
+
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT <include refid="QueryColumnList"/>
+        FROM <include refid="TableName"/>
+        WHERE
+          id = #{id}
+    </select>
+
+    <select id="findByCode" resultMap="BaseResultMap">
+        SELECT <include refid="QueryColumnList"/>
+        FROM <include refid="TableName"/>
+        WHERE
+        code = #{code}
+    </select>
+
+    <select id="selectById"  resultMap="BaseResultMap" >
+        select * from <include refid="TableName"/>
+        where id=#{id}
+    </select>
+
+    <select id="getList" resultMap="BaseResultMap">
+        SELECT <include refid="QueryColumnList"/>
+        FROM <include refid="TableName"/>
+        <where>
+            id > 0
+            <if test="code != null">
+               and code = #{code}
+            </if>
+            <if test="name != null">
+              and  name LIKE CONCAT('%',#{name},'%')
+            </if>
+        </where>
+
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+
+    </select>
+
+    <select id="count" resultType="Integer">
+        SELECT COUNT(*)
+        FROM  <include refid="TableName"/>
+        <where>
+            id > 0
+            <if test="code != null">
+                and code = #{code}
+            </if>
+            <if test="name != null">
+                and  name LIKE CONCAT('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert">
+        INSERT IGNORE INTO <include refid="TableName"/>(<include refid="InsertColumnList"/>)
+        VALUES( #{code}, #{name},#{note})
+    </insert>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM <include refid="TableName"/>
+        WHERE
+        id = #{id}
+    </delete>
+
+    <update id="update">
+        UPDATE <include refid="TableName"/>
+        <set>
+            <if test="code != null">code = #{code},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="note != null">note = #{note}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>

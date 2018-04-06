@@ -18,26 +18,26 @@ public class UdpServerControl
 
     public UdpServerControl() throws Exception
     {
-        if (udpServer != null)
-        {
-            new Thread(new UdpServerServiceImpl() ).start();
-        }
-
-        udpSvrStarttimer = new Timer();
-        udpSvrStarttimer.schedule(new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                if (udpServer != null)
-                {
-                    new Thread(udpServer).start();
-
-                    /*d定时器终止*/
-                    this.cancel();
-                }
-            }
-        }, 0, 5000);
+//        if (udpServer != null)
+//        {
+//            new Thread(new UdpServerServiceImpl() ).start();
+//        }
+//
+//        udpSvrStarttimer = new Timer();
+//        udpSvrStarttimer.schedule(new TimerTask()
+//        {
+//            @Override
+//            public void run()
+//            {
+//                if (udpServer != null)
+//                {
+//                    new Thread(udpServer).start();
+//
+//                    /*d定时器终止*/
+//                    this.cancel();
+//                }
+//            }
+//        }, 0, 5000);
     }
 
 }

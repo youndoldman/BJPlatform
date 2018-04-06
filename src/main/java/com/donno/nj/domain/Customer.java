@@ -27,6 +27,7 @@ public class Customer extends User  implements Serializable
     private boolean haveCylinder; /**<是否携瓶*/
     private Integer status;       /**<客户状态*/
 
+    private SettlementType settlementType;  /*结算类型*/
     private CustomerType customerType;       /**<客户类型*/
     private CustomerLevel customerLevel;     /**<客户级别*/
     private CustomerSource customerSource;   /**<客户来源*/
@@ -34,12 +35,6 @@ public class Customer extends User  implements Serializable
 
     private CustomerAddress address;   /**<客户地址信息，只能修改，不能删除*/
     private String phone;              /**<客户电话信息*/
-
-    //private List<Customer> attatchSubCustomer;   /**<关联子客户*/
-
-//    private String districtCode;
-//    private String gasStoreCode;
-
 
     /**
     * @fn   Customer
@@ -77,6 +72,11 @@ public class Customer extends User  implements Serializable
     public Integer getStatus()
     {
         return status;
+    }
+
+    public SettlementType getSettlementType()
+    {
+        return settlementType;
     }
 
     /**
@@ -179,6 +179,8 @@ public class Customer extends User  implements Serializable
     {
         this.status = status;
     }
+
+    public void setSettlementType(SettlementType settlementType){this.settlementType = settlementType;}
 
     /**
      * @fn  setCustomerType

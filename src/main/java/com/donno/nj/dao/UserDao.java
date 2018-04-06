@@ -8,4 +8,5 @@ public interface UserDao extends BaseDao<User>
 {
     User findByUserId(String userId);
     void deleteByUserId(String userId);
+
 }
