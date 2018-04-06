@@ -20,9 +20,9 @@ commonModule.constant('URI', {
         //实际使用地址
         //'customerLevel': '../../../api/CustomerLevel',//客户等级查询接口
         //'customerType': '../../../api/CustomerType',//客户类型查询接口
-        'customerLevel': 'http://120.78.241.67/api/CustomerLevel',//客户等级查询接口
-        'customerType': 'http://120.78.241.67/api/CustomerType',//客户类型查询接口
-        'discountStrategies':'http://120.78.241.67/api/DiscountStrategies',//优惠策略接口
+        'customerLevel': 'https://www.yunnanbaijiang.com/api/CustomerLevel',//客户等级查询接口
+        'customerType': 'https://www.yunnanbaijiang.com/api/CustomerType',//客户类型查询接口
+        'discountStrategies':'https://www.yunnanbaijiang.com/api/DiscountStrategies',//优惠策略接口
 
         'customerCallin':'../../../api/CustomerCallIn',//电话关联的客户资料查询接口
         'login':'../../../api/sysusers/login',//系统用户登录接口
@@ -34,8 +34,8 @@ commonModule.constant('URI', {
         'taskOrdersDeal':'../../../api/TaskOrders/Process',//任务订单办理接口
         //'goods': '../../../api/Goods',//商品
         //'goodsTypes': '../../../api/GoodsTypes',//商品类型
-        'goods': 'http://120.78.241.67/api/Goods',//商品
-        'goodsTypes': 'http://120.78.241.67/api/GoodsTypes',//商品类型
+        'goods': 'https://www.yunnanbaijiang.com/api/Goods',//商品
+        'goodsTypes': 'https://www.yunnanbaijiang.com/api/GoodsTypes',//商品类型
 
         'goodsPriceHistory': '../../../api/Goods/PriceHistory',//商品价格历史
         'subdistrict':'http://restapi.amap.com/v3/config/district',//高德地图行政区域接口
@@ -49,7 +49,7 @@ commonModule.constant('URI', {
         'cloudUserBind': '../../../api/CloudUser/Bind',//云客服用户绑定接口
         'cloudUserUnBind': '../../../api/CloudUser/UnBind',//云客服用户解除绑定接口
         //'adjustPriceSchedules': '../../../api/AdjustPriceSchedules',//调价接口
-        'adjustPriceSchedules': 'http://120.78.241.67/api/AdjustPriceSchedules',//调价接口
+        'adjustPriceSchedules': 'https://www.yunnanbaijiang.com/api/AdjustPriceSchedules',//调价接口
 
 
 

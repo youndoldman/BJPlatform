@@ -8,8 +8,23 @@
         background-color: inherit;
         border: none;
     }
+    @media print {
+        .noprint {
+            display: none
+        }
+        table, th, td {
+            height: 40px;
+            border: 1px solid #C7C7C7;
+        }
+        .border1{
+            border:1px solid #C7C7C7;
+        }
+        input{
+            border:none;
+        }
+    }
 </style>
-<div class="ribbon">
+<div class="ribbon border1">
     <a href=""><span class="home fa fa-home"></span></a>
     <ol class="breadcrumb">
         <li>今日实际销售录入表</li>
@@ -20,25 +35,12 @@
     <div class="toolbar">
         <form role="form">
             <div class="row">
-                <div class="col-md-3">
-                    <!--<label class="input"><input type="text" class="form-control input-md" ng-model="q.userName" placeholder="坐席名"> </label>-->
-                    <label class="input"><input type="text" class="form-control input-md" ng-model="q.userId" placeholder="财务员工号"> </label>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="input">时间：</label>
-                    <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>
-                </div>
-
-                <div class="col-md-3">
-                </div>
-
-                <div class="col-md-1">
-                    <button ng-click="upload()" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> 录入 </button>
-                </div>
-                <div class="col-md-1 ">
-                    <button ng-click="printPage()" class="btn btn-sm btn-primary"><i class="fa fa-print"></i>打印</button>
-                </div>
+                <label class="input">财务员工号：</label>
+                <label class="input"><input type="text" class="form-control input-md" ng-model="q.userId"> </label>
+                <label class="input">时间：</label>
+                <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>
+                <button ng-click="upload()" class="btn btn-sm btn-primary noprint"><i class="fa fa-search"></i> 录入 </button>
+                <button ng-click="printPage()" class="btn btn-sm btn-primary noprint pull-right"><i class="fa fa-print"></i>打印</button>
             </div>
         </form>
     </div>
