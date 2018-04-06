@@ -77,7 +77,7 @@ public class BaseCodeInfo implements Serializable
         this.name = name;
     }
 
-    public void setNote(String Note)
+    public void setNote(String note)
     {
         this.note = note;
     }

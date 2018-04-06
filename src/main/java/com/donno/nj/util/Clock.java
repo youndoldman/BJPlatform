@@ -1,6 +1,8 @@
 package com.donno.nj.util;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Calendar;
 public class Clock {
@@ -31,5 +33,31 @@ public class Clock {
         calendar.add(Calendar.DAY_OF_MONTH, +1);
         date = calendar.getTime();
         return date;
+    }
+
+    public static boolean beforeDate(Date Date1, Date Date2)
+    {
+        boolean before = false;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try
+        {
+
+            Date bt = df.parse(df.format(Date1));
+            Date et = df.parse(df.format(Date2));
+            if (bt.before(et))
+            {
+                before = true;
+            }
+            else
+            {
+                before = false;
+            }
+
+        }
+        catch (Exception exception)
+        {
+            exception.printStackTrace();
+        }
+        return before;
     }
 }

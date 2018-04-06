@@ -86,7 +86,6 @@ public class OrderController
             taskList.remove(task);
         }
 
-
         return ResponseEntity.ok(ListRep.assemble(taskList, totalTaskCount));
     }
 
@@ -286,8 +285,6 @@ public class OrderController
         {
             params.putAll(ImmutableMap.of("dispatcherId", dispatcherId));
         }
-
-
 
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 

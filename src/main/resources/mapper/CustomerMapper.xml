@@ -27,7 +27,10 @@
         <association property="userGroup" column="group_idx" select="com.donno.nj.dao.GroupDao.selectById">
         </association>
 
-        <association property="customerType" column="customer_type_idx" select="com.donno.nj.dao.CustomerTypeDao.selectById">
+        <association property="settlementType" column="settlement_type_idx" select="com.donno.nj.dao.SettlementTypeDao.selectById">
+        </association>
+
+        <association property="customerType" column="customer_type_idx" select="com.donno.nj.dao.CustomerTypeDao.findById">
         </association>
 
         <association property="customerLevel" column="customer_level_idx" select="com.donno.nj.dao.CustomerLevelDao.selectById">
@@ -94,7 +97,7 @@
 
     <sql id="JoinSelectColumn">
         t_user.id, t_user.user_id,t_user.name,t_user.identity,t_user.group_idx,  t_user.password,t_user.note,t_user.create_time,t_user.update_time,
-        t_customer.cst_number,t_customer.have_cylinder,t_customer.status,t_customer.cst_type as customer_type_idx,t_customer.cst_source as customer_source_idx,t_customer.cst_level as customer_level_idx,
+        t_customer.cst_number,t_customer.have_cylinder,t_customer.status, t_customer.settlement_type as  settlement_type_idx  , t_customer.cst_type as customer_type_idx,t_customer.cst_source as customer_source_idx,t_customer.cst_level as customer_level_idx,
          t_customer.cst_company_name as customer_company_idx,t_customer.phone,t_customer.addr_province,t_customer.addr_city,t_customer.addr_county,t_customer.addr_detail
     </sql>
 

@@ -27,6 +27,9 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
     private CustomerSourceDao customerSourceDao;
 
     @Autowired
+    private SettlementTypeDao settlementTypeDao;
+
+    @Autowired
     private CustomerTypeDao customerTypeDao;
 
     @Autowired
@@ -76,6 +79,9 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
 
         /*客户级别*/
         checkCustomerLevel(customer);
+
+        /*结算类型*/
+        checkSettlement(customer);
 
         /*客户类型*/
         checkCustomerType(customer);
@@ -127,6 +133,12 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
         if (newCustomer.getAddress() != null)
         {
             checkAddress(newCustomer);
+        }
+
+        /*结算类型信息*/
+        if (newCustomer.getSettlementType() != null)
+        {
+            checkSettlement(newCustomer);
         }
 
         /*客户来源*/
@@ -245,6 +257,33 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
         }
 
         customer.setCustomerSource(customerSource);
+    }
+
+
+    public void checkSettlement(Customer customer)
+    {
+        SettlementType settlementType;
+        if (customer.getSettlementType() == null)//用户级别信息为空
+        {
+            throw new ServerSideBusinessException("缺少结算类型信息",HttpStatus.NOT_ACCEPTABLE);
+        }
+        else
+        {
+            if (customer.getSettlementType().getCode() != null &&  customer.getSettlementType().getCode().trim().length() != 0 )
+            {
+                settlementType = settlementTypeDao.findByCode(customer.getCustomerLevel().getCode());
+                if (settlementType == null)
+                {
+                    throw new ServerSideBusinessException("结算类型信息错误",HttpStatus.NOT_ACCEPTABLE);
+                }
+            }
+            else
+            {
+                throw new ServerSideBusinessException("结算类型信息错误",HttpStatus.NOT_ACCEPTABLE);
+            }
+        }
+
+        customer.setSettlementType(settlementType);
     }
 
     public void checkCustomerLevel(Customer customer)

@@ -3,24 +3,23 @@ package com.donno.nj.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum PayType implements IEnum
+public enum TicketStatus implements IEnum
 {
-    PTOnLine("扫码支付", 0), PTCash("现金支付", 1),PTDebtCredit("赊销", 2),PTMonthlyCredit("月结", 3),
-    PTTicket("气票", 4);
+    TSUnUsed("待使用", 0), TSUsed("已使用", 1);
 
     // 成员变量
     private String name;
     private int index;
 
     // 构造方法
-    PayType(String name, int index) {
+    TicketStatus(String name, int index) {
         this.name = name;
         this.index = index;
     }
 
     // 普通方法
     public static String getName(int index) {
-        for (PayType c : PayType.values()) {
+        for (TicketStatus c : TicketStatus.values()) {
             if (c.getIndex() == index) {
                 return c.name;
             }

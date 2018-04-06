@@ -91,6 +91,7 @@ public class CustomerController
                                             @RequestParam(value = "number", defaultValue = "") String number,
                                             @RequestParam(value = "groupCode", defaultValue = "") String groupCode,
                                             @RequestParam(value = "status", defaultValue = "") String status,
+                                            @RequestParam(value = "settlementTypeCode", defaultValue = "") String settlementTypeCode,
                                             @RequestParam(value = "customerTypeCode", defaultValue = "") String customerTypeCode,
                                             @RequestParam(value = "customerLevelCode", defaultValue = "") String customerLevelCode,
                                             @RequestParam(value = "customerSourceCode", defaultValue = "") String customerSourceCode,
@@ -133,6 +134,11 @@ public class CustomerController
         if (status.trim().length() > 0)
         {
             params.putAll(ImmutableMap.of("status", status));
+        }
+
+        if (customerTypeCode.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("settlementTypeCode", settlementTypeCode));
         }
 
         if (customerTypeCode.trim().length() > 0)
