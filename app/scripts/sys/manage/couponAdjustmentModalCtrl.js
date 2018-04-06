@@ -21,7 +21,6 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
             showTodayButton:true,
             toolbarPlacement:'top',
         });
-
     });
     $(function () {
         $('#datetimepickerStartCoupon').datetimepicker()
@@ -45,7 +44,6 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         useType:["排他型","叠加型"],
 
         discountText:"优惠：",
-
         currentPriceAdjustment: {
             name:null,
             effectTime:null,
@@ -122,31 +120,40 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
                 $scope.temp.customersList = customerType.items;
                 $scope.temp.selectCustomer = $scope.temp.customersList[0];
                 //$scope.customersLevelTypeChange();
-
             });
         }
     }
 
     //客户类型或者级别选择改变discountConditionValue赋值
     $scope.customersLevelTypeChange = function () {
-        console.info($scope.value.name);
-        if($scope.value.name == "未定义")
+        //console.info($scope.value.name);
+        //console.info( $scope.temp.customersList);
+        //console.info($scope.temp.customersList.length);
+        for (var i = 0; i < $scope.temp.customersList.length; i++)
         {
-            $scope.q.discountConditionValue ="00000";
-        }
-        else if(($scope.value.name == "一级客户") || ($scope.value.name == "普通住宅客户"))
-        {
-            $scope.q.discountConditionValue ="00001";
-        }
-        else if(($scope.value.name == "2级客户") || ($scope.value.name == "餐饮客户1"))
-        {
-            $scope.q.discountConditionValue ="00002";
-        }
-        else if($scope.value.name == "4级客户")
-        {
-            $scope.q.discountConditionValue ="00004";
-        }
+            if($scope.value.name == $scope.temp.customersList[i].name)
+            {
+                $scope.q.discountConditionValue =$scope.temp.customersList[i].code;
+                console.info($scope.q.discountConditionValue);
 
+            }
+        }
+        //if($scope.value.name == "未定义")
+        //{
+        //    $scope.q.discountConditionValue ="00000";
+        //}
+        //else if(($scope.value.name == "一级客户") || ($scope.value.name == "普通住宅客户"))
+        //{
+        //    $scope.q.discountConditionValue ="00001";
+        //}
+        //else if(($scope.value.name == "2级客户") || ($scope.value.name == "餐饮客户1"))
+        //{
+        //    $scope.q.discountConditionValue ="00002";
+        //}
+        //else if($scope.value.name == "4级客户")
+        //{
+        //    $scope.q.discountConditionValue ="00004";
+        //}
         //console.info($scope.q.discountConditionValue);
     }
 
@@ -184,7 +191,6 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
             }, function(value) {
                 udcModal.info({"title": "处理结果", "message": "增加优惠策略失败 "+value.message});
             })
-
         }
     };
 
@@ -241,18 +247,14 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         adjustmentDetail1.goods = $scope.temp.selectedGoods;
         adjustmentDetail1.discount = $scope.temp.adjustGoodsPrice;
 
-            $scope.q.discountDetails.push(adjustmentDetail1);
-
-
+        $scope.q.discountDetails.push(adjustmentDetail1);
 
         //if($scope.vm.currentPriceAdjustment.adjustPriceDetailList.length > 0)
         //{
         //    $scope.q.discountDetails.goods =$scope.temp.selectedGoods;
         //    $scope.q.discountDetails.discount = $scope.temp.adjustGoodsPrice;
         //}
-
     };
-
 
     //删除购物车
     $scope.deleteGoodsFromCart = function (adjustmentDetail) {

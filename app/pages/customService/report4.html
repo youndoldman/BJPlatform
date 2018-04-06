@@ -3,8 +3,23 @@
         text-align: center;
         vertical-align: middle;
     }
+    @media print {
+        .noprint {
+            display: none
+        }
+        table, th, td {
+            height: 40px;
+            border: 1px solid #C7C7C7;
+        }
+        .border1{
+            border:1px solid #C7C7C7;
+        }
+        input,select{
+            border:none;
+        }
+    }
 </style>
-<div class="ribbon">
+<div class="ribbon border1">
     <a href=""><span class="home fa fa-home"></span></a>
     <ol class="breadcrumb">
         <li>工作组-来话处理时长统计报表</li>
@@ -16,7 +31,8 @@
         <form role="form">
             <div class="row">
                 <div class="col-md-3">
-                    <label class="input"><input type="text" class="form-control input-md" ng-model="q.workSet" placeholder="工作组号"> </label>
+                    <label class="input">工作组号：</label>
+                    <label class="input"><input type="text" class="form-control input-md" ng-model="q.workSet" > </label>
                     <!--<label class="input"><input type="text" class="form-control input-md" ng-model="q.userId" placeholder="坐席工号"> </label>-->
                 </div>
                 <div class="col-md-4">
@@ -32,10 +48,10 @@
                     <label class="input"><select  ng-model="q.interval" ng-options="interval for interval in vm.intervals" class="form-control" ng-selected=""></select></label>
                 </div>
                 <div class="col-md-1">
-                    <button ng-click="search()" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> 搜索 </button>
+                    <button ng-click="search()" class="btn btn-sm btn-primary noprint"><i class="fa fa-search"></i> 搜索 </button>
                 </div>
                 <div class="col-md-1">
-                    <button ng-click="printPage()" class="btn btn-sm btn-primary"><i class="fa fa-print"></i>打印</button>
+                    <button ng-click="printPage()" class="btn btn-sm btn-primary noprint pull-right"><i class="fa fa-print"></i>打印</button>
                 </div>
             </div>
         </form>

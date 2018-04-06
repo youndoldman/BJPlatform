@@ -8,8 +8,28 @@
         background-color: inherit;
         border: none;
     }
+    .paperBottom{
+        margin-top: 25px;
+        font-size: large;
+        font-weight: normal ;
+    }
+    @media print {
+        .noprint {
+            display: none
+        }
+        table, th, td {
+            height: 40px;
+            border: 1px solid #C7C7C7;
+        }
+        .border1{
+            border:1px solid #C7C7C7;
+        }
+        input{
+            border:none;
+        }
+    }
 </style>
-<div class="ribbon">
+<div class="ribbon border1">
     <a href=""><span class="home fa fa-home"></span></a>
     <ol class="breadcrumb">
         <li>钢检瓶情况报表</li>
@@ -20,26 +40,36 @@
     <div class="toolbar">
         <form role="form">
             <div class="row">
-                <div class="col-md-3">
-                    <!--<label class="input"><input type="text" class="form-control input-md" ng-model="q.userName" placeholder="坐席名"> </label>-->
-                    <label class="input"><input type="text" class="form-control input-md" ng-model="q.userId" placeholder="钢检员工号"> </label>
-                </div>
 
-                <div class="col-md-4">
+                    <label class="input">钢检员工号:</label>
+                    <label class="input"><input type="text" class="form-control input-md" ng-model="q.userId"> </label>
                     <label class="input">时间：</label>
-                    <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>
-                </div>
-
-                <div class="col-md-3">
-                </div>
-
-                <div class="col-md-1">
-                    <button ng-click="upload()" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> 提交 </button>
-                </div>
-                <div class="col-md-1">
-                    <button ng-click="printPage()" class="btn btn-sm btn-primary"><i class="fa fa-print"></i>打印</button>
-                </div>
+                    <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control pull-center" ng-model="q.startTime"></label>
+                    <button ng-click="upload()" class="btn btn-sm btn-primary noprint"><i class="fa fa-search"></i> 提交 </button>
+                    <button ng-click="printPage()" class="btn btn-sm btn-primary pull-right noprint"><i class="fa fa-print"></i>打印</button>
             </div>
+
+
+                <!--<div class="col-md-4">-->
+                    <!--<label class="input">钢检员工号:</label>-->
+                    <!--<label class="input"><input type="text" class="form-control input-md" ng-model="q.userId"> </label>-->
+                <!--</div>-->
+
+                <!--<div class="col-md-4">-->
+                    <!--<label class="input">时间：</label>-->
+                    <!--<label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>-->
+                <!--</div>-->
+
+                <!--<div class="col-md-2">-->
+                <!--</div>-->
+
+                <!--<div class="col-md-1">-->
+                    <!--<button ng-click="upload()" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> 提交 </button>-->
+                <!--</div>-->
+                <!--<div class="col-md-1">-->
+                    <!--<button ng-click="printPage()" class="btn btn-sm btn-primary"><i class="fa fa-print"></i>打印</button>-->
+                <!--</div>-->
+            <!--</div>-->
         </form>
     </div>
 
@@ -92,75 +122,153 @@
             </td>
 
             <td width="4.8%">
-                <label class="input"><input type="text"  id="monthlySumSJQuantity"  class="form-control inputStyle" ng-model="item.monthlySumSJQuantity"></label>
+                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.monthlySumSJQuantity"></label>
             </td>
 
             <td width="4.8%">
-                <label class="input"><input type="text"  id="todayReturnRepairQuantity"  class="form-control inputStyle" ng-model="item.todayReturnRepairQuantity"></label>
+                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayReturnRepairQuantity"></label>
             </td>
 
             <td width="4.8%">
-                <label class="input"><input type="text"  id="monthlySumReturnQuantity"  class="form-control inputStyle" ng-model="item.monthlySumReturnQuantity"></label>
+                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.monthlySumReturnQuantity"></label>
             </td>
 
             <td width="4.8%">
-                <label class="input"><input type="text"  id="todayInQuantity"  class="form-control inputStyle" ng-model="item.todayInQuantity"></label>
+                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.todayInQuantity"></label>
             </td>
 
             <td width="4.8%">
-                <label class="input"><input type="text"  id="monthlySumInQuantity"  class="form-control inputStyle" ng-model="item.monthlySumInQuantity"></label>
+                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.monthlySumInQuantity"></label>
             </td>
 
             <td width="4.8%">
-                <label class="input"><input type="text"  id="todayScrappedQuantity"  class="form-control inputStyle" ng-model="item.todayScrappedQuantity"></label>
+                <label class="input"><input type="text"    class="form-control inputStyle" ng-model="item.todayScrappedQuantity"></label>
             </td>
 
             <td width="4.8%">
-                <label class="input"><input type="text"  id="monthlySumScrappedQuantity"  class="form-control inputStyle" ng-model="item.monthlySumScrappedQuantity"></label>
+                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.monthlySumScrappedQuantity"></label>
             </td>
 
             <td width="4.8%">
-                <label class="input"><input type="text"  id="todayReturnDepositQuantity"  class="form-control inputStyle" ng-model="item.todayReturnDepositQuantity"></label>
+                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayReturnDepositQuantity"></label>
             </td>
 
             <td width="4.8%">
-                <label class="input"><input type="text"  id="monthlySumReturnDepositQuantity"  class="form-control inputStyle" ng-model="item.monthlySumReturnDepositQuantity"></label>
+                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.monthlySumReturnDepositQuantity"></label>
             </td>
 
             <td width="4.8%">
-                <label class="input"><input type="text"  id="todayInventory"  class="form-control inputStyle" ng-model="item.todayInventory"></label>
+                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayInventory"></label>
             </td>
 
             <td width="4.8%">
-                <label class="input"><input type="text"  id="depositBottleQuantity"  class="form-control inputStyle" ng-model="item.depositBottleQuantity"></label>
+                <label class="input"><input type="text"    class="form-control inputStyle" ng-model="item.depositBottleQuantity"></label>
             </td>
 
             <td width="4.8%">
-                <label class="input"><input type="text"  id="checkFeeStandard"  class="form-control inputStyle" ng-model="item.checkFeeStandard"></label>
+                <label class="input"><input type="text"    class="form-control inputStyle" ng-model="item.checkFeeStandard"></label>
             </td>
 
             <td width="4.8%">
-                <label class="input"><input type="text"  id="todayShouldInCheckFee"  class="form-control inputStyle" ng-model="item.todayShouldInCheckFee"></label>
+                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayShouldInCheckFee"></label>
             </td>
 
             <td width="4.8%">
-                <label class="input"><input type="text"  id="todayRealInCheckFee"  class="form-control inputStyle" ng-model="item.todayRealInCheckFee"></label>
+                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.todayRealInCheckFee"></label>
             </td>
 
             <td width="4.8%">
-                <label class="input"><input type="text"  id="todayInDepositFee"  class="form-control inputStyle" ng-model="item.todayInDepositFee"></label>
+                <label class="input"><input type="text"    class="form-control inputStyle" ng-model="item.todayInDepositFee"></label>
             </td>
 
             <td width="4.8%">
-                <label class="input"><input type="text"  id="todayReturnDepositFee"  class="form-control inputStyle" ng-model="item.todayReturnDepositFee"></label>
+                <label class="input"><input type="text"    class="form-control inputStyle" ng-model="item.todayReturnDepositFee"></label>
             </td>
         </tr>
 
         <tr>
             <td width="4.8%" class="message tableContentAdjust">小计</td>
 
-        </tr>
+            <td width="4.8%">
+                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.monthlySumSJQuantity"></label>
+            </td>
 
+            <td width="4.8%">
+                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayReturnRepairQuantity"></label>
+            </td>
+
+            <td width="4.8%">
+                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.monthlySumReturnQuantity"></label>
+            </td>
+
+            <td width="4.8%">
+                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.todayInQuantity"></label>
+            </td>
+
+            <td width="4.8%">
+                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.monthlySumInQuantity"></label>
+            </td>
+
+            <td width="4.8%">
+                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.todayScrappedQuantity"></label>
+            </td>
+
+            <td width="4.8%">
+                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.monthlySumScrappedQuantity"></label>
+            </td>
+
+            <td width="4.8%">
+                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.todayReturnDepositQuantity"></label>
+            </td>
+
+            <td width="4.8%">
+                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.monthlySumReturnDepositQuantity"></label>
+            </td>
+
+            <td width="4.8%">
+                <label class="input"><input type="text" class="form-control inputStyle" ng-model="item.todayInventory"></label>
+            </td>
+
+            <td width="4.8%">
+                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.depositBottleQuantity"></label>
+            </td>
+
+            <td width="4.8%">
+                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.checkFeeStandard"></label>
+            </td>
+
+
+            <td width="4.8%">
+                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.todayShouldInCheckFee"></label>
+            </td>
+
+            <td width="4.8%">
+                <label class="input"><input type="text"    class="form-control inputStyle" ng-model="item.todayRealInCheckFee"></label>
+            </td>
+
+            <td width="4.8%">
+                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayInDepositFee"></label>
+            </td>
+
+            <td width="4.8%">
+                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayReturnDepositFee"></label>
+            </td>
+
+            <td width="4.8%">
+                <label class="input"><input type="text"    class="form-control inputStyle" ng-model="item.todayRealInCheckFee"></label>
+            </td>
+
+            <td width="4.8%">
+                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayInDepositFee"></label>
+            </td>
+
+             <td width="4.8%">
+                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayReturnDepositFee"></label>
+            </td>
+            <td width="4.8%">
+                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayReturnDepositFee"></label>
+            </td>
+        </tr>
         </tbody>
     </table>
     <!--<div class="toolbar">-->
@@ -168,4 +276,18 @@
     <!--<button type="submit" class="btn btn-sm btn-primary pull-right">提交申请</button>-->
     <!--</form>-->
     <!--</div>-->
+</div>
+
+<div class="row">
+    <div class="col-md-1">
+    <label class="paperBottom">审核：</label>
+    </div>
+
+    <div class="col-md-10">
+        <label class="input paperBottom">店长：</label>
+        <label class="input"><input type="text" class="form-control" ng-model="q.startTime"></label>
+        <label class="input paperBottom ">营业员：</label>
+        <label class="input"><input type="text" class="form-control" ng-model="q.startTime"></label>
+    </div>
+
 </div>

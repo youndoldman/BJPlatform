@@ -22,10 +22,14 @@
         table,th,td{
             border: 1px solid #C7C7C7;
         }
+        .border1{
+            border:1px solid #C7C7C7;
+        }
     }
+
 </style>
 
-<div class="ribbon">
+<div class="ribbon border1">
     <a href=""><span class="home fa fa-home"></span></a>
     <ol class="breadcrumb">
         <li>直营门店销售日报表</li>
@@ -39,21 +43,6 @@
                 <div class="col-md-10">
                     <label class="input fontSize pull-left">{{q.currentTime}}</label>
                 </div>
-                <!--<div class="col-md-4">-->
-                    <!--<label class="input">时间范围：</label>-->
-                    <!--<label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>-->
-                    <!--<label class="input">至</label>-->
-                    <!--<label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control" ng-model="q.endTime"></label>-->
-                <!--</div>-->
-                <!--<div class="col-md-3">-->
-                    <!--<label class="input">日期类型：</label>-->
-                    <!--<label class="input"><select  ng-model="q.type" ng-options="type for type in vm.types" class="form-control" ng-selected=""></select></label>-->
-                    <!--<label class="input">间隔数：</label>-->
-                    <!--<label class="input"><select  ng-model="q.interval" ng-options="interval for interval in vm.intervals" class="form-control" ng-selected=""></select></label>-->
-                <!--</div>-->
-                <!--<div class="col-md-1">-->
-                    <!--<button ng-click="search()" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> 搜索 </button>-->
-                <!--</div>-->
                 <div class="col-md-1 pull-right noprint">
                     <button ng-click="printPage()" class="btn btn-sm btn-primary noprint"><i class="fa fa-print"></i>打印</button>
                 </div>
