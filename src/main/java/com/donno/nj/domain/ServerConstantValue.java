@@ -32,4 +32,9 @@ public interface ServerConstantValue
     /*优惠策略类型*/
     public String DISCOUNT_CONDITION_TYPE_CUSTOMER_LEVEL = "00001";
     public String DISCOUNT_CONDITION_TYPE_CUSTOMER_TYPE = "00002";
+
+    /*结算 类型*/
+    public String SETTLEMENT_TYPE_COMMON_USER = "00001";
+    public String SETTLEMENT_TYPE_MONTHLY_CREDIT = "00002";
+    public String SETTLEMENT_TYPE_TICKET = "00003";
 }

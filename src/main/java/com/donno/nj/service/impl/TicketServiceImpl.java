@@ -24,8 +24,11 @@ public class TicketServiceImpl implements TicketService
     @Autowired
     private UserDao userDao;
 
+//    @Autowired
+//    private GasCylinderSpecDao gasCylinderSpecDao;
+
     @Autowired
-    private GasCylinderSpecDao gasCylinderSpecDao;
+    private GoodsDao goodsDao;
 
     @Override
     @OperationLog(desc = "查询气票信息")
@@ -73,20 +76,34 @@ public class TicketServiceImpl implements TicketService
     }
 
 
-    public void checkSpec(GasCylinderSpec spec)
+//    public void checkSpec(GasCylinderSpec spec)
+//    {
+//        if (spec == null || spec.getCode() == null || spec.getCode().trim().length() == 0)
+//        {
+//            throw new ServerSideBusinessException("缺少规格信息！", HttpStatus.NOT_ACCEPTABLE);
+//        }
+//
+//        GasCylinderSpec target = gasCylinderSpecDao.findByCode(spec.getCode());
+//        if (target == null)
+//        {
+//            throw new ServerSideBusinessException("规格信息错误！", HttpStatus.NOT_ACCEPTABLE);
+//        }
+//        spec.setId(target.getId());
+//
+//    }
+
+    public void checkSpec(String specCode)
     {
-        if (spec == null || spec.getCode() == null || spec.getCode().trim().length() == 0)
+        if (specCode == null || specCode.trim().length() == 0)
         {
             throw new ServerSideBusinessException("缺少规格信息！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        GasCylinderSpec target = gasCylinderSpecDao.findByCode(spec.getCode());
+        Goods target = goodsDao.findByCode(specCode);
         if (target == null)
         {
-            throw new ServerSideBusinessException("规格信息错误！", HttpStatus.NOT_ACCEPTABLE);
+            throw new ServerSideBusinessException("规格信息不存在！", HttpStatus.NOT_ACCEPTABLE);
         }
-        spec.setId(target.getId());
-
     }
 
     public void checkStartDate(Date startDate)
@@ -132,7 +149,8 @@ public class TicketServiceImpl implements TicketService
         checkOperator(ticket.getOperator());
 
         /*规格检查*/
-        checkSpec(ticket.getSpec());
+//        checkSpec(ticket.getSpec());
+        checkSpec(ticket.getSpecCode());
 
         /*生效日期检查*/
         checkStartDate(ticket.getStartDate());
@@ -177,9 +195,10 @@ public class TicketServiceImpl implements TicketService
         }
 
         /*规格检查*/
-        if (newTicket.getSpec() != null)
+        if (newTicket.getSpecCode() != null)
         {
-            checkSpec(newTicket.getSpec());
+//            checkSpec(newTicket.getSpec());
+            checkSpec(ticket.getSpecCode());
         }
 
         /*生效日期检查*/

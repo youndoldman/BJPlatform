@@ -20,7 +20,7 @@
     </sql>
 
     <select id="findByUserId" resultMap="BaseResultMap">
-        SELECT user_id
+        SELECT *
         FROM t_user
         WHERE
         user_id = #{userId}

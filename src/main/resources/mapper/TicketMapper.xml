@@ -6,6 +6,8 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
 
         <result column="price" property="price" jdbcType="DOUBLE"/>
+        <result column="spec_code" property="specCode" jdbcType="VARCHAR"/>
+        <result column="spec_name" property="specName" jdbcType="VARCHAR"/>
         <result column="use_status" property="ticketStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
         <result column="exp_time_start" property="startDate" jdbcType="TIMESTAMP"/>
         <result column="exp_time_end" property="endDate" jdbcType="TIMESTAMP"/>
@@ -15,8 +17,11 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
 
-        <association property="spec" column="spec_idx" select="com.donno.nj.dao.GasCylinderSpecDao.findById">
-        </association>
+        <!--<association property="spec" column="spec_idx" select="com.donno.nj.dao.GasCylinderSpecDao.findById">-->
+        <!--</association>-->
+
+        <!--<association property="spec" column="spec_idx" select="com.donno.nj.dao.GoodsDao.findById">-->
+        <!--</association>-->
 
         <association property="customer" column="customer_idx" select="com.donno.nj.dao.UserDao.findById">
         </association>
@@ -30,9 +35,15 @@
         t_ticket
     </sql>
 
+    <sql id="QryFromTable">
+        t_ticket,t_goods
+    </sql>
+
+
 
     <sql id="QueryColumnList">
-       id,customer_idx,spec_idx, oper_idx,price,  exp_time_start,exp_time_end,use_status,use_time, note,create_time,update_time
+       t_ticket.id, t_ticket.customer_idx, t_ticket.oper_idx,t_ticket.price,  t_ticket.exp_time_start,t_ticket.exp_time_end,t_ticket.use_status,t_ticket.use_time, t_ticket.note,t_ticket.create_time,t_ticket.update_time,
+        t_goods.specifications as spec_name, t_goods.code as spec_code
     </sql>
 
     <sql id="InsertColumnList">
@@ -42,37 +53,54 @@
 
     <select id="findById" resultMap="BaseResultMap">
         SELECT <include refid="QueryColumnList"/>
-        FROM <include refid="TableName"/>
+        FROM <include refid="QryFromTable"/>
         WHERE
-          id = #{id}
+        t_ticket.id = #{id}
     </select>
 
 
     <sql id="getListCondition">
         <where>
-            id > 0
+            t_ticket.id > 0
+            AND
+            t_ticket.spec_idx = t_goods.id
             <if test="customerUserId != null">
-                and customer_idx = (SELECT  id from t_user where user_id = #{customerUserId})
+                and t_ticket.customer_idx = (SELECT  id from t_user where user_id = #{customerUserId})
             </if>
             <if test="operatorUserId != null">
-                and oper_idx = (SELECT  id from t_user where user_id = #{operatorUserId})
+                and t_ticket.oper_idx = (SELECT  id from t_user where user_id = #{operatorUserId})
             </if>
 
             <if test="useStatus != null">
-                and use_status = #{useStatus}
+                and t_ticket.use_status = #{useStatus}
             </if>
 
+            <!--<if test="specCode != null">-->
+                <!--and spec_idx = (SELECT  id from t_gas_cylinder_spec where code = #{specCode})-->
+            <!--</if>-->
+
             <if test="specCode != null">
-                and spec_idx = (SELECT  id from t_gas_cylinder_spec where code = #{specCode})
+                and t_ticket.spec_idx = (SELECT  id from t_goods where code = #{specCode})
+            </if>
+
+            <if test="expireType != null">
+                <if test="expireType == 0">
+                  and  DATE_FORMAT(now(), '%Y-%m-%d')  BETWEEN t_ticket.exp_time_start AND  t_ticket.exp_time_end
+                </if>
+                <if test="expireType == 1">
+                  and  ( TO_DAYS(NOW()) -  TO_DAYS(t_ticket.exp_time_end) ) > 0
+                </if>
+                <!--<if test="expireType == 2">-->
+                    <!--and  DATE_FORMAT(now(), '%Y-%m-%d')  BETWEEN t_ticket.exp_time_start AND  t_ticket.exp_time_end-->
+                <!--</if>-->
             </if>
         </where>
     </sql>
 
     <select id="getList" resultMap="BaseResultMap">
         SELECT <include refid="QueryColumnList"/>
-        FROM <include refid="TableName"/>
+        FROM <include refid="QryFromTable"/>
         <include refid="getListCondition"/>
-
 
         <if test="orderBy != null">
             <if test="orderBy != ''">
@@ -90,14 +118,14 @@
 
     <select id="count" resultType="Integer">
         SELECT COUNT(*)
-        FROM  <include refid="TableName"/>
+        FROM  <include refid="QryFromTable"/>
         <include refid="getListCondition"/>
     </select>
 
     <insert id="insert">
         INSERT IGNORE INTO <include refid="TableName"/>(<include refid="InsertColumnList"/>)
         VALUES( (select id from t_user where user_id = #{customer.userId} ),
-        (select id from t_gas_cylinder_spec where code = #{spec.code} ),
+        (select id from t_goods where code = #{specCode} ),
         (select id from t_user where user_id = #{operator.userId} ),
         #{price},#{startDate},#{endDate},#{ticketStatus.index},#{useTime},#{note})
     </insert>
@@ -113,7 +141,7 @@
         <set>
             <if test="customer != null">customer_idx = (SELECT  id from t_user where user_id = #{customer.userId}),</if>
             <if test="operator != null">oper_idx = (SELECT  id from t_user where user_id = #{operator.userId}),</if>
-            <if test="spec != null">spec_idx = (SELECT  id from t_gas_cylinder_spec where code = #{spec.code}),</if>
+            <if test="specCode != null">spec_idx = (SELECT  id from t_goods where code = #{specCode}),</if>
             <if test="price != null">price = #{price},</if>
             <if test="ticketStatus != null">use_status = #{ticketStatus.index},</if>
             <if test="useTime != null">use_time = #{useTime},</if>

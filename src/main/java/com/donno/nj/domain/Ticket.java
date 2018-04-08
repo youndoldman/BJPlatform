@@ -11,7 +11,10 @@ public class Ticket implements Serializable
 {
     private Integer id;
     private User customer;  //客户
-    private GasCylinderSpec spec;
+//    private GasCylinderSpec spec;
+
+    private String specCode;
+    private String specName;
     private Double price;
     private User operator;  //操作员
     private TicketStatus  ticketStatus;
@@ -38,9 +41,18 @@ public class Ticket implements Serializable
         return customer;
     }
 
-    public GasCylinderSpec getSpec()
-    {
-        return  spec;
+//    public GasCylinderSpec getSpec()
+//    {
+//        return  spec;
+//    }
+
+
+    public String getSpecCode() {
+        return specCode;
+    }
+
+    public String getSpecName() {
+        return specName;
     }
 
     public TicketStatus getTicketStatus()
@@ -98,9 +110,18 @@ public class Ticket implements Serializable
         this.customer = customer;
     }
 
-    public void setSpec(GasCylinderSpec spec)
-    {
-        this.spec = spec;
+//    public void setSpec(GasCylinderSpec spec)
+//    {
+//        this.spec = spec;
+//    }
+
+
+    public void setSpecName(String specName) {
+        this.specName = specName;
+    }
+
+    public void setSpecCode(String specCode) {
+        this.specCode = specCode;
     }
 
     public void setTicketStatus(TicketStatus ticketStatus)

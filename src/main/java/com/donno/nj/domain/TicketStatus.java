@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum TicketStatus implements IEnum
 {
-    TSUnUsed("待使用", 0), TSUsed("已使用", 1);
+    TSUnUsed("待使用", 0), TSOrdering("订购中", 1),TSUsed("已使用", 2);
 
     // 成员变量
     private String name;

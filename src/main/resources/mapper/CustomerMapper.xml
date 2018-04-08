@@ -13,6 +13,7 @@
         <result column="cst_number" property="number" jdbcType="VARCHAR"/>
         <result column="have_cylinder" property="haveCylinder" jdbcType="BOOLEAN"/>
         <result column="status" property="status" jdbcType="INTEGER"/>
+
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
 
         <result column="addr_province" property="address.province" jdbcType="VARCHAR"/>
