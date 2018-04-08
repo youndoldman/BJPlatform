@@ -271,7 +271,7 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
         {
             if (customer.getSettlementType().getCode() != null &&  customer.getSettlementType().getCode().trim().length() != 0 )
             {
-                settlementType = settlementTypeDao.findByCode(customer.getCustomerLevel().getCode());
+                settlementType = settlementTypeDao.findByCode(customer.getSettlementType().getCode());
                 if (settlementType == null)
                 {
                     throw new ServerSideBusinessException("结算类型信息错误",HttpStatus.NOT_ACCEPTABLE);

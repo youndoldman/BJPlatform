@@ -50,13 +50,13 @@
     </sql>
 
     <sql id="InsertColumnList">
-        user_idx,cst_number,have_cylinder,status,cst_type,cst_source,cst_level,cst_company_name,phone,addr_province,addr_city,addr_county,addr_detail,note
+        user_idx,cst_number,have_cylinder,status,cst_type,settlement_type,cst_source,cst_level,cst_company_name,phone,addr_province,addr_city,addr_county,addr_detail,note
     </sql>
 
 
     <insert id="insert">
         INSERT IGNORE INTO <include refid="TblCustomer"/>(<include refid="InsertColumnList"/>)
-        VALUES( #{id},#{number},#{haveCylinder},#{status},#{customerType.id}, #{customerSource.id}, #{customerLevel.id},#{customerCompany.id}, #{phone}, #{address.province},#{address.city},#{address.county},#{address.detail},#{note})
+        VALUES( #{id},#{number},#{haveCylinder},#{status},#{customerType.id},#{settlementType.id}, #{customerSource.id}, #{customerLevel.id},#{customerCompany.id}, #{phone}, #{address.province},#{address.city},#{address.county},#{address.detail},#{note})
     </insert>
 
     <delete id="deleteByUserIdx" parameterType="java.lang.Integer">

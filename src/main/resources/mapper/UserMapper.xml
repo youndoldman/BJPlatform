@@ -20,10 +20,11 @@
     </sql>
 
     <select id="findByUserId" resultMap="BaseResultMap">
-        SELECT *
-        FROM t_user
+        SELECT t_user.*,t_group.id as group_id,t_group.code as group_code,t_group.name as group_name
+        FROM t_user,t_group
         WHERE
         user_id = #{userId}
+        and t_user.group_idx = t_group.id
     </select>
 
 
