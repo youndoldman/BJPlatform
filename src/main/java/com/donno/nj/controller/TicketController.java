@@ -34,7 +34,8 @@ public class TicketController
 
     @RequestMapping(value = "/api/Ticket", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取气票信息列表")
-    public ResponseEntity retrieve(@RequestParam(value = "customerUserId", defaultValue = "") String customerUserId,
+    public ResponseEntity retrieve(@RequestParam(value = "ticketSn", defaultValue = "") String ticketSn,
+                                   @RequestParam(value = "customerUserId", defaultValue = "") String customerUserId,
                                    @RequestParam(value = "operatorUserId", defaultValue = "") String operatorUserId,
                                    @RequestParam(value = "specCode", defaultValue = "") String specCode,
                                    @RequestParam(value = "useStatus", required = false) Integer useStatus,
@@ -43,6 +44,11 @@ public class TicketController
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
     {
         Map params = new HashMap<String,String>();
+
+        if (ticketSn.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("ticketSn", ticketSn));
+        }
 
         if (customerUserId.trim().length() > 0)
         {
@@ -90,13 +96,13 @@ public class TicketController
 
 
     @OperationLog(desc = "修改气票信息")
-    @RequestMapping(value = "/api/Ticket/{id}", method = RequestMethod.PUT)
-    public ResponseEntity update(@PathVariable("id") Integer id,
+    @RequestMapping(value = "/api/Ticket/{ticketSn}", method = RequestMethod.PUT)
+    public ResponseEntity update(@PathVariable("ticketSn") String ticketSn,
                                  @RequestBody Ticket newTicket)
     {
         ResponseEntity responseEntity;
 
-        ticketService.update(id, newTicket);
+        ticketService.update(ticketSn, newTicket);
 
         responseEntity = ResponseEntity.ok().build();
 
@@ -106,12 +112,12 @@ public class TicketController
 
 
     @OperationLog(desc = "删除气票信息")
-    @RequestMapping(value = "/api/Ticket/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity delete(@PathVariable("id") Integer id)
+    @RequestMapping(value = "/api/Ticket/{ticketSn}", method = RequestMethod.DELETE)
+    public ResponseEntity delete(@PathVariable("ticketSn") String ticketSn)
     {
         ResponseEntity responseEntity;
 
-        ticketService.deleteById(id);
+        ticketService.deleteBySn(ticketSn);
 
         responseEntity = ResponseEntity.noContent().build();
 

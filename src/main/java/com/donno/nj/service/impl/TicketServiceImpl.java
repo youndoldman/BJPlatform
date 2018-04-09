@@ -44,6 +44,21 @@ public class TicketServiceImpl implements TicketService
         return ticketDao.count(params);
     }
 
+    public void checkTicketSn(String ticketSn)
+    {
+        if (ticketSn == null || ticketSn.trim().length() == 0)
+        {
+            throw new ServerSideBusinessException("缺少气票编号！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        Ticket ticket = ticketDao.findBySn(ticketSn);
+        if (ticket != null)
+        {
+            String message = String.format("气票编号%s已经存在",ticketSn);
+            throw new ServerSideBusinessException(message, HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
     public void checkCustomer(User customer)
     {
         if (customer == null || customer.getUserId() == null || customer.getUserId().trim().length() == 0)
@@ -142,6 +157,9 @@ public class TicketServiceImpl implements TicketService
             throw new ServerSideBusinessException("气票信息不全，请补充信息！", HttpStatus.NOT_ACCEPTABLE);
         }
 
+        /*编号检查*/
+        checkTicketSn(ticket.getTicketSn());
+
         /*客户信息校验*/
         checkCustomer(ticket.getCustomer());
 
@@ -161,7 +179,7 @@ public class TicketServiceImpl implements TicketService
 
     @Override
     @OperationLog(desc = "修改气票信息")
-    public void update(Integer id, Ticket newTicket)
+    public void update(String ticketSn, Ticket newTicket)
     {
         /*参数校验*/
         if (newTicket == null )
@@ -170,7 +188,7 @@ public class TicketServiceImpl implements TicketService
         }
 
         /*气票是否存在*/
-        Ticket ticket = ticketDao.findById(id);
+        Ticket ticket = ticketDao.findBySn(ticketSn);
         if (ticket == null)
         {
             throw new ServerSideBusinessException("气票不存在！", HttpStatus.NOT_ACCEPTABLE);
@@ -197,7 +215,6 @@ public class TicketServiceImpl implements TicketService
         /*规格检查*/
         if (newTicket.getSpecCode() != null)
         {
-//            checkSpec(newTicket.getSpec());
             checkSpec(ticket.getSpecCode());
         }
 
@@ -211,10 +228,28 @@ public class TicketServiceImpl implements TicketService
             checkEndDate(ticket.getEndDate());
         }
 
-
         /*更新数据*/
-        newTicket.setId(id);
+        newTicket.setId(ticket.getId());
         ticketDao.update(newTicket);
+    }
+
+    @Override
+    @OperationLog(desc = "删除气票信息")
+    public void deleteBySn(String ticketSn)
+    {
+        Ticket ticket = ticketDao.findBySn(ticketSn);
+        if (ticket == null)
+        {
+            throw new ServerSideBusinessException("气票信息不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+         /*已经使用的气票不允许修改*/
+        if(ticket.getTicketStatus() == TicketStatus.TSUsed)
+        {
+            throw new ServerSideBusinessException("气票已经使用，不允许删除！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        ticketDao.delete(ticket.getId());
     }
 
     @Override

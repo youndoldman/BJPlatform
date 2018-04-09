@@ -18,9 +18,11 @@ public interface TicketService
 
     void create(Ticket ticket);
 
-    void update(Integer id, Ticket newTicket);
+    void update(String ticketSn, Ticket newTicket);
 
     void deleteById(Integer id);
+
+    void deleteBySn(String ticketSn);
 
 
 }

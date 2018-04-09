@@ -1,6 +1,7 @@
 package com.donno.nj.service;
 
 import com.donno.nj.domain.Order;
+import com.donno.nj.domain.Ticket;
 import com.google.common.base.Optional;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,8 @@ public interface OrderService
     void create(Order order);
 
     void update(Integer id, Order newOrder);
+
+    void ticketPay(Order order,List<Ticket> tickets);
 
     void update(String taskId,Map<String, Object> variables,Integer id, Order newOrder);//订单任务更新
 

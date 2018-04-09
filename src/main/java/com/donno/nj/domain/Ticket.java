@@ -10,6 +10,7 @@ import java.util.List;
 public class Ticket implements Serializable
 {
     private Integer id;
+    private String ticketSn;
     private User customer;  //客户
 //    private GasCylinderSpec spec;
 
@@ -35,6 +36,10 @@ public class Ticket implements Serializable
     public Integer getId()
     {
         return id;
+    }
+
+    public String getTicketSn() {
+        return ticketSn;
     }
 
     public User getCustomer() {
@@ -104,6 +109,10 @@ public class Ticket implements Serializable
     public void setId(Integer id)
     {
         this.id = id;
+    }
+
+    public void setTicketSn(String ticketSn) {
+        this.ticketSn = ticketSn;
     }
 
     public void setCustomer(User customer) {

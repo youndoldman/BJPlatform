@@ -4,7 +4,7 @@
 <mapper namespace="com.donno.nj.dao.TicketDao">
     <resultMap id="BaseResultMap" type="com.donno.nj.domain.Ticket">
         <id column="id" property="id" jdbcType="INTEGER"/>
-
+        <result column="ticket_sn" property="ticketSn" jdbcType="VARCHAR"/>
         <result column="price" property="price" jdbcType="DOUBLE"/>
         <result column="spec_code" property="specCode" jdbcType="VARCHAR"/>
         <result column="spec_name" property="specName" jdbcType="VARCHAR"/>
@@ -42,21 +42,15 @@
 
 
     <sql id="QueryColumnList">
-       t_ticket.id, t_ticket.customer_idx, t_ticket.oper_idx,t_ticket.price,  t_ticket.exp_time_start,t_ticket.exp_time_end,t_ticket.use_status,t_ticket.use_time, t_ticket.note,t_ticket.create_time,t_ticket.update_time,
+       t_ticket.id,t_ticket.ticket_sn, t_ticket.customer_idx, t_ticket.oper_idx,t_ticket.price,  t_ticket.exp_time_start,t_ticket.exp_time_end,t_ticket.use_status,t_ticket.use_time, t_ticket.note,t_ticket.create_time,t_ticket.update_time,
         t_goods.specifications as spec_name, t_goods.code as spec_code
     </sql>
 
     <sql id="InsertColumnList">
-       customer_idx,spec_idx, oper_idx,price,  exp_time_start,exp_time_end,use_status,use_time, note
+       ticket_sn,customer_idx,spec_idx, oper_idx,price,  exp_time_start,exp_time_end,use_status,use_time, note
     </sql>
 
 
-    <select id="findById" resultMap="BaseResultMap">
-        SELECT <include refid="QueryColumnList"/>
-        FROM <include refid="QryFromTable"/>
-        WHERE
-        t_ticket.id = #{id}
-    </select>
 
 
     <sql id="getListCondition">
@@ -64,6 +58,9 @@
             t_ticket.id > 0
             AND
             t_ticket.spec_idx = t_goods.id
+            <if test="ticketSn != null">
+                and t_ticket.ticket_sn =  #{ticketSn}
+            </if>
             <if test="customerUserId != null">
                 and t_ticket.customer_idx = (SELECT  id from t_user where user_id = #{customerUserId})
             </if>
@@ -85,7 +82,7 @@
 
             <if test="expireType != null">
                 <if test="expireType == 0">
-                  and  DATE_FORMAT(now(), '%Y-%m-%d')  BETWEEN t_ticket.exp_time_start AND  t_ticket.exp_time_end
+                  and  t_ticket.exp_time_end  >=  DATE_FORMAT(now(), '%Y-%m-%d')
                 </if>
                 <if test="expireType == 1">
                   and  ( TO_DAYS(NOW()) -  TO_DAYS(t_ticket.exp_time_end) ) > 0
@@ -122,9 +119,29 @@
         <include refid="getListCondition"/>
     </select>
 
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT <include refid="QueryColumnList"/>
+        FROM <include refid="QryFromTable"/>
+        WHERE
+        t_ticket.spec_idx = t_goods.id
+        AND
+        t_ticket.id = #{id}
+    </select>
+
+    <select id="findBySn" resultMap="BaseResultMap">
+        SELECT <include refid="QueryColumnList"/>
+        FROM <include refid="QryFromTable"/>
+        WHERE
+        t_ticket.spec_idx = t_goods.id
+        AND
+        t_ticket.ticket_sn = #{ticketSn}
+    </select>
+
     <insert id="insert">
         INSERT IGNORE INTO <include refid="TableName"/>(<include refid="InsertColumnList"/>)
-        VALUES( (select id from t_user where user_id = #{customer.userId} ),
+        VALUES( #{ticketSn},
+        (select id from t_user where user_id = #{customer.userId} ),
         (select id from t_goods where code = #{specCode} ),
         (select id from t_user where user_id = #{operator.userId} ),
         #{price},#{startDate},#{endDate},#{ticketStatus.index},#{useTime},#{note})
@@ -139,6 +156,7 @@
     <update id="update">
         UPDATE <include refid="TableName"/>
         <set>
+            <if test="ticketSn != null">ticket_sn = #{ticketSn},</if>
             <if test="customer != null">customer_idx = (SELECT  id from t_user where user_id = #{customer.userId}),</if>
             <if test="operator != null">oper_idx = (SELECT  id from t_user where user_id = #{operator.userId}),</if>
             <if test="specCode != null">spec_idx = (SELECT  id from t_goods where code = #{specCode}),</if>

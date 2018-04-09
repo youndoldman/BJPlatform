@@ -11,5 +11,5 @@ import java.util.Map;
 
 public interface TicketDao extends BaseDao<Ticket>
 {
-
+    Ticket findBySn(String ticketSn);
 }

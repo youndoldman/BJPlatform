@@ -50,6 +50,10 @@
                 and t_ticket.customer_idx = (SELECT  id from t_user where user_id = #{userId})
             </if>
 
+            <if test="orderSn != null">
+                and t_ticket.order_idx = (SELECT  id from t_order where order_sn = #{orderSn})
+            </if>
+
             <if test="useTimeStart != null">
                 and   t_ticket.use_time  >=  DATE_FORMAT(#{useTimeStart},'%Y-%m-%d')
             </if>

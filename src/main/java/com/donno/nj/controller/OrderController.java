@@ -308,6 +308,27 @@ public class OrderController
         return responseEntity;
     }
 
+
+    @OperationLog(desc = "气票用户支付")
+    @RequestMapping(value = "/api/TicketOrders/{orderSn}", method = RequestMethod.PUT)
+    public ResponseEntity ticketPay(@PathVariable("orderSn") String orderSn, @RequestBody List<Ticket> tickets)
+    {
+        ResponseEntity responseEntity;
+
+        Optional<Order> orderOptional = orderService.findBySn(orderSn);
+        if (orderOptional.isPresent())
+        {
+            orderService.ticketPay(orderOptional.get(),tickets);
+            responseEntity = ResponseEntity.ok().build();
+        }
+        else
+        {
+            responseEntity = ResponseEntity.notFound().build();
+        }
+
+        return responseEntity;
+    }
+
     @OperationLog(desc = "修改订单信息")
     @RequestMapping(value = "/api/Orders/{orderSn}", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable("orderSn") String orderSn, @RequestBody Order newOrder)
