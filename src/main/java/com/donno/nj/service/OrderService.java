@@ -19,7 +19,7 @@ public interface OrderService
 
     void create(Order order);
 
-    void update(Integer id, Order newOrder);
+    void update(Order srcOrder, Order newOrder);
 
     void ticketPay(Order order,List<Ticket> tickets);
 

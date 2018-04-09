@@ -154,11 +154,11 @@ public class OrderServiceImpl implements OrderService
         String dateFmt =  new SimpleDateFormat("yyyyMMddHHmmssSSS").format(curDate);
         order.setOrderSn(dateFmt);
 
-        /*插入订单总表*/
-        orderDao.insert(order);
-
         /*根据结算类型自动设置支付方式*/
         setPayType(order.getCustomer().getSettlementType(),order);
+
+        /*插入订单总表*/
+        orderDao.insert(order);
 
         /*插入详单表*/
         for(OrderDetail orderDetail : order.getOrderDetailList())
@@ -253,6 +253,25 @@ public class OrderServiceImpl implements OrderService
         *
         * */
 
+        List<OrderDetail> orderDetails = order.getOrderDetailList();
+        for(OrderDetail orderDetail : orderDetails)
+        {
+            String specCode = orderDetail.getGoods().getCode();
+
+            Map params = new HashMap<String,String>();
+            params.putAll(ImmutableMap.of("customerUserId", order.getCustomer().getUserId()));
+            params.putAll(ImmutableMap.of("specCode", specCode));
+            params.putAll(ImmutableMap.of("useStatus", TicketStatus.TSUnUsed.getIndex()));
+            params.putAll(ImmutableMap.of("expireType", 0));//未过期的
+            params.putAll(ImmutableMap.of("limit", 1));
+
+            List<Ticket> tickets = ticketDao.getList(params);
+            if (tickets.size() == 0)
+            {
+                String message = String.format("规格为%s的气票数量不足",orderDetail.getGoods().getCode());
+                throw new ServerSideBusinessException(message, HttpStatus.NOT_ACCEPTABLE);
+            }
+        }
 
     }
 
@@ -341,33 +360,32 @@ public class OrderServiceImpl implements OrderService
 
     @Override
     @OperationLog(desc = "修改订单信息")
-    public void update(Integer id, Order newOrder)
+    public void update(Order srcOrder, Order newOrder)
     {
         if(newOrder.getPayType() != null)
         {
-            Optional<User> userOptional = AppUtil.getCurrentLoginUser();
-            if (userOptional.get()== null)
-            {
-                throw new ServerSideBusinessException("获取当前用户信息失败！", HttpStatus.UNAUTHORIZED);
-            }
+//            Optional<User> userOptional = AppUtil.getCurrentLoginUser();
+//            if (userOptional == null || userOptional.get()== null)
+//            {
+//                throw new ServerSideBusinessException("获取当前用户信息失败！", HttpStatus.UNAUTHORIZED);
+//            }
+//
+//            /*支付类型修改，只有当前订单的派送工派送到家时才能修改*/
+//            SysUser sysUser = newOrder.getDispatcher();
+//            if (sysUser == null)
+//            {
+//                throw new ServerSideBusinessException("不允许修改订单支付类型！", HttpStatus.UNAUTHORIZED);
+//            }
+//            if (sysUser.getUserId().compareTo(userOptional.get().getUserId()) != 0)
+//            {
+//                throw new ServerSideBusinessException("不允许修改订单支付类型！", HttpStatus.UNAUTHORIZED);
+//            }
 
-            /*支付类型修改，只有当前订单的派送工派送到家时才能修改*/
-            SysUser sysUser = newOrder.getDispatcher();
-            if (sysUser == null)
-            {
-                throw new ServerSideBusinessException("不允许修改订单支付类型！", HttpStatus.UNAUTHORIZED);
-            }
-            if (sysUser.getUserId().compareTo(userOptional.get().getUserId()) != 0)
-            {
-                throw new ServerSideBusinessException("不允许修改订单支付类型！", HttpStatus.UNAUTHORIZED);
-            }
-
-            Order srcOrder = orderDao.findById(id);
             updatePayType(newOrder.getPayType(),srcOrder.getCustomer(),newOrder);
         }
 
         /*更新数据*/
-        newOrder.setId(id);
+        newOrder.setId(srcOrder.getId());
         orderDao.update(newOrder);
     }
 
@@ -385,11 +403,16 @@ public class OrderServiceImpl implements OrderService
             throw new ServerSideBusinessException("订单数据错误，缺少客户结算类型信息！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (settlementCode == ServerConstantValue.SETTLEMENT_TYPE_COMMON_USER)//普通用户
+        if (settlementCode.equals(ServerConstantValue.SETTLEMENT_TYPE_COMMON_USER))//普通用户
         {
-            if (payType == PayType.PTOnLine || payType == PayType.PTCash )
+            if (payType == PayType.PTOnLine || payType == PayType.PTCash  )
             {
                 order.setPayType(payType);
+            }
+            else if(payType == PayType.PTDebtCredit)
+            {
+                order.setPayType(payType);
+                //addDebtCredit();
             }
             else
             {
@@ -571,13 +594,13 @@ public class OrderServiceImpl implements OrderService
             }
 
             /*将气票状态设置为已使用*/
-            ticket.setTicketStatus(TicketStatus.TSUsed);
-            ticket.setUseTime(new Date());
-            ticketDao.update(ticket);
+            target.setTicketStatus(TicketStatus.TSUsed);
+            target.setUseTime(new Date());
+            ticketDao.update(target);
 
             /*增加气票订单记录*/
             TicketOrder ticketOrder = new TicketOrder();
-            ticketOrder.setTicketIdx(ticket.getId());
+            ticketOrder.setTicketIdx(target.getId());
             ticketOrder.setOrderSn(order.getOrderSn());
             ticketOrder.setNote("已支付");
             ticketOrderDao.insert(ticketOrder);
