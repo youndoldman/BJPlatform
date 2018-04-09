@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.CustomerCreditDao">
+    <resultMap id="BaseResultMap" type="com.donno.nj.domain.CustomerCredit">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="amount" property="amount" jdbcType="DOUBLE"/>
+        <result column="credit_type" property="creditType" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+
+    </resultMap>
+
+    <sql id="TableName">
+        t_customer_credit
+    </sql>
+
+    <sql id="QryFromTable">
+        t_customer_credit,t_user
+    </sql>
+
+
+
+    <sql id="QueryColumnList">
+        t_customer_credit.id,t_user.user_id,t_customer_credit.amount,t_customer_credit.credit_type,t_customer_credit.note,
+        t_customer_credit.create_time,t_customer_credit.update_time
+    </sql>
+
+    <sql id="InsertColumnList">
+        user_idx,amount,credit_type,note
+    </sql>
+
+    <sql id="getListCondition">
+        <where>
+            t_customer_credit.id > 0
+            AND
+            t_customer_credit.user_idx = t_user.id
+
+            <if test="userId != null">
+                and t_customer_credit.user_idx = (SELECT  id from t_user where user_id = #{userId})
+            </if>
+
+            <if test="creditType != null">
+                and t_customer_credit.credit_type = #{creditType})
+            </if>
+
+        </where>
+    </sql>
+
+    <select id="getList" resultMap="BaseResultMap">
+        SELECT <include refid="QueryColumnList"/>
+        FROM <include refid="QryFromTable"/>
+        <include refid="getListCondition"/>
+
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+
+    </select>
+
+    <select id="count" resultType="Integer">
+        SELECT COUNT(*)
+        FROM  <include refid="QryFromTable"/>
+        <include refid="getListCondition"/>
+    </select>
+
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT <include refid="QueryColumnList"/>
+        FROM <include refid="QryFromTable"/>
+        WHERE
+        t_customer_credit.user_idx = t_user.id
+        AND
+        t_customer_credit.id = #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT IGNORE INTO <include refid="TableName"/>(<include refid="InsertColumnList"/>)
+        VALUES(
+        (select id from t_user where user_id = #{userId} ),
+        #{amount},#{creditType.index},
+        #{note})
+    </insert>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM <include refid="TableName"/>
+        WHERE
+        id = #{id}
+    </delete>
+
+    <update id="update">
+        UPDATE <include refid="TableName"/>
+        <set>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="note != null">note = #{note}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>

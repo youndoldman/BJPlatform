@@ -338,7 +338,7 @@ public class OrderController
         Optional<Order> orderOptional = orderService.findBySn(orderSn);
         if (orderOptional.isPresent())
         {
-            orderService.update(orderOptional.get().getId(),newOrder);
+            orderService.update(orderOptional.get(),newOrder);
             responseEntity = ResponseEntity.ok().build();
         }
         else
