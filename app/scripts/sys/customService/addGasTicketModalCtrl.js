@@ -1,11 +1,62 @@
+/**
+ * Created by Administrator on 2018/4/9.
+ */
 'use strict';
 
-customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerManageService', 'title', 'initVal','udcModal',function ($scope, close, CustomerManageService, title, initVal, udcModal) {
+customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'CustomerManageService', 'title', 'initVal','udcModal','sessionStorage',function ($scope, close, CustomerManageService, title, initVal, udcModal,sessionStorage) {
     $scope.modalTitle = title;
+    $scope.currentUser = {};
+    $(function () {
+        $('#startTimePicker').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss',
+            locale: moment.locale('zh-cn'),
+            //sideBySide:true,
+            showTodayButton:true,
+            toolbarPlacement:'top',
+        });
+        $('#endTimePicker').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss',
+            locale: moment.locale('zh-cn'),
+            //sideBySide:true,
+            showTodayButton:true,
+            toolbarPlacement:'top',
+        });
+    });
 
+    $(function () {
+        $('#startTimePicker').datetimepicker()
+            .on('dp.change', function (ev) {
+                var date = ev.date._d;
+                var month = date.getMonth()+1;
+                $scope.q.startDate = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                    +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+            });
+        $('#endTimePicker').datetimepicker()
+            .on('dp.change', function (ev) {
+                var date = ev.date._d;
+                var month = date.getMonth()+1;
+                $scope.q.endDate = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                    +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+            });
+    });
+
+    $scope.q = {
+        ticketSn:null,
+        customer:{userId:null},
+        operator:{userId:null},
+        specCode:null,
+        ticketStatus:null,
+        startDate:null,
+        endDate:null,
+        note:null
+    };
 
     $scope.vm = {
+        ticketStates:["待使用","已使用"],
+        goodsList:[],
+        currentGasTicket:{},
         currentCustomer: {
+            userId:null,
             address:{
                 "province":"",
                 "city":"",
@@ -119,6 +170,9 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
 
 
     var init = function () {
+        $scope.currentUser = sessionStorage.getCurUser();
+        console.info($scope.currentUser);
+        $scope.searchGoods();
         //获取省
         getProvincesConfig("中国");
         //初始化地址信息
@@ -191,22 +245,39 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
             }
         });
 
-//结算类型信息查询
-        CustomerManageService.retrieveSettlementType().then(function (settlementTypes) {
-            $scope.config.settlementTypes = _.map(settlementTypes.items, CustomerManageService.toViewModelCustomType);
-            if(title == "新增客户") {
-                $scope.vm.currentCustomer.settlementType = $scope.config.settlementTypes[0];
-            }else {
-                for(var i=0; i<$scope.config.settlementTypes.length; i++){
-                    if($scope.vm.currentCustomer.settlementType.id == $scope.config.settlementTypes[i].id){
-                        $scope.vm.currentCustomer.settlementType = $scope.config.settlementTypes[i];
-                        break;
-                    }
-                }
-            }
-        });
-
 
     };
+
+    $scope.searchGoods = function () {
+        //查询商品名字为液化气的规格
+        var queryParams = {
+            typeName: "液化气",
+        };
+        CustomerManageService.retrieveGoods(queryParams).then(function (goods) {
+            $scope.vm.goodsList = goods.items;
+            console.info($scope.vm.goodsList)
+        });
+    };
+
+    $scope.specCodeChange = function () {
+        //console.info($scope.specCode.name);
+        for (var i = 0; i < $scope.vm.goodsList.length; i++) {
+            if ($scope.specCode.name == $scope.vm.goodsList[i].name) {
+                $scope.q.specCode = $scope.vm.goodsList[i].code;
+                console.info($scope.q.specCode);
+            }
+        }
+    }
+
+    $scope.ticketStatusChange = function(){
+        if($scope.state=="待使用")
+        {
+            $scope.q.ticketStatus = 0;
+        }
+        else if($scope.state=="已使用")
+        {
+            $scope.q.ticketStatus = 1;
+        }
+    }
     init();
 }]);
