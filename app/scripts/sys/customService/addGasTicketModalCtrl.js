@@ -3,43 +3,44 @@
  */
 'use strict';
 
-customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'CustomerManageService', 'title', 'initVal','udcModal','sessionStorage',function ($scope, close, CustomerManageService, title, initVal, udcModal,sessionStorage) {
+customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'CustomerManageService', 'title', 'initVal','udcModal','sessionStorage','$timeout',function ($scope, close, CustomerManageService, title, initVal, udcModal,sessionStorage,$timeout) {
     $scope.modalTitle = title;
     $scope.currentUser = {};
-    $(function () {
-        $('#startTimePicker').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm:ss',
-            locale: moment.locale('zh-cn'),
-            //sideBySide:true,
-            showTodayButton:true,
-            toolbarPlacement:'top',
+    $timeout(function() {
+        $(function () {
+            $('#startTimePicker').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm:ss',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
+            $('#endTimePicker').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm:ss',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
         });
-        $('#endTimePicker').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm:ss',
-            locale: moment.locale('zh-cn'),
-            //sideBySide:true,
-            showTodayButton:true,
-            toolbarPlacement:'top',
+
+        $(function () {
+            $('#startTimePicker').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.startDate = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
+            $('#endTimePicker').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.endDate = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
         });
     });
-
-    $(function () {
-        $('#startTimePicker').datetimepicker()
-            .on('dp.change', function (ev) {
-                var date = ev.date._d;
-                var month = date.getMonth()+1;
-                $scope.q.startDate = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
-                    +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-            });
-        $('#endTimePicker').datetimepicker()
-            .on('dp.change', function (ev) {
-                var date = ev.date._d;
-                var month = date.getMonth()+1;
-                $scope.q.endDate = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
-                    +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-            });
-    });
-
     $scope.q = {
         ticketSn:null,
         customer:{userId:null},
@@ -70,16 +71,12 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
         customerSources: [],
         customerLevels: [],
         customerTypes: [],
-
         settlementTypes:[],
-
         haveCylinders:[true, false],
         provinces: [],
         citys: [],
         countys: [],
     };
-
-
 
     $scope.userGroups = [];
     $scope.departments = [];
@@ -90,31 +87,32 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
         close(result, 500);
     };
 
-    $scope.submit = function (customer) {
-        if (customer.name != "" && title == "新增客户") {
-            //console.info(customer);
-            CustomerManageService.createCustomer(customer).then(function () {
-                udcModal.info({"title": "处理结果", "message": "新增客户信息成功 "});
+    $scope.submit = function (ticketInfo) {
+        console.info(ticketInfo);
+
+        if (title == "增加气票") {
+            CustomerManageService.addTicketInfo(ticketInfo).then(function () {
+                udcModal.info({"title": "处理结果", "message": "新增气票信息成功 "});
                 $scope.close(true);
             }, function(value) {
                 // failure
-                udcModal.info({"title": "处理结果", "message": "新增客户失败 "+value.message});
-            })
-        } else if (customer.name != "" && title == "修改客户") {
-            CustomerManageService.modifyCustomer(customer).then(function () {
-                udcModal.info({"title": "处理结果", "message": "修改客户信息成功 "});
-                $scope.close(true);
-            }, function(value) {
-                udcModal.info({"title": "处理结果", "message": "修改客户失败 "+value.message});
+                udcModal.info({"title": "处理结果", "message": "新增气票失败 "+value.message});
             })
         }
+        //else if (customer.name != "" && title == "修改客户") {
+        //    CustomerManageService.modifyCustomer(customer).then(function () {
+        //        udcModal.info({"title": "处理结果", "message": "修改客户信息成功 "});
+        //        $scope.close(true);
+        //    }, function(value) {
+        //        udcModal.info({"title": "处理结果", "message": "修改客户失败 "+value.message});
+        //    })
+        //}
     };
 
     $scope.provincesChange = function () {
         //获取市
         getCitysConfig($scope.vm.currentCustomer.address.province);
         $scope.config.countys = [];
-
     }
 
     $scope.citysChange = function () {
@@ -123,7 +121,6 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
             return;
         };
         getCountysConfig($scope.vm.currentCustomer.address.city);
-
     }
 
     var getProvincesConfig = function(param){
@@ -170,23 +167,26 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
 
 
     var init = function () {
+        $scope.vm.currentCustomer = _.clone(initVal);
+
         $scope.currentUser = sessionStorage.getCurUser();
-        console.info($scope.currentUser);
+        $scope.q.operator.userId = $scope.currentUser.userId;
+        $scope.q.customer.userId = $scope.vm.currentCustomer.userId;
         $scope.searchGoods();
         //获取省
         getProvincesConfig("中国");
         //初始化地址信息
-        if(title == "新增客户") {
-            $scope.vm.currentCustomer.address.province = "云南省";
-            getCitysConfig($scope.vm.currentCustomer.address.province);
-            $scope.vm.currentCustomer.address.city = "昆明市";
-            getCountysConfig($scope.vm.currentCustomer.address.city);
-        }else {
-            $scope.vm.currentCustomer = _.clone(initVal);
-            getCitysConfig($scope.vm.currentCustomer.address.province);
-            getCountysConfig($scope.vm.currentCustomer.address.city);
-            console.log($scope.vm.currentCustomer );
-        }
+        //if(title == "新增客户") {
+        //    $scope.vm.currentCustomer.address.province = "云南省";
+        //    getCitysConfig($scope.vm.currentCustomer.address.province);
+        //    $scope.vm.currentCustomer.address.city = "昆明市";
+        //    getCountysConfig($scope.vm.currentCustomer.address.city);
+        //}else {
+        //    $scope.vm.currentCustomer = _.clone(initVal);
+        //    getCitysConfig($scope.vm.currentCustomer.address.province);
+        //    getCountysConfig($scope.vm.currentCustomer.address.city);
+        //    console.log($scope.vm.currentCustomer );
+        //}
 
         //修改客户公司的结构
         var company = {name:""};
@@ -215,7 +215,6 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
                     }
                 }
             }
-
         });
         CustomerManageService.retrieveCustomerLevel().then(function (customerLevels) {
             $scope.config.customerLevels = _.map(customerLevels.items, CustomerManageService.toViewModelCustomLevel);
@@ -229,7 +228,6 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
                     }
                 }
             }
-
         });
         CustomerManageService.retrieveCustomerType().then(function (customerTypes) {
             $scope.config.customerTypes = _.map(customerTypes.items, CustomerManageService.toViewModelCustomType);
@@ -245,7 +243,6 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
             }
         });
 
-
     };
 
     $scope.searchGoods = function () {
@@ -255,7 +252,7 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
         };
         CustomerManageService.retrieveGoods(queryParams).then(function (goods) {
             $scope.vm.goodsList = goods.items;
-            console.info($scope.vm.goodsList)
+            //console.info($scope.vm.goodsList)
         });
     };
 

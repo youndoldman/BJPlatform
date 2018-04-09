@@ -54,10 +54,10 @@
                 <button title="删除" ng-click="delete(customer)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="fa fa-trash-o"></i>
                 </button>
-                <button title="增加气票" ng-hide="vm.gasTicketEditBoolean" ng-click="add(customer)" type="button" class="btn btn-primary btn-outline btn-xs">
+                <button title="增加气票" ng-hide="!isTicketUser(customer)" ng-click="add(customer)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="fa fa-plus-square-o "></i>
                 </button>
-                <button title="删除气票" ng-hide="vm.gasTicketEditBoolean" ng-click="deleteGasTicket(customer)" type="button" class="btn btn-primary btn-outline btn-xs">
+                <button title="删除气票" ng-hide="!isTicketUser(customer)" ng-click="deleteGasTicket(customer)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="fa fa-minus-square-o "></i>
                 </button>
             </td>

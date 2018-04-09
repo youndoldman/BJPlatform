@@ -27,7 +27,7 @@ commonModule.constant('URI', {
         'discountStrategies':'https://www.yunnanbaijiang.com/api/DiscountStrategies',//优惠策略接口
 
         'customerCallin':'../../../api/CustomerCallIn',//电话关联的客户资料查询接口
-        'login':'../../../api/sysusers/login',//系统用户登录接口
+        'login':'https://www.yunnanbaijiang.com/api/sysusers/login',//系统用户登录接口
         'logout':'../../../api/sysusers/logout',//系统用户登出接口
         'orders':'../../../api/Orders',　　　　　//订气订单接口
         'orderCancel':'../../../api/CancelOrder',　　　　　//订气作废接口
@@ -53,6 +53,7 @@ commonModule.constant('URI', {
         //'adjustPriceSchedules': '../../../api/AdjustPriceSchedules',//调价接口
         'adjustPriceSchedules': 'https://www.yunnanbaijiang.com/api/AdjustPriceSchedules',//调价接口
 
+        'ticket': 'https://www.yunnanbaijiang.com/api/Ticket',//气票信息增加
 
 
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
