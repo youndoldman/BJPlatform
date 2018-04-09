@@ -135,7 +135,6 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
             {
                 $scope.q.discountConditionValue =$scope.temp.customersList[i].code;
                 console.info($scope.q.discountConditionValue);
-
             }
         }
         //if($scope.value.name == "未定义")

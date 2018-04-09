@@ -25,10 +25,11 @@
             <th width="10%">客户名称</th>
             <th width="10%">密码</th>
             <th width="10%">客户级别</th>
-            <th width="10%">联系电话</th>
             <th width="10%">客户类型</th>
-            <th width="20%">客户地址</th>
-            <th width="15%">操作</th>
+            <th width="10%">结算类型</th>
+            <th width="10%">联系电话</th>
+            <th width="15%">客户地址</th>
+            <th width="10%">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -39,8 +40,9 @@
             <td class="message">{{customer.name}}</td>
             <td class="message">{{customer.password}}</td>
             <td class="message">{{customer.customerLevel.name}}</td>
-            <td class="message">{{customer.phone}}</td>
             <td class="message">{{customer.customerType.name}}</td>
+            <td class="message">{{customer.settlementType.name}}</td>
+            <td class="message">{{customer.phone}}</td>
             <td class="message">{{customer.address.province}}{{customer.address.city}}{{customer.address.county}}{{customer.address.detail}}</td>
             <td class="operate">
                 <button title="详情" ng-click="viewDetails(customer)" type="button" class="btn btn-primary btn-outline btn-xs">
@@ -51,6 +53,12 @@
                 </button>
                 <button title="删除" ng-click="delete(customer)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="fa fa-trash-o"></i>
+                </button>
+                <button title="增加气票" ng-hide="vm.gasTicketEditBoolean" ng-click="add(customer)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <i class="fa fa-plus-square-o "></i>
+                </button>
+                <button title="删除气票" ng-hide="vm.gasTicketEditBoolean" ng-click="deleteGasTicket(customer)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <i class="fa fa-minus-square-o "></i>
                 </button>
             </td>
         </tr>

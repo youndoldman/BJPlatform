@@ -14,7 +14,13 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     var key = MISC.keys.gaodeKey;
     var CloudUserUri = URI.resources.cloudUser;
 
+    var settlementTypeUri = URI.resources.settlementType;
 
+    var goodsUri = URI.resources.goods;
+
+    this.retrieveGoods = function (params) {
+        return promise.wrap($http.get(goodsUri, {params: params}));
+    };
 
 
     //查询云客服账号
@@ -37,6 +43,9 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
             status: customerFromApi.status,
             customerType: customerFromApi.customerType,
             customerLevel: customerFromApi.customerLevel,
+
+            settlementType:customerFromApi.settlementType,
+
             customerSource: customerFromApi.customerSource,
             customerCompany: customerFromApi.customerCompany,
             address: customerFromApi.address,
@@ -105,6 +114,11 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
 
     this.retrieveCustomerType = function (params) {
         return promise.wrap($http.get(customerTypeUri, {params: params}));
+    };
+
+    //结算类型信息查询
+    this.retrieveSettlementType = function (params) {
+        return promise.wrap($http.get(settlementTypeUri, {params: params}));
     };
 
     //行政区域查询

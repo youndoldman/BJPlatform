@@ -15,13 +15,15 @@ commonModule.constant('URI', {
         'users': '../../../api/sysusers',//系统用户接口
         'department': '../../../api/Department',//部门接口
         'groups': '../../../api/groups',//组接口
-        'customers': '../../../api/customers',//客户接口
-        'customerSource': '../../../api/CustomerSource',//客户来源查询接口
+        'customers': 'https://www.yunnanbaijiang.com/api/customers',//客户接口
+        'customerSource': 'https://www.yunnanbaijiang.com/api/CustomerSource',//客户来源查询接口
         //实际使用地址
         //'customerLevel': '../../../api/CustomerLevel',//客户等级查询接口
         //'customerType': '../../../api/CustomerType',//客户类型查询接口
         'customerLevel': 'https://www.yunnanbaijiang.com/api/CustomerLevel',//客户等级查询接口
         'customerType': 'https://www.yunnanbaijiang.com/api/CustomerType',//客户类型查询接口
+        'settlementType': 'https://www.yunnanbaijiang.com/api/SettlementType',//结算类型信息查询接口
+
         'discountStrategies':'https://www.yunnanbaijiang.com/api/DiscountStrategies',//优惠策略接口
 
         'customerCallin':'../../../api/CustomerCallIn',//电话关联的客户资料查询接口

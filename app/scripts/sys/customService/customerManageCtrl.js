@@ -16,7 +16,8 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
         };
 
         $scope.vm = {
-            CustomerList: []
+            customerList: [],
+            gasTicketEditBoolean:true,
         };
         $scope.search = function () {
             $scope.pager.setCurPageNo(1);
@@ -68,6 +69,21 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
                     }
                 })
         };
+//增加气票
+        $scope.add = function (customer) {
+            udcModal.show({
+                templateUrl: "./customService/addGasTicketModal.htm",
+                controller: "AddGasTicketModalCtrl",
+                inputs: {
+                    title: '增加气票',
+                    initVal: customer
+                }
+            }).then(function (result) {
+                if (result) {
+                    searchCustomer();
+                }
+            })
+        };
 
         var searchCustomer = function () {
             var queryParams = {
@@ -79,6 +95,17 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
             CustomerManageService.retrieveCustomers(queryParams).then(function (customers) {
                 $scope.pager.update($scope.q, customers.total, queryParams.pageNo);
                 $scope.vm.customerList = _.map(customers.items, CustomerManageService.toViewModel);
+                console.log($scope.vm.customerList);
+
+                for(var i = 0; i <$scope.vm.customerList.length; i++)
+                {
+                    //console.info($scope.vm.customerList[i].settlementType.name);
+                    if($scope.vm.customerList[i].settlementType.name == "气票客户")
+                    {
+                        $scope.vm.gasTicketEditBoolean = false;
+                    }
+                    console.info($scope.vm.gasTicketEditBoolean);
+                }
             });
         };
 

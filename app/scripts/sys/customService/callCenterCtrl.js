@@ -53,7 +53,6 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             selectedQuantity:1,
             goodsTypesList:[],
             goodsList:[],
-
         };
 
         $scope.searchParam = {
@@ -252,6 +251,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             CustomerManageService.retrieveCustomers(queryParams).then(function (customers) {
                 $scope.pagerCustomer.update($scope.qCustomer, customers.total, queryParams.pageNo);
                 $scope.vm.customerList=customers.items;
+
                 if($scope.vm.customerList.length>0){
                     $scope.vm.currentCustomer = $scope.vm.customerList[0];
                     //刷新订单
@@ -326,8 +326,6 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             });
             //不间断供气测试
             searchCustomerTest();
-
-
         };
 
         init();
