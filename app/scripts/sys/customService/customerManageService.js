@@ -18,6 +18,9 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
 
     var goodsUri = URI.resources.goods;
 
+    var ticketUri = URI.resources.ticket;
+
+
     this.retrieveGoods = function (params) {
         return promise.wrap($http.get(goodsUri, {params: params}));
     };
@@ -146,8 +149,10 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
         return promise.wrap($http.get(goodsUri, {params: params}));
     };
 
-    //
-
+    //增加气票信息
+    this.addTicketInfo = function (ticketInfo) {
+        return promise.wrap($http.post(ticketUri, ticketInfo));
+    };
 
 }]);
 

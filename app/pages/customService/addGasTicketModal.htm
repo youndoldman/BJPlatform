@@ -1,4 +1,4 @@
-<div class="modal" tabindex="-1">
+<div class="modal" tabindex="-1" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <form name="userForm" novalidate>
@@ -36,7 +36,8 @@
                                 <label>气票编号</label>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">
-                                <input type="text" class="form-control input-sm" ng-model="vm.q.ticketSn">
+                                <!--<input type="text" class="form-control input-sm" ng-model="q.ticketSn">-->
+                                <input type="text" class="form-control input-sm" ng-model="q.ticketSn">
                             </div>
                         </div>
                         <br >
@@ -57,21 +58,17 @@
                         </div>
                         <br>
                         <div class="row">
-
-
-
                             <div class="col-xs-2 text-left">
                                 <label>有效期起始</label>
                             </div>
-
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <label class="input"><input type="text"  id="startTimePickers"  class="form-control" ng-model="q.startDate"></label>
+                                <label class="input"><input type="text"  id="startTimePicker"  class="form-control" ng-model="q.startDate"></label>
                             </div>
                             <div style="margin-left: 20px;" class="col-xs-2 text-left">
                                 <label>有效期终止</label>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <label class="input"><input type="text"  id="endTimePickers"  class="form-control" ng-model="q.endDate"></label>
+                                <label class="input"><input type="text"  id="endTimePicker"  class="form-control" ng-model="q.endDate"></label>
                             </div>
                         </div>
                         <br>
@@ -81,7 +78,7 @@
                                 <label>备注</label>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-10">
-                                <input type="text" class="form-control  input-sm" ng-model="vm.currentCustomer.note">
+                                <input type="text" class="form-control  input-sm" ng-model="q.note">
                             </div>
                         </div>
 
@@ -91,7 +88,7 @@
 
 
                 <div class="modal-footer">
-                    <button type="submit" ng-click="submit(vm.currentCustomer)" class="btn btn-primary" data-dismiss="modal">保存</button>
+                    <button type="submit" ng-click="submit(q)" class="btn btn-primary" data-dismiss="modal">保存</button>
                     <button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </form>

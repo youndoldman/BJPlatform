@@ -113,8 +113,18 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
             $scope.pager.pageSize=25;
             searchCustomer();
 
-        };
 
+
+        }
+        //判断是不是气票用户
+        $scope.isTicketUser =  function(customer){
+            if(customer.settlementType.code == "00003")
+            {
+                return true;
+            }else{
+                return false;
+            }
+        }
         init();
 
     }]);
