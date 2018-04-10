@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.CouponDao">
+    <resultMap id="BaseResultMap" type="com.donno.nj.domain.Coupon">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="price" property="price" jdbcType="DOUBLE"/>
+        <result column="spec_code" property="specCode" jdbcType="VARCHAR"/>
+        <result column="spec_name" property="specName" jdbcType="VARCHAR"/>
+        <result column="use_status" property="couponStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+        <result column="exp_time_start" property="startDate" jdbcType="TIMESTAMP"/>
+        <result column="exp_time_end" property="endDate" jdbcType="TIMESTAMP"/>
+        <result column="use_time" property="useTime" jdbcType="TIMESTAMP"/>
+
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+
+        <association property="customer" column="customer_idx" select="com.donno.nj.dao.UserDao.findById">
+        </association>
+
+        <association property="operator" column="oper_idx" select="com.donno.nj.dao.UserDao.findById">
+        </association>
+
+    </resultMap>
+
+    <sql id="TableName">
+        t_coupon
+    </sql>
+
+    <sql id="QryFromTable">
+        t_coupon,t_goods
+    </sql>
+
+
+
+    <sql id="QueryColumnList">
+       t_coupon.id, t_coupon.customer_idx, t_coupon.oper_idx,t_coupon.price,  t_coupon.exp_time_start,t_coupon.exp_time_end,t_coupon.use_status,t_coupon.use_time, t_coupon.note,t_coupon.create_time,t_coupon.update_time,
+        t_goods.specifications as spec_name, t_goods.code as spec_code
+    </sql>
+
+    <sql id="InsertColumnList">
+       customer_idx,spec_idx, oper_idx,price,  exp_time_start,exp_time_end,use_status,use_time, note
+    </sql>
+
+
+
+
+    <sql id="getListCondition">
+        <where>
+            t_coupon.id > 0
+            AND
+            t_coupon.spec_idx = t_goods.id
+
+            <if test="customerUserId != null">
+                and t_coupon.customer_idx = (SELECT  id from t_user where user_id = #{customerUserId})
+            </if>
+            <if test="operatorUserId != null">
+                and t_coupon.oper_idx = (SELECT  id from t_user where user_id = #{operatorUserId})
+            </if>
+
+            <if test="useStatus != null">
+                and t_coupon.use_status = #{useStatus}
+            </if>
+
+
+            <if test="specCode != null">
+                and t_coupon.spec_idx = (SELECT  id from t_goods where code = #{specCode})
+            </if>
+
+            <if test="expireType != null">
+                <if test="expireType == 0">
+                  and  t_coupon.exp_time_end  >=  DATE_FORMAT(now(), '%Y-%m-%d')
+                </if>
+                <if test="expireType == 1">
+                  and  ( TO_DAYS(NOW()) -  TO_DAYS(t_coupon.exp_time_end) ) > 0
+                </if>
+                <!--<if test="expireType == 2">-->
+                    <!--and  DATE_FORMAT(now(), '%Y-%m-%d')  BETWEEN t_ticket.exp_time_start AND  t_ticket.exp_time_end-->
+                <!--</if>-->
+            </if>
+        </where>
+    </sql>
+
+    <select id="getList" resultMap="BaseResultMap">
+        SELECT <include refid="QueryColumnList"/>
+        FROM <include refid="QryFromTable"/>
+        <include refid="getListCondition"/>
+
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+
+    </select>
+
+    <select id="count" resultType="Integer">
+        SELECT COUNT(*)
+        FROM  <include refid="QryFromTable"/>
+        <include refid="getListCondition"/>
+    </select>
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT <include refid="QueryColumnList"/>
+        FROM <include refid="QryFromTable"/>
+        WHERE
+        t_coupon.spec_idx = t_goods.id
+        AND
+        t_coupon.id = #{id}
+    </select>
+
+
+
+    <insert id="insert">
+        INSERT IGNORE INTO <include refid="TableName"/>(<include refid="InsertColumnList"/>)
+        VALUES(
+        (select id from t_user where user_id = #{customer.userId} ),
+        (select id from t_goods where code = #{specCode} ),
+        (select id from t_user where user_id = #{operator.userId} ),
+        #{price},#{startDate},#{endDate},#{couponStatus.index},#{useTime},#{note})
+    </insert>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM <include refid="TableName"/>
+        WHERE
+        id = #{id}
+    </delete>
+
+    <update id="update">
+        UPDATE <include refid="TableName"/>
+        <set>
+            <if test="customer != null">customer_idx = (SELECT  id from t_user where user_id = #{customer.userId}),</if>
+            <if test="operator != null">oper_idx = (SELECT  id from t_user where user_id = #{operator.userId}),</if>
+            <if test="specCode != null">spec_idx = (SELECT  id from t_goods where code = #{specCode}),</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="couponStatus != null">use_status = #{couponStatus.index},</if>
+            <if test="useTime != null">use_time = #{useTime},</if>
+            <if test="startDate != null">exp_time_start = #{startDate},</if>
+            <if test="endDate != null">exp_time_end = #{endDate},</if>
+            <if test="note != null">note = #{note}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>

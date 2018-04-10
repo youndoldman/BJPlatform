@@ -107,9 +107,19 @@ public class TicketOrderServiceImpl implements TicketOrderService
         /*订单检查*/
         checkOrder(ticketOrder.getOrderSn());
 
+        /*数据唯一性检查，同一张气票只能有一条消费记录*/
+        checkDuplicatedData(ticketOrder.getTicketIdx());
+
         ticketOrderDao.insert(ticketOrder);
     }
 
+    public void checkDuplicatedData(Integer couponIdx)
+    {
+        if (ticketOrderDao.findByTicketIdx(couponIdx)!= null)
+        {
+            throw new ServerSideBusinessException("该气票已经使用！", HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
 
 
     @Override

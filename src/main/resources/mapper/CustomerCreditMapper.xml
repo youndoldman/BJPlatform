@@ -84,6 +84,17 @@
         t_customer_credit.id = #{id}
     </select>
 
+    <select id="findByUserIdCreditType" resultMap="BaseResultMap">
+        SELECT <include refid="QueryColumnList"/>
+        FROM <include refid="QryFromTable"/>
+        WHERE
+        t_customer_credit.user_idx = t_user.id
+        AND
+        t_customer_credit.user_idx = (select id from t_user where user_id = #{userId})
+        AND t_customer_credit.credit_type = #{creditType.index}
+    </select>
+
+
     <insert id="insert">
         INSERT IGNORE INTO <include refid="TableName"/>(<include refid="InsertColumnList"/>)
         VALUES(

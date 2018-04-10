@@ -16,7 +16,7 @@ public interface CustomerCreditService
 
 //    void create(CustomerCredit ticket);
 
-    void update(Integer id, CustomerCredit newCustomerCredit);
+//    void update(Integer id, CustomerCredit newCustomerCredit);
 
     void deleteById(Integer id);
 

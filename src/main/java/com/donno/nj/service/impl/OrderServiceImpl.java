@@ -60,6 +60,12 @@ public class OrderServiceImpl implements OrderService
     private UserDao userDao;
 
     @Autowired
+    private CustomerCreditDao customerCreditDao;
+
+    @Autowired
+    private CustomerCreditDetailDao customerCreditDetailDao;
+
+    @Autowired
     private TicketOrderDao ticketOrderDao;
 
     @Override
@@ -365,7 +371,7 @@ public class OrderServiceImpl implements OrderService
         if(newOrder.getPayType() != null)
         {
 //            Optional<User> userOptional = AppUtil.getCurrentLoginUser();
-//            if (userOptional == null || userOptional.get()== null)
+//            if (userOptional.isPresent() || userOptional.get()== null)
 //            {
 //                throw new ServerSideBusinessException("获取当前用户信息失败！", HttpStatus.UNAUTHORIZED);
 //            }
@@ -381,7 +387,22 @@ public class OrderServiceImpl implements OrderService
 //                throw new ServerSideBusinessException("不允许修改订单支付类型！", HttpStatus.UNAUTHORIZED);
 //            }
 
-            updatePayType(newOrder.getPayType(),srcOrder.getCustomer(),newOrder);
+            checkPayType(newOrder.getPayType(),srcOrder.getCustomer());
+        }
+
+        /*订单支付状态修改*/
+        if(newOrder.getPayStatus() != null)
+        {
+            PayType payType;
+            if(newOrder.getPayType() != null)
+            {
+                payType = newOrder.getPayType();
+            }
+            else
+            {
+                payType = srcOrder.getPayType();
+            }
+            updatePayStatus(newOrder.getPayStatus(),payType,srcOrder.getCustomer(),srcOrder);
         }
 
         /*更新数据*/
@@ -389,7 +410,61 @@ public class OrderServiceImpl implements OrderService
         orderDao.update(newOrder);
     }
 
-    public void updatePayType(PayType payType,Customer customer,Order order)
+    public void addCredit(CreditType creditType,Customer customer,Order order)
+    {
+        CustomerCredit customerCredit = customerCreditDao.findByUserIdCreditType(customer.getUserId(),creditType);
+        if (customerCredit == null)
+        {
+            /*记录当前欠款额*/
+            customerCredit = new CustomerCredit();
+            customerCredit.setAmount( order.getOrderAmount());
+            customerCredit.setUserId(customer.getUserId());
+            customerCredit.setCreditType(creditType);
+            customerCredit.setNote("");
+            customerCreditDao.insert(customerCredit);
+        }
+        else
+        {
+            /*更新当前欠款额*/
+            customerCredit.setAmount(customerCredit.getAmount() + order.getOrderAmount());
+            customerCreditDao.update(customerCredit);
+        }
+
+        /*记录交易明细*/
+        CustomerCreditDetail customerCreditDetail = new CustomerCreditDetail();
+        customerCreditDetail.setCreditType(creditType);
+        customerCreditDetail.setUserId(customer.getUserId());
+        customerCreditDetail.setOrderSn(order.getOrderSn());
+        customerCreditDetail.setAmount( order.getOrderAmount());
+        customerCreditDetailDao.insert(customerCreditDetail);
+    }
+
+    public void updatePayStatus(PayStatus payStatus,PayType payType,Customer customer,Order srcOrder)
+    {
+        if (payStatus == PayStatus.PSPaied )
+        {
+            SettlementType settlementType = customer.getSettlementType();
+            String settlementCode =  settlementType.getCode();
+            if (settlementType == null || settlementCode == null || settlementCode.trim().length() == 0)
+            {
+                throw new ServerSideBusinessException("订单数据错误，缺少客户结算类型信息！", HttpStatus.NOT_ACCEPTABLE);
+            }
+
+            if (settlementCode.equals(ServerConstantValue.SETTLEMENT_TYPE_COMMON_USER))//普通用户
+            {
+                if (payType == PayType.PTDebtCredit)
+                {
+                    addCredit(CreditType.CTCommonCredit,customer,srcOrder);//赊销记录
+                }
+            }
+            else  if (settlementCode.equals(ServerConstantValue.SETTLEMENT_TYPE_MONTHLY_CREDIT))
+            {
+                addCredit(CreditType.CTMonthlyCredit,customer,srcOrder);//赊销记录
+            }
+        }
+    }
+
+    public void checkPayType(PayType payType,Customer customer)
     {
         if(customer == null)
         {
@@ -405,14 +480,9 @@ public class OrderServiceImpl implements OrderService
 
         if (settlementCode.equals(ServerConstantValue.SETTLEMENT_TYPE_COMMON_USER))//普通用户
         {
-            if (payType == PayType.PTOnLine || payType == PayType.PTCash  )
+            if (payType == PayType.PTOnLine || payType == PayType.PTCash ||payType == PayType.PTDebtCredit )
             {
-                order.setPayType(payType);
-            }
-            else if(payType == PayType.PTDebtCredit)
-            {
-                order.setPayType(payType);
-                //addDebtCredit();
+                //to do nothing
             }
             else
             {

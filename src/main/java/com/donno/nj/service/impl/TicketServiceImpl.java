@@ -24,8 +24,8 @@ public class TicketServiceImpl implements TicketService
     @Autowired
     private UserDao userDao;
 
-//    @Autowired
-//    private GasCylinderSpecDao gasCylinderSpecDao;
+    @Autowired
+    private CustomerDao customerDao;
 
     @Autowired
     private GoodsDao goodsDao;
@@ -66,10 +66,21 @@ public class TicketServiceImpl implements TicketService
             throw new ServerSideBusinessException("客户信息不全，请补充！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        User target = userDao.findByUserId(customer.getUserId());
+//        User target = userDao.findByUserId(customer.getUserId());
+//        if (target == null)
+//        {
+//            throw new ServerSideBusinessException("客户不存在！", HttpStatus.NOT_ACCEPTABLE);
+//        }
+
+        /*只有气票用户才能增加气票*/
+        Customer target = customerDao.findByUserId(customer.getUserId());
         if (target == null)
         {
             throw new ServerSideBusinessException("客户不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
+        if (!target.getSettlementType().getCode().equals(ServerConstantValue.SETTLEMENT_TYPE_TICKET))
+        {
+            throw new ServerSideBusinessException("客户不是气票用户，不能使用气票！", HttpStatus.NOT_ACCEPTABLE);
         }
 
         customer.setId(target.getId());
@@ -259,7 +270,7 @@ public class TicketServiceImpl implements TicketService
         Ticket ticket = ticketDao.findById(id);
         if (ticket == null)
         {
-            throw new ServerSideBusinessException("气票信息不存在！", HttpStatus.NOT_ACCEPTABLE);
+            throw new ServerSideBusinessException("气票信息不存在！", HttpStatus.NOT_FOUND);
         }
 
          /*已经使用的气票不允许修改*/
