@@ -10,6 +10,7 @@ import com.donno.nj.util.AppUtil;
 import com.donno.nj.util.DistanceHelper;
 import com.donno.nj.activiti.WorkFlowTypes;
 import com.google.common.base.Optional;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,9 @@ public class OrderServiceImpl implements OrderService
 
     @Autowired
     private TicketDao ticketDao;
+
+    @Autowired
+    private CouponDao couponDao;
 
     @Autowired
     private UserDao userDao;
@@ -252,6 +256,28 @@ public class OrderServiceImpl implements OrderService
 //        }
 //    }
 
+
+    public void checkTicket(Order order,Ticket ticket)
+    {
+        /*检查气票规格、使用状态、是否过期*/
+        String message;
+        if (ticket.getTicketStatus() == TicketStatus.TSUsed)
+        {
+            message = String.format("气票%s的已经被使用",ticket.getTicketSn());
+            throw new ServerSideBusinessException(message, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        /*规格*/
+
+        /*期限*/
+        if (ticket.getEndDate().before(new Date()))
+        {
+            message = String.format("气票%s的已经过期",ticket.getTicketSn());
+            throw new ServerSideBusinessException(message, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+    }
+
     public void checkTicket(Order order)
     {
         /*to do ......
@@ -259,24 +285,60 @@ public class OrderServiceImpl implements OrderService
         *
         * */
 
-        List<OrderDetail> orderDetails = order.getOrderDetailList();
-        for(OrderDetail orderDetail : orderDetails)
+        Map params = new HashMap<String,String>();
+        params.putAll(ImmutableMap.of("userId", order.getCustomer().getUserId()));
+        params.putAll(ImmutableMap.of("payStatus", PayStatus.PSUnpaid));
+        params.putAll(ImmutableMap.of("payType", PayType.PTTicket));
+        List<Order> unpaidOrders = orderDao.getList(params);
+
+        /*优惠券和气票查询条件*/
+        params.clear();
+        params.putAll(ImmutableMap.of("customerUserId", order.getCustomer().getUserId()));
+        params.putAll(ImmutableMap.of("useStatus", TicketStatus.TSUnUsed.getIndex()));
+        params.putAll(ImmutableMap.of("expireType", 0));//未过期的
+
+
+        if (unpaidOrders.size() == 0 )
         {
-            String specCode = orderDetail.getGoods().getCode();
-
-            Map params = new HashMap<String,String>();
-            params.putAll(ImmutableMap.of("customerUserId", order.getCustomer().getUserId()));
-            params.putAll(ImmutableMap.of("specCode", specCode));
-            params.putAll(ImmutableMap.of("useStatus", TicketStatus.TSUnUsed.getIndex()));
-            params.putAll(ImmutableMap.of("expireType", 0));//未过期的
-            params.putAll(ImmutableMap.of("limit", 1));
-
-            List<Ticket> tickets = ticketDao.getList(params);
-            if (tickets.size() == 0)
+            List<OrderDetail> orderDetails = order.getOrderDetailList();//当前订单详情
+            for(OrderDetail orderDetail : orderDetails)
             {
-                String message = String.format("规格为%s的气票数量不足",orderDetail.getGoods().getCode());
-                throw new ServerSideBusinessException(message, HttpStatus.NOT_ACCEPTABLE);
+                String specCode = orderDetail.getGoods().getCode();
+                params.putAll(ImmutableMap.of("specCode", specCode));
+
+                /*优惠券*/
+                Integer couponCount = couponDao.count(params);
+                Integer ticketCount = ticketDao.count(params);
+
+                if (couponCount + ticketCount < orderDetail.getQuantity())
+                {
+                    String message = String.format("规格为%s的优惠券和气票数量不足",orderDetail.getGoods().getCode());
+                    throw new ServerSideBusinessException(message, HttpStatus.NOT_ACCEPTABLE);
+                }
             }
+        }
+        else
+        {
+            //to do ...
+//            for (Order unpaidOrder : unpaidOrders )
+//            {
+//                for(OrderDetail unpaidOrderDetail : unpaidOrder.getOrderDetailList())
+//                {
+//                    String specCode = unpaidOrderDetail.getGoods().getCode();
+//                    params.putAll(ImmutableMap.of("specCode", specCode));
+//
+//                        /*优惠券*/
+//                    Integer couponCount = couponDao.count(params);
+//                    Integer ticketCount = ticketDao.count(params);
+//
+//                    if (couponCount + ticketCount < unpaidOrderDetail.getQuantity())
+//                    {
+//                        String message = String.format("规格为%s的优惠券和气票数量不足",unpaidOrderDetail.getGoods().getCode());
+//                        throw new ServerSideBusinessException(message, HttpStatus.NOT_ACCEPTABLE);
+//                    }
+//                }
+//            }
+
         }
 
     }
@@ -649,6 +711,33 @@ public class OrderServiceImpl implements OrderService
             throw new ServerSideBusinessException("客户不是气票用户！", HttpStatus.NOT_ACCEPTABLE);
         }
 
+//        Map params = new HashMap<String,String>();
+//        List<OrderDetail> orderDetails = order.getOrderDetailList();
+//        for(OrderDetail orderDetail : orderDetails)
+//        {
+//            params.clear();
+//            params.putAll(ImmutableMap.of("customerUserId", order.getCustomer().getUserId()));
+//            params.putAll(ImmutableMap.of("specCode", orderDetail.getGoods().getCode()));
+//            params.putAll(ImmutableMap.of("useStatus", TicketStatus.TSUnUsed.getIndex()));
+//            params.putAll(ImmutableMap.of("expireType", 0));//未过期的
+//            params.putAll(ImmutableMap.of("limit", 1));
+//
+//            /*优惠券*/
+//            List<Coupon> coupons = couponDao.getList(params);
+//            if (coupons.size() == 0)
+//            {
+//                /*气票*/
+//            }
+//            else
+//            {
+//
+//                for (Integer count = 0 ; count < orderDetail.getQuantity(); count++)
+//                {
+//                    consumeCoupon(order.getId(),)
+//                }
+//            }
+//        }
+
         for (Ticket ticket :tickets)
         {
             if (ticket.getTicketSn() == null || ticket.getTicketSn().trim().length() == 0)
@@ -662,6 +751,8 @@ public class OrderServiceImpl implements OrderService
                 String message = String.format("系统中没有%s该气票",ticket.getTicketSn());
                 throw new ServerSideBusinessException(message, HttpStatus.NOT_ACCEPTABLE);
             }
+
+            checkTicket(order,target);
 
             /*将气票状态设置为已使用*/
             target.setTicketStatus(TicketStatus.TSUsed);
