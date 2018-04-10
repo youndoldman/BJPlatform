@@ -85,6 +85,22 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
             })
         };
 
+        //删除气票
+        $scope.deleteGasTicket = function (customer) {
+            udcModal.show({
+                templateUrl: "./customService/deleteGasTicketModal.html",
+                controller: "DeleteGasTicketModalCtrl",
+                inputs: {
+                    title: '删除气票',
+                    initVal: customer
+                }
+            }).then(function (result) {
+                if (result) {
+                    searchCustomer();
+                }
+            })
+        };
+
         var searchCustomer = function () {
             var queryParams = {
                 name: $scope.q.CustomerName,
@@ -95,17 +111,6 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
             CustomerManageService.retrieveCustomers(queryParams).then(function (customers) {
                 $scope.pager.update($scope.q, customers.total, queryParams.pageNo);
                 $scope.vm.customerList = _.map(customers.items, CustomerManageService.toViewModel);
-                console.log($scope.vm.customerList);
-
-                for(var i = 0; i <$scope.vm.customerList.length; i++)
-                {
-                    //console.info($scope.vm.customerList[i].settlementType.name);
-                    if($scope.vm.customerList[i].settlementType.name == "气票客户")
-                    {
-                        $scope.vm.gasTicketEditBoolean = false;
-                    }
-                    console.info($scope.vm.gasTicketEditBoolean);
-                }
             });
         };
 
