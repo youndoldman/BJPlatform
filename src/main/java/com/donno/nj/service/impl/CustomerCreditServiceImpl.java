@@ -75,34 +75,34 @@ public class CustomerCreditServiceImpl implements CustomerCreditService
         customerCreditDao.insert(customerCredit);
     }
 
-    @Override
-    @OperationLog(desc = "修改客户欠款信息")
-    public void update(Integer id, CustomerCredit newCustomerCredit)
-    {
-        /*参数校验*/
-        if ( newCustomerCredit == null)
-        {
-            throw new ServerSideBusinessException("客户欠款信息不能为空！", HttpStatus.NOT_ACCEPTABLE);
-        }
-
-        if (id == null)
-        {
-            create(newCustomerCredit) ;
-        }
-        else
-        {
-            CustomerCredit customerCredit = customerCreditDao.findById(id);
-            if (customerCredit == null)
-            {
-                create(newCustomerCredit) ;
-            }
-            else
-            {
-                newCustomerCredit.setId(id);
-                customerCreditDao.update(newCustomerCredit);
-            }
-        }
-    }
+//    @Override
+//    @OperationLog(desc = "修改客户欠款信息")
+//    public void update(Integer id, CustomerCredit newCustomerCredit)
+//    {
+//        /*参数校验*/
+//        if ( newCustomerCredit == null)
+//        {
+//            throw new ServerSideBusinessException("客户欠款信息不能为空！", HttpStatus.NOT_ACCEPTABLE);
+//        }
+//
+//        if (id == null)
+//        {
+//            create(newCustomerCredit) ;
+//        }
+//        else
+//        {
+//            CustomerCredit customerCredit = customerCreditDao.findById(id);
+//            if (customerCredit == null)
+//            {
+//                create(newCustomerCredit) ;
+//            }
+//            else
+//            {
+//                newCustomerCredit.setId(id);
+//                customerCreditDao.update(newCustomerCredit);
+//            }
+//        }
+//    }
 
     @Override
     @OperationLog(desc = "删除欠款信息")

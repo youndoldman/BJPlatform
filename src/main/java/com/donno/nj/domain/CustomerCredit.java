@@ -13,7 +13,7 @@ public class CustomerCredit implements Serializable
 
     private CreditType creditType;
 
-    private  Double amount ;//金额
+    private  Float amount ;//金额
     protected String  note;
     protected Date createTime;
     protected Date updateTime;
@@ -35,7 +35,7 @@ public class CustomerCredit implements Serializable
         return creditType;
     }
 
-    public Double getAmount() {
+    public Float getAmount() {
         return amount;
     }
 
@@ -67,7 +67,7 @@ public class CustomerCredit implements Serializable
         this.creditType = creditType;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(Float amount) {
         this.amount = amount;
     }
 

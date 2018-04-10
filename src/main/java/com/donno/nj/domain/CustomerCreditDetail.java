@@ -11,7 +11,7 @@ public class CustomerCreditDetail implements Serializable
     private Integer id;
     private  String userId;//客户ID
     private CreditType creditType;
-    private  Double amount ;//金额
+    private  Float amount ;//金额
 
     private String orderSn;//订单编号
 
@@ -34,7 +34,7 @@ public class CustomerCreditDetail implements Serializable
         return creditType;
     }
 
-    public Double getAmount() {
+    public Float getAmount() {
         return amount;
     }
 
@@ -68,7 +68,7 @@ public class CustomerCreditDetail implements Serializable
         this.creditType = creditType;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(Float amount) {
         this.amount = amount;
     }
 
