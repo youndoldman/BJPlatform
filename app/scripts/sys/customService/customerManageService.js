@@ -153,6 +153,15 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     this.addTicketInfo = function (ticketInfo) {
         return promise.wrap($http.post(ticketUri, ticketInfo));
     };
+    //查询气票
+    this.searchTicket = function(params){
+        return promise.wrap($http.get(ticketUri, {params: params}));
+    }
 
+
+    //删除气票
+    this.deleteTicket = function (ticketDetail) {
+        return promise.wrap($http.delete(ticketUri + "/" + ticketDetail.ticketSn));
+    };
 }]);
 
