@@ -259,5 +259,13 @@
         <!--WHERE id = #{id}-->
     <!--</update>-->
 
+    <select id="selectById" resultMap="DetailResultMap">
+        SELECT <include refid="JoinSelectColumn"/>
+        FROM <include refid="JoinTableList"/>
+        WHERE
+        (<include refid="JoinWhereCondition"/>)
+        AND
+        t_user.id = #{id}
+    </select>
 
 </mapper>

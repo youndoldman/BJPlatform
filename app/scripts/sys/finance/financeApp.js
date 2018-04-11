@@ -4,7 +4,7 @@ var financeApp = angular.module('FinanceApp', ['ui.router', 'CommonModule', 'ang
     .config(['$httpProvider', '$stateProvider', '$urlRouterProvider', function($httpProvider, $stateProvider, $urlRouterProvider) {
 
         // 设置默认显示页面
-        $urlRouterProvider.otherwise('/finance/ledger');
+        $urlRouterProvider.otherwise('/finance/storeDailySales');
 
         $stateProvider
             .state('finance', {
@@ -14,12 +14,12 @@ var financeApp = angular.module('FinanceApp', ['ui.router', 'CommonModule', 'ang
                     "": {templateUrl: '../pages/finance/financeLink.htm'}
                 }
             })
-            .state('finance.ledger',{
-                url:'/ledger',
+            .state('finance.storeDailySales',{
+                url:'/storeDailySales',
                 views: {
                     "content@finance": {
-                        templateUrl: '../pages/finance/ledgerList.htm',
-                        controller: '',
+                        templateUrl: '../pages/finance/storeDailySales.html',
+                        controller: 'storeDailySalesCtrl',
                         resolve: {}
                     }
                 },
@@ -27,12 +27,12 @@ var financeApp = angular.module('FinanceApp', ['ui.router', 'CommonModule', 'ang
                     rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[0]);
                 }
             })
-            .state('finance.voucher',{
-                url:'/voucher',
+            .state('finance.checkBottle',{
+                url:'/checkBottle',
                 views: {
                     "content@finance": {
-                        templateUrl: '../pages/finance/voucherList.htm',
-                        controller: 'VoucherListCtrl',
+                        templateUrl: '../pages/finance/checkBottle.html',
+                        controller: 'checkBottleCtrl',
                         resolve: {}
                     }
                 },
@@ -40,19 +40,98 @@ var financeApp = angular.module('FinanceApp', ['ui.router', 'CommonModule', 'ang
                     rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[1]);
                 }
             })
-            .state('finance.wages',{
-                url:'/wages',
+            .state('finance.dailyMonthlySales',{
+                url:'/dailyMonthlySales',
                 views: {
                     "content@finance": {
-                        templateUrl: '../pages/finance/wagesList.htm',
-                        controller: '',
+                        templateUrl: '../pages/finance/dailyMonthlySales.html',
+                        controller: 'dailyMonthlySalesCtrl',
                         resolve: {}
                     }
                 },
                 onEnter: function (rootService, NavItem) {
                     rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[2]);
                 }
-            });
+            })
+            .state('finance.LPGSales',{
+                url:'/LPGSales',
+                views: {
+                    "content@finance": {
+                        templateUrl: '../pages/finance/LPGSales.html',
+                        controller: 'LPGSalesCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[3]);
+                }
+            })
+            .state('finance.LPGSalesBalance',{
+                url:'/LPGSalesBalance',
+                views: {
+                    "content@finance": {
+                        templateUrl: '../pages/finance/LPGSalesBalance.html',
+                        controller: 'LPGSalesBalanceCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[4]);
+                }
+            })
+            .state('finance.LPGSalesCash',{
+                url:'/LPGSalesCash',
+                views: {
+                    "content@finance": {
+                        templateUrl: '../pages/finance/LPGSalesCash.html',
+                        controller: 'LPGSalesCashCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[5]);
+                }
+            })
+            //.state('finance.ledger',{
+            //    url:'/ledger',
+            //    views: {
+            //        "content@finance": {
+            //            templateUrl: '../pages/finance/ledgerList.htm',
+            //            controller: '',
+            //            resolve: {}
+            //        }
+            //    },
+            //    onEnter: function (rootService, NavItem) {
+            //        rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[0]);
+            //    }
+            //})
+            //.state('finance.voucher',{
+            //    url:'/voucher',
+            //    views: {
+            //        "content@finance": {
+            //            templateUrl: '../pages/finance/voucherList.htm',
+            //            controller: 'VoucherListCtrl',
+            //            resolve: {}
+            //        }
+            //    },
+            //    onEnter: function (rootService, NavItem) {
+            //        rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[1]);
+            //    }
+            //})
+            //.state('finance.wages',{
+            //    url:'/wages',
+            //    views: {
+            //        "content@finance": {
+            //            templateUrl: '../pages/finance/wagesList.htm',
+            //            controller: '',
+            //            resolve: {}
+            //        }
+            //    },
+            //    onEnter: function (rootService, NavItem) {
+            //        rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[2]);
+            //    }
+            //})
+        ;
 
         $httpProvider.interceptors.push('HttpInterceptor');
     }]).run(['$rootScope', 'rootService', 'NavItem', function ($rootScope, rootService, NavItem) {

@@ -5,6 +5,7 @@
 
 customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'CustomerManageService', 'title', 'initVal','udcModal','sessionStorage','$timeout',function ($scope, close, CustomerManageService, title, initVal, udcModal,sessionStorage,$timeout) {
     $scope.modalTitle = title;
+
     $scope.currentUser = {};
     $timeout(function() {
         $(function () {
@@ -173,21 +174,10 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
         $scope.q.operator.userId = $scope.currentUser.userId;
         $scope.q.customer.userId = $scope.vm.currentCustomer.userId;
         $scope.searchGoods();
+
+
         //获取省
         getProvincesConfig("中国");
-        //初始化地址信息
-        //if(title == "新增客户") {
-        //    $scope.vm.currentCustomer.address.province = "云南省";
-        //    getCitysConfig($scope.vm.currentCustomer.address.province);
-        //    $scope.vm.currentCustomer.address.city = "昆明市";
-        //    getCountysConfig($scope.vm.currentCustomer.address.city);
-        //}else {
-        //    $scope.vm.currentCustomer = _.clone(initVal);
-        //    getCitysConfig($scope.vm.currentCustomer.address.province);
-        //    getCountysConfig($scope.vm.currentCustomer.address.city);
-        //    console.log($scope.vm.currentCustomer );
-        //}
-
         //修改客户公司的结构
         var company = {name:""};
         if(title == "修改客户") {

@@ -126,9 +126,6 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
 
     //客户类型或者级别选择改变discountConditionValue赋值
     $scope.customersLevelTypeChange = function () {
-        //console.info($scope.value.name);
-        //console.info( $scope.temp.customersList);
-        //console.info($scope.temp.customersList.length);
         for (var i = 0; i < $scope.temp.customersList.length; i++)
         {
             if($scope.value.name == $scope.temp.customersList[i].name)
@@ -137,23 +134,6 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
                 console.info($scope.q.discountConditionValue);
             }
         }
-        //if($scope.value.name == "未定义")
-        //{
-        //    $scope.q.discountConditionValue ="00000";
-        //}
-        //else if(($scope.value.name == "一级客户") || ($scope.value.name == "普通住宅客户"))
-        //{
-        //    $scope.q.discountConditionValue ="00001";
-        //}
-        //else if(($scope.value.name == "2级客户") || ($scope.value.name == "餐饮客户1"))
-        //{
-        //    $scope.q.discountConditionValue ="00002";
-        //}
-        //else if($scope.value.name == "4级客户")
-        //{
-        //    $scope.q.discountConditionValue ="00004";
-        //}
-        //console.info($scope.q.discountConditionValue);
     }
 
     $scope.isModify = false;
