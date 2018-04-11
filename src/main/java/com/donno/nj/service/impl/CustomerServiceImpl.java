@@ -104,8 +104,14 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
         newCustomer.setId(id);
 
         /*校验源信息是否合法*/
-        User oldCustomer = userDao.findById(id);
-        if ( oldCustomer == null)
+        User srcUser = userDao.findById(id);
+        if ( srcUser == null)
+        {
+            throw new ServerSideBusinessException("用户不存在，不能进行修改操作！",HttpStatus.CONFLICT);
+        }
+
+        Customer srcCustomer = customerDao.findByUserId(srcUser.getUserId());
+        if ( srcCustomer == null)
         {
             throw new ServerSideBusinessException("用户不存在，不能进行修改操作！",HttpStatus.CONFLICT);
         }
@@ -113,7 +119,7 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
         /*校验目的用户是否已经存在*/
         if (newCustomer.getUserId() != null )
         {
-            if ( newCustomer.getUserId().equals(oldCustomer.getUserId()) )//userid 不修改
+            if ( newCustomer.getUserId().equals(srcUser.getUserId()) )//userid 不修改
             {
                 newCustomer.setUserId(null);
             }
@@ -161,17 +167,19 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
             checkCustomerTypeUpdate(newCustomer);
         }
 
-
         /*客户公司*/
         if (newCustomer.getCustomerCompany() != null)
         {
             checkCustomerCompanyUpdate(newCustomer);
         }
 
-
         /*更新基表数据*/
-        User newUser = newCustomer;
-        userDao.update(newUser);
+        if(newCustomer.getUserId() != null || newCustomer.getUserGroup()!= null || newCustomer.getName()!= null
+                || newCustomer.getName()!= null || newCustomer.getPassword() != null)
+        {
+            User newUser = newCustomer;
+            userDao.update(newUser);
+        }
 
         /*更新客户表数据*/
         customerDao.update(newCustomer);
