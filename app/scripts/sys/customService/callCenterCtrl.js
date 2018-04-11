@@ -1,8 +1,8 @@
 'use strict';
 
 customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
-    'rootService', 'pager', 'udcModal', 'CustomerManageService', 'OrderService','sessionStorage',function ($scope, $rootScope, $filter, $location, Constants,
-                                                                           rootService, pager, udcModal, CustomerManageService,OrderService,sessionStorage) {
+    'rootService', 'pager', 'udcModal', 'CustomerManageService', 'OrderService','sessionStorage','MendSecurityComplaintService',function ($scope, $rootScope, $filter, $location, Constants,
+                                                                           rootService, pager, udcModal, CustomerManageService,OrderService,sessionStorage,MendSecurityComplaintService) {
 
 
         var gotoPageCustomer = function (pageNo) {
@@ -53,6 +53,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             selectedQuantity:1,
             goodsTypesList:[],
             goodsList:[],
+            mendTypesList:[],//报修类型
+            selectedMendType:{}//当前选择的报修类型
         };
 
         $scope.searchParam = {
@@ -85,6 +87,18 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         $scope.currentOrder= {
             orderDetailList:[],
         };
+
+        //当前报修信息
+        $scope.currentMend= {
+            mendType:{},//报修类型
+            customer:{},//报修用户
+            recvName:null,//联系人
+            recvPhone:null,//联系电话
+            recvAddr:{},//报修地址
+            detail:null,//报修内容
+            reserveTime:null,//预约时间
+        };
+
 
         //添加购物车
         $scope.addToCart = function () {
@@ -198,7 +212,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 templateUrl: "./customService/customerModal.htm",
                 controller: "CustomerModalCtrl",
                 inputs: {
-                    title: '修改客户',
+                    titl e: '修改客户',
                     initVal: customer
                 }
             }).then(function (result) {
@@ -324,9 +338,31 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 $scope.temp.selectedGoodsType = $scope.temp.goodsTypesList[0];
                 $scope.goodsTypeChange();
             });
+            //查询报修类型
+            queryParams = {};
+            MendSecurityComplaintService.retrieveMendTypes(queryParams).then(function (mendTypes) {
+                $scope.temp.mendTypesList = mendTypes.items;
+                $scope.temp.selectedMendType = $scope.temp.mendTypesList[0];
+                $scope.goodsTypeChange();
+            });
+
             //不间断供气测试
             searchCustomerTest();
         };
 
         init();
+
+        //刷新维修订单的数据
+        var refleshMend = function() {
+            if($scope.vm.currentCustomer == null){
+                udcModal.info({"title": "错误信息", "message": "请选择客户 "});
+                return;
+            }
+
+            //填写默认的联系人、联系电话、送气地址
+            $scope.currentMend.recvAddr = $scope.vm.currentCustomer.address;
+            $scope.currentMend.recvName = $scope.vm.currentCustomer.name;
+            $scope.currentMend.recvPhone = $scope.vm.currentCustomer.phone;
+        }
+
     }]);

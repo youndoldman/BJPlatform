@@ -11,7 +11,6 @@ financeApp.directive('chart1', function() {
         template: '<div style="padding-top:100px; height:500px;position=relative;"></div>',
         replace: true,
         link: function($scope, element, attrs, controller) {
-
             var hours = ['12a', '1a', '2a', '3a', '4a', '5a', '6a',
                 '7a', '8a', '9a','10a','11a',
                 '12p', '1p', '2p', '3p', '4p', '5p',
