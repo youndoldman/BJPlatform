@@ -75,6 +75,10 @@
             cst_type = #{customerType.id},
         </if>
 
+        <if test="settlementType != null">
+            settlement_type = #{settlementType.id},
+        </if>
+
         <if test="customerLevel != null">
             cst_level = #{customerLevel.id},
         </if>
