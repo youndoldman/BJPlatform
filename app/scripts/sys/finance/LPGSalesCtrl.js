@@ -4,7 +4,7 @@
 
 'use strict';
 
-customServiceApp.controller('LPGSalesCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
+financeApp.controller('LPGSalesCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
     'rootService', 'pager', 'udcModal', 'KtyService', 'sessionStorage',function ($scope, $rootScope, $filter, $location, Constants,
                                                                                  rootService, pager, udcModal, KtyService,sessionStorage) {
         $(function () {

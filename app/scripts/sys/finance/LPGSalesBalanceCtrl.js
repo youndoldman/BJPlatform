@@ -1,10 +1,10 @@
 /**
- * Created by Administrator on 2018/3/31.
+ * Created by Administrator on 2018/3/30.
  */
 
 'use strict';
 
-customServiceApp.controller('dailyMonthlySalesCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
+financeApp.controller('LPGSalesBalanceCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
     'rootService', 'pager', 'udcModal', 'KtyService', 'sessionStorage',function ($scope, $rootScope, $filter, $location, Constants,
                                                                                  rootService, pager, udcModal, KtyService,sessionStorage) {
         $(function () {

@@ -1,10 +1,9 @@
 /**
- * Created by Administrator on 2018/3/30.
+ * Created by Administrator on 2018/3/29.
  */
-
 'use strict';
 
-customServiceApp.controller('LPGSalesCashCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
+financeApp.controller('checkBottleCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
     'rootService', 'pager', 'udcModal', 'KtyService', 'sessionStorage',function ($scope, $rootScope, $filter, $location, Constants,
                                                                                  rootService, pager, udcModal, KtyService,sessionStorage) {
         $(function () {
@@ -27,13 +26,13 @@ customServiceApp.controller('LPGSalesCashCtrl', ['$scope', '$rootScope', '$filte
                 });
         });
 
-        //var gotoPage = function (pageNo) {
-        //    $scope.pager.setCurPageNo(pageNo);
-        //    searchData();
-        //};
-        //
-        //$scope.pager = pager.init('LPGCtrl', gotoPage);
-        //var historyQ = $scope.pager.getQ();
+        var gotoPage = function (pageNo) {
+            $scope.pager.setCurPageNo(pageNo);
+            searchData();
+        };
+
+        $scope.pager = pager.init('checkBottleCtrl', gotoPage);
+        var historyQ = $scope.pager.getQ();
 
         $scope.data = {
             startTime:null,
@@ -52,15 +51,14 @@ customServiceApp.controller('LPGSalesCashCtrl', ['$scope', '$rootScope', '$filte
         };
 
         $scope.vm = {
-            goodsTypes: [{"name":"液化气","type":"45kg/瓶"},{"name":"液化气","type":"12kg/瓶"},{"name":"液化气","type":"3.5kg/瓶"},
-                {"name":"专卖瓶","type":"15kg/只"},{"name":"专卖瓶","type":"5kg/只"}],
+            goodsTypes: [{"name":"50kg/只"},{"name":"15kg/只"},{"name":"5kg/只"},{"name":"50kg二甲醚/只"},],
             lastDataList:[],
             types:["daily","hourly"],
             intervals:["1","2","3","4","5"]
         };
 
         $scope.search = function () {
-            //$scope.pager.setCurPageNo(1);
+            $scope.pager.setCurPageNo(1);
             searchData();
         };
 
