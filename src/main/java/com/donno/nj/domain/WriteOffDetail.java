@@ -14,6 +14,7 @@ public class WriteOffDetail implements Serializable
     private  Float amount ;//金额
 
     private PayType payType;
+    private  String operId;//操作员ID
 
     protected String  note;
     protected Date createTime;
@@ -28,6 +29,10 @@ public class WriteOffDetail implements Serializable
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getOperId() {
+        return operId;
     }
 
     public CreditType getCreditType() {
@@ -60,6 +65,10 @@ public class WriteOffDetail implements Serializable
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public void setOperId(String operId) {
+        this.operId = operId;
     }
 
     public void setCreditType(CreditType creditType) {

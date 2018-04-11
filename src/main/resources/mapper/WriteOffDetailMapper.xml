@@ -5,11 +5,15 @@
     <resultMap id="BaseResultMap" type="com.donno.nj.domain.WriteOffDetail">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+
         <result column="amount" property="amount" jdbcType="DOUBLE"/>
         <result column="credit_type" property="creditType" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
         <result column="pay_type" property="payType" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+
+        <association property="operId" column="oper_idx" select="com.donno.nj.dao.UserDao.findUserIdById">
+        </association>
 
     </resultMap>
 
@@ -22,14 +26,15 @@
     </sql>
 
 
-
     <sql id="QueryColumnList">
-        t_write_off_detail.id,t_user.user_id,t_write_off_detail.amount,t_write_off_detail.credit_type,t_write_off_detail.pay_type,t_write_off_detail.note,
+        t_write_off_detail.id,t_user.user_id,t_write_off_detail.amount,t_write_off_detail.credit_type,
+        t_write_off_detail.pay_type,t_write_off_detail.note,
+        t_write_off_detail.oper_idx,
         t_write_off_detail.create_time
     </sql>
 
     <sql id="InsertColumnList">
-        user_idx,amount,credit_type,pay_type,note
+        user_idx,amount,credit_type,pay_type,oper_idx,note
     </sql>
 
     <sql id="getListCondition">
@@ -98,6 +103,7 @@
         (select id from t_user where user_id = #{userId} ),
         #{amount},#{creditType.index},
         #{payType.index},
+        (select id from t_user where user_id = #{operId} ),
         #{note})
     </insert>
 

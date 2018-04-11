@@ -21,7 +21,7 @@ public interface OrderService
 
     void update(Order srcOrder, Order newOrder);
 
-    void ticketPay(Order order,List<Ticket> tickets);
+    void ticketPay(Order order,String coupuns,String tickets);
 
     void update(String taskId,Map<String, Object> variables,Integer id, Order newOrder);//订单任务更新
 

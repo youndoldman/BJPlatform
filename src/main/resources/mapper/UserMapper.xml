@@ -27,6 +27,14 @@
         and t_user.group_idx = t_group.id
     </select>
 
+    <select id="findUserIdById" resultType="java.lang.String">
+        SELECT t_user.user_id
+        FROM t_user
+        WHERE
+        id = #{id}
+    </select>
+
+
 
     <select id="findById" resultMap="BaseResultMap">
         SELECT t_user.*,t_group.id as group_id,t_group.code as group_code,t_group.name as group_name

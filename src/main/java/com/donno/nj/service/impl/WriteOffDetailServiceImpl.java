@@ -5,6 +5,8 @@ import com.donno.nj.dao.*;
 import com.donno.nj.domain.*;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.service.WriteOffDetailService;
+import com.donno.nj.util.AppUtil;
+import com.google.common.base.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -97,7 +99,14 @@ public class WriteOffDetailServiceImpl implements WriteOffDetailService
         /*客户信息校验*/
         checkCustomer(writeOffDetail);
 
+        /*操作员信息*/
+        Optional<User> userOptional =  AppUtil.getCurrentLoginUser();
+        if (!userOptional.isPresent())
+        {
+            throw new ServerSideBusinessException("未读取到操作员信息，请重新登录！", HttpStatus.NOT_ACCEPTABLE);
+        }
 
+        writeOffDetail.setOperId(userOptional.get().getUserId());
 
         /*更改客户当前的欠款数据*/
         CustomerCredit customerCredit = customerCreditDao.findByUserIdCreditType(writeOffDetail.getUserId(),writeOffDetail.getCreditType());

@@ -11,6 +11,7 @@ import com.donno.nj.util.AppUtil;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -311,14 +312,17 @@ public class OrderController
 
     @OperationLog(desc = "气票用户支付")
     @RequestMapping(value = "/api/TicketOrders/{orderSn}", method = RequestMethod.PUT)
-    public ResponseEntity ticketPay(@PathVariable("orderSn") String orderSn, @RequestBody List<Ticket> tickets)
+    public ResponseEntity ticketPay(@PathVariable("orderSn") String orderSn,
+                                    @RequestParam(value = "coupons", defaultValue = "") String coupons,
+                                    @RequestParam(value = "tickets", defaultValue = "") String tickets
+                                    )
     {
         ResponseEntity responseEntity;
 
         Optional<Order> orderOptional = orderService.findBySn(orderSn);
         if (orderOptional.isPresent())
         {
-            orderService.ticketPay(orderOptional.get(),tickets);
+            orderService.ticketPay(orderOptional.get(),coupons,tickets);
             responseEntity = ResponseEntity.ok().build();
         }
         else

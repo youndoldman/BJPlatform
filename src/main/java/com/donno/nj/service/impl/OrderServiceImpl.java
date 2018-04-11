@@ -10,6 +10,7 @@ import com.donno.nj.util.AppUtil;
 import com.donno.nj.util.DistanceHelper;
 import com.donno.nj.activiti.WorkFlowTypes;
 import com.google.common.base.Optional;
+import groovy.lang.Tuple;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,6 +60,9 @@ public class OrderServiceImpl implements OrderService
 
     @Autowired
     private CouponDao couponDao;
+
+    @Autowired
+    private CouponOrderDao couponOrderDao;
 
     @Autowired
     private UserDao userDao;
@@ -257,6 +261,24 @@ public class OrderServiceImpl implements OrderService
 //    }
 
 
+    public void checkCoupun(Order order,Coupon coupon)
+    {
+        /*检查优惠券规格、使用状态、是否过期*/
+        String message;
+        if (coupon.getCouponStatus() == TicketStatus.TSUsed)
+        {
+            throw new ServerSideBusinessException("优惠券已经被使用", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        /*规格*/
+
+        /*期限*/
+        if (coupon.getEndDate().before(new Date()))
+        {
+            throw new ServerSideBusinessException("优惠券已经过期", HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
     public void checkTicket(Order order,Ticket ticket)
     {
         /*检查气票规格、使用状态、是否过期*/
@@ -275,7 +297,6 @@ public class OrderServiceImpl implements OrderService
             message = String.format("气票%s的已经过期",ticket.getTicketSn());
             throw new ServerSideBusinessException(message, HttpStatus.NOT_ACCEPTABLE);
         }
-
     }
 
     public void checkTicket(Order order)
@@ -432,22 +453,22 @@ public class OrderServiceImpl implements OrderService
     {
         if(newOrder.getPayType() != null)
         {
-//            Optional<User> userOptional = AppUtil.getCurrentLoginUser();
-//            if (userOptional.isPresent() || userOptional.get()== null)
-//            {
-//                throw new ServerSideBusinessException("获取当前用户信息失败！", HttpStatus.UNAUTHORIZED);
-//            }
-//
-//            /*支付类型修改，只有当前订单的派送工派送到家时才能修改*/
-//            SysUser sysUser = newOrder.getDispatcher();
-//            if (sysUser == null)
-//            {
-//                throw new ServerSideBusinessException("不允许修改订单支付类型！", HttpStatus.UNAUTHORIZED);
-//            }
-//            if (sysUser.getUserId().compareTo(userOptional.get().getUserId()) != 0)
-//            {
-//                throw new ServerSideBusinessException("不允许修改订单支付类型！", HttpStatus.UNAUTHORIZED);
-//            }
+            Optional<User> userOptional = AppUtil.getCurrentLoginUser();
+            if (userOptional.isPresent() || userOptional.get()== null)
+            {
+                throw new ServerSideBusinessException("获取当前用户信息失败！", HttpStatus.UNAUTHORIZED);
+            }
+
+            /*支付类型修改，只有当前订单的派送工派送到家时才能修改*/
+            SysUser sysUser = newOrder.getDispatcher();
+            if (sysUser == null)
+            {
+                throw new ServerSideBusinessException("不允许修改订单支付类型！", HttpStatus.UNAUTHORIZED);
+            }
+            if (sysUser.getUserId().compareTo(userOptional.get().getUserId()) != 0)
+            {
+                throw new ServerSideBusinessException("不允许修改订单支付类型！", HttpStatus.UNAUTHORIZED);
+            }
 
             checkPayType(newOrder.getPayType(),srcOrder.getCustomer());
         }
@@ -610,13 +631,16 @@ public class OrderServiceImpl implements OrderService
             throw new ServerSideBusinessException("订单不存在！", HttpStatus.NOT_FOUND);
         }
 
+        /*订单已经结束，不能作废*/
+        if (order.getOrderStatus() == OrderStatus.OSSigned.getIndex())
+        {
+            throw new ServerSideBusinessException("订单已签收，不能取消！", HttpStatus.NOT_FOUND);
+        }
+
         order.setOrderStatus( OrderStatus.OSCanceled.getIndex());
 
         /*更新订单状态为作废*/
         orderDao.update(order);
-
-        /*更新订单关联的气票状态为未使用*/
-//        unassociateTicket(order);
 
         /*结束订单流程*/
         if(workFlowService.deleteProcess(orderSn) != 0)
@@ -703,7 +727,7 @@ public class OrderServiceImpl implements OrderService
         orderDao.bindWeixinOrderSn(order.getId(),weixinOrderSn,amount);
     }
 
-    public void ticketPay(Order order,List<Ticket> tickets)
+    public void ticketPay(Order order,String coupuns,String tickets)
     {
         /*校验客户是否气票用户*/
         if (!order.getCustomer().getSettlementType().getCode().equals(ServerConstantValue.SETTLEMENT_TYPE_TICKET) )
@@ -711,44 +735,40 @@ public class OrderServiceImpl implements OrderService
             throw new ServerSideBusinessException("客户不是气票用户！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-//        Map params = new HashMap<String,String>();
-//        List<OrderDetail> orderDetails = order.getOrderDetailList();
-//        for(OrderDetail orderDetail : orderDetails)
-//        {
-//            params.clear();
-//            params.putAll(ImmutableMap.of("customerUserId", order.getCustomer().getUserId()));
-//            params.putAll(ImmutableMap.of("specCode", orderDetail.getGoods().getCode()));
-//            params.putAll(ImmutableMap.of("useStatus", TicketStatus.TSUnUsed.getIndex()));
-//            params.putAll(ImmutableMap.of("expireType", 0));//未过期的
-//            params.putAll(ImmutableMap.of("limit", 1));
-//
-//            /*优惠券*/
-//            List<Coupon> coupons = couponDao.getList(params);
-//            if (coupons.size() == 0)
-//            {
-//                /*气票*/
-//            }
-//            else
-//            {
-//
-//                for (Integer count = 0 ; count < orderDetail.getQuantity(); count++)
-//                {
-//                    consumeCoupon(order.getId(),)
-//                }
-//            }
-//        }
-
-        for (Ticket ticket :tickets)
+        /*优惠券*/
+        String[] couponList = coupuns.split(",");
+        for (String couponId :couponList)
         {
-            if (ticket.getTicketSn() == null || ticket.getTicketSn().trim().length() == 0)
-            {
-                throw new ServerSideBusinessException("缺少气票编号！", HttpStatus.NOT_ACCEPTABLE);
-            }
-
-            Ticket target = ticketDao.findBySn(ticket.getTicketSn());
+            Coupon target = couponDao.findById( Integer.valueOf(couponId).intValue());
             if (target == null)
             {
-                String message = String.format("系统中没有%s该气票",ticket.getTicketSn());
+                throw new ServerSideBusinessException("系统中没有该优惠券", HttpStatus.NOT_ACCEPTABLE);
+            }
+
+            checkCoupun(order,target);//检查优惠券是否满足使用条件
+
+            /*将优惠券状态设置为已使用*/
+            target.setCouponStatus(TicketStatus.TSUsed);
+            target.setUseTime(new Date());
+            couponDao.update(target);
+
+            /*增加优惠券订单关联消费记录*/
+            CouponOrder couponOrder = new CouponOrder();
+            couponOrder.setCouponIdx(target.getId());
+            couponOrder.setOrderSn(order.getOrderSn());
+            couponOrder.setNote("已支付");
+            couponOrderDao.insert(couponOrder);
+        }
+
+
+        /*气票*/
+        String[] ticketList = tickets.split(",");
+        for (String ticketSn :ticketList)
+        {
+            Ticket target = ticketDao.findBySn(ticketSn);
+            if (target == null)
+            {
+                String message = String.format("系统中没有%s该气票",ticketSn);
                 throw new ServerSideBusinessException(message, HttpStatus.NOT_ACCEPTABLE);
             }
 
