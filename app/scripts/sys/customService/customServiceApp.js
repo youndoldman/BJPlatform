@@ -86,6 +86,32 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                     rootService.updateActiveNavL2(NavItem.CustomService.menuItems[4]);
                 }
             })
+            .state('CustomService.Security',{
+                url:'/Security',
+                views: {
+                    "content@CustomService": {
+                        templateUrl: '../pages/customService/securityList.htm',
+                        controller: 'SecurityCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[5]);
+                }
+            })
+            .state('CustomService.Complaint',{
+                url:'/Complaint',
+                views: {
+                    "content@CustomService": {
+                        templateUrl: '../pages/customService/complaintList.htm',
+                        controller: 'ComplaintCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[6]);
+                }
+            })
             .state('CustomService.report1',{
                 url:'/report1',
                 views: {
@@ -96,7 +122,7 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[5]);
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[7]);
                 }
             })
             .state('CustomService.report2',{
@@ -109,7 +135,7 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[6]);
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[8]);
                 }
             })
             .state('CustomService.report3',{
@@ -122,7 +148,7 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                 }
             },
             onEnter: function (rootService, NavItem) {
-                rootService.updateActiveNavL2(NavItem.CustomService.menuItems[7]);
+                rootService.updateActiveNavL2(NavItem.CustomService.menuItems[9]);
             }
         })
             .state('CustomService.report4',{
@@ -135,7 +161,7 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[8]);
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[10]);
                 }
             })
             .state('CustomService.report5',{
@@ -148,7 +174,7 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[9]);
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[11]);
                 }
             })
             .state('CustomService.report6',{
@@ -161,7 +187,7 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[10]);
+                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[12]);
                 }
             })
         ;

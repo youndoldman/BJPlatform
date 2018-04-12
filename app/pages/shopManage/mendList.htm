@@ -9,9 +9,11 @@
 
     <div class="toolbar">
         <form role="form">
-            <div class="row">
+            <div class="">
                 <div class="col-md-11">
                     <div class="col-md-12">
+                        <label class="input">责任部门：</label>
+                        <label class="input"><input type="text"  class="form-control" ng-model="q.department.name" ng-disabled="true"></label>
                         <label class="input">报修状态：</label>
                         <label class="input"><select  ng-model="q.processStatus" ng-options="mendStatus.name for mendStatus in vm.mendStatusList" class="form-control" ng-selected="" ng-change="MendStatusSearchChange()"></select></label>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -69,9 +71,6 @@
             <td class="operate">
                 <button title="详情" ng-click="viewDetails(mend)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="">详情</i>
-                </button>
-                <button title="指派" ng-show="mend.processStatus.index!=2" ng-click="assign(mend)" type="button" class="btn btn-primary btn-outline btn-xs">
-                    <i class="">指派</i>
                 </button>
                 <button title="处理" ng-show="mend.processStatus.index!=2" ng-click="deal(mend)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="">处理</i>

@@ -40,6 +40,32 @@ var shopManageApp = angular.module('ShopManageApp', ['ui.router', 'CommonModule'
                 onEnter: function (rootService, NavItem) {
                     rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[1]);
                 }
+            })
+            .state('ShopManage.Mend',{
+                url:'/Mend',
+                views: {
+                    "content@ShopManage": {
+                        templateUrl: '../pages/shopManage/mendList.htm',
+                        controller: 'MendCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[2]);
+                }
+            })
+            .state('ShopManage.Security',{
+                url:'/Security',
+                views: {
+                    "content@ShopManage": {
+                        templateUrl: '../pages/shopManage/securityList.htm',
+                        controller: 'SecurityCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[3]);
+                }
             });
         $httpProvider.interceptors.push('HttpInterceptor');
     }]).run(['$rootScope', 'rootService', 'NavItem', function ($rootScope, rootService, NavItem) {

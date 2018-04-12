@@ -1,11 +1,11 @@
 'use strict';
 
-customServiceApp.controller('MendCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
+customServiceApp.controller('ComplaintCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
     'rootService', 'pager', 'udcModal', 'MendSecurityComplaintService', 'sessionStorage',function ($scope, $rootScope, $filter, $location, Constants,
-                                                          rootService, pager, udcModal, MendSecurityComplaintService,sessionStorage) {
+                                                                                                        rootService, pager, udcModal, MendSecurityComplaintService,sessionStorage) {
         var gotoPage = function (pageNo) {
             $scope.pager.setCurPageNo(pageNo);
-            searchMend();
+            searchComplaint();
         };
 
         $(function () {
@@ -51,82 +51,82 @@ customServiceApp.controller('MendCtrl', ['$scope', '$rootScope', '$filter', '$lo
 
 
 
-        $scope.pager = pager.init('MendCtrl', gotoPage);
+        $scope.pager = pager.init('ComplaintCtrl', gotoPage);
         var historyQ = $scope.pager.getQ();
 
 
 
         $scope.vm = {
-            mendList: [],
-            mendStatusList:[{index:-1,name:"全部"},{index:"PTSuspending",name:"待处理"},{index:"PTHandling",name:"正在处理"},{index:"PTSolved",name:"已处理"}]
+            complaintList: [],
+            complaintStatusList:[{index:-1,name:"全部"},{index:"PTSuspending",name:"待处理"},{index:"PTHandling",name:"正在处理"},{index:"PTSolved",name:"已处理"}]
         };
         $scope.q = {
             startTime:null,
             endTime:null,
-            mendSn:null,
+            complaintSn:null,
             processStatus:{}
 
         };
 
         $scope.search = function () {
             $scope.pager.setCurPageNo(1);
-            searchMend();
+            searchcomplaint();
         };
 
         $scope.initPopUp = function () {
 
         };
 
-        $scope.viewDetails = function (mend) {
+        $scope.viewDetails = function (complaint) {
             udcModal.show({
-                templateUrl: "./customService/mendDealModal.htm",
-                controller: "MendDealModalCtrl",
+                templateUrl: "./customService/complaintDealModal.htm",
+                controller: "ComplaintDealModalCtrl",
                 inputs: {
-                    title: '报修单详情',
-                    initVal: mend
+                    title: '投诉单详情',
+                    initVal: complaint
                 }
             }).then(function (result) {
             })
         };
-        //指派报修单
-        $scope.assign = function (mend) {
+        //指派投诉单
+        $scope.assign = function (complaint) {
             udcModal.show({
-                templateUrl: "./customService/mendAssignModal.htm",
-                controller: "MendAssignModalCtrl",
+                templateUrl: "./customService/complaintAssignModal.htm",
+                controller: "ComplaintAssignModalCtrl",
                 inputs: {
-                    title: '报修单指派',
-                    initVal: mend
+                    title: '投诉单指派',
+                    initVal: complaint
                 }
             }).then(function (result) {
                 if (result) {
-                    searchMend();
+                    searchComplaint();
                 }
             })
         };
 
-        //处理报修单
-        $scope.deal = function (mend) {
+        //处理投诉单
+        $scope.deal = function (complaint) {
             udcModal.show({
-                templateUrl: "./customService/mendDealModal.htm",
-                controller: "MendDealModalCtrl",
+                templateUrl: "./customService/complaintDealModal.htm",
+                controller: "ComplaintDealModalCtrl",
                 inputs: {
-                    title: '报修单处理',
-                    initVal: mend
+                    title: '投诉单处理',
+                    initVal: complaint
                 }
             }).then(function (result) {
                 if (result) {
-                    searchMend();
+                    searchComplaint();
                 }
             })
         };
 
-        var searchMend = function () {
+        var searchComplaint = function () {
 
 
             var queryParams = {
                 startTime:$scope.q.startTime,
                 endTime:$scope.q.endTime,
-                mendSn:$scope.q.mendSn,
+                complaintSn:$scope.q.complaintSn,
                 processStatus:$scope.q.processStatus.index,
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize,
@@ -136,25 +136,25 @@ customServiceApp.controller('MendCtrl', ['$scope', '$rootScope', '$filter', '$lo
                 queryParams.processStatus = null;
             }
 
-            MendSecurityComplaintService.retrieveMend(queryParams).then(function (mends) {
-                $scope.pager.update($scope.q, mends.total, queryParams.pageNo);
-                $scope.vm.mendList = mends.items;
+            MendSecurityComplaintService.retrieveComplaint(queryParams).then(function (complaints) {
+                $scope.pager.update($scope.q, complaints.total, queryParams.pageNo);
+                $scope.vm.complaintList = complaints.items;
             });
         };
 
         var init = function () {
-            //查询报修单状态初始化为全部
-            $scope.q.processStatus = $scope.vm.mendStatusList[0];
-            searchMend();
+            //查询投诉单状态初始化为全部
+            $scope.q.processStatus = $scope.vm.complaintStatusList[0];
+            searchComplaint();
         };
 
         init();
         //订单状态查询改变
-        $scope.MendStatusSearchChange = function () {
+        $scope.complaintStatusSearchChange = function () {
             if ($scope.q.processStatus==null) {
                 return;
             };
             $scope.pager.setCurPageNo(1);
-            searchMend();
+            searchComplaint();
         };
     }]);

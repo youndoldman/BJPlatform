@@ -1,6 +1,6 @@
 'use strict';
 
-customServiceApp.service('MendSecurityComplaintService', ['$http', 'URI', 'promiseWrapper','MISC', function ($http, URI, promise,MISC) {
+shopManageApp.service('MendSecurityComplaintService', ['$http', 'URI', 'promiseWrapper','MISC', function ($http, URI, promise,MISC) {
 
     var mendUri = URI.resources.mend;
     var mendTypeUri = URI.resources.mendType;

@@ -1,7 +1,7 @@
 <div class="ribbon">
     <a href=""><span class="home fa fa-home"></span></a>
     <ol class="breadcrumb">
-        <li>报修单列表</li>
+        <li>安检单列表</li>
     </ol>
 </div>
 
@@ -9,14 +9,16 @@
 
     <div class="toolbar">
         <form role="form">
-            <div class="row">
+            <div class="">
                 <div class="col-md-11">
                     <div class="col-md-12">
-                        <label class="input">报修状态：</label>
-                        <label class="input"><select  ng-model="q.processStatus" ng-options="mendStatus.name for mendStatus in vm.mendStatusList" class="form-control" ng-selected="" ng-change="MendStatusSearchChange()"></select></label>
+                        <label class="input">责任部门：</label>
+                        <label class="input"><input type="text"  class="form-control" ng-model="q.department.name" ng-disabled="true"></label>
+                        <label class="input">安检状态：</label>
+                        <label class="input"><select  ng-model="q.processStatus" ng-options="securityStatus.name for securityStatus in vm.securityStatusList" class="form-control" ng-selected="" ng-change="SecurityStatusSearchChange()"></select></label>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <label class="input">报修单编号：</label>
-                        <label class="input"><input type="text"  class="form-control" ng-model="q.mendSn"></label>
+                        <label class="input">安检单编号：</label>
+                        <label class="input"><input type="text"  class="form-control" ng-model="q.securitySn"></label>
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <label class="input">时间：</label>
                         <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>
@@ -38,7 +40,7 @@
         <tr>
             <th width="1%"></th>
             <th width="3%">序号</th>
-            <th width="10%">报修单编号</th>
+            <th width="10%">安检单编号</th>
             <th width="8%">报修类型</th>
             <th width="8%">申请客户</th>
             <th width="8%">联系人</th>
@@ -53,27 +55,24 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="mend in vm.mendList">
+        <tr ng-repeat="security in vm.securityList">
             <td></td>
             <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
-            <td class="message">{{mend.mendSn}}</td>
-            <td class="message">{{mend.mendType.name}}</td>
-            <td class="message">{{mend.customer.userId}}</td>
-            <td class="message">{{mend.recvName}}</td>
-            <td class="message">{{mend.recvPhone}}</td>
-            <td class="message">{{mend.reserveTime}}</td>
-            <td class="message">{{mend.processStatus.name}}</td>
-            <td class="message">{{mend.department.name}}</td>
-            <td class="message">{{mend.dealedUser.userId}}</td>
-            <td class="message">{{mend.createTime}}</td>
+            <td class="message">{{security.securitySn}}</td>
+            <td class="message">{{security.securityType.name}}</td>
+            <td class="message">{{security.customer.userId}}</td>
+            <td class="message">{{security.recvName}}</td>
+            <td class="message">{{security.recvPhone}}</td>
+            <td class="message">{{security.reserveTime}}</td>
+            <td class="message">{{security.processStatus.name}}</td>
+            <td class="message">{{security.department.name}}</td>
+            <td class="message">{{security.dealedUser.userId}}</td>
+            <td class="message">{{security.createTime}}</td>
             <td class="operate">
-                <button title="详情" ng-click="viewDetails(mend)" type="button" class="btn btn-primary btn-outline btn-xs">
+                <button title="详情" ng-click="viewDetails(security)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="">详情</i>
                 </button>
-                <button title="指派" ng-show="mend.processStatus.index!=2" ng-click="assign(mend)" type="button" class="btn btn-primary btn-outline btn-xs">
-                    <i class="">指派</i>
-                </button>
-                <button title="处理" ng-show="mend.processStatus.index!=2" ng-click="deal(mend)" type="button" class="btn btn-primary btn-outline btn-xs">
+                <button title="处理" ng-show="security.processStatus.index!=2" ng-click="deal(security)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="">处理</i>
                 </button>
             </td>

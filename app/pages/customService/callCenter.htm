@@ -411,7 +411,8 @@
     <ul class="nav nav-tabs">
       <li class="active"><a href="#/decision/cost#tab1" data-toggle="tab">订气</a></li>
       <li><a href="#/decision/cost#tab2" data-toggle="tab">报修</a></li>
-      <li><a href="#/decision/cost#tab3" data-toggle="tab">投诉</a></li>
+      <li><a href="#/decision/cost#tab3" data-toggle="tab">安检</a></li>
+      <li><a href="#/decision/cost#tab4" data-toggle="tab">投诉</a></li>
     </ul>
     <div class="tab-content" >
       <div class="tab-pane fade in active" id="tab1">
@@ -601,7 +602,104 @@
         </div>
       </div>
       <div class="tab-pane fade" id="tab3">
-        <chart3></chart3>
+        <div class="panel panel-primary" style="min-height: 300px;">
+          <div class="panel-body">
+            <div class="row col-md-7" style="margin-top: 5px">
+              <div class="input-group">
+                <span class="input-group-addon">安检类型</span>
+                <select name="securityType" ng-model="temp.selectedSecurityType" ng-options="securityType.name for securityType in temp.securityTypesList" class="form-control" ng-selected=""></select>
+              </div>
+            </div>
+            <div class="row" >
+              <div class="col-md-7" style="margin-top: 5px;min-height: 200px">
+                <span class="input-group-addon">安检描述</span>
+                <textarea class="form-control" rows="8" ng-model="currentSecurity.detail"></textarea>
+              </div>
+              <div class="col-md-2" style="margin-top: 5px">
+                <div class="input-group">
+                  <span class="input-group-addon">联系人</span>
+                  <input type="text" class="form-control" ng-model="currentSecurity.recvName">
+                </div>
+              </div>
+              <div class="col-md-2" style="margin-top: 5px">
+                <div class="input-group">
+                  <span class="input-group-addon">联系电话</span>
+                  <input type="text" class="form-control" ng-model="currentSecurity.recvPhone">
+                </div>
+              </div>
+              <div class="col-md-4" style="margin-top: 5px">
+                <div class="input-group">
+                  <span class="input-group-addon">安检地址</span>
+                  <input type="text" class="form-control" value={{currentSecurity.recvAddr.province}}{{currentSecurity.recvAddr.city}}{{currentSecurity.recvAddr.country}}{{currentSecurity.recvAddr.detail}}>
+                </div>
+              </div>
+
+              <div class="col-md-4" style="margin-top: 5px">
+                <div class="form-group">
+
+
+                  <div class='input-group date'>
+                    <span class="input-group-addon">预约时间</span>
+                    <input type='text' class="form-control"  id='datetimepickerSecurity' ng-model="currentMend.reserveTime"/>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2 col-md-offset-1" style="margin-top: 5px">
+                <button class="btn btn-primary"  ng-click="createSecurity()">生成安检订单</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="tab4">
+        <div class="panel panel-primary" style="min-height: 300px;">
+          <div class="panel-body">
+            <div class="row col-md-7" style="margin-top: 5px">
+              <div class="input-group">
+                <span class="input-group-addon">投诉类型</span>
+                <select name="complaintType" ng-model="temp.selectedComplaintType" ng-options="complaintType.name for complaintType in temp.complaintTypesList" class="form-control" ng-selected=""></select>
+              </div>
+            </div>
+            <div class="row" >
+              <div class="col-md-7" style="margin-top: 5px;min-height: 200px">
+                <span class="input-group-addon">投诉描述</span>
+                <textarea class="form-control" rows="8" ng-model="currentComplaint.detail"></textarea>
+              </div>
+              <div class="col-md-2" style="margin-top: 5px">
+                <div class="input-group">
+                  <span class="input-group-addon">联系人</span>
+                  <input type="text" class="form-control" ng-model="currentComplaint.recvName">
+                </div>
+              </div>
+              <div class="col-md-2" style="margin-top: 5px">
+                <div class="input-group">
+                  <span class="input-group-addon">联系电话</span>
+                  <input type="text" class="form-control" ng-model="currentComplaint.recvPhone">
+                </div>
+              </div>
+              <div class="col-md-4" style="margin-top: 5px">
+                <div class="input-group">
+                  <span class="input-group-addon">投诉地址</span>
+                  <input type="text" class="form-control" value={{currentComplaint.recvAddr.province}}{{currentComplaint.recvAddr.city}}{{currentComplaint.recvAddr.country}}{{currentComplaint.recvAddr.detail}}>
+                </div>
+              </div>
+
+              <div class="col-md-4" style="margin-top: 5px">
+                <div class="form-group">
+
+
+                  <div class='input-group date'>
+                    <span class="input-group-addon">预约时间</span>
+                    <input type='text' class="form-control"  id='datetimepickerComplaint' ng-model="currentMend.reserveTime"/>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2 col-md-offset-1" style="margin-top: 5px">
+                <button class="btn btn-primary"  ng-click="createComplaint()">生成投诉订单</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

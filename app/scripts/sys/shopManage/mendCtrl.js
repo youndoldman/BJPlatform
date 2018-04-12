@@ -1,6 +1,6 @@
 'use strict';
 
-customServiceApp.controller('MendCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
+shopManageApp.controller('MendCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
     'rootService', 'pager', 'udcModal', 'MendSecurityComplaintService', 'sessionStorage',function ($scope, $rootScope, $filter, $location, Constants,
                                                           rootService, pager, udcModal, MendSecurityComplaintService,sessionStorage) {
         var gotoPage = function (pageNo) {
@@ -57,10 +57,12 @@ customServiceApp.controller('MendCtrl', ['$scope', '$rootScope', '$filter', '$lo
 
 
         $scope.vm = {
+            curUser:null,
             mendList: [],
             mendStatusList:[{index:-1,name:"全部"},{index:"PTSuspending",name:"待处理"},{index:"PTHandling",name:"正在处理"},{index:"PTSolved",name:"已处理"}]
         };
         $scope.q = {
+            department:null,
             startTime:null,
             endTime:null,
             mendSn:null,
@@ -79,7 +81,7 @@ customServiceApp.controller('MendCtrl', ['$scope', '$rootScope', '$filter', '$lo
 
         $scope.viewDetails = function (mend) {
             udcModal.show({
-                templateUrl: "./customService/mendDealModal.htm",
+                templateUrl: "./shopManage/mendDealModal.htm",
                 controller: "MendDealModalCtrl",
                 inputs: {
                     title: '报修单详情',
@@ -88,26 +90,10 @@ customServiceApp.controller('MendCtrl', ['$scope', '$rootScope', '$filter', '$lo
             }).then(function (result) {
             })
         };
-        //指派报修单
-        $scope.assign = function (mend) {
-            udcModal.show({
-                templateUrl: "./customService/mendAssignModal.htm",
-                controller: "MendAssignModalCtrl",
-                inputs: {
-                    title: '报修单指派',
-                    initVal: mend
-                }
-            }).then(function (result) {
-                if (result) {
-                    searchMend();
-                }
-            })
-        };
-
         //处理报修单
         $scope.deal = function (mend) {
             udcModal.show({
-                templateUrl: "./customService/mendDealModal.htm",
+                templateUrl: "./shopManage/mendDealModal.htm",
                 controller: "MendDealModalCtrl",
                 inputs: {
                     title: '报修单处理',
@@ -122,8 +108,8 @@ customServiceApp.controller('MendCtrl', ['$scope', '$rootScope', '$filter', '$lo
 
         var searchMend = function () {
 
-
             var queryParams = {
+                liableDepartmentCode:$scope.q.department.code,
                 startTime:$scope.q.startTime,
                 endTime:$scope.q.endTime,
                 mendSn:$scope.q.mendSn,
@@ -143,6 +129,9 @@ customServiceApp.controller('MendCtrl', ['$scope', '$rootScope', '$filter', '$lo
         };
 
         var init = function () {
+            //初始化当前用户
+            $scope.vm.curUser = sessionStorage.getCurUser();
+            $scope.q.department = $scope.vm.curUser.department;
             //查询报修单状态初始化为全部
             $scope.q.processStatus = $scope.vm.mendStatusList[0];
             searchMend();

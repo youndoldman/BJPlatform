@@ -1,7 +1,7 @@
 <div class="ribbon">
     <a href=""><span class="home fa fa-home"></span></a>
     <ol class="breadcrumb">
-        <li>报修单列表</li>
+        <li>投诉单列表</li>
     </ol>
 </div>
 
@@ -12,11 +12,11 @@
             <div class="row">
                 <div class="col-md-11">
                     <div class="col-md-12">
-                        <label class="input">报修状态：</label>
-                        <label class="input"><select  ng-model="q.processStatus" ng-options="mendStatus.name for mendStatus in vm.mendStatusList" class="form-control" ng-selected="" ng-change="MendStatusSearchChange()"></select></label>
+                        <label class="input">投诉状态：</label>
+                        <label class="input"><select  ng-model="q.processStatus" ng-options="complaintStatus.name for complaintStatus in vm.complaintStatusList" class="form-control" ng-selected="" ng-change="complaintStatusSearchChange()"></select></label>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <label class="input">报修单编号：</label>
-                        <label class="input"><input type="text"  class="form-control" ng-model="q.mendSn"></label>
+                        <label class="input">投诉单编号：</label>
+                        <label class="input"><input type="text"  class="form-control" ng-model="q.complaintSn"></label>
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <label class="input">时间：</label>
                         <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>
@@ -38,8 +38,8 @@
         <tr>
             <th width="1%"></th>
             <th width="3%">序号</th>
-            <th width="10%">报修单编号</th>
-            <th width="8%">报修类型</th>
+            <th width="10%">投诉单编号</th>
+            <th width="8%">投诉类型</th>
             <th width="8%">申请客户</th>
             <th width="8%">联系人</th>
             <th width="8%">联系电话</th>
@@ -53,27 +53,27 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="mend in vm.mendList">
+        <tr ng-repeat="complaint in vm.complaintList">
             <td></td>
             <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
-            <td class="message">{{mend.mendSn}}</td>
-            <td class="message">{{mend.mendType.name}}</td>
-            <td class="message">{{mend.customer.userId}}</td>
-            <td class="message">{{mend.recvName}}</td>
-            <td class="message">{{mend.recvPhone}}</td>
-            <td class="message">{{mend.reserveTime}}</td>
-            <td class="message">{{mend.processStatus.name}}</td>
-            <td class="message">{{mend.department.name}}</td>
-            <td class="message">{{mend.dealedUser.userId}}</td>
-            <td class="message">{{mend.createTime}}</td>
+            <td class="message">{{complaint.complaintSn}}</td>
+            <td class="message">{{complaint.complaintType.name}}</td>
+            <td class="message">{{complaint.customer.userId}}</td>
+            <td class="message">{{complaint.recvName}}</td>
+            <td class="message">{{complaint.recvPhone}}</td>
+            <td class="message">{{complaint.reserveTime}}</td>
+            <td class="message">{{complaint.processStatus.name}}</td>
+            <td class="message">{{complaint.department.name}}</td>
+            <td class="message">{{complaint.dealedUser.userId}}</td>
+            <td class="message">{{complaint.createTime}}</td>
             <td class="operate">
-                <button title="详情" ng-click="viewDetails(mend)" type="button" class="btn btn-primary btn-outline btn-xs">
+                <button title="详情" ng-click="viewDetails(complaint)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="">详情</i>
                 </button>
-                <button title="指派" ng-show="mend.processStatus.index!=2" ng-click="assign(mend)" type="button" class="btn btn-primary btn-outline btn-xs">
+                <button title="指派" ng-show="complaint.processStatus.index!=2" ng-click="assign(complaint)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="">指派</i>
                 </button>
-                <button title="处理" ng-show="mend.processStatus.index!=2" ng-click="deal(mend)" type="button" class="btn btn-primary btn-outline btn-xs">
+                <button title="处理" ng-show="complaint.processStatus.index!=2" ng-click="deal(complaint)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="">处理</i>
                 </button>
             </td>

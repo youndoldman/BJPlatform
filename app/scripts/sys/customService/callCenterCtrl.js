@@ -33,6 +33,20 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 showTodayButton:true,
                 toolbarPlacement:'top',
             });
+            $('#datetimepickerSecurity').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
+            $('#datetimepickerComplaint').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
         });
 
         $(function () {
@@ -50,6 +64,20 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                     $scope.currentMend.reserveTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
                         +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
                 });
+            $('#datetimepickerSecurity').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.currentSecurity.reserveTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
+            $('#datetimepickerComplaint').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.currentComplaint.reserveTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
         });
         $scope.temp = {
             selectedGoodsType:{},
@@ -58,7 +86,11 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             goodsTypesList:[],
             goodsList:[],
             mendTypesList:[],//报修类型
-            selectedMendType:{}//当前选择的报修类型
+            selectedMendType:{},//当前选择的报修类型
+            securityTypesList:[],//安检类型
+            selectedSecurityType:{},//当前选择的安检类型
+            complaintTypesList:[],//投诉类型
+            selectedComplaintType:{}//当前选择的投诉类型
         };
 
         $scope.searchParam = {
@@ -99,6 +131,26 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             recvPhone:null,//联系电话
             recvAddr:{},//报修地址
             detail:null,//报修内容
+            reserveTime:null,//预约时间
+        };
+        //当前安检信息
+        $scope.currentSecurity= {
+            securityType:{},//安检类型
+            customer:{},//安检用户
+            recvName:null,//联系人
+            recvPhone:null,//联系电话
+            recvAddr:{},//安检地址
+            detail:null,//安检内容
+            reserveTime:null,//预约时间
+        };
+        //当前投诉信息
+        $scope.currentComplaint= {
+            complaintType:{},//投诉类型
+            customer:{},//投诉用户
+            recvName:null,//联系人
+            recvPhone:null,//联系电话
+            recvAddr:{},//投诉地址
+            detail:null,//投诉内容
             reserveTime:null,//预约时间
         };
 
@@ -297,6 +349,10 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             refleshOrder();
             //刷新报修订单信息
             refleshMend();
+            //刷新安检订单信息
+            refleshSecurity();
+            //刷新投诉订单信息
+            refleshComplaint();
         };
 
         //商品类型改变
@@ -344,7 +400,18 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             MendSecurityComplaintService.retrieveMendTypes(queryParams).then(function (mendTypes) {
                 $scope.temp.mendTypesList = mendTypes.items;
                 $scope.temp.selectedMendType = $scope.temp.mendTypesList[0];
-                $scope.goodsTypeChange();
+            });
+            //查询安检类型
+            queryParams = {};
+            MendSecurityComplaintService.retrieveSecurityTypes(queryParams).then(function (securityTypes) {
+                $scope.temp.securityTypesList = securityTypes.items;
+                $scope.temp.selectedSecurityType = $scope.temp.securityTypesList[0];
+            });
+            //查询投诉类型
+            queryParams = {};
+            MendSecurityComplaintService.retrieveComplaintTypes(queryParams).then(function (complaintTypes) {
+                $scope.temp.complaintTypesList = complaintTypes.items;
+                $scope.temp.selectedComplaintType = $scope.temp.complaintTypesList[0];
             });
             //不间断供气测试
             searchCustomerTest();
@@ -377,6 +444,64 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 udcModal.info({"title": "处理结果", "message": "创建报修单成功 "});
             }, function(value) {
                 udcModal.info({"title": "处理结果", "message": "创建报修单失败 "+value.message});
+            })
+        };
+
+        //刷新安检订单的数据
+        var refleshSecurity = function() {
+            if($scope.vm.currentCustomer == null){
+                udcModal.info({"title": "错误信息", "message": "请选择客户 "});
+                return;
+            }
+            //填写默认的联系人、联系电话、送气地址
+            $scope.currentSecurity.recvAddr = $scope.vm.currentCustomer.address;
+            $scope.currentSecurity.recvName = $scope.vm.currentCustomer.name;
+            $scope.currentSecurity.recvPhone = $scope.vm.currentCustomer.phone;
+        };
+
+
+        //创建安检单
+        $scope.createSecurity = function () {
+            //设置客户
+            var tempCustomer = {userId:""};
+            tempCustomer.userId = $scope.vm.currentCustomer.userId;
+            $scope.currentSecurity.customer = tempCustomer;
+            $scope.currentSecurity.securityType =  $scope.temp.selectedSecurityType;
+
+            //将订单数据提交到后台
+            MendSecurityComplaintService.createSecurity($scope.currentSecurity).then(function () {
+                udcModal.info({"title": "处理结果", "message": "创建安检单成功 "});
+            }, function(value) {
+                udcModal.info({"title": "处理结果", "message": "创建安检单失败 "+value.message});
+            })
+        };
+
+        //刷新投诉订单的数据
+        var refleshComplaint = function() {
+            if($scope.vm.currentCustomer == null){
+                udcModal.info({"title": "错误信息", "message": "请选择客户 "});
+                return;
+            }
+            //填写默认的联系人、联系电话、送气地址
+            $scope.currentComplaint.recvAddr = $scope.vm.currentCustomer.address;
+            $scope.currentComplaint.recvName = $scope.vm.currentCustomer.name;
+            $scope.currentComplaint.recvPhone = $scope.vm.currentCustomer.phone;
+        };
+
+
+        //创建投诉单
+        $scope.createComplaint = function () {
+            //设置客户
+            var tempCustomer = {userId:""};
+            tempCustomer.userId = $scope.vm.currentCustomer.userId;
+            $scope.currentComplaint.customer = tempCustomer;
+            $scope.currentComplaint.complaintType =  $scope.temp.selectedComplaintType;
+
+            //将订单数据提交到后台
+            MendSecurityComplaintService.createComplaint($scope.currentComplaint).then(function () {
+                udcModal.info({"title": "处理结果", "message": "创建投诉单成功 "});
+            }, function(value) {
+                udcModal.info({"title": "处理结果", "message": "创建投诉单失败 "+value.message});
             })
         };
     }]);
