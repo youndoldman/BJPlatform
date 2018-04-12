@@ -119,6 +119,9 @@ public class MendServiceImpl implements MendService
         Date curDate = new Date();
         String dateFmt =  new SimpleDateFormat("yyyyMMddHHmmssSSS").format(curDate);
         mend.setMendSn(dateFmt);
+
+        //设置默认的订单状态
+        mend.setProcessStatus(EProcessStatus.PTSuspending);
         mendDao.insert(mend);
 
     }

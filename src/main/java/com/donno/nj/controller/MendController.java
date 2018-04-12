@@ -78,7 +78,7 @@ public class MendController
         }
         if (endTime.trim().length() > 0)
         {
-            params.putAll(ImmutableMap.of("endTime", liableDepartmentCode));
+            params.putAll(ImmutableMap.of("endTime", endTime));
         }
 
         params.putAll(paginationParams(pageNo, pageSize, orderBy));

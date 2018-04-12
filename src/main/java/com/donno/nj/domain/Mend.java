@@ -76,7 +76,7 @@ public class Mend implements Serializable
     }
 
 
-    public EProcessStatus getStatus()
+    public EProcessStatus getProcessStatus()
     {
         return eProcessStatus;
     }
@@ -150,7 +150,7 @@ public class Mend implements Serializable
 
 
 
-    public void setStatus(EProcessStatus eProcessStatus)
+    public void setProcessStatus(EProcessStatus eProcessStatus)
     {
         this.eProcessStatus = eProcessStatus;
     }
@@ -197,7 +197,6 @@ public class Mend implements Serializable
                 .add("createTime", createTime)
                 .add("updateTime", updateTime)
                 .add("resloveInfo", resloveInfo)
-
                 .toString();
     }
 }

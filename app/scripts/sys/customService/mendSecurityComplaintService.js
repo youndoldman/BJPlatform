@@ -4,6 +4,7 @@ customServiceApp.service('MendSecurityComplaintService', ['$http', 'URI', 'promi
 
     var mendUri = URI.resources.mend;
     var mendTypeUri = URI.resources.mendType;
+    var departmentUri = URI.resources.department;
 
 
 
@@ -27,6 +28,15 @@ customServiceApp.service('MendSecurityComplaintService', ['$http', 'URI', 'promi
         return promise.wrap($http.put(mendUri + "/" + mend.mendSn, mend));
     };
 
+    //查询部门信息(下级递归)
+    this.retrieveDepartmentLower = function (code) {
+        return promise.wrap($http.get(departmentUri + "/Lower"+"?code=" +code));
+    };
+
+    //查询部门信息(上级递归)
+    this.retrieveDepartmentUpper = function (code) {
+        return promise.wrap($http.get(departmentUri + "/Upper"+"?code=" +code));
+    };
 
 
 }]);
