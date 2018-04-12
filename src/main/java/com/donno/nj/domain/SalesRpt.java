@@ -12,8 +12,10 @@ import java.util.Date;
 
 public class SalesRpt implements Serializable
 {
-    private Department department;
-    private Goods goods;
+    private String departmentCode;
+    private String departmentName;
+    private String specCode;
+    private String specName;
     private Integer count;  //数量
     private Double  sum;    //金额
 
@@ -21,15 +23,20 @@ public class SalesRpt implements Serializable
     {
     }
 
-
-    public Department getDepartment()
-    {
-        return department;
+    public String getDepartmentCode() {
+        return departmentCode;
     }
 
-    public Goods getGoods()
-    {
-        return goods;
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public String getSpecCode() {
+        return specCode;
+    }
+
+    public String getSpecName() {
+        return specName;
     }
 
     public Integer getCount()
@@ -42,14 +49,22 @@ public class SalesRpt implements Serializable
         return  sum;
     }
 
-    public void setDepartment(Department department)
-    {
-        this.department = department;
+    public void setDepartmentCode(String departmentCode) {
+        this.departmentCode = departmentCode;
     }
-    public void setGoods(Goods goods)
-    {
-        this.goods = goods;
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
+
+    public void setSpecCode(String specCode) {
+        this.specCode = specCode;
+    }
+
+    public void setSpecName(String specName) {
+        this.specName = specName;
+    }
+
     public void setCount(Integer count)
     {
         this.count = count;

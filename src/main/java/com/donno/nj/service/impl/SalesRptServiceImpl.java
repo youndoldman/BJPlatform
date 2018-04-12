@@ -1,5 +1,7 @@
 package com.donno.nj.service.impl;
 
+import com.donno.nj.dao.SalesByCstTypeRptDao;
+import com.donno.nj.dao.SalesByPayTypeRptDao;
 import com.donno.nj.dao.SalesRptDao;
 import com.donno.nj.domain.SalesRpt;
 
@@ -15,16 +17,29 @@ import java.util.Map;
 public class SalesRptServiceImpl implements SalesRptService
 {
     @Autowired
-    private SalesRptDao salesRptDao;
+    private SalesByPayTypeRptDao salesByPayTypeRptDao;
+
+    @Autowired
+    private SalesByCstTypeRptDao salesByCstTypeRptDao;
 
     @Override
-    public List<SalesRpt> retrieveDailyRpt(Map params) {
-        return salesRptDao.getDailyRpt(params);
+    public List<SalesRpt> retrieveSaleRptByPayType(Map params) {
+        return salesByPayTypeRptDao.getSaleRptByPayType(params);
     }
 
     @Override
-    public Integer countDailyRpt(Map params) {
-        return salesRptDao.countDailyRpt(params);
+    public Integer countSaleRptByPayType(Map params) {
+        return salesByPayTypeRptDao.countSaleRptByPayType(params);
     }
 
+
+    @Override
+    public List<SalesRpt> retrieveSaleRptByCstType(Map params) {
+        return salesByCstTypeRptDao.getSaleRptByCstType(params);
+    }
+
+    @Override
+    public Integer countSaleRptByCstType(Map params) {
+        return salesByCstTypeRptDao.countSaleRptByCstType(params);
+    }
 }

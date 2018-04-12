@@ -9,7 +9,11 @@ import java.util.Map;
 @Transactional
 public interface SalesRptService
 {
-    List<SalesRpt> retrieveDailyRpt(Map params);
+    List<SalesRpt> retrieveSaleRptByPayType(Map params);
 
-    Integer countDailyRpt(Map params);
+    Integer countSaleRptByPayType(Map params);
+
+    List<SalesRpt> retrieveSaleRptByCstType(Map params) ;
+
+    Integer countSaleRptByCstType(Map params);
 }
