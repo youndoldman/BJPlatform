@@ -50,7 +50,7 @@ commonModule.constant('URI', {
         'ticket': '../../../api/Ticket',//气票信息增加
 
         'mendType': '../../../api/MendTypes',//报修类型接口
-        'mend': '../../../api/Ticket',//报修单接口
+        'mend': '../../../api/Mend',//报修单接口
 
         'subdistrict':'https://restapi.amap.com/v3/config/district',//高德地图行政区域接口
         'geocode':'https://restapi.amap.com/v3/geocode/geo',//高德地图逆地址解码接口
@@ -191,36 +191,42 @@ commonModule.constant('NavItem', {
             icon: "fa-plane"
         }, {
             index: 4,
+            name: "报修处理",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/Mend",
+            icon: "fa-plane"
+        }, {
+            index: 5,
             name: "坐席报表1",
             target: "_blank",
             href: "./customService.htm#/CustomService/report1",
             icon: "fa-table"
         }, {
-            index: 5,
+            index: 6,
             name: "坐席报表2",
             target: "_blank",
             href: "./customService.htm#/CustomService/report2",
             icon: "fa-table"
         }, {
-            index: 6,
+            index: 7,
             name: "工作组报表3",
             target: "_blank",
             href: "./customService.htm#/CustomService/report3",
             icon: "fa-table"
         }, {
-            index: 7,
+            index: 8,
             name: "工作组报表4",
             target: "_blank",
             href: "./customService.htm#/CustomService/report4",
             icon: "fa-table"
         }, {
-            index: 8,
+            index: 9,
             name: "工作组报表5",
             target: "_blank",
             href: "./customService.htm#/CustomService/report5",
             icon: "fa-table"
         }, {
-            index: 9,
+            index: 10,
             name: "工作组报表6",
             target: "_blank",
             href: "./customService.htm#/CustomService/report6",
@@ -311,25 +317,25 @@ commonModule.constant('NavItem', {
                 href: "./financeCenter.htm#/finance/LPGSalesCash",
                 icon: "fa-table"
             }
-        //    {
-        //    index: 0,
-        //    name: "总账报表",
-        //    href: "./financeCenter.htm#/finance/ledger",
-        //    icon: "fa-group"
-        //}, {
-        //    index: 1,
-        //    name: "凭证记录",
-        //    target: "_blank",
-        //    href: "./financeCenter.htm#/finance/voucher",
-        //    icon: "fa-gears"
-        //},
-        //    {
-        //        index: 2,
-        //        name: "工资报表",
-        //        target: "_blank",
-        //        href: "./financeCenter.htm#/finance/wages",
-        //        icon: "fa-plane"
-        //    }
+            //    {
+            //    index: 0,
+            //    name: "总账报表",
+            //    href: "./financeCenter.htm#/finance/ledger",
+            //    icon: "fa-group"
+            //}, {
+            //    index: 1,
+            //    name: "凭证记录",
+            //    target: "_blank",
+            //    href: "./financeCenter.htm#/finance/voucher",
+            //    icon: "fa-gears"
+            //},
+            //    {
+            //        index: 2,
+            //        name: "工资报表",
+            //        target: "_blank",
+            //        href: "./financeCenter.htm#/finance/wages",
+            //        icon: "fa-plane"
+            //    }
         ]
     },
     'DecisionCenter': {
