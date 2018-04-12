@@ -36,11 +36,11 @@
             <!--and ( DATE_FORMAT(#{endDate},'%Y-%m-%d')  >= DATE_FORMAT(t_order.pay_time,'%Y-%m-%d')    )-->
         <!--</if>-->
 
-        <if test="startDate != null">
-        and ( t_order.pay_time >= #{startDate}  )
+        <if test="startTime != null">
+        and ( t_order.pay_time >= #{startTime}  )
         </if>
-        <if test="endDate != null">
-        and ( #{endDate}  >= t_order.pay_time )
+        <if test="endTime != null">
+        and ( #{endTime}  >= t_order.pay_time )
         </if>
 
         <if test="cstTypeCode != null">

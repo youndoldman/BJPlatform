@@ -42,8 +42,8 @@ public class SaleRptController
     @RequestMapping(value = "/api/Report/Sales/ByPayType", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取门店销售报表（按支付方式）")
     public ResponseEntity retrieveByPayType(@RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
-                                                @RequestParam(value = "startDate", defaultValue = "") String startDate,
-                                                @RequestParam(value = "endDate", defaultValue = "") String endDate,
+                                                @RequestParam(value = "startTime", defaultValue = "") String startTime,
+                                                @RequestParam(value = "endTime", defaultValue = "") String endTime,
                                                 @RequestParam(value = "payStatus", required = false) Integer payStatus,
                                                 @RequestParam(value = "payType", required = true) Integer payType,
                                                 @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
@@ -58,14 +58,14 @@ public class SaleRptController
         }
 
 
-        if (startDate.trim().length() > 0)
+        if (startTime.trim().length() > 0)
         {
-            params.putAll(ImmutableMap.of("startDate", startDate));
+            params.putAll(ImmutableMap.of("startTime", startTime));
         }
 
-        if (endDate.trim().length() > 0)
+        if (endTime.trim().length() > 0)
         {
-            params.putAll(ImmutableMap.of("endDate", endDate));
+            params.putAll(ImmutableMap.of("endTime", endTime));
         }
 
         if (payStatus != null)
@@ -103,8 +103,8 @@ public class SaleRptController
     @RequestMapping(value = "/api/Report/Sales/ByCustomerType", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取门店销售报表(按用户类型)")
     public ResponseEntity retrieveByCstType(@RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
-                                            @RequestParam(value = "startDate", defaultValue = "") String startDate,
-                                            @RequestParam(value = "endDate", defaultValue = "") String endDate,
+                                            @RequestParam(value = "startTime", defaultValue = "") String startTime,
+                                            @RequestParam(value = "endTime", defaultValue = "") String endTime,
                                             @RequestParam(value = "cstTypeCode", defaultValue = "") String cstTypeCode,
                                             @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                             @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
@@ -118,14 +118,14 @@ public class SaleRptController
         }
 
 
-        if (startDate.trim().length() > 0)
+        if (startTime.trim().length() > 0)
         {
-            params.putAll(ImmutableMap.of("startDate", startDate));
+            params.putAll(ImmutableMap.of("startTime", startTime));
         }
 
-        if (endDate.trim().length() > 0)
+        if (endTime.trim().length() > 0)
         {
-            params.putAll(ImmutableMap.of("endDate", endDate));
+            params.putAll(ImmutableMap.of("endTime", endTime));
         }
 
         if (cstTypeCode.trim().length() > 0)
