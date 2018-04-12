@@ -735,6 +735,8 @@ public class OrderServiceImpl implements OrderService
             throw new ServerSideBusinessException("客户不是气票用户！", HttpStatus.NOT_ACCEPTABLE);
         }
 
+        String message = "";
+
         /*优惠券*/
         String[] couponList = coupuns.split(",");
         for (String couponId :couponList)
@@ -758,6 +760,10 @@ public class OrderServiceImpl implements OrderService
             couponOrder.setOrderSn(order.getOrderSn());
             couponOrder.setNote("已支付");
             couponOrderDao.insert(couponOrder);
+
+            String couponInfo = String.format("规格：%s",target.getSpecName());
+            message = String.format("%s;",couponInfo);
+
         }
 
 
@@ -768,7 +774,7 @@ public class OrderServiceImpl implements OrderService
             Ticket target = ticketDao.findBySn(ticketSn);
             if (target == null)
             {
-                String message = String.format("系统中没有%s该气票",ticketSn);
+                String ticketInfo = String.format("系统中没有%s该气票",ticketSn);
                 throw new ServerSideBusinessException(message, HttpStatus.NOT_ACCEPTABLE);
             }
 
@@ -791,6 +797,13 @@ public class OrderServiceImpl implements OrderService
         order.setPayStatus(PayStatus.PSPaied);
         order.setOrderStatus(OrderStatus.OSSigned.getIndex());
         order.setPayTime(new Date());
+        if (message.trim().length() >0 )
+        {
+            message = String.format("使用优惠券：%s",message);
+            order.setNote(message);
+        }
+
+
         orderDao.update(order);
     }
 }

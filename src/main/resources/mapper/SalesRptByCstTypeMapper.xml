@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.SalesByCstTypeRptDao">
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.SalesRpt">
+        <result column="department_code" property="departmentCode" jdbcType="VARCHAR"/>
+        <result column="department_name" property="departmentName" jdbcType="VARCHAR"/>
+        <result column="spec_code" property="specCode" jdbcType="VARCHAR"/>
+        <result column="spec_name" property="specName" jdbcType="VARCHAR"/>
+        <result column="count" property="count" jdbcType="INTEGER"/>
+        <result column="sum" property="sum" jdbcType="DOUBLE"/>
+    </resultMap>
+
+    <sql id="qrySaleRptByCstType">
+        select t_department.id as department_id, t_department.name as department_name, t_department.code as department_code,
+        t_goods.id as spec_id,t_goods.name as spec_name,t_goods.code as spec_code,
+        sum(t_order_detail.subtotal) as sum ,sum(t_order_detail.quantity) as count
+        from t_order_detail,t_order ,t_order_dispatcher,t_sysuser,t_department,t_customer,t_customer_type,t_goods
+        where
+        t_order_detail.order_idx = t_order.id
+        and   t_order_detail.goods_idx = t_goods.id
+        and   t_order.id = t_order_dispatcher.order_idx
+        and   t_order_dispatcher.dispatcher_idx = t_sysuser.user_idx
+        and   t_sysuser.department_idx = t_department.id
+        and   t_order.customer_idx	= t_customer.user_idx
+        and   t_customer.cst_type = t_customer_type.id
+
+        <if test="departmentCode != null">
+            and (t_department.code = #{departmentCode})
+        </if>
+
+        <!--<if test="startDate != null">-->
+            <!--and ( DATE_FORMAT(t_order.pay_time,'%Y-%m-%d') >= DATE_FORMAT(#{startDate},'%Y-%m-%d')  )-->
+        <!--</if>-->
+        <!--<if test="endDate != null">-->
+            <!--and ( DATE_FORMAT(#{endDate},'%Y-%m-%d')  >= DATE_FORMAT(t_order.pay_time,'%Y-%m-%d')    )-->
+        <!--</if>-->
+
+        <if test="startDate != null">
+        and ( t_order.pay_time >= #{startDate}  )
+        </if>
+        <if test="endDate != null">
+        and ( #{endDate}  >= t_order.pay_time )
+        </if>
+
+        <if test="cstTypeCode != null">
+            and t_customer_type.code = #{cstTypeCode}
+        </if>
+
+        group by t_department.id,t_goods.id
+    </sql>
+
+
+
+    <!--销售报表查询，按客户类型查询-->
+    <select id="getSaleRptByCstType" resultMap="DetailResultMap">
+        <include refid="qrySaleRptByCstType"/>
+
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+    <select id="countSaleRptByCstType" resultType="Integer">
+      SELECT COUNT(*)
+        from
+        (
+        <include refid="qrySaleRptByCstType"/>
+        )
+        as b
+    </select>
+
+
+
+
+
+</mapper>
