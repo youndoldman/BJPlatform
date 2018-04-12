@@ -5,8 +5,8 @@
 'use strict';
 
 financeApp.controller('LPGSalesBalanceCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
-    'rootService', 'pager', 'udcModal', 'KtyService', 'sessionStorage',function ($scope, $rootScope, $filter, $location, Constants,
-                                                                                 rootService, pager, udcModal, KtyService,sessionStorage) {
+    'rootService', 'pager', 'udcModal', 'sessionStorage',function ($scope, $rootScope, $filter, $location, Constants,
+                                                                                 rootService, pager, udcModal,sessionStorage) {
         $(function () {
             $('#datetimepickerStart').datetimepicker({
                 format: 'YYYY-MM-DD HH:mm:ss',

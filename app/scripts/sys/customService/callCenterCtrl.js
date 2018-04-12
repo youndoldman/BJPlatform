@@ -212,7 +212,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 templateUrl: "./customService/customerModal.htm",
                 controller: "CustomerModalCtrl",
                 inputs: {
-                    titl e: '修改客户',
+                    title: '修改客户',
                     initVal: customer
                 }
             }).then(function (result) {
