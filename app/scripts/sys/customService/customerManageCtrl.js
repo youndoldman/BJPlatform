@@ -69,6 +69,23 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
                     }
                 })
         };
+
+        //增加优惠券
+        $scope.addCoupon = function(customer){
+            udcModal.show({
+                templateUrl: "./customService/addCouponModal.html",
+                controller: "AddCouponModalCtrl",
+                inputs: {
+                    title: '增加优惠券',
+                    initVal: customer
+                }
+            }).then(function (result) {
+                if (result) {
+                    searchCustomer();
+                }
+            })
+        }
+
 //增加气票
         $scope.add = function (customer) {
             udcModal.show({
@@ -101,6 +118,22 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
             })
         };
 
+        //删除优惠券
+        $scope.deleteCoupon = function(customer)
+        {
+            udcModal.show({
+                templateUrl: "./customService/deleteCouponModal.html",
+                controller: "DeleteCouponModalCtrl",
+                inputs: {
+                    title: '删除优惠券',
+                    initVal: customer
+                }
+            }).then(function (result) {
+                if (result) {
+                    searchCustomer();
+                }
+            })
+        }
         var searchCustomer = function () {
             var queryParams = {
                 name: $scope.q.CustomerName,

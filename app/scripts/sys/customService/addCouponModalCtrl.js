@@ -1,9 +1,12 @@
 /**
+ * Created by Administrator on 2018/4/11.
+ */
+/**
  * Created by Administrator on 2018/4/9.
  */
 'use strict';
 
-customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'CustomerManageService', 'title', 'initVal','udcModal','sessionStorage','$timeout',function ($scope, close, CustomerManageService, title, initVal, udcModal,sessionStorage,$timeout) {
+customServiceApp.controller('AddCouponModalCtrl', ['$scope', 'close', 'CustomerManageService', 'title', 'initVal','udcModal','sessionStorage','$timeout',function ($scope, close, CustomerManageService, title, initVal, udcModal,sessionStorage,$timeout) {
     $scope.modalTitle = title;
 
     $scope.currentUser = {};
@@ -46,7 +49,7 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
         customer:{userId:null},
         operator:{userId:null},
         specCode:null,
-        ticketStatus:null,
+        couponStatus:null,
         startDate:null,
         endDate:null,
         note:null
@@ -87,26 +90,19 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
         close(result, 500);
     };
 
-    $scope.submit = function (ticketInfo) {
-        console.info(ticketInfo);
-
-        if (title == "增加气票") {
-            CustomerManageService.addTicketInfo(ticketInfo).then(function () {
-                udcModal.info({"title": "处理结果", "message": "新增气票信息成功 "});
-                $scope.close(true);
-            }, function(value) {
-                // failure
-                udcModal.info({"title": "处理结果", "message": "新增气票失败 "+value.message});
-            })
-        }
-        //else if (customer.name != "" && title == "修改客户") {
-        //    CustomerManageService.modifyCustomer(customer).then(function () {
-        //        udcModal.info({"title": "处理结果", "message": "修改客户信息成功 "});
-        //        $scope.close(true);
-        //    }, function(value) {
-        //        udcModal.info({"title": "处理结果", "message": "修改客户失败 "+value.message});
-        //    })
-        //}
+    $scope.submit = function (couponInfo) {
+        if (title == "增加优惠券") {
+            for(var i = 0; i< $scope.vm.quantity; i++)
+            {
+                console.info(couponInfo);
+                CustomerManageService.addCoupon(couponInfo).then(function () {
+                    udcModal.info({"title": "处理结果", "message": "新增优惠券成功 "});
+                    $scope.close(true);
+                }, function(value) {
+                    udcModal.info({"title": "处理结果", "message": "新增优惠券失败 "+value.message});
+                })
+            }
+            }
     };
 
     $scope.provincesChange = function () {
@@ -258,12 +254,16 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
     $scope.ticketStatusChange = function(){
         if($scope.state=="待使用")
         {
-            $scope.q.ticketStatus = 0;
+            $scope.q.couponStatus = 0;
         }
         else if($scope.state=="已使用")
         {
-            $scope.q.ticketStatus = 1;
+            $scope.q.couponStatus = 1;
         }
+    }
+
+    $scope.quantityInput = function(){
+        console.info($scope.vm.quantity);
     }
     init();
 }]);

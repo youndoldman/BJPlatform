@@ -19,7 +19,7 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     var goodsUri = URI.resources.goods;
 
     var ticketUri = URI.resources.ticket;
-
+    var couponUri = URI.resources.coupon;
 
     this.retrieveGoods = function (params) {
         return promise.wrap($http.get(goodsUri, {params: params}));
@@ -163,5 +163,20 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     this.deleteTicket = function (ticketDetail) {
         return promise.wrap($http.delete(ticketUri + "/" + ticketDetail.ticketSn));
     };
+
+    //增加优惠券
+    this.addCoupon = function(couponInfo){
+        return promise.wrap($http.post(couponUri, couponInfo));
+    };
+
+    //查询优惠券
+    this.searchCoupon = function(params){
+        return promise.wrap($http.get(couponUri, {params: params}));
+    }
+
+    //删除优惠券
+    this.deleteCoupon = function (couponDetail) {
+        return promise.wrap($http.delete(couponUri + "/" + couponDetail.id));
+    }
 }]);
 

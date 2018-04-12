@@ -54,13 +54,21 @@
     <script src="../scripts/echarts/echarts.min.js"></script>
     <script src="../scripts/echarts/china.js"></script>
     <script src="../scripts/echarts/echarts-gl.min.js"></script>
+    <style>
+    @media print {
+        .noprint { display: none }
+        table,th,td{
+        border: 1px solid #C7C7C7;
+        }
+    }
+    </style>
+</head>
 <body>
 
-<div nj-header></div>
-
+<div class="noprint" nj-header ></div>
 <div class="container main">
     <div class="row">
-        <div class="col-xs-12 col-sm-2 col-md-1 col-lg-1" nj-menu></div>
+        <div class="col-xs-12 col-sm-2 col-md-1 col-lg-1 noprint"  nj-menu></div>
         <div class="col-xs-12 col-sm-10 col-md-11 col-lg-11 ">
             <div ui-view></div>
         </div>
@@ -68,3 +76,4 @@
 </div>
 </body>
 </html>
+
