@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.SaleContactsRptCreditDao">
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.SaleContactsRpt">
+        <result column="department_code" property="departmentCode" jdbcType="VARCHAR"/>
+        <result column="department_name" property="departmentName" jdbcType="VARCHAR"/>
+        <result column="sum" property="sum" jdbcType="FLOAT"/>
+    </resultMap>
+
+    <sql id="qrySaleContactsRpt">
+        select t_department.id as department_id, t_department.name as department_name, t_department.code as department_code,
+        sum(t_customer_credit_detail.amount) as sum
+        from t_order ,t_order_dispatcher,t_sysuser,t_department,t_customer_credit_detail
+        where
+              t_order.id = t_order_dispatcher.order_idx
+        and   t_order_dispatcher.dispatcher_idx = t_sysuser.user_idx
+        and   t_sysuser.department_idx = t_department.id
+        and   t_customer_credit_detail.order_idx = t_order.id
+
+        <if test="departmentCode != null">
+            and (t_department.code = #{departmentCode})
+        </if>
+
+        <if test="startTime != null">
+            and ( t_order.pay_time >= #{startTime}  )
+        </if>
+        <if test="endTime != null">
+            and ( #{endTime}  >= t_order.pay_time )
+        </if>
+
+        <if test="creditType != null">
+            and t_customer_credit_detail.credit_type = #{creditType}
+        </if>
+
+        group by t_department.id
+    </sql>
+
+
+
+    <!--销售往来报表查询，欠款统计-->
+    <select id="getList" resultMap="DetailResultMap">
+        <include refid="qrySaleContactsRpt"/>
+
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+    <select id="count" resultType="Integer">
+        SELECT COUNT(*)
+        from
+        (
+        <include refid="qrySaleContactsRpt"/>
+        )
+        as b
+    </select>
+
+
+
+
+</mapper>
