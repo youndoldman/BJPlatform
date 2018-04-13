@@ -69,7 +69,6 @@ public class SaleContactsController
             params.putAll(ImmutableMap.of("creditType", creditType));
         }
 
-
         if (startTime.trim().length() > 0)
         {
             params.putAll(ImmutableMap.of("startTime", startTime));

@@ -6,19 +6,19 @@ import java.io.Serializable;
 import java.util.Date;
 
 /*回款*/
-public class WriteOffDetail implements Serializable
+public class DepositDetail implements Serializable
 {
-    private Integer id;
-    private  String userId;//客户ID
-    private  CreditType creditType;
+    private  Integer id;
+    private  String operId;//操作员ID
+
     private  Float amount ;//金额
 
-    private  PayType payType;
-    private  String operId;//操作员ID
+    protected Date operTime;
 
     protected String  note;
     protected Date createTime;
-    public WriteOffDetail()
+    protected Date updateTime;
+    public DepositDetail()
     {
     }
 
@@ -27,24 +27,16 @@ public class WriteOffDetail implements Serializable
         return id;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
     public String getOperId() {
         return operId;
-    }
-
-    public CreditType getCreditType() {
-        return creditType;
     }
 
     public Float getAmount() {
         return amount;
     }
 
-    public PayType getPayType() {
-        return payType;
+    public Date getOperTime() {
+        return operTime;
     }
 
     public String getNote()
@@ -57,30 +49,25 @@ public class WriteOffDetail implements Serializable
         return createTime;
     }
 
+    public Date getUpdateTime() {
+        return updateTime;
+    }
 
     public void setId(Integer id)
     {
         this.id = id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public void setOperId(String operId) {
         this.operId = operId;
-    }
-
-    public void setCreditType(CreditType creditType) {
-        this.creditType = creditType;
     }
 
     public void setAmount(Float amount) {
         this.amount = amount;
     }
 
-    public void setPayType(PayType payType) {
-        this.payType = payType;
+    public void setOperTime(Date operTime) {
+        this.operTime = operTime;
     }
 
     public void setNote(String note) {
@@ -92,6 +79,9 @@ public class WriteOffDetail implements Serializable
         this.createTime = createTime;
     }
 
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     @Override
     public String toString()
