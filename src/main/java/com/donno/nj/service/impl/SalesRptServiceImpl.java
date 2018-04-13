@@ -2,7 +2,6 @@ package com.donno.nj.service.impl;
 
 import com.donno.nj.dao.SalesByCstTypeRptDao;
 import com.donno.nj.dao.SalesByPayTypeRptDao;
-import com.donno.nj.dao.SalesRptDao;
 import com.donno.nj.domain.SalesRpt;
 
 import com.donno.nj.service.SalesRptService;
