@@ -15,12 +15,6 @@
         <if test="departmentCode != null">
             and (t_department.code = #{departmentCode})
         </if>
-        <!--<if test="startDate != null">-->
-            <!--and ( DATE_FORMAT(#{t_order.pay_time},'%Y-%m-%d') >= DATE_FORMAT(#{startDate},'%Y-%m-%d')  )-->
-        <!--</if>-->
-        <!--<if test="endDate != null">-->
-            <!--and ( DATE_FORMAT(#{endDate},'%Y-%m-%d')  >= DATE_FORMAT(#{t_order.pay_time},'%Y-%m-%d')    )-->
-        <!--</if>-->
 
         <if test="startTime != null">
             and ( t_order.pay_time >= #{startTime}  )

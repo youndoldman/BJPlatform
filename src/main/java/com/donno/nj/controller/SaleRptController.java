@@ -43,7 +43,7 @@ public class SaleRptController
                                                 @RequestParam(value = "startTime", defaultValue = "") String startTime,
                                                 @RequestParam(value = "endTime", defaultValue = "") String endTime,
                                                 @RequestParam(value = "payStatus", required = false) Integer payStatus,
-                                                @RequestParam(value = "payType", required = true) Integer payType,
+                                                @RequestParam(value = "payType", required = false) Integer payType,
                                                 @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                                 @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                                 @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
@@ -71,14 +71,9 @@ public class SaleRptController
             params.putAll(ImmutableMap.of("payStatus", payStatus));
         }
 
-
-        if (payType == null)
-        {
-            throw new ServerSideBusinessException("缺少支付类型", HttpStatus.NOT_ACCEPTABLE);
-        }
         if (payType != null)
         {
-            if (payType >= PayType.PTOnLine.getIndex() && payType <= PayType.PTTicket.getIndex() + 1)
+            if (payType >= PayType.PTOnLine.getIndex() && payType <= PayType.PTCoupon.getIndex() )
             {
                 params.putAll(ImmutableMap.of("payType", payType));
             }
