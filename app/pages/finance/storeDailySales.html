@@ -26,7 +26,6 @@
             border:1px solid #C7C7C7;
         }
     }
-
 </style>
 
 <div class="ribbon border1">
@@ -40,11 +39,28 @@
     <div class="toolbar">
         <form role="form">
             <div class="row">
-                <div class="col-md-10">
-                    <label class="input fontSize pull-left">{{data.currentTime}}</label>
+                <div class="col-md-2">
+                    <label class="input"><input type="text" class="form-control input-md" ng-model="q.liableDepartmentCode" ng-change="search()" placeholder="编报部门"> </label>
+                    <span class="glyphicon glyphicon-calendar" ng-click="initDepartmentSelect()"></span>
                 </div>
-                <div class="col-md-1 pull-right noprint">
-                    <button ng-click="printPage()" class="btn btn-sm btn-primary noprint"><i class="fa fa-print"></i>打印</button>
+                <div class="col-md-4">
+                    <label class="input">今日销售时间：</label>
+                    <label class="input"><input type="text"  id="datetimepickerDailyTimeStart"  class="form-control" ng-model="dailyData.startTime"></label>
+                    <label class="input">至</label>
+                    <label class="input"><input type="text"  id="datetimepickerDailyTimeEnd"  class="form-control" ng-model="dailyData.endTime"></label>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="input">月累计销售时间：</label>
+                    <label class="input"><input type="text"  id="datetimepickerMonthlyTimeStart"  class="form-control" ng-model="monthlyData.startTime"></label>
+                    <label class="input">至</label>
+                    <label class="input"><input type="text"  id="datetimepickerMonthlyTimeEnd"  class="form-control" ng-model="monthlyData.endTime"></label>
+                </div>
+                <div class="col-md-1">
+                    <button ng-click="search()" class="btn btn-sm btn-primary noprint"><i class="fa fa-search"></i>查询 </button>
+                </div>
+                <div class="col-md-1">
+                    <button ng-click="printPage()" class="btn btn-sm btn-primary noprint pull-right"><i class="fa fa-print"></i>打印</button>
                 </div>
             </div>
         </form>
@@ -53,8 +69,8 @@
         <thead>
         <tr>
             <td width="5.6%" colspan="2" class="message tableContentAdjust">编报部门</td>
-            <td width="5.6%" colspan="2" class="message tableContentAdjust">XXX门店</td>
-            <td width="50.4%" colspan="18" class="message tableContentAdjust bkColor1">LPG销售情况</td>
+            <td width="8.4%" colspan="3" class="message tableContentAdjust">{{q.liableDepartmentCode}}</td>
+            <td width="47.6%" colspan="17" class="message tableContentAdjust bkColor1">LPG销售情况</td>
             <td width="16.8%" colspan="6" class="message tableContentAdjust bkColor2">LPG销售往来管理</td>
             <td width="19.6%" colspan="7" class="message tableContentAdjust bkColor3">LPG销售现金管理</td>
         </tr>
@@ -64,7 +80,7 @@
             <td width="2.8%" rowspan="3" class="message tableContentAdjust">上日库存</td>
             <td width="2.8%" rowspan="3" class="message tableContentAdjust">今日调入数量</td>
 
-            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor1">本月累计调入</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust ">本月累计调入</td>
 
             <td width="39.2%" colspan="14" class="message tableContentAdjust bkColor1">今日实际销售</td>
 
@@ -96,10 +112,10 @@
             <td width="5.6%" colspan="2" class="message tableContentAdjust bkColor1">赊销</td>
             <td width="5.6%" colspan="2" class="message tableContentAdjust bkColor1">月结</td>
             <td width="5.6%" colspan="2" class="message tableContentAdjust bkColor1">气票</td>
-            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">优惠券</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">优惠券数量</td>
             <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">数量累计</td>
             <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">金额累计</td>
-            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">今日均价</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">今日均价(元/瓶)</td>
             <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">数量</td>
             <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">金额</td>
         </tr>
@@ -122,23 +138,55 @@
 
 
         </thead>
-        <tbody>
-        <tr  ng-repeat="item in vm.dataList">
-            <!--<td class="message tableContentAdjust">{{item.date}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.agentUserId}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.totalCallData.count}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.totalCallData.hitRate}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.totalCallData.totalOperationInSec}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.totalCallData.avgOperationInSec}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.inBoundData.count}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.inBoundData.hitRate}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.inBoundData.totalOperationInSec}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.inBoundData.avgOperationInSec}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.outBoundData.count}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.outBoundData.hitRate}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.outBoundData.totalOperationInSec}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.outBoundData.avgOperationInSec}}</td>-->
+        <tbody  ng-repeat="firstArray in data.goodsList">
+        <tr  ng-repeat="item in firstArray.detail track by $index">
+            <td width="2.8%" ng-if="$index ==0" rowspan={{firstArray.detail.length}}>{{item.goodsType.name}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.name}}</td>
+
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayCash.count}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayCash.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayOnline.count}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayOnline.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayCredit.count}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayCredit.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayMonthlySum.count}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayMonthlySum.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayTicket.count}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayTicket.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayCoupon.count}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayCash.count+item.salesByPayOnline.count
+            +item.salesByPayCredit.count+item.salesByPayMonthlySum.count+item.salesByPayTicket.count+item.salesByPayCoupon.count}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayCash.sum+item.salesByPayOnline.sum
+                +item.salesByPayCredit.sum+item.salesByPayMonthlySum.sum+item.salesByPayTicket.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+
+
+            <td class="message tableContentAdjust">{{item.salesByMonthlySumSales.count}}</td>
+            <td class="message tableContentAdjust">{{item.salesByMonthlySumSales.sum}}</td>
+
+            <td class="message tableContentAdjust"></td>
+
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+
+            <td class="message tableContentAdjust">{{item.inBoundData.avgOperationInSec}}</td>
+            <td class="message tableContentAdjust">{{item.outBoundData.count}}</td>
+            <td class="message tableContentAdjust">{{item.outBoundData.hitRate}}</td>
+            <td class="message tableContentAdjust">{{item.outBoundData.totalOperationInSec}}</td>
+            <td class="message tableContentAdjust">{{item.outBoundData.avgOperationInSec}}</td>
+            <td class="message tableContentAdjust">{{item.outBoundData.totalOperationInSec}}</td>
+            <td class="message tableContentAdjust">{{item.outBoundData.avgOperationInSec}}</td>
         </tr>
+        </tbody>
+        <tbody>
 
         <tr>
             <td width="5.6%" colspan="2" class="message tableContentAdjust">小计</td>
@@ -167,16 +215,18 @@
             <td width="2.8%"  class="message tableContentAdjust"></td>
             <td width="2.8%"  class="message tableContentAdjust"></td>
 
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
+
+
+            <td width="2.8%"  class="message tableContentAdjust">{{data.yesterdayShexiaojieyu.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{data.todayShexiaohuikuan.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{data.todayShexiaojieyu.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{data.yesterdayYuejiejieyu.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{data.todayYuejiehuikuan.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{data.todayYuejiejieyu.sum}}</td>
+
             <td width="2.8%"  class="message tableContentAdjust"></td>
 
             <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-
             <td width="2.8%"  class="message tableContentAdjust"></td>
             <td width="2.8%"  class="message tableContentAdjust"></td>
             <td width="2.8%"  class="message tableContentAdjust"></td>

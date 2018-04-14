@@ -5,58 +5,113 @@
 'use strict';
 
 financeApp.controller('dailyMonthlySalesCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
-    'rootService', 'pager', 'udcModal', 'sessionStorage',function ($scope, $rootScope, $filter, $location, Constants,
-                                                                                 rootService, pager, udcModal,sessionStorage) {
+    'rootService', 'pager', 'udcModal', 'sessionStorage','FinanceService',function ($scope, $rootScope, $filter, $location, Constants,
+                                                                                 rootService, pager, udcModal,sessionStorage,FinanceService) {
         $(function () {
-            $('#datetimepickerStart').datetimepicker({
+            $('#datetimepickerDailyTimeStart').datetimepicker({
                 format: 'YYYY-MM-DD HH:mm:ss',
                 locale: moment.locale('zh-cn'),
                 //sideBySide:true,
                 showTodayButton:true,
                 toolbarPlacement:'top',
             });
+            $('#datetimepickerDailyTimeEnd').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm:ss',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
+
+            $('#datetimepickerMonthlyTimeStart').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm:ss',
+                locale: moment.locale('zh-cn'),
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
+            $('#datetimepickerMonthlyTimeEnd').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm:ss',
+                locale: moment.locale('zh-cn'),
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
         });
 
         $(function () {
-            $('#datetimepickerStart').datetimepicker()
+            $('#datetimepickerDailyTimeStart').datetimepicker()
                 .on('dp.change', function (ev) {
                     var date = ev.date._d;
                     var month = date.getMonth()+1;
-                    $scope.q.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                    $scope.dailyData.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
+            $('#datetimepickerDailyTimeEnd').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.dailyData.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
+            $('#datetimepickerMonthlyTimeStart').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.monthlyData.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
+            $('#datetimepickerMonthlyTimeEnd').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.monthlyData.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
                         +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
                 });
         });
 
-        //var gotoPage = function (pageNo) {
-        //    $scope.pager.setCurPageNo(pageNo);
-        //    searchData();
-        //};
-        //
-        //$scope.pager = pager.init('LPGCtrl', gotoPage);
-        //var historyQ = $scope.pager.getQ();
 
-        $scope.data = {
+        $scope.dailyData={
             startTime:null,
-            endTime:null
-        };
+            endTime:null,
+        }
+
+        $scope.monthlyData={
+            startTime:null,
+            endTime:null,
+        }
 
         $scope.q = {
-            userName: null,
-            userId: null,
-            token:null,
-            orgId:null,
-            interval:"1",
-            type:"daily",
-            startTime:null,
-            endTime:null
+            number: null,
+            liableUserId: null,
+            liableDepartmentCode: null
+        };
+        $scope.data = {
+            currentTime:null,
+            selectedGoodsType:{},
+            selectedGoods:{},
+            goodsTypesList:[],
+            goodsList:[],
+            customerTypesList:[],
         };
 
-        $scope.vm = {
-            goodsTypes: [{"name":"液化气","type":"45kg/瓶"},{"name":"液化气","type":"12kg/瓶"},{"name":"液化气","type":"3.5kg/瓶"},
-                {"name":"专卖瓶","type":"15kg/只"},{"name":"专卖瓶","type":"5kg/只"}],
-            lastDataList:[],
-            types:["daily","hourly"],
-            intervals:["1","2","3","4","5"]
+
+        $scope.initDepartmentSelect = function () {
+            udcModal.show({
+                templateUrl: "./finance/departmentSelectModal.htm",
+                controller: "DepartmentSelectModalCtrl",
+                inputs: {
+                    title: '百江燃气组织架构',
+                    initVal: {}
+                }
+            }).then(function (result) {
+                if (result!=null) {
+                    $scope.q.liableDepartmentCode = result.code;
+                    console.info($scope.q.liableDepartmentCode);
+                }
+            })
+        };
+        var gotoPage = function (pageNo) {
+            $scope.pager.setCurPageNo(pageNo);
+            //searchData();
         };
 
         $scope.search = function () {
@@ -69,89 +124,98 @@ financeApp.controller('dailyMonthlySalesCtrl', ['$scope', '$rootScope', '$filter
         };
 
         var searchData = function () {
-            //先登录授权，拿到token、orgId、userId
-            //KtyService.authenticate("58531181@qq.com","123456").then(function (response) {
-            //    $scope.q.token = response.data.token;
-            //    var queryParams = {
-            //        agentUserIds: $scope.q.userId,
-            //        //agentUserName: $scope.q.userName,
-            //        type: $scope.q.type,
-            //        interval: $scope.q.interval,
-            //        begin: $scope.q.startTime,
-            //        end: $scope.q.endTime
-            //    };
-            //    KtyService.retrieveReport1(queryParams, $scope.q.token).then(function (response) {
-            //        $scope.vm.dataList = response.data;
-            //        $scope.vm.lastDataList = $scope.vm.dataList[$scope.vm.dataList.length-1];
-            //        //console.log($scope.vm.lastDataList);
-            //        $scope.vm.dataList .splice($scope.vm.dataList.length-1, 1);
-            //    }, function(value) {
-            //        //$scope.vm.dataList = null;
-            //        //udcModal.info({"title": "查询失败", "message": "请输入相关的查询条件"});
-            //        if(value.code == "40007")
-            //        {
-            //            $scope.vm.dataList = null;
-            //            udcModal.info({"title": "查询失败", "message": "未找到呼叫记录"});
-            //        }
-            //        else if(value.code == "40021")
-            //        {
-            //            $scope.vm.dataList = null;
-            //            udcModal.info({"title": "查询失败", "message": "未找到指定部门人员信息"});
-            //        }
-            //        else if(value.code == "40025")
-            //        {
-            //            $scope.vm.dataList = null;
-            //            udcModal.info({"title": "查询失败", "message": "参数异常"});
-            //        }
-            //        else if(value.code == "40026")
-            //        {
-            //            $scope.vm.dataList = null;
-            //            udcModal.info({"title": "查询失败", "message": "时间范围长度超出限制（最大三个月间隔）"});
-            //        }
-            //        else if(value.code == "50000")
-            //        {
-            //            $scope.vm.dataList = null;
-            //            udcModal.info({"title": "查询失败", "message": "系统内部错误"});
-            //        }
-            //    });
-            //}, function(value) {
-            //    if(value.code == "40001")
-            //    {
-            //        $scope.vm.dataList = null;
-            //        udcModal.info({"title": "连接结果", "message": "用户名或密码不正确"});
-            //    }
-            //    else if(value.code == "40002")
-            //    {
-            //        $scope.vm.dataList = null;
-            //        udcModal.info({"title": "连接结果", "message": "用户名或密码为空"});
-            //    }
-            //    else if(value.code == "40003")
-            //    {
-            //        $scope.vm.dataList = null;
-            //        udcModal.info({"title": "连接结果", "message": "用户权限不正确"});
-            //    }
-            //    else if(value.code == "40004")
-            //    {
-            //        $scope.vm.dataList = null;
-            //        udcModal.info({"title": "连接结果", "message": "用户认证不存在或已过期"});
-            //    }
-            //    else if(value.code == "50000")
-            //    {
-            //        $scope.vm.dataList = null;
-            //        udcModal.info({"title": "连接结果", "message": "系统内部错误"});
-            //    }
-            //})
+            if(($scope.q.liableDepartmentCode.length>0)&&($scope.dailyData.startTime.length>0)&& ($scope.dailyData.endTime.length>0)
+                &&($scope.monthlyData.startTime.length>0)&& ($scope.monthlyData.endTime.length>0))
+            {
+
+                //今日实际销售 居民
+                var queryParams1 = {
+                    departmentCode:$scope.q.liableDepartmentCode,
+                    cstTypeCode:1,
+                    startTime:$scope.dailyData.startTime,
+                    endTime:$scope.dailyData.endTime,
+                };
+                console.info("今日实际销售 居民");
+                console.info(queryParams1);
+                FinanceService.searchSalesByCustomerType(queryParams1).then(function (salesByCustomerType) {
+                    var salesByCustomerTypeList = salesByCustomerType.items;
+                    console.info(salesByCustomerTypeList);
+                    if(salesByCustomerType.items.length>0){
+                        for(var i = 0; i < $scope.data.goodsList.length; i++) {
+                            for(var j = 0; j < $scope.data.goodsList[i].detail.length; j++) {
+                                for (var k = 0; k < salesByCustomerTypeList.length; k++) {
+                                    if ($scope.data.goodsList[i].detail[j].code==salesByCustomerTypeList[k].specCode) {
+                                        $scope.data.goodsList[i].detail[j].salesByCustomerTypeDailyJuming = salesByCustomerTypeList[k];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
+
+                //今日实际销售 餐饮
+                var queryParams2 = {
+                    departmentCode:$scope.q.liableDepartmentCode,
+                    cstTypeCode:1,
+                    startTime:$scope.dailyData.startTime,
+                    endTime:$scope.dailyData.endTime,
+                };
+                console.info("今日实际销售 餐饮");
+                console.info(queryParams2);
+                FinanceService.searchSalesByCustomerType(queryParams2).then(function (salesByCustomerType) {
+                    var salesByCustomerTypeList = salesByCustomerType.items;
+                    console.info(salesByCustomerTypeList);
+                    if(salesByCustomerType.items.length>0){
+                        for(var i = 0; i < $scope.data.goodsList.length; i++) {
+                            for(var j = 0; j < $scope.data.goodsList[i].detail.length; j++) {
+                                for (var k = 0; k < salesByCustomerTypeList.length; k++) {
+                                    if ($scope.data.goodsList[i].detail[j].code==salesByCustomerTypeList[k].specCode) {
+                                        $scope.data.goodsList[i].detail[j].salesByCustomerTypeDailyCanyin = salesByCustomerTypeList[k];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
+            }
+            else {
+                udcModal.info({"title": "提醒", "message": "请选择编报部门、今日销售时间和月累计销售时间"});
+            }
+
         };
 
         var init = function () {
-            searchData();
-            //var currentDate = new Date();
-            //var currentMonth = currentDate.getMonth()+1;
-            //$scope.data.endTime = currentDate.getFullYear()+"-"+currentMonth+"-"+currentDate.getDate()+" "
-            //    +currentDate.getHours()+":"+currentDate.getMinutes()+":"+currentDate.getSeconds();
-            ////console.log($scope.data.endTime);
-            ////默认结束时间为当前时间
-            //$scope.q.endTime = $scope.data.endTime;
+            //searchData();
+            //查询商品类型规格
+            var queryParams = {};
+            FinanceService.retrieveGoodsTypes(queryParams).then(function (goodsTypes) {
+                $scope.data.goodsTypesList = goodsTypes.items;
+                //$scope.data.selectedGoodsType = $scope.data.goodsTypesList[0];
+                //console.info($scope.data.goodsTypesList);
+
+                for(var i = 0; i < $scope.data.goodsTypesList.length; i++)
+                {
+                    //$scope.data.goodsTableContext.goodsName = $scope.data.goodsTypesList[i].name
+                    var queryParams = {
+                        typeName: $scope.data.goodsTypesList[i].name,
+                    };
+                    FinanceService.retrieveGoods(queryParams).then(function (goods) {
+                        var tempList = {type:null,detail:[]};
+                        tempList.detail = goods.items;
+                        if(goods.items.length > 0){
+                            tempList.type = goods.items[0].goodsType.name;
+                        }
+                        $scope.data.goodsList.push(tempList);
+                    });
+                }
+            });
+
+            //查询客户类型
+            var Params = {};
+            FinanceService.searchCustomerType(Params).then(function (customerTypes) {
+                $scope.data.customerTypesList = customerTypes.items;
+                console.info( $scope.data.customerTypesList);
+            });
         };
         init();
     }]);

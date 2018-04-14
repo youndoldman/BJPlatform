@@ -42,6 +42,7 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
             }).then(function (result) {
                 if (result!=null) {
                     $scope.q.liableDepartmentCode = result.code;
+                    //console.info($scope.q.liableDepartmentCode);
                     searchBottles();
                 }
             })
@@ -101,7 +102,6 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
                 liableUserId: $scope.q.liableUserId,
                 liableDepartmentCode: $scope.q.liableDepartmentCode
             };
-
             BottleService.retrieveBottles(queryParams).then(function (bottles) {
                 $scope.pager.update($scope.q, bottles.total, queryParams.pageNo);
                 $scope.vm.bottleList = bottles.items;
