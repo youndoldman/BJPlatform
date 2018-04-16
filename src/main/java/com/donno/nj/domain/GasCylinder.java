@@ -21,8 +21,9 @@ public class GasCylinder implements Serializable
     private Double longitude;
     private Double latitude;
 
-
     private DeviceStatus lifeStatus;
+
+    private LoadStatus loadStatus;
 
     private GasCynServiceStatus serviceStatus;
 
@@ -90,6 +91,10 @@ public class GasCylinder implements Serializable
    {
        return  lifeStatus;
    }
+
+    public LoadStatus getLoadStatus() {
+        return loadStatus;
+    }
 
     public GasCynServiceStatus getServiceStatus()
     {
@@ -175,6 +180,11 @@ public class GasCylinder implements Serializable
     public void setLifeStatus(DeviceStatus lifeStatus)
     {
         this.lifeStatus = lifeStatus;
+    }
+
+    public void setLoadStatus(LoadStatus loadStatus)
+    {
+        this.loadStatus = loadStatus;
     }
 
     public void  setServiceStatus(GasCynServiceStatus serviceStatus)

@@ -741,29 +741,31 @@ public class OrderServiceImpl implements OrderService
         String[] couponList = coupuns.split(",");
         for (String couponId :couponList)
         {
-            Coupon target = couponDao.findById( Integer.valueOf(couponId).intValue());
-            if (target == null)
+            if (couponId.trim().length() > 0)
             {
-                throw new ServerSideBusinessException("系统中没有该优惠券", HttpStatus.NOT_ACCEPTABLE);
+                Coupon target = couponDao.findById( Integer.valueOf(couponId).intValue());
+                if (target == null)
+                {
+                    throw new ServerSideBusinessException("系统中没有该优惠券", HttpStatus.NOT_ACCEPTABLE);
+                }
+
+                checkCoupun(order,target);//检查优惠券是否满足使用条件
+
+                /*将优惠券状态设置为已使用*/
+                target.setCouponStatus(TicketStatus.TSUsed);
+                target.setUseTime(new Date());
+                couponDao.update(target);
+
+                /*增加优惠券订单关联消费记录*/
+                CouponOrder couponOrder = new CouponOrder();
+                couponOrder.setCouponIdx(target.getId());
+                couponOrder.setOrderSn(order.getOrderSn());
+                couponOrder.setNote("已支付");
+                couponOrderDao.insert(couponOrder);
+
+                String couponInfo = String.format("规格：%s",target.getSpecName());
+                message = String.format("%s;",couponInfo);
             }
-
-            checkCoupun(order,target);//检查优惠券是否满足使用条件
-
-            /*将优惠券状态设置为已使用*/
-            target.setCouponStatus(TicketStatus.TSUsed);
-            target.setUseTime(new Date());
-            couponDao.update(target);
-
-            /*增加优惠券订单关联消费记录*/
-            CouponOrder couponOrder = new CouponOrder();
-            couponOrder.setCouponIdx(target.getId());
-            couponOrder.setOrderSn(order.getOrderSn());
-            couponOrder.setNote("已支付");
-            couponOrderDao.insert(couponOrder);
-
-            String couponInfo = String.format("规格：%s",target.getSpecName());
-            message = String.format("%s;",couponInfo);
-
         }
 
 
@@ -771,38 +773,40 @@ public class OrderServiceImpl implements OrderService
         String[] ticketList = tickets.split(",");
         for (String ticketSn :ticketList)
         {
-            Ticket target = ticketDao.findBySn(ticketSn);
-            if (target == null)
+            if (ticketSn.trim().length() > 0)
             {
-                String ticketInfo = String.format("系统中没有%s该气票",ticketSn);
-                throw new ServerSideBusinessException(message, HttpStatus.NOT_ACCEPTABLE);
+                Ticket target = ticketDao.findBySn(ticketSn);
+                if (target == null)
+                {
+                    String ticketInfo = String.format("系统中没有%s该气票",ticketSn);
+                    throw new ServerSideBusinessException(message, HttpStatus.NOT_ACCEPTABLE);
+                }
+
+                checkTicket(order,target);
+
+                /*将气票状态设置为已使用*/
+                target.setTicketStatus(TicketStatus.TSUsed);
+                target.setUseTime(new Date());
+                ticketDao.update(target);
+
+                /*增加气票订单记录*/
+                TicketOrder ticketOrder = new TicketOrder();
+                ticketOrder.setTicketIdx(target.getId());
+                ticketOrder.setOrderSn(order.getOrderSn());
+                ticketOrder.setNote("已支付");
+                ticketOrderDao.insert(ticketOrder);
             }
-
-            checkTicket(order,target);
-
-            /*将气票状态设置为已使用*/
-            target.setTicketStatus(TicketStatus.TSUsed);
-            target.setUseTime(new Date());
-            ticketDao.update(target);
-
-            /*增加气票订单记录*/
-            TicketOrder ticketOrder = new TicketOrder();
-            ticketOrder.setTicketIdx(target.getId());
-            ticketOrder.setOrderSn(order.getOrderSn());
-            ticketOrder.setNote("已支付");
-            ticketOrderDao.insert(ticketOrder);
         }
 
         /*更改订单支付状态为已支付*/
         order.setPayStatus(PayStatus.PSPaied);
-        order.setOrderStatus(OrderStatus.OSSigned.getIndex());
+
         order.setPayTime(new Date());
         if (message.trim().length() >0 )
         {
             message = String.format("使用优惠券：%s",message);
             order.setNote(message);
         }
-
 
         orderDao.update(order);
     }

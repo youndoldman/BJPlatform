@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.StockRptDao">
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.StockRpt">
+        <result column="department_code" property="departmentCode" jdbcType="VARCHAR"/>
+        <result column="department_name" property="departmentName" jdbcType="VARCHAR"/>
+        <result column="spec_code" property="specCode" jdbcType="VARCHAR"/>
+        <result column="spec_name" property="specName" jdbcType="VARCHAR"/>
+        <result column="amount" property="amount" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="qryStockRpt">
+
+        select t_department.id as department_id, t_department.name as department_name, t_department.code as department_code,
+        t_gas_cylinder_spec.name as spec_name,t_gas_cylinder_spec.code as spec_code,
+        count(t_gas_cylinder.id) as amount
+        from t_department,t_gas_cylinder ,t_gas_cylinder_spec
+        where
+        t_gas_cylinder.spec_idx = t_gas_cylinder_spec.id
+
+        <if test="departmentCode != null">
+            AND  t_department.code  =  #{departmentCode}
+            AND t_gas_cylinder.id in (select cylinder_idx from t_cylinder_user where user_idx in ( select user_idx from t_sysuser where department_idx = (select id from t_department where code = #{departmentCode})  ))
+        </if>
+
+        <if test="loadStatus != null">AND  load_status = #{loadStatus}</if>
+
+        group by t_gas_cylinder_spec.id
+    </sql>
+
+
+
+    <!--钢瓶库存-->
+    <select id="getList" resultMap="DetailResultMap">
+        <include refid="qryStockRpt"/>
+
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+    <select id="count" resultType="Integer">
+        SELECT COUNT(*)
+        from
+        (
+        <include refid="qryStockRpt"/>
+        )
+        as b
+    </select>
+
+
+
+
+</mapper>
