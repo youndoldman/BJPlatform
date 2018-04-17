@@ -21,7 +21,7 @@ public class Order implements Serializable
     private PayStatus payStatus;
     private Boolean urgent;//是否加急
 
-    private Integer timeSpan;//订单创建到当前时间的时间差，分钟为单位
+    private Integer timeSpan;//订单创建到当前时间的时间差，分钟为单位,前台用于 警示 提示
 
     private AccessType accessType;//订单接入类型
 
