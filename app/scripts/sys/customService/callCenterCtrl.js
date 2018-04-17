@@ -215,7 +215,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         //创建订单
         $scope.createOrder = function () {
             $scope.currentOrder.callInPhone = $scope.vm.callInPhone;
-            $scope.currentOrder.payType = "PTOffline";
+            //$scope.currentOrder.payType = "PTOffline";
             $scope.currentOrder.accessType = "ATCustomService";
 
             //设置客户
