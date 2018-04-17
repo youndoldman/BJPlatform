@@ -42,11 +42,11 @@
             </if>
 
             <if test="startTime != null">
-                and   t_deposit_detail.create_time >=   #{startTime}
+                and   t_deposit_detail.oper_time >=   #{startTime}
             </if>
 
             <if test="endTime != null">
-                and    #{endTime}  >=   t_deposit_detail.create_time
+                and    #{endTime}  >=   t_deposit_detail.oper_time
             </if>
 
         </where>

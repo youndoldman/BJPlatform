@@ -76,6 +76,9 @@ public class OrderServiceImpl implements OrderService
     @Autowired
     private TicketOrderDao ticketOrderDao;
 
+    @Autowired
+    private DiscountStrategyDao discountStrategyDao;
+
     @Override
     public Optional<Order> findBySn(String sn) {
         return Optional.fromNullable(orderDao.findBySn(sn));
@@ -188,11 +191,18 @@ public class OrderServiceImpl implements OrderService
                 throw new ServerSideBusinessException("商品信息不存在！", HttpStatus.NOT_ACCEPTABLE);
             }
 
+            /*查询优惠*/
+//            discountStrategyDao.
+
+            /*计算价格*/
+
             orderDetail.setOrderIdx(order.getId());
             orderDetail.setGoods(good);
 
             orderDetailDao.insert(orderDetail);//插入数据库订单详情表
         }
+
+        /*校验订单总金额，更新订单总金额*/
 
         /*启动流程*/
         createWorkFlow(order);
@@ -454,13 +464,13 @@ public class OrderServiceImpl implements OrderService
         if(newOrder.getPayType() != null)
         {
             Optional<User> userOptional = AppUtil.getCurrentLoginUser();
-            if (userOptional.isPresent() || userOptional.get()== null)
+            if (!userOptional.isPresent() || userOptional.get()== null)
             {
                 throw new ServerSideBusinessException("获取当前用户信息失败！", HttpStatus.UNAUTHORIZED);
             }
 
             /*支付类型修改，只有当前订单的派送工派送到家时才能修改*/
-            SysUser sysUser = newOrder.getDispatcher();
+            SysUser sysUser = srcOrder.getDispatcher();
             if (sysUser == null)
             {
                 throw new ServerSideBusinessException("不允许修改订单支付类型！", HttpStatus.UNAUTHORIZED);
