@@ -40,36 +40,30 @@
     <div class="toolbar">
         <form role="form">
             <div class="row">
+                <div class="col-md-2">
+                    <label class="input"><input type="text" class="form-control input-md" ng-model="q.liableDepartmentCode" ng-change="search()" placeholder="编报部门"> </label>
+                    <span class="glyphicon glyphicon-calendar" ng-click="initDepartmentSelect()"></span>
+                </div>
+                <div class="col-md-4">
+                    <label class="input">今日时间：</label>
+                    <label class="input"><input type="text"  id="datetimepickerDailyTimeStart"  class="form-control" ng-model="dailyData.startTime"></label>
+                    <label class="input">至</label>
+                    <label class="input"><input type="text"  id="datetimepickerDailyTimeEnd"  class="form-control" ng-model="dailyData.endTime"></label>
+                </div>
 
-                    <label class="input">钢检员工号:</label>
-                    <label class="input"><input type="text" class="form-control input-md" ng-model="q.userId"> </label>
-                    <label class="input">时间：</label>
-                    <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control pull-center" ng-model="q.startTime"></label>
-                    <button ng-click="upload()" class="btn btn-sm btn-primary noprint"><i class="fa fa-search"></i> 提交 </button>
-                    <button ng-click="printPage()" class="btn btn-sm btn-primary pull-right noprint"><i class="fa fa-print"></i>打印</button>
+                <div class="col-md-4">
+                    <label class="input">月累计时间：</label>
+                    <label class="input"><input type="text"  id="datetimepickerMonthlyTimeStart"  class="form-control" ng-model="monthlyData.startTime"></label>
+                    <label class="input">至</label>
+                    <label class="input"><input type="text"  id="datetimepickerMonthlyTimeEnd"  class="form-control" ng-model="monthlyData.endTime"></label>
+                </div>
+                <div class="col-md-1">
+                    <button ng-click="search()" class="btn btn-sm btn-primary noprint"><i class="fa fa-search"></i>查询 </button>
+                </div>
+                <div class="col-md-1">
+                    <button ng-click="printPage()" class="btn btn-sm btn-primary noprint pull-right"><i class="fa fa-print"></i>打印</button>
+                </div>
             </div>
-
-
-                <!--<div class="col-md-4">-->
-                    <!--<label class="input">钢检员工号:</label>-->
-                    <!--<label class="input"><input type="text" class="form-control input-md" ng-model="q.userId"> </label>-->
-                <!--</div>-->
-
-                <!--<div class="col-md-4">-->
-                    <!--<label class="input">时间：</label>-->
-                    <!--<label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>-->
-                <!--</div>-->
-
-                <!--<div class="col-md-2">-->
-                <!--</div>-->
-
-                <!--<div class="col-md-1">-->
-                    <!--<button ng-click="upload()" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> 提交 </button>-->
-                <!--</div>-->
-                <!--<div class="col-md-1">-->
-                    <!--<button ng-click="printPage()" class="btn btn-sm btn-primary"><i class="fa fa-print"></i>打印</button>-->
-                <!--</div>-->
-            <!--</div>-->
         </form>
     </div>
 

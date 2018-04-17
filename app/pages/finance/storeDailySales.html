@@ -26,7 +26,6 @@
             border:1px solid #C7C7C7;
         }
     }
-
 </style>
 
 <div class="ribbon border1">
@@ -40,52 +39,69 @@
     <div class="toolbar">
         <form role="form">
             <div class="row">
-                <div class="col-md-10">
-                    <label class="input fontSize pull-left">{{data.currentTime}}</label>
+                <div class="col-md-2">
+                    <label class="input"><input type="text" class="form-control input-md" ng-model="q.liableDepartmentCode" ng-change="search()" placeholder="编报部门"> </label>
+                    <span class="glyphicon glyphicon-calendar" ng-click="initDepartmentSelect()"></span>
                 </div>
-                <div class="col-md-1 pull-right noprint">
-                    <button ng-click="printPage()" class="btn btn-sm btn-primary noprint"><i class="fa fa-print"></i>打印</button>
+                <div class="col-md-4">
+                    <label class="input">今日销售时间：</label>
+                    <label class="input"><input type="text"  id="datetimepickerDailyTimeStart"  class="form-control" ng-model="dailyData.startTime"></label>
+                    <label class="input">至</label>
+                    <label class="input"><input type="text"  id="datetimepickerDailyTimeEnd"  class="form-control" ng-model="dailyData.endTime"></label>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="input">月累计销售时间：</label>
+                    <label class="input"><input type="text"  id="datetimepickerMonthlyTimeStart"  class="form-control" ng-model="monthlyData.startTime"></label>
+                    <label class="input">至</label>
+                    <label class="input"><input type="text"  id="datetimepickerMonthlyTimeEnd"  class="form-control" ng-model="monthlyData.endTime"></label>
+                </div>
+                <div class="col-md-1">
+                    <button ng-click="search()" class="btn btn-sm btn-primary noprint"><i class="fa fa-search"></i>查询 </button>
+                </div>
+                <div class="col-md-1">
+                    <button ng-click="printPage()" class="btn btn-sm btn-primary noprint pull-right"><i class="fa fa-print"></i>打印</button>
                 </div>
             </div>
         </form>
     </div>
-    <table class="table table-striped table-hover props table-sm table-bordered table-condensed">
+    <table id="storeDailySalesTable" class="table table-striped table-hover props table-sm table-bordered table-condensed">
         <thead>
         <tr>
             <td width="5.6%" colspan="2" class="message tableContentAdjust">编报部门</td>
-            <td width="5.6%" colspan="2" class="message tableContentAdjust">XXX门店</td>
-            <td width="50.4%" colspan="18" class="message tableContentAdjust bkColor1">LPG销售情况</td>
+            <td width="8.4%" colspan="3" class="message tableContentAdjust">{{q.liableDepartmentCode}}</td>
+            <td width="47.6%" colspan="17" class="message tableContentAdjust bkColor1">LPG销售情况</td>
             <td width="16.8%" colspan="6" class="message tableContentAdjust bkColor2">LPG销售往来管理</td>
             <td width="19.6%" colspan="7" class="message tableContentAdjust bkColor3">LPG销售现金管理</td>
         </tr>
         <tr>
             <td width="5.6%" colspan="2" class="message tableContentAdjust">品名项目</td>
 
-            <td width="2.8%" rowspan="3" class="message tableContentAdjust">上日库存</td>
-            <td width="2.8%" rowspan="3" class="message tableContentAdjust">今日调入数量</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust">上日库存(瓶)</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust">今日调入数量(瓶)</td>
 
-            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor1">本月累计调入</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust ">本月累计调入(瓶)</td>
 
             <td width="39.2%" colspan="14" class="message tableContentAdjust bkColor1">今日实际销售</td>
 
             <td width="5.6%" colspan="2" class="message tableContentAdjust bkColor1">月累计销售</td>
 
-            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor1">今日实际库存</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor1">今日实际库存(瓶)</td>
 
-            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor2">上日 赊销 结余</td>
-            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor2">今日 赊销 回款</td>
-            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor2">今日 赊销 结余</td>
-            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor2">上日 月结 结余</td>
-            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor2">今日 月结 回款</td>
-            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor2">今日 月结 结余</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor2">上日赊销结余(元)</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor2">今日赊销回款(元)</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor2">今日赊销结余(元)</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor2">上日月结结余(元)</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor2">今日月结回款(元)</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor2">今日月结结余(元)</td>
 
-            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">上日 现金 库存</td>
-            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">现金 销款</td>
-            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">往日 赊销</td>
-            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">往日 月结</td>
-            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">气票 款</td>
-            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">今日 存银 行款</td>
-            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">今日 结存 现金</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">上日现金库存(元)</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">现金销款(元)</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">往日赊销(元)</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">往日月结(元)</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">气票款(元)</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">今日存银行款(元)</td>
+            <td width="2.8%" rowspan="3" class="message tableContentAdjust bkColor3">今日结存现金(元)</td>
         </tr>
         <tr>
             <td width="2.8%" rowspan="2" class="message tableContentAdjust">品名</td>
@@ -96,92 +112,132 @@
             <td width="5.6%" colspan="2" class="message tableContentAdjust bkColor1">赊销</td>
             <td width="5.6%" colspan="2" class="message tableContentAdjust bkColor1">月结</td>
             <td width="5.6%" colspan="2" class="message tableContentAdjust bkColor1">气票</td>
-            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">优惠券</td>
-            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">数量累计</td>
-            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">金额累计</td>
-            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">今日均价</td>
-            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">数量</td>
-            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">金额</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">优惠券数量(张)</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">数量累计(瓶)</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">金额累计(元)</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">今日均价(元/瓶)</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">数量(瓶)</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">金额(元)</td>
         </tr>
         <tr>
-            <td width="2.8%" class="message tableContentAdjust bkColor1">数量</td>
-            <td width="2.8%" class="message tableContentAdjust bkColor1">金额</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">数量(瓶)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">金额(元)</td>
 
-            <td width="2.8%" class="message tableContentAdjust bkColor1">数量</td>
-            <td width="2.8%" class="message tableContentAdjust bkColor1">金额</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">数量(瓶)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">金额(元)</td>
 
-            <td width="2.8%" class="message tableContentAdjust bkColor1">数量</td>
-            <td width="2.8%" class="message tableContentAdjust bkColor1">金额</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">数量(瓶)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">金额(元)</td>
 
-            <td width="2.8%" class="message tableContentAdjust bkColor1">数量</td>
-            <td width="2.8%" class="message tableContentAdjust bkColor1">金额</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">数量(瓶)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">金额(元)</td>
 
-            <td width="2.8%" class="message tableContentAdjust bkColor1">数量</td>
-            <td width="2.8%" class="message tableContentAdjust bkColor1">金额</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">数量(瓶)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">金额(元)</td>
         </tr>
 
 
         </thead>
-        <tbody>
-        <tr  ng-repeat="item in vm.dataList">
-            <!--<td class="message tableContentAdjust">{{item.date}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.agentUserId}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.totalCallData.count}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.totalCallData.hitRate}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.totalCallData.totalOperationInSec}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.totalCallData.avgOperationInSec}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.inBoundData.count}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.inBoundData.hitRate}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.inBoundData.totalOperationInSec}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.inBoundData.avgOperationInSec}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.outBoundData.count}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.outBoundData.hitRate}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.outBoundData.totalOperationInSec}}</td>-->
-            <!--<td class="message tableContentAdjust">{{item.outBoundData.avgOperationInSec}}</td>-->
+        <tbody  ng-repeat="firstArray in data.goodsList">
+        <tr  ng-repeat="item in firstArray.detail track by $index">
+            <td width="2.8%" ng-if="$index ==0" rowspan={{firstArray.detail.length}}>{{item.goodsType.name}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.name}}</td>
+
+            <td width="2.8%"  class="message tableContentAdjust">{{(item.currentKucun.amount + item.todayStockIn.amount - item.todayStockOut.amount) > 0 ? (item.currentKucun.amount + item.todayStockIn.amount - item.todayStockOut.amount) : null}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.todayStockIn.amount}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.monthlyStockIn.amount}}</td>
+
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayCash.count}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayCash.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayOnline.count}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayOnline.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayCredit.count}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayCredit.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayMonthlySum.count}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayMonthlySum.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayTicket.count}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayTicket.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayCoupon.count}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayCash.count+item.salesByPayOnline.count
+            +item.salesByPayCredit.count+item.salesByPayMonthlySum.count+item.salesByPayTicket.count+item.salesByPayCoupon.count}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.salesByPayCash.sum+item.salesByPayOnline.sum
+                +item.salesByPayCredit.sum+item.salesByPayMonthlySum.sum+item.salesByPayTicket.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust"></td>
+
+
+            <td class="message tableContentAdjust">{{item.salesByMonthlySumSales.count}}</td>
+            <td class="message tableContentAdjust">{{item.salesByMonthlySumSales.sum}}</td>
+
+            <td class="message tableContentAdjust"></td>
+
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+
+            <td class="message tableContentAdjust">{{item.inBoundData.avgOperationInSec}}</td>
+            <td class="message tableContentAdjust">{{item.outBoundData.count}}</td>
+            <td class="message tableContentAdjust">{{item.outBoundData.hitRate}}</td>
+            <td class="message tableContentAdjust">{{item.outBoundData.totalOperationInSec}}</td>
+            <td class="message tableContentAdjust">{{item.outBoundData.avgOperationInSec}}</td>
+            <td class="message tableContentAdjust">{{item.outBoundData.totalOperationInSec}}</td>
+            <td class="message tableContentAdjust">{{item.outBoundData.avgOperationInSec}}</td>
         </tr>
+        </tbody>
+        <tbody>
 
         <tr>
-            <td width="5.6%" colspan="2" class="message tableContentAdjust">小计</td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="5.6%" colspan="2" class="message tableContentAdjust">合计</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{(q.sumCurrentKucun + q.sumTodayIn - q.sumTodayOut) > 0 ? (q.sumCurrentKucun + q.sumTodayIn - q.sumTodayOut) : null}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{q.sumTodayIn}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{q.sumMonthlyIn}}</td>
+
+
+            <td width="2.8%"  class="message tableContentAdjust">{{q.sumCashCount}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{q.sumCashSum}}</td>
+
+            <td width="2.8%"  class="message tableContentAdjust">{{q.sumPayOnlineCount}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{q.sumPayOnlineSum}}</td>
+
+            <td width="2.8%"  class="message tableContentAdjust">{{q.sumCreditCount}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{q.sumCreditSum}}</td>
+
+            <td width="2.8%"  class="message tableContentAdjust">{{q.sumYuejieCount}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{q.sumYuejieSum}}</td>
+
+            <td width="2.8%"  class="message tableContentAdjust">{{q.sumTicketCount}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{q.sumTicketSum}}</td>
+
+            <td width="2.8%"  class="message tableContentAdjust">{{q.sumCouponCount}}</td>
+
+            <td width="2.8%"  class="message tableContentAdjust">{{q.sumCount}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{q.sumSum}}</td>
 
             <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
 
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust">{{q.sumYueleijiCount}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{q.sumYueleijiSum}}</td>
 
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
 
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust">{{q.sumCurrentKucun}}</td>
 
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust">{{data.yesterdayShexiaojieyu.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{data.todayShexiaohuikuan.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{data.todayShexiaojieyu.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{data.yesterdayYuejiejieyu.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{data.todayYuejiehuikuan.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{data.todayYuejiejieyu.sum}}</td>
 
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
+            <td width="2.8%"  class="message tableContentAdjust">{{data.yesterdaySalesCash.surplusCash}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{data.todaySalesCash.saleCash}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{data.todaySalesCash.accCredit}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{data.todaySalesCash.accMonthlyCredit}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{data.todaySalesCash.ticketSaleCash}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{data.todaySalesCash.depositCash}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{data.todaySalesCash.surplusCash}}</td>
 
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
-            <td width="2.8%"  class="message tableContentAdjust"></td>
 
         </tr>
 

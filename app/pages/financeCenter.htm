@@ -15,8 +15,12 @@
     <!-- Custom styles for this template -->
     <link href="../styles/stylesheets/global.css" rel="stylesheet">
     <link href="../lib/other-css/animate.min.css" rel="stylesheet"/>
-    <script src="../scripts/util/browser-checker.js"></script>
 
+    <link rel="stylesheet" href="../lib/org-chart/css/jquery.orgchart.css">
+    <link rel="stylesheet" href="../lib/org-chart/css/style.css">
+
+    <link href="../lib/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <script src="../scripts/util/browser-checker.js"></script>
     <script src="../lib/jquery/jquery-2.0.2.min.js"></script>
     <script src="../lib/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
     <script src="../lib/bootstrap-3.3.5-dist/js/bootstrap-notify.js"></script>
@@ -43,9 +47,13 @@
     <script src="../scripts/sys/finance/LPGSalesCashCtrl.js"></script>
     <script src="../scripts/sys/finance/dailyMonthlySalesCtrl.js"></script>
 
+    <script src="../scripts/sys/finance/departmentSelectModalCtrl.js"></script>
+    <script src="../scripts/sys/finance/financeService.js"></script>
     <script src="../lib/bootstrap-datetimepicker/moment.min.js"></script>
     <script src="../lib/bootstrap-datetimepicker/moment-with-locales.min.js"></script>
     <script src="../lib/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+
+    <script type="text/javascript" src="../lib/org-chart/script/jquery.orgchart.js"></script>
 
 
 
@@ -55,6 +63,19 @@
     <script src="../scripts/echarts/china.js"></script>
     <script src="../scripts/echarts/echarts-gl.min.js"></script>
     <style>
+        .orgchart td.left, .orgchart td.right, .orgchart td.top { border-color: #aaa; }
+        .orgchart td>.down { background-color: #aaa; }
+        .orgchart .middle-level .title { background-color: #006699; }
+        .orgchart .middle-level .content { border-color: #006699; }
+        .orgchart .product-dept .title { background-color: #009933; }
+        .orgchart .product-dept .content { border-color: #009933; }
+        .orgchart .rd-dept .title { background-color: #993366; }
+        .orgchart .rd-dept .content { border-color: #993366; }
+        .orgchart .pipeline1 .title { background-color: #996633; }
+        .orgchart .pipeline1 .content { border-color: #996633; }
+        .orgchart .frontend1 .title { background-color: #cc0066; }
+        .orgchart .frontend1 .content { border-color: #cc0066; }
+
     @media print {
         .noprint { display: none }
         table,th,td{
@@ -76,4 +97,10 @@
 </div>
 </body>
 </html>
+
+
+
+
+
+
 
