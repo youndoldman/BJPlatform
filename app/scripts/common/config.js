@@ -59,6 +59,9 @@ commonModule.constant('URI', {
         'salesByBayType': 'https://www.yunnanbaijiang.com/api/Report/Sales/ByPayType',//查询销售日报表(按支付类型查询)
         'salesByCustomerType': 'https://www.yunnanbaijiang.com/api/Report/Sales/ByCustomerType',//查询销售日报表(按支付类型查询)
         'saleContacts':'https://www.yunnanbaijiang.com/api/Report/SaleContacts',//销售往来日报表查询
+        'stock':'https://www.yunnanbaijiang.com/api/Report/Stock',//查询库存
+        'stockInOut':'https://www.yunnanbaijiang.com/api/Report/StockInOut',//查询出入库数量
+        'salesCash':'https://www.yunnanbaijiang.com/api/Report/SaleCash',//销售现金报表
 
 
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口

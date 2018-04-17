@@ -63,66 +63,92 @@
         </form>
     </div>
 
-    <table class="table table-striped table-hover props table-sm table-bordered table-condensed">
+    <table id="dailyMonthlySalesTable" class="table table-striped table-hover props table-sm table-bordered table-condensed">
         <thead>
         <tr>
             <td width="20%" colspan="2" class="message tableContentAdjust">{{q.liableDepartmentCode}}</td>
             <td width="40%" colspan="4" class="message tableContentAdjust">今日实际销售</td>
-            <td width="40%" colspan="4" class="message tableContentAdjust">月累计</td>
+            <td width="40%" colspan="4" class="message tableContentAdjust">月累计销售</td>
         </tr>
 
+
+        <!--<tr>-->
+            <!--<th width="20%" colspan="2" class="message tableContentAdjust">品名项目</th>-->
+            <!--<tr ng-repeat="item in data.customerTypesList">-->
+            <!--<td width="20%" colspan="2" class="message tableContentAdjust">{{item.name}}</td>-->
+            <!--</tr-->
+        <!--</tr>-->
 
         <tr>
-            <th width="20%" colspan="2" class="message tableContentAdjust">品名项目</th>
-            <tr ng-repeat="item in data.customerTypesList">
-            <td width="20%" colspan="2" class="message tableContentAdjust">{{item.name}}</td>
-            </tr>
-
+            <td width="20%" colspan="2" class="message tableContentAdjust">品名项目</td>
+            <!--<td width="20%" colspan="2" class="message tableContentAdjust">{{data.customerTypesList[1].name}}</td>-->
+            <!--<td width="20%" colspan="2" class="message tableContentAdjust">{{data.customerTypesList[2].name}}</td>-->
+            <!--<td width="20%" colspan="2" class="message tableContentAdjust">{{data.customerTypesList[1].name}}</td>-->
+            <!--<td width="20%" colspan="2" class="message tableContentAdjust">{{data.customerTypesList[2].name}}</td>-->
+            <td width="20%" colspan="2" class="message tableContentAdjust">普通住宅用户</td>
+            <td width="20%" colspan="2" class="message tableContentAdjust">餐饮用户</td>
+            <td width="20%" colspan="2" class="message tableContentAdjust">普通住宅用户</td>
+            <td width="20%" colspan="2" class="message tableContentAdjust">餐饮用户</td>
         </tr>
 
-        <!--<tr>-->
-            <!--<td width="20%" colspan="2" class="message tableContentAdjust">品名项目</td>-->
-            <!--<td width="20%" colspan="2" class="message tableContentAdjust">居民</td>-->
-            <!--<td width="20%" colspan="2" class="message tableContentAdjust">餐饮</td>-->
-            <!--<td width="20%" colspan="2" class="message tableContentAdjust">居民</td>-->
-            <!--<td width="20%" colspan="2" class="message tableContentAdjust">餐饮</td>-->
-        <!--</tr>-->
+        <tr>
+            <td width="10%" class="message tableContentAdjust">品名</td>
+            <td width="10%" class="message tableContentAdjust">规格</td>
 
-        <!--<tr>-->
-            <!--<td width="10%" class="message tableContentAdjust">品名</td>-->
-            <!--<td width="10%" class="message tableContentAdjust">规格</td>-->
+            <td width="10%" class="message tableContentAdjust">数量(瓶)</td>
+            <td width="10%" class="message tableContentAdjust">金额(元)</td>
 
-            <!--<td width="10%" class="message tableContentAdjust">数量</td>-->
-            <!--<td width="10%" class="message tableContentAdjust">金额</td>-->
+            <td width="10%" class="message tableContentAdjust">数量(瓶)</td>
+            <td width="10%" class="message tableContentAdjust">金额(元)</td>
 
-            <!--<td width="10%" class="message tableContentAdjust">数量</td>-->
-            <!--<td width="10%" class="message tableContentAdjust">金额</td>-->
+            <td width="10%" class="message tableContentAdjust">数量(瓶)</td>
+            <td width="10%" class="message tableContentAdjust">金额(元)</td>
 
-            <!--<td width="10%" class="message tableContentAdjust">数量</td>-->
-            <!--<td width="10%" class="message tableContentAdjust">金额</td>-->
-
-            <!--<td width="10%" class="message tableContentAdjust">数量</td>-->
-            <!--<td width="10%" class="message tableContentAdjust">金额</td>-->
-        <!--</tr>-->
+            <td width="10%" class="message tableContentAdjust">数量(瓶)</td>
+            <td width="10%" class="message tableContentAdjust">金额(元)</td>
+        </tr>
 
         </thead>
 
-        <!--&lt;!&ndash;可以根据后台获取的品项个数来动态添加&ndash;&gt;-->
-        <!--<tbody  ng-repeat="firstArray in data.goodsList">-->
-        <!--<tr  ng-repeat="item in firstArray.detail track by $index">-->
-            <!--<td width="10%" ng-if="$index ==0" rowspan={{firstArray.detail.length}}>{{item.goodsType.name}}</td>-->
-            <!--<td width="10%"  class="message tableContentAdjust">{{item.name}}</td>-->
+        <!--可以根据后台获取的品项个数来动态添加-->
+        <tbody  ng-repeat="firstArray in data.goodsList">
+        <tr  ng-repeat="item in firstArray.detail track by $index">
+            <td width="10%" ng-if="$index ==0" rowspan={{firstArray.detail.length}}>{{item.goodsType.name}}</td>
+            <td width="10%"  class="message tableContentAdjust">{{item.name}}</td>
 
-            <!--<td width="10%" class="message tableContentAdjust"></td>-->
-            <!--<td width="10%" class="message tableContentAdjust"></td>-->
-            <!--<td width="10%" class="message tableContentAdjust"></td>-->
-            <!--<td width="10%" class="message tableContentAdjust"></td>-->
-            <!--<td width="10%" class="message tableContentAdjust"></td>-->
-            <!--<td width="10%" class="message tableContentAdjust"></td>-->
-            <!--<td width="10%" class="message tableContentAdjust"></td>-->
-            <!--<td width="10%" class="message tableContentAdjust"></td>-->
-        <!--</tr>-->
-        <!--</tbody>-->
+            <td width="10%" class="message tableContentAdjust">{{item.salesByCustomerTypeDailyZhuzhai.count}}</td>
+            <td width="10%" class="message tableContentAdjust">{{item.salesByCustomerTypeDailyZhuzhai.sum}}</td>
+            <td width="10%" class="message tableContentAdjust">{{item.salesByCustomerTypeDailyCanyin.count}}</td>
+            <td width="10%" class="message tableContentAdjust">{{item.salesByCustomerTypeDailyCanyin.sum}}</td>
+            <td width="10%" class="message tableContentAdjust">{{item.salesByCustomerTypeMonthlyZhuzhai.count}}</td>
+            <td width="10%" class="message tableContentAdjust">{{item.salesByCustomerTypeMonthlyZhuzhai.sum}}</td>
+            <td width="10%" class="message tableContentAdjust">{{item.salesByCustomerTypeMonthlyCanyin.count}}</td>
+            <td width="10%" class="message tableContentAdjust">{{item.salesByCustomerTypeMonthlyCanyin.sum}}</td>
+        </tr>
+        </tbody>
+        <!--dailyCountZhuzhai:null,-->
+        <!--dailySumzZhuzhai:null,-->
+        <!--dailyCountCanyin:null,-->
+        <!--dailySumCanyin:null,-->
+
+        <!--monthlyCountZhuzhai:null,-->
+        <!--monthlySumZhuzhai:null,-->
+        <!--monthlyCountCanyin:null,-->
+        <!--monthlySumCanyin:null,-->
+        <tr>
+            <td width="%" colspan="2" class="message tableContentAdjust">合计</td>
+            <td width="10%" class="message tableContentAdjust">{{q.dailyCountZhuzhai}}</td>
+            <td width="10%" class="message tableContentAdjust">{{q.dailySumZhuzhai}}</td>
+
+            <td width="10%" class="message tableContentAdjust">{{q.dailyCountCanyin}}</td>
+            <td width="10%" class="message tableContentAdjust">{{q.dailySumCanyin}}</td>
+
+            <td width="10%" class="message tableContentAdjust">{{q.monthlyCountZhuzhai}}</td>
+            <td width="10%" class="message tableContentAdjust">{{q.monthlySumZhuzhai}}</td>
+
+            <td width="10%" class="message tableContentAdjust">{{q.monthlyCountCanyin}}</td>
+            <td width="10%" class="message tableContentAdjust">{{q.monthlySumCanyin}}</td>
+        </tr>
 
     </table>
 

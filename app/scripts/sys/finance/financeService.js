@@ -13,6 +13,10 @@ financeApp.service('FinanceService', ['$http', 'URI', 'promiseWrapper', function
     var salesByCustomerTypeUri = URI.resources.salesByCustomerType;//查询销售日报表(按客户类型查询)
     var customerTypeUri = URI.resources.customerType;//客户类型
 
+    var stockUri = URI.resources.stock;//查询库存
+    var stockInOutUri = URI.resources.stockInOut;//查询出入库数量
+    var salesCashUri = URI.resources.salesCash;//销售现金查询
+
     //查询客户类型
     this.searchCustomerType = function (params) {
         return promise.wrap($http.get(customerTypeUri, {params: params}));
@@ -44,5 +48,20 @@ financeApp.service('FinanceService', ['$http', 'URI', 'promiseWrapper', function
     this.searchSalesByCustomerType = function (params) {
         return promise.wrap($http.get(salesByCustomerTypeUri, {params: params}));
     };
+
+    //查询当期库存
+    this.searchStock =  function (params) {
+        return promise.wrap($http.get(stockUri, {params: params}));
+    };
+
+    //查询出入库数量
+    this.searchStockInOut =  function (params) {
+        return promise.wrap($http.get(stockInOutUri, {params: params}));
+    };
+
+    //查询现金销售
+    this.searchSalesCash = function (params) {
+        return promise.wrap($http.get(salesCashUri, {params: params}));
+    }
 }]);
 
