@@ -40,8 +40,8 @@ commonModule.constant('URI', {
         'goodsTypes': '../../../api/GoodsTypes',//商品类型
 
         'goodsPriceHistory': '../../../api/Goods/PriceHistory',//商品价格历史
-        'subdistrict':'http://restapi.amap.com/v3/config/district',//高德地图行政区域接口
-        'geocode':'http://restapi.amap.com/v3/geocode/geo',//高德地图逆地址解码接口
+        'subdistrict':'https://restapi.amap.com/v3/config/district',//高德地图行政区域接口
+        'geocode':'https://restapi.amap.com/v3/geocode/geo',//高德地图逆地址解码接口
         'bottle': '../../../api/GasCylinder',//钢瓶接口
         'bottleHandOver': '../../../api/GasCylinder/TakeOver',//钢瓶责任交接
         'gpsBind': '../../../api/GasCylinder/Bind',//定位终端绑定接口
@@ -62,6 +62,14 @@ commonModule.constant('URI', {
         'stock':'../../../api/Report/Stock',//查询库存
         'stockInOut':'../../../api/Report/StockInOut',//查询出入库数量
         'salesCash':'../../../api/Report/SaleCash',//销售现金报表
+
+
+        'mendType': '../../../api/MendTypes',//报修类型接口
+        'mend': '../../../api/Mend',//报修单接口
+        'securityType': '../../../api/SecurityTypes',//安检类型接口
+        'security': '../../../api/Security',//安检单接口
+        'complaintType': '../../../api/ComplaintTypes',//投诉类型接口
+        'complaint': '../../../api/Complaint',//投诉单接口
 
 
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
