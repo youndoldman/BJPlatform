@@ -23,7 +23,7 @@ public class DiscountStrategyController
     private DiscountStrategyService discountStrategyService;
 
     @RequestMapping(value = "/api/DiscountStrategies", method = RequestMethod.GET, produces = "application/json")
-    @OperationLog(desc = "获取商品列表")
+    @OperationLog(desc = "获取优惠策略列表")
     public ResponseEntity retrieve(@RequestParam(value = "name", defaultValue = "") String name,
                                    @RequestParam(value = "status", required = false) Integer status,
                                    @RequestParam(value = "conditionTypeCode", defaultValue = "") String conditionTypeCode,

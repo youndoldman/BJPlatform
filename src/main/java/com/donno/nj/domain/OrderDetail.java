@@ -18,7 +18,7 @@ public class OrderDetail implements Serializable
 
     private Float   dealPrice;//成交单价
     private Integer quantity;//数量
-    private Integer subtotal;//金额小计
+    private Float subtotal;//金额小计
 
     private Date createTime;
     private Date updateTime;
@@ -76,7 +76,7 @@ public class OrderDetail implements Serializable
         return  quantity;
     }
 
-    public  Integer getSubtotal()
+    public  Float getSubtotal()
     {
         return  subtotal;
     }
@@ -140,7 +140,7 @@ public class OrderDetail implements Serializable
         this.quantity = quantity;
     }
 
-    public void setSubtotal(Integer subtotal)
+    public void setSubtotal(Float subtotal)
     {
         this.subtotal = subtotal;
     }
