@@ -14,6 +14,7 @@ public class Order implements Serializable
     String callInPhone;
     Customer customer;
 
+    private Float  originalAmount;//订单原始金额
     private Float  orderAmount;//订单金额
     private PayType payType;//支付方式
 
@@ -80,6 +81,10 @@ public class Order implements Serializable
     public Float getOrderAmount()
     {
         return orderAmount;
+    }
+
+    public Float getOriginalAmount() {
+        return originalAmount;
     }
 
     public PayType getPayType()
@@ -222,6 +227,10 @@ public class Order implements Serializable
     public void setOrderAmount(Float orderAmount)
     {
         this.orderAmount = orderAmount;
+    }
+
+    public void setOriginalAmount(Float originalAmount) {
+        this.originalAmount = originalAmount;
     }
 
     public void setPayType(PayType payType)

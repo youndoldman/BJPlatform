@@ -237,12 +237,12 @@ public class DiscountStrategyServiceImpl implements DiscountStrategyService
         /*用户级别策略检查*/
         if (discountConditionType.getCode().compareTo(ServerConstantValue.DISCOUNT_CONDITION_TYPE_CUSTOMER_LEVEL) == 0)
         {
-            checkCustomerLevel(discountStrategy.getDiscountConditionValue());
+            checkCustomerLevel(discountStrategy.getDiscountConditionValue());//检查客户级别是否存在
             discountStrategy.getDiscountConditionType().setId(targetConditionType.getId());
         }
         else if (discountConditionType.getCode().compareTo(ServerConstantValue.DISCOUNT_CONDITION_TYPE_CUSTOMER_TYPE) == 0)/*用户类型策略检查*/
         {
-            checkCustomerType(discountStrategy.getDiscountConditionValue());
+            checkCustomerType(discountStrategy.getDiscountConditionValue());//检查客户类别是否存在
             discountStrategy.getDiscountConditionType().setId(targetConditionType.getId());
         }
     }

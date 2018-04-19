@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--钢瓶动态（领用、送检、退维修、退报废瓶、退押金瓶、押瓶）信息统计（门店） -->
+
+<mapper namespace="com.donno.nj.dao.GasCyrDynRptDao">
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.GasCyrDynRpt">
+        <result column="department_code" property="departmentCode" jdbcType="VARCHAR"/>
+        <result column="department_name" property="departmentName" jdbcType="VARCHAR"/>
+        <result column="spec_code" property="specCode" jdbcType="VARCHAR"/>
+        <result column="spec_name" property="specName" jdbcType="VARCHAR"/>
+        <result column="amount" property="amount" jdbcType="FLOAT"/>
+    </resultMap>
+
+    <sql id="qryGasCyrDynRpt">
+        select t_department.id as department_id, t_department.name as department_name, t_department.code as department_code,
+        t_gas_cylinder_spec.name as spec_name,t_gas_cylinder_spec.code as spec_code,
+        sum(t_gas_cyr_dyn_detail.amount) as amount
+        from   t_sysuser,t_department,t_gas_cyr_dyn_detail
+        where
+              t_gas_cyr_dyn_detail.oper_idx = t_sysuser.user_idx
+        and   t_sysuser.department_idx = t_department.id
+        and   t_gas_cyr_dyn_detail.gas_cyr_spec_idx = t_gas_cylinder_spec.id
+
+        <if test="departmentCode != null">
+            and (t_department.code = #{departmentCode})
+        </if>
+
+        <if test="startTime != null">
+            and ( t_gas_cyr_dyn_detail.create_time >= #{startTime}  )
+        </if>
+        <if test="endTime != null">
+            and ( #{endTime}  >= t_gas_cyr_dyn_detail.create_time )
+        </if>
+
+        <if test="operType != null">
+            and t_customer_credit_detail.credit_type = #{operType}
+        </if>
+
+        group by t_department.id,t_gas_cylinder_spec.id
+    </sql>
+
+
+    <select id="getList" resultMap="DetailResultMap">
+        <include refid="qryGasCyrDynRpt"/>
+
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+    <select id="count" resultType="Integer">
+        SELECT COUNT(*)
+        from
+        (
+        <include refid="qryGasCyrDynRpt"/>
+        )
+        as b
+    </select>
+
+</mapper>

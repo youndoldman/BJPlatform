@@ -79,6 +79,9 @@ public class OrderServiceImpl implements OrderService
     @Autowired
     private DiscountStrategyDao discountStrategyDao;
 
+    @Autowired
+    private DiscountDetailDao discountDetailDao;
+
     @Override
     public Optional<Order> findBySn(String sn) {
         return Optional.fromNullable(orderDao.findBySn(sn));
@@ -107,6 +110,7 @@ public class OrderServiceImpl implements OrderService
         {
             throw new ServerSideBusinessException("订单信息不全，请补充订单信息！", HttpStatus.NOT_ACCEPTABLE);
         }
+
 
         /*默认非加急*/
         if (order.getUrgent() == null)
@@ -153,17 +157,15 @@ public class OrderServiceImpl implements OrderService
         {
             throw new ServerSideBusinessException("订单信息不全，请补充订单客户信息！", HttpStatus.NOT_ACCEPTABLE);
         }
+
+        Customer customer = customerDao.findByUserId(order.getCustomer().getUserId());
+        if ( customer == null)
+        {
+            throw new ServerSideBusinessException("客户信息不正确，没有客户信息！", HttpStatus.NOT_ACCEPTABLE);
+        }
         else
         {
-            Customer customer = customerDao.findByUserId(order.getCustomer().getUserId());
-            if ( customer == null)
-            {
-                throw new ServerSideBusinessException("客户信息不正确，没有客户信息！", HttpStatus.NOT_ACCEPTABLE);
-            }
-            else
-            {
-                order.setCustomer(customer);
-            }
+            order.setCustomer(customer);
         }
 
         //生成定单编号
@@ -171,15 +173,27 @@ public class OrderServiceImpl implements OrderService
         String dateFmt =  new SimpleDateFormat("yyyyMMddHHmmssSSS").format(curDate);
         order.setOrderSn(dateFmt);
 
+        order.setOriginalAmount(0f);
+        order.setOrderAmount(0f);
+
         /*根据结算类型自动设置支付方式*/
         setPayType(order.getCustomer().getSettlementType(),order);
 
         /*插入订单总表*/
         orderDao.insert(order);
 
+        Float dealAmount = 0f; //订单实际成交总金额
+        Float originalAmount = 0f;//订单原始价格总金额
         /*插入详单表*/
         for(OrderDetail orderDetail : order.getOrderDetailList())
         {
+            if (orderDetail.getQuantity() == null)
+            {
+                throw new ServerSideBusinessException("请填写商品数量！", HttpStatus.NOT_ACCEPTABLE);
+            }
+
+            Float dealPrice = 0f;   //订单中每个商品成交单价
+
             /*校验商品信息是否存在*/
             if (orderDetail.getGoods() == null || orderDetail.getGoods().getCode() == null || orderDetail.getGoods().getCode().trim().length() == 0)
             {
@@ -190,26 +204,94 @@ public class OrderServiceImpl implements OrderService
             {
                 throw new ServerSideBusinessException("商品信息不存在！", HttpStatus.NOT_ACCEPTABLE);
             }
+            orderDetail.setGoods(good);
 
-            /*查询优惠*/
-//            discountStrategyDao.
+            /*查询优惠,计算满足条件的每件商品优惠后价格，及订单总金额*/
+            if (customer.getSettlementType().getCode().equals(ServerConstantValue.SETTLEMENT_TYPE_COMMON_USER) ||
+            customer.getSettlementType().getCode().equals(ServerConstantValue.SETTLEMENT_TYPE_MONTHLY_CREDIT   ))//普通用户,月结用户 可以享受优惠
+            {
+                dealPrice = discount(orderDetail,customer);
+            }
+            else
+            {
+                dealPrice = good.getPrice()  ;
+            }
 
-            /*计算价格*/
+            Float originalSubtotal = good.getPrice() *  orderDetail.getQuantity();//原价小计
+            originalAmount = originalAmount + originalSubtotal ; //原价总计
 
+            Float dealSubtotal = dealPrice * orderDetail.getQuantity();//成交价格小计
+            dealAmount = dealAmount + dealSubtotal; //成交价格总计
+
+            orderDetail.setOriginalPrice(good.getPrice());
+            orderDetail.setDealPrice(dealPrice);
+            orderDetail.setSubtotal(dealSubtotal);
             orderDetail.setOrderIdx(order.getId());
             orderDetail.setGoods(good);
 
             orderDetailDao.insert(orderDetail);//插入数据库订单详情表
         }
 
-        /*校验订单总金额，更新订单总金额*/
+        /*更新订单总金额*/
+        Order orderUpdateAmount = new Order();
+        orderUpdateAmount.setId(order.getId());
+        orderUpdateAmount.setOriginalAmount(originalAmount);
+        orderUpdateAmount.setOrderAmount(dealAmount);
+        orderDao.update(orderUpdateAmount);
 
         /*启动流程*/
         createWorkFlow(order);
 
         /*订单创建日志*/
         OrderOperHistory(order,order.getOrderStatus());
+    }
 
+    public  Float discount(OrderDetail orderDetail,Customer customer)
+    {
+        Float dealPrice = orderDetail.getGoods().getPrice();
+
+        Map params = new HashMap<String,String>();
+
+        params.putAll(ImmutableMap.of("status", DiscountStrategyStatus.DSSEffecitve.getIndex()));
+        params.putAll(ImmutableMap.of("startTime", new Date()));
+        params.putAll(ImmutableMap.of("endTime", new Date()));
+
+        List<DiscountStrategy>  discountStrategies = discountStrategyDao.getList(params);
+        for (DiscountStrategy discountStrategy : discountStrategies)
+        {
+            if ( (discountStrategy.getDiscountConditionType().getCode().equals(ServerConstantValue.DISCOUNT_CONDITION_TYPE_CUSTOMER_LEVEL)
+                    && customer.getCustomerLevel().getCode().equals(discountStrategy.getDiscountConditionValue()))    /*按用户级别*/
+                    || (discountStrategy.getDiscountConditionType().getCode().equals(ServerConstantValue.DISCOUNT_CONDITION_TYPE_CUSTOMER_TYPE)
+                    && customer.getCustomerType().getCode().equals(discountStrategy.getDiscountConditionValue()))   //按客户类别
+                    )
+            {
+                /*找到该策略中对应的订单商品*/
+                for (DiscountDetail discountDetail : discountStrategy.getDiscountDetails())
+                {
+                    if (orderDetail.getGoods().getCode().equals(discountDetail.getGoods().getCode()))//订单详单中的商品
+                    {
+                        if (discountStrategy.getDiscountType() == DiscountType.DTCheapX )//直减
+                        {
+                            dealPrice = dealPrice - discountDetail.getDiscount();
+                            break;
+                        }
+                        else if(discountStrategy.getDiscountType() == DiscountType.DTCheapX )//百分比折扣
+                        {
+                            dealPrice = dealPrice - dealPrice * discountDetail.getDiscount() / 100;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            /*优惠是否叠加*/
+            if (discountStrategy.getUseType() == DiscountUseType.DUTExclusive)
+            {
+                break;
+            }
+        }
+
+        return dealPrice;
     }
 
 //

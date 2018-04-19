@@ -56,7 +56,7 @@
     <select id="getList" resultMap="DetailResultMap">
         SELECT *
         FROM <include refid="TblDiscountStrategy"/>
-    WHERE
+        WHERE
         id > 0
 
         <if test="name != null">
@@ -81,11 +81,11 @@
         </if>
 
         <if test="startTime != null"  >
-            AND  ( start_time >= #{startTime} )
+            AND  ( #{startTime}  >= start_time )
         </if>
 
         <if test="endTime != null"  >
-            AND  ( #{endTime} >= end_time)
+            AND  ( end_time>=  #{endTime})
         </if>
 
 
