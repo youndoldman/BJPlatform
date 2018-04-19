@@ -40,8 +40,8 @@ commonModule.constant('URI', {
         'goodsTypes': '../../../api/GoodsTypes',//商品类型
 
         'goodsPriceHistory': '../../../api/Goods/PriceHistory',//商品价格历史
-        'subdistrict':'http://restapi.amap.com/v3/config/district',//高德地图行政区域接口
-        'geocode':'http://restapi.amap.com/v3/geocode/geo',//高德地图逆地址解码接口
+        'subdistrict':'https://restapi.amap.com/v3/config/district',//高德地图行政区域接口
+        'geocode':'https://restapi.amap.com/v3/geocode/geo',//高德地图逆地址解码接口
         'bottle': '../../../api/GasCylinder',//钢瓶接口
         'bottleHandOver': '../../../api/GasCylinder/TakeOver',//钢瓶责任交接
         'gpsBind': '../../../api/GasCylinder/Bind',//定位终端绑定接口
@@ -62,6 +62,14 @@ commonModule.constant('URI', {
         'stock':'../../../api/Report/Stock',//查询库存
         'stockInOut':'../../../api/Report/StockInOut',//查询出入库数量
         'salesCash':'../../../api/Report/SaleCash',//销售现金报表
+
+
+        'mendType': '../../../api/MendTypes',//报修类型接口
+        'mend': '../../../api/Mend',//报修单接口
+        'securityType': '../../../api/SecurityTypes',//安检类型接口
+        'security': '../../../api/Security',//安检单接口
+        'complaintType': '../../../api/ComplaintTypes',//投诉类型接口
+        'complaint': '../../../api/Complaint',//投诉单接口
 
 
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
@@ -165,6 +173,18 @@ commonModule.constant('NavItem', {
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/stockControl",
             icon: "fa-plane"
+        }, {
+            index: 2,
+            name: "报修处理",
+            target: "_blank",
+            href: "./shopCenter.htm#/ShopManage/Mend",
+            icon: "fa-plane"
+        }, {
+            index: 3,
+            name: "安检处理",
+            target: "_blank",
+            href: "./shopCenter.htm#/ShopManage/Security",
+            icon: "fa-plane"
         }]
     },
     'CustomService': {
@@ -196,36 +216,54 @@ commonModule.constant('NavItem', {
             icon: "fa-plane"
         }, {
             index: 4,
+            name: "报修处理",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/Mend",
+            icon: "fa-plane"
+        }, {
+            index: 5,
+            name: "安检处理",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/Security",
+            icon: "fa-plane"
+        }, {
+            index: 6,
+            name: "投诉处理",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/Complaint",
+            icon: "fa-plane"
+        }, {
+            index: 7,
             name: "坐席报表1",
             target: "_blank",
             href: "./customService.htm#/CustomService/report1",
             icon: "fa-table"
         }, {
-            index: 5,
+            index: 8,
             name: "坐席报表2",
             target: "_blank",
             href: "./customService.htm#/CustomService/report2",
             icon: "fa-table"
         }, {
-            index: 6,
+            index: 9,
             name: "工作组报表3",
             target: "_blank",
             href: "./customService.htm#/CustomService/report3",
             icon: "fa-table"
         }, {
-            index: 7,
+            index: 10,
             name: "工作组报表4",
             target: "_blank",
             href: "./customService.htm#/CustomService/report4",
             icon: "fa-table"
         }, {
-            index: 8,
+            index: 11,
             name: "工作组报表5",
             target: "_blank",
             href: "./customService.htm#/CustomService/report5",
             icon: "fa-table"
         }, {
-            index: 9,
+            index: 12,
             name: "工作组报表6",
             target: "_blank",
             href: "./customService.htm#/CustomService/report6",
