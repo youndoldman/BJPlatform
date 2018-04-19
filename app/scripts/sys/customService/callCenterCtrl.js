@@ -94,6 +94,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         };
 
         $scope.searchParam = {
+            customerID:null,
+            customerName:null,
             phone:null,
             address:null
         };
@@ -305,6 +307,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             $scope.vm.customerList = [];
             $scope.vm.currentCustomer = "";
             var queryParams = {
+                userId:$scope.searchParam.customerID,
+                userName:$scope.searchParam.customerName,
                 phone:$scope.searchParam.phone,
                 addrDetail:$scope.searchParam.address,
                 pageNo: $scope.pagerCustomer.getCurPageNo(),
@@ -383,7 +387,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         };
 
         var init = function () {
-            $scope.pagerCustomer.pageSize=2;
+            $scope.pagerCustomer.pageSize=3;
             $scope.pagerHistory.pageSize=2;
             $scope.pagerCustomer.update($scope.qCustomer, 0, 1);
             $scope.pagerHistory.update($scope.qHistory, 0, 1);
@@ -504,4 +508,11 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 udcModal.info({"title": "处理结果", "message": "创建投诉单失败 "+value.message});
             })
         };
+
+        $scope.config = {
+            haveCylinders:[{name:"是",code:true},{name:"否",code:false}],
+            customerStatus:[{name:"正常",code:0},{name:"注销",code:1}],
+
+        };
+
     }]);

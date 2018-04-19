@@ -102,7 +102,7 @@
                                 <label>客户状态</label>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.status">
+                                <select name="customerStatus" ng-model="vm.currentCustomer.status" ng-options="customerStatus.code as customerStatus.name for customerStatus in config.customerStatus" class="form-control" ng-selected=""></select>
                             </div>
 
                             <div style="margin-left: 20px;" class="col-xs-2 text-left">
@@ -126,7 +126,7 @@
 
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <select name="haveCylinder" ng-model="vm.currentCustomer.haveCylinder" ng-options="haveCylinder for haveCylinder in config.haveCylinders" class="form-control" ng-selected=""></select>
+                                <select name="haveCylinder" ng-model="vm.currentCustomer.haveCylinder" ng-options="haveCylinder.code as haveCylinder.name for haveCylinder in config.haveCylinders" class="form-control" ng-selected=""></select>
                             </div>
                         </div>
                         <br>

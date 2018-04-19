@@ -1,28 +1,29 @@
 'use strict';
 
-manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'GoodsService', 'title', 'initVal','udcModal',function ($scope, close, GoodsService, title, initVal, udcModal) {
+manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'GoodsService', 'title', 'initVal','udcModal','$timeout',function ($scope, close, GoodsService, title, initVal, udcModal,$timeout) {
     $scope.modalTitle = title;
+    $timeout(function() {
+        $(function () {
 
-    $(function () {
-
-        $('#datetimepickerStartExcute').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm',
-            locale: moment.locale('zh-cn'),
-            //sideBySide:true,
-            showTodayButton:true,
-            toolbarPlacement:'top',
-        });
-
-    });
-    $(function () {
-        $('#datetimepickerStartExcute').datetimepicker()
-            .on('dp.change', function (ev) {
-                var date = ev.date._d;
-                var month = date.getMonth()+1;
-                $scope.vm.currentPriceAjustment.effectTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
-                    +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+            $('#datetimepickerStartExcute').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton: true,
+                toolbarPlacement: 'top',
             });
-    });
+
+        });
+        $(function () {
+            $('#datetimepickerStartExcute').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth() + 1;
+                    $scope.vm.currentPriceAjustment.effectTime = date.getFullYear() + "-" + month + "-" + date.getDate() + " "
+                        + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+                });
+        });
+    })
 
     $scope.vm = {
         currentPriceAjustment: {

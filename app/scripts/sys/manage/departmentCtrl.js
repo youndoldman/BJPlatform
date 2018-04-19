@@ -74,6 +74,10 @@ manageApp.controller('DepartmentCtrl', ['$scope', '$rootScope', '$filter', '$loc
         }
         //增加部门
         $scope.addDepartment = function(){
+            if(($scope.q.selectDepartment.code==null)||($scope.q.addDepartment.code==null)){
+                udcModal.info({"title": "错误信息", "message": "未选择部门或信息不全！"});
+                return;
+            }
             $scope.q.addDepartment.parentDepartment = $scope.q.selectDepartment;
             UserService.createDepartment($scope.q.addDepartment).then(function () {
                 udcModal.info({"title": "处理结果", "message": "增加部门成功"});
@@ -84,6 +88,10 @@ manageApp.controller('DepartmentCtrl', ['$scope', '$rootScope', '$filter', '$loc
         };
         //删除部门
         $scope.deleteDepartment = function(){
+            if($scope.q.selectDepartment.code==null){
+                udcModal.info({"title": "错误信息", "message": "未选择部门或信息不全！"});
+                return;
+            }
             UserService.deleteDepartment($scope.q.selectDepartment).then(function () {
                 udcModal.info({"title": "处理结果", "message": "删除部门成功"});
                 retrieveRootDepartment();
@@ -93,6 +101,10 @@ manageApp.controller('DepartmentCtrl', ['$scope', '$rootScope', '$filter', '$loc
         };
         //修改部门
         $scope.modifyDepartment = function(){
+            if(($scope.q.selectDepartment.code==null)||($scope.q.modifyDepartment.code==null)){
+                udcModal.info({"title": "错误信息", "message": "未选择部门或信息不全！"});
+                return;
+            }
             UserService.modifyDepartment($scope.q.selectDepartment, $scope.q.modifyDepartment).then(function () {
                 udcModal.info({"title": "处理结果", "message": "修改部门成功"});
                 retrieveRootDepartment();

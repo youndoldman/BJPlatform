@@ -12,7 +12,8 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
         var historyQ = $scope.pager.getQ();
 
         $scope.q = {
-            CustomerName: historyQ.CustomerName || ""
+            CustomerName: historyQ.CustomerName || "",
+            CustomerID: historyQ.CustomerName || ""
         };
 
         $scope.vm = {
@@ -136,7 +137,8 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
         }
         var searchCustomer = function () {
             var queryParams = {
-                name: $scope.q.CustomerName,
+                userId: $scope.q.CustomerID,
+                userName: $scope.q.CustomerName,
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize
             };
