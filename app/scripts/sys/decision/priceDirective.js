@@ -18,25 +18,26 @@ decisionApp.directive('price', ['DecisionService', function(DecisionService)  {
                 //加工数据，按商品号分开
                 goodsPriceHistoryList = goodsPriceHistory.items;
                 var lastCode = null;
+                var lastName = null;
                 var unitData = {legend:null, items:[]};
                 for (var i=0;i<goodsPriceHistoryList.length;i++){
                     var code = goodsPriceHistoryList[i].code;
                     if((lastCode!=null)&&(lastCode!=code)){
                         dataDealed.push(unitData);
-                        unitData.legend = lastCode;
+                        unitData.legend = lastName;
                         unitData = {legend:null, items:[]};
                     }
-
                     var tempData = {name:null,value:null};
                     var date = new Date(goodsPriceHistoryList[i].effectTime);
                     tempData.name = date.toString();
                     tempData.value = [goodsPriceHistoryList[i].effectTime,goodsPriceHistoryList[i].price];
                     unitData.items.push(tempData);
                     lastCode = code;
+                    lastName = goodsPriceHistoryList[i].name;
                 }
 
                 if(unitData.items.length!=0){
-                    unitData.legend = lastCode;
+                    unitData.legend = lastName;
                     dataDealed.push(unitData);
                 }
                 drawChart(dataDealed);

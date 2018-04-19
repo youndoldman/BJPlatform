@@ -10,7 +10,11 @@
     <div class="toolbar">
         <form role="form">
             <div class="inline-group">
-                <label class="input"><input type="text" class="form-control input-sm" ng-model="q.userName" ng-change="search()" placeholder="用户名称"> </label>
+                <label class="input">客户ID：</label>
+                <label class="input"><input type="text"  class="form-control" ng-model="q.CustomerID"></label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label class="input">客户姓名：</label>
+                <label class="input"><input type="text"  class="form-control" ng-model="q.CustomerName"></label>
                 <button type="submit" class="btn btn-sm btn-primary" ng-click="search()"><i class="fa fa-search"></i> 搜索 </button>
                 <button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUp()"><i class="fa fa-plus"></i> 新增用户 </button>
             </div>

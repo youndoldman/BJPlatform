@@ -186,7 +186,7 @@ public class GoodsServiceImpl implements GoodsService
 
 
     @Override
-    @OperationLog(desc = "查询商品信息")
+    @OperationLog(desc = "查询调价历史")
     public List<AdjustPriceHistory> retrieveAdjustPriceHistory(Map params)
     {
         List<AdjustPriceHistory> AdjustPriceHistorys = goodsDao.getAdjustPriceHistory(params);

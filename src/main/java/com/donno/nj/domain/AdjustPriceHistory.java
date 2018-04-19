@@ -9,6 +9,7 @@ public class AdjustPriceHistory implements Serializable
 {
 
     private String  code;
+    private String  name;
     private Float   price;
 
     private Date effect_time;
@@ -26,6 +27,11 @@ public class AdjustPriceHistory implements Serializable
         return price;
     }
 
+    public String getName()
+    {
+        return name;
+    }
+
     public String getCode()
     {
         return code;
@@ -41,6 +47,10 @@ public class AdjustPriceHistory implements Serializable
     * 属性设置
     * */
 
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 
     public void setCode(String code)
     {
@@ -65,6 +75,7 @@ public class AdjustPriceHistory implements Serializable
     {
         return MoreObjects.toStringHelper(this)
                 .add("code", code)
+                .add("name", name)
                 .add("price",price)
                 .add("effect_time", effect_time)
                 .toString();

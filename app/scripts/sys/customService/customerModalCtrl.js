@@ -22,7 +22,9 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
 
         settlementTypes:[],
 
-        haveCylinders:[true, false],
+        haveCylinders:[{name:"是",code:true},{name:"否",code:false}],
+        customerStatus:[{name:"正常",code:0},{name:"注销",code:1}],
+
         provinces: [],
         citys: [],
         countys: [],
@@ -135,8 +137,9 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
         }
 
         //修改客户公司的结构
-        var company = {name:""};
+        var company = null;
         if(title == "修改客户") {
+            company = {name:""};
             if ($scope.vm.currentCustomer.customerCompany!=null){
                 company.name = $scope.vm.currentCustomer.customerCompany.name;
             }
@@ -146,6 +149,7 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
 
         if(title == "新增客户") {
             $scope.vm.currentCustomer.haveCylinder = false;
+            $scope.vm.currentCustomer.status = 0;
         }else {
         }
         CustomerManageService.retrieveCustomerSource().then(function (customerSources) {
