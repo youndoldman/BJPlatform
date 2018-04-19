@@ -44,7 +44,7 @@
 
                                         <label class="col-md-2 control-label input-label">条件取值：</label>
                                         <div class="col-md-3 input-width-sm">
-                                            <select name="discountConditionValue" ng-model="value" ng-options="x.name for x in temp.customersList" class="form-control" ng-selected="" ng-change="customersLevelTypeChange()"></select>
+                                            <select name="discountConditionValue" ng-model="value" ng-options="x.code as x.name for x in temp.customersList" class="form-control" ng-selected="" ng-change="customersLevelTypeChange()"></select>
                                         </div>
                                     </div>
 
@@ -65,7 +65,7 @@
                                         <select name="goods" ng-model="temp.selectedGoods" ng-options="goods.name for goods in temp.goodsList" class="form-control" ng-selected="" ng-change="goodsChange()"></select>
                                     </div>
 
-                                    <button type="button" class="btn btn-sm btn-success pull-right" ng-click="addToCart()"><i class="fa fa-plus"></i> 添加调价列表 </button>
+                                    <button type="button" class="btn btn-sm btn-success pull-right" ng-click="addToCart()"><i class="fa fa-plus"></i>添加调价列表 </button>
                                 </div>
 
                                 <div class="row" style="margin-top: 15px">
@@ -73,7 +73,7 @@
                                     <div class="col-md-3 input-width-sm">
                                         <input type="number"  class="form-control" ng-model="temp.selectedGoods.price" disabled>
                                     </div>
-                                    <label class="col-md-2 control-label input-label">{{vm.discountText }}</label>
+                                    <label class="col-md-2 control-label input-label">{{vm.discountText}}</label>
                                     <div class="col-md-3 input-width-sm">
                                         <input type="number"  class="form-control" ng-model="temp.adjustGoodsPrice" >
                                     </div>
@@ -105,7 +105,7 @@
                                     <td class="message">{{adjustPriceDetail.goods.goodsType.name}}</td>
                                     <td class="message">{{adjustPriceDetail.goods.specifications}}</td>
                                     <td class="message">{{adjustPriceDetail.goods.price}}</td>
-                                    <td class="message">{{adjustPriceDetail.price}}</td>
+                                    <td class="message">{{adjustPriceDetail.discount}}</td>
                                     <td class="operate">
                                         <button title="删除" ng-click="deleteGoodsFromCart(adjustPriceDetail)" type="button" class="btn btn-primary btn-outline btn-xs">
                                             <i class="fa fa-trash-o"></i>

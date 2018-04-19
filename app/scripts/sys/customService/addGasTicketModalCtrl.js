@@ -42,6 +42,7 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
                 });
         });
     });
+
     $scope.q = {
         customer:{userId:null},
         operator:{userId:null},

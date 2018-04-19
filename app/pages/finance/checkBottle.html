@@ -58,7 +58,7 @@
                     <label class="input"><input type="text"  id="datetimepickerMonthlyTimeEnd"  class="form-control" ng-model="monthlyData.endTime"></label>
                 </div>
                 <div class="col-md-1">
-                    <button ng-click="search()" class="btn btn-sm btn-primary noprint"><i class="fa fa-search"></i>查询 </button>
+                    <button ng-click="search()" class="btn btn-sm btn-primary noprint"><i class="fa fa-search"></i>提交并查询 </button>
                 </div>
                 <div class="col-md-1">
                     <button ng-click="printPage()" class="btn btn-sm btn-primary noprint pull-right"><i class="fa fa-print"></i>打印</button>
@@ -86,9 +86,9 @@
             <td width="4.8%" class="message tableContentAdjust">本月累计退押瓶数量</td>
             <td width="4.8%" class="message tableContentAdjust">本日库存</td>
             <td width="4.8%" class="message tableContentAdjust">押瓶数量</td>
-            <td width="4.8%" class="message tableContentAdjust">钢检收费标准</td>
-            <td width="4.8%" class="message tableContentAdjust">本日应收钢检费</td>
-            <td width="4.8%" class="message tableContentAdjust">本日实收钢检费</td>
+            <td width="4.8%" class="message tableContentAdjust">钢检费标准</td>
+            <td width="4.8%" class="message tableContentAdjust">押瓶费标准</td>
+            <td width="4.8%" class="message tableContentAdjust">本日收取钢检费</td>
             <td width="4.8%" class="message tableContentAdjust">本日收取瓶押金额</td>
             <td width="4.8%" class="message tableContentAdjust">本日退返瓶押金额</td>
         </tr>
@@ -99,83 +99,64 @@
         <!--<tr ng-repeat="item in vm.goodsTypes">-->
         <tr ng-repeat="item in vm.goodsTypes">
             <td width="4%" class="message tableContentAdjust">{{item.name}}</td>
-            <td width="4.8%" class="message tableContentAdjust">
-                <label class="input"><input type="text" maxlength="10"  class="form-control inputStyle" ng-model="item.yesterdayInventory"></label>
-            </td>
+
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
             <td width="4.8%" class="message tableContentAdjust">
-                <label class="input"><input type="text"  id="todayLYQuantity"  class="form-control inputStyle" ng-model="item.todayLYQuantity"></label>
+                <label class="input"><input type="text"  id="todayLYQuantity"  class="form-control inputStyle"></label>
             </td>
 
-            <td width="4.8%" class="message tableContentAdjust">
-                <label class="input"><input type="text"  id="monthlySumLYQuantity"  class="form-control inputStyle" ng-model="item.monthlySumLYQuantity"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
             <td width="4.8%" class="message tableContentAdjust">
                 <label class="input"><input type="text"  id="todaySJQuantity"  class="form-control inputStyle" ng-model="item.todaySJQuantity"></label>
             </td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.monthlySumSJQuantity"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
+            <td width="4.8%" class="message tableContentAdjust">
                 <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayReturnRepairQuantity"></label>
             </td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.monthlySumReturnQuantity"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
+            <td width="4.8%" class="message tableContentAdjust">
                 <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.todayInQuantity"></label>
             </td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.monthlySumInQuantity"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
+            <td width="4.8%" class="message tableContentAdjust">
                 <label class="input"><input type="text"    class="form-control inputStyle" ng-model="item.todayScrappedQuantity"></label>
             </td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.monthlySumScrappedQuantity"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
+            <td width="4.8%" class="message tableContentAdjust">
                 <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayReturnDepositQuantity"></label>
             </td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.monthlySumReturnDepositQuantity"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayInventory"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
+            <td width="4.8%" class="message tableContentAdjust">
                 <label class="input"><input type="text"    class="form-control inputStyle" ng-model="item.depositBottleQuantity"></label>
             </td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"    class="form-control inputStyle" ng-model="item.checkFeeStandard"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayShouldInCheckFee"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
+            <td width="4.8%" class="message tableContentAdjust">
                 <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.todayRealInCheckFee"></label>
             </td>
 
-            <td width="4.8%">
+            <td width="4.8%" class="message tableContentAdjust">
                 <label class="input"><input type="text"    class="form-control inputStyle" ng-model="item.todayInDepositFee"></label>
             </td>
 
-            <td width="4.8%">
+            <td width="4.8%" class="message tableContentAdjust">
                 <label class="input"><input type="text"    class="form-control inputStyle" ng-model="item.todayReturnDepositFee"></label>
             </td>
         </tr>
@@ -183,85 +164,46 @@
         <tr>
             <td width="4.8%" class="message tableContentAdjust">小计</td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.monthlySumSJQuantity"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayReturnRepairQuantity"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.monthlySumReturnQuantity"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.todayInQuantity"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.monthlySumInQuantity"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.todayScrappedQuantity"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.monthlySumScrappedQuantity"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.todayReturnDepositQuantity"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.monthlySumReturnDepositQuantity"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text" class="form-control inputStyle" ng-model="item.todayInventory"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.depositBottleQuantity"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.checkFeeStandard"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
 
-            <td width="4.8%">
-                <label class="input"><input type="text"  class="form-control inputStyle" ng-model="item.todayShouldInCheckFee"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"    class="form-control inputStyle" ng-model="item.todayRealInCheckFee"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayInDepositFee"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayReturnDepositFee"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"    class="form-control inputStyle" ng-model="item.todayRealInCheckFee"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-            <td width="4.8%">
-                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayInDepositFee"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
 
-             <td width="4.8%">
-                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayReturnDepositFee"></label>
-            </td>
-            <td width="4.8%">
-                <label class="input"><input type="text"   class="form-control inputStyle" ng-model="item.todayReturnDepositFee"></label>
-            </td>
+            <td width="4.8%" class="message tableContentAdjust"></td>
+
+            <td width="4.8%" class="message tableContentAdjust"></td>
         </tr>
         </tbody>
     </table>
