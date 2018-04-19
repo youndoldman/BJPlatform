@@ -3,41 +3,46 @@
  */
 'use strict';
 
-manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsService', 'title', 'initVal','udcModal',function ($scope, close, GoodsService, title, initVal, udcModal) {
+manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsService', 'title', 'initVal','udcModal','$timeout',function ($scope, close, GoodsService, title, initVal, udcModal,$timeout) {
     $scope.modalTitle = title;
 
-    $(function () {
-        $('#datetimepickerStartCoupon').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm',
-            locale: moment.locale('zh-cn'),
-            //sideBySide:true,
-            showTodayButton:true,
-            toolbarPlacement:'top',
+    $timeout(function() {
+        $(function () {
+            $('#datetimepickerStartCoupon').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
+            $('#datetimepickerEndCoupon').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
         });
-        $('#datetimepickerEndCoupon').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm',
-            locale: moment.locale('zh-cn'),
-            //sideBySide:true,
-            showTodayButton:true,
-            toolbarPlacement:'top',
+
+
+        $(function () {
+            $('#datetimepickerStartCoupon').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
+            $('#datetimepickerEndCoupon').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
         });
     });
-    $(function () {
-        $('#datetimepickerStartCoupon').datetimepicker()
-            .on('dp.change', function (ev) {
-                var date = ev.date._d;
-                var month = date.getMonth()+1;
-                $scope.q.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
-                    +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-            });
-        $('#datetimepickerEndCoupon').datetimepicker()
-            .on('dp.change', function (ev) {
-                var date = ev.date._d;
-                var month = date.getMonth()+1;
-                $scope.q.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
-                    +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-            });
-    });
+
     $scope.vm = {
         discountType:["直减","百分比折扣"],
         discountConditionType:["按用户级别","按用户类型"],
@@ -59,7 +64,7 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         discountConditionValue:null,
         useType:null,
         discountDetails:[],
-};
+    };
     $scope.temp = {
         selectedGoodsType:{},
         selectedGoods:{},
@@ -70,23 +75,28 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         selectCustomer:{},
         customersList:[],
     };
+    $scope.discountType = null,
+        $scope.useType = null,
+        $scope.type = null,
+        $scope.value = null,
 
-    $scope.useTypeSelectChange = function(){
-        if($scope.useType == "排他型")
-        {
-            $scope.q.useType = 0;
+        $scope.useTypeSelectChange = function(){
+            if($scope.useType == "排他型")
+            {
+                $scope.q.useType = 0;
+            }
+            else if($scope.useType == "叠加型")
+            {
+                $scope.q.useType = 1;
+            }
+            console.info($scope.q.useType);
         }
-        else if($scope.useType == "叠加型")
-        {
-            $scope.q.useType = 1;
-        }
-        console.info($scope.q.useType);
-    }
     $scope.discountTypeChange = function(){
         console.info($scope.discountType);
         if($scope.discountType == "直减")
         {
             $scope.q.discountType = 0;
+
             $scope.vm.discountText = "优惠直减金额"
         }
         else if($scope.discountType == "百分比折扣")
@@ -95,6 +105,7 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
             $scope.vm.discountText = "优惠百分比(%)"
         }
     }
+
 
     $scope.selectChange = function () {
         console.info($scope.type);
@@ -106,19 +117,20 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         {
             $scope.q.discountConditionType.code = "00001";
             GoodsService.retrieveCustomerLevel(queryParams).then(function (customerLevel){
-                console.info(customerLevel.items);
+                //console.info(customerLevel.items);
                 $scope.temp.customersList = customerLevel.items;
-                $scope.temp.selectCustomer = $scope.temp.customersList[0];
-                //$scope.customersLevelTypeChange();
+                $scope.value = $scope.temp.customersList[0].name;
+                console.info($scope.value);
             });
         }
         else if($scope.type == "按用户类型")
         {
             $scope.q.discountConditionType.code = "00002";
             GoodsService.retrieveCustomerTypes(queryParams).then(function (customerType){
-                console.info(customerType.items)
+                //console.info(customerType.items)
                 $scope.temp.customersList = customerType.items;
-                $scope.temp.selectCustomer = $scope.temp.customersList[0];
+                $scope.value = $scope.temp.customersList[0].name;
+                console.info($scope.value);
                 //$scope.customersLevelTypeChange();
             });
         }
@@ -126,14 +138,16 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
 
     //客户类型或者级别选择改变discountConditionValue赋值
     $scope.customersLevelTypeChange = function () {
-        for (var i = 0; i < $scope.temp.customersList.length; i++)
-        {
-            if($scope.value.name == $scope.temp.customersList[i].name)
-            {
-                $scope.q.discountConditionValue =$scope.temp.customersList[i].code;
-                console.info($scope.q.discountConditionValue);
-            }
-        }
+        //for (var i = 0; i < $scope.temp.customersList.length; i++)
+        //{
+        //if($scope.value == $scope.temp.customersList[i].code)
+        //{
+        $scope.q.discountConditionValue = $scope.value ;
+        //console.info($scope.q.discountConditionValue);
+        //}
+        //}
+
+
     }
 
     $scope.isModify = false;
@@ -143,9 +157,10 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
     };
 
     $scope.submit = function (adjustDiscountStrategies) {
+        console.info(adjustDiscountStrategies);
         if ($scope.isModify) {
             adjustDiscountStrategies.status = null;
-            console.info(adjustDiscountStrategies);
+
             var adjustCoupon = {};
             adjustCoupon.name = adjustDiscountStrategies.name;
             adjustCoupon.startTime = adjustDiscountStrategies.startTime;
@@ -156,6 +171,7 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
             adjustCoupon.useType = adjustDiscountStrategies.useType.index;
             adjustCoupon.discountDetails = adjustDiscountStrategies.discountDetails;
 
+
             GoodsService.modifyDiscountStrategies(adjustDiscountStrategies.id,adjustCoupon).then(function () {
                 udcModal.info({"title": "处理结果", "message": "修改优惠策略成功 "});
                 $scope.close(true);
@@ -163,7 +179,7 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
                 udcModal.info({"title": "处理结果", "message": "修改优惠策略失败 "+value.message});
             })
         }else{
-            console.info(adjustDiscountStrategies);
+
             GoodsService.createDiscountStrategies(adjustDiscountStrategies).then(function () {
                 udcModal.info({"title": "处理结果", "message": "增加优惠策略成功 "});
                 $scope.close(true);
@@ -174,9 +190,26 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
     };
 
     var init = function () {
+        $scope.q.discountType = 0;
+        $scope.discountType = $scope.vm.discountType[0];
+        $scope.q.discountConditionType.code = $scope.type;
+        $scope.useType = $scope.vm.useType[0];
+        $scope.q.useType = 0;
+        $scope.type = $scope.vm.discountConditionType[0];
+
+        //按照用户级别先做一次条件取值请求
+        $scope.q.discountConditionType.code = "00001";
+        GoodsService.retrieveCustomerLevel(queryParams).then(function (customerLevel){
+            //console.info(customerLevel.items);
+            $scope.temp.customersList = customerLevel.items;
+            $scope.value = $scope.temp.customersList[0].code;
+            $scope.q.discountConditionValue =  $scope.value;
+            console.info($scope.value);
+        });
+
         if(title == "修改优惠策略") {
             $scope.q = _.clone(initVal);
-            //$scope.discountType = $scope.q.discountType.name;
+
             $scope.isModify = true;
         }
         else {
@@ -219,14 +252,16 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         }
         var adjustmentDetail = {};
         adjustmentDetail.goods = $scope.temp.selectedGoods;
-        adjustmentDetail.price = $scope.temp.adjustGoodsPrice;
+        adjustmentDetail.discount = $scope.temp.adjustGoodsPrice;
         $scope.vm.currentPriceAdjustment.adjustPriceDetailList.push(adjustmentDetail);
+
+        console.info($scope.vm.currentPriceAdjustment.adjustPriceDetailList);
 
         var adjustmentDetail1 = {};
         adjustmentDetail1.goods = $scope.temp.selectedGoods;
         adjustmentDetail1.discount = $scope.temp.adjustGoodsPrice;
 
-        $scope.q.discountDetails.push(adjustmentDetail1);
+        //$scope.q.discountDetails.push(adjustmentDetail1);
 
         //if($scope.vm.currentPriceAdjustment.adjustPriceDetailList.length > 0)
         //{
@@ -241,8 +276,7 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
             if ($scope.vm.currentPriceAdjustment.adjustPriceDetailList[i] == adjustmentDetail) {
                 $scope.vm.currentPriceAdjustment.adjustPriceDetailList.splice(i, 1);
 
-                //$scope.q.discountDetails.goods =$scope.vm.currentPriceAdjustment.adjustPriceDetailList.goods;
-                $scope.q.discountDetails.splice(i, 1);
+                //$scope.q.discountDetails.splice(i, 1);
                 break;
             }
         }

@@ -110,6 +110,9 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
             discountType:null,
             useType:null,
             status:null,
+
+
+
         };
 
         $scope.config = {
@@ -123,9 +126,9 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
             goodsPriceAdjustmentList:[],
 
             couponAdjustmentList:[],
-            discountTypes:["直减", "百分比折扣"],
-            useTypes:["排他型", "叠加型"],
-            status:["待生效","已生效","作废"],
+            discountTypes:["所有类型","直减", "百分比折扣"],
+            useTypes:["所有类型","排他型", "叠加型"],
+            status:["所有状态","待生效","已生效","作废"],
         };
         $scope.search = function () {
             $scope.pagerGoods.setCurPageNo(1);
@@ -363,13 +366,19 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
         $scope.searchCouponAdjustment = function () {
             var queryParams = {
                 name:$scope.q.couponName,     //优惠计划名称
+                status:$scope.q.status,
+                discountType:$scope.q.discountType,
+                useType:$scope.q.useType,
                 startTime:$scope.q.couponStartTime,//调价优惠开始时间
                 endTime:$scope.q.couponEndTime,   //调价优惠结束时间
                 pageNo: $scope.pagerCouponAdjustment.getCurPageNo(),
                 pageSize: $scope.pagerCouponAdjustment.pageSize
             };
-
-            if($scope.q.discountType == "直减")
+            if($scope.q.discountType == "所有类型")
+            {
+                queryParams.discountType = null;
+            }
+            else if($scope.q.discountType == "直减")
             {
                 queryParams.discountType = 0;
             }
@@ -378,7 +387,11 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
                 queryParams.discountType = 1;
             }
 
-            if($scope.q.useType == "排他型")
+            if($scope.q.useType == "所有类型")
+            {
+                queryParams.useType = null;
+            }
+            else if($scope.q.useType == "排他型")
             {
                 queryParams.useType = 0;
             }
@@ -387,7 +400,11 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
                 queryParams.useType = 1;
             }
 
-            if($scope.q.status == "待生效")
+           if($scope.q.status == "所有状态")
+            {
+                queryParams.status = null;
+            }
+            else if($scope.q.status == "待生效")
             {
                 queryParams.status = 0;
             }
@@ -409,8 +426,11 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
 
 
         var init = function () {
-            $scope.pagerCouponAdjustment.pageSize=5;
+            $scope.q.discountType = "所有类型";
+            $scope.q.useType = "所有类型";
+            $scope.q.status = "所有状态";
 
+            $scope.pagerCouponAdjustment.pageSize=5;
             $scope.pagerGoodsTypes.pageSize=10;
             $scope.pagerGoodsPriceAdjustment.pageSize=5;
             $scope.pagerGoodsTypes.pageSize=10;

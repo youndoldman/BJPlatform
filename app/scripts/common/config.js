@@ -7,24 +7,27 @@ commonModule.constant('MISC', {
     }
 });
 
-
 commonModule.constant('URI', {
     'resources': {
         'loginPage': '../pages/login.htm',//登录页
         'mainPage': '../pages/mainCenter.htm',//首页
         'users': '../../../api/sysusers',//系统用户接口
-        'department': '../../../api/Department',//部门接口
+        'department': 'https://www.yunnanbaijiang.com/api/Department',//部门接口
         'groups': '../../../api/groups',//组接口
-        'customers': '../../../api/customers',//客户接口
-        'customerSource': '../../../api/CustomerSource',//客户来源查询接口
-        'customerLevel': '../../../api/CustomerLevel',//客户等级查询接口
-        'customerType': '../../../api/CustomerType',//客户类型查询接口
-        'settlementType': '../../../api/SettlementType',//结算类型信息查询接口
+        'customers': 'https://www.yunnanbaijiang.com/api/customers',//客户接口
+        'customerSource': 'https://www.yunnanbaijiang.com/api/CustomerSource',//客户来源查询接口
+        //实际使用地址
+        //'customerLevel': '../../../api/CustomerLevel',//客户等级查询接口
+        //'customerType': '../../../api/CustomerType',//客户类型查询接口
+        'customerLevel': 'https://www.yunnanbaijiang.com/api/CustomerLevel',//客户等级查询接口
+        'customerType': 'https://www.yunnanbaijiang.com/api/CustomerType',//客户类型查询接口
 
-        'discountStrategies':'../../../api/DiscountStrategies',//优惠策略接口
+        'settlementType': 'https://www.yunnanbaijiang.com/api/SettlementType',//结算类型信息查询接口
+
+        'discountStrategies':'https://www.yunnanbaijiang.com/api/DiscountStrategies',//优惠策略接口
 
         'customerCallin':'../../../api/CustomerCallIn',//电话关联的客户资料查询接口
-        'login':'../../../api/sysusers/login',//系统用户登录接口
+        'login':'https://www.yunnanbaijiang.com/api/sysusers/login',//系统用户登录接口
         'logout':'../../../api/sysusers/logout',//系统用户登出接口
         'orders':'../../../api/Orders',　　　　　//订气订单接口
         'orderCancel':'../../../api/CancelOrder',　　　　　//订气作废接口
@@ -33,11 +36,12 @@ commonModule.constant('URI', {
         'taskOrdersDeal':'../../../api/TaskOrders/Process',//任务订单办理接口
         //'goods': '../../../api/Goods',//商品
         //'goodsTypes': '../../../api/GoodsTypes',//商品类型
-        'goods': '../../../api/Goods',//商品
-        'goodsTypes': '../../../api/GoodsTypes',//商品类型
+        'goods': 'https://www.yunnanbaijiang.com/api/Goods',//商品
+        'goodsTypes': 'https://www.yunnanbaijiang.com/api/GoodsTypes',//商品类型
 
         'goodsPriceHistory': '../../../api/Goods/PriceHistory',//商品价格历史
-
+        'subdistrict':'http://restapi.amap.com/v3/config/district',//高德地图行政区域接口
+        'geocode':'http://restapi.amap.com/v3/geocode/geo',//高德地图逆地址解码接口
         'bottle': '../../../api/GasCylinder',//钢瓶接口
         'bottleHandOver': '../../../api/GasCylinder/TakeOver',//钢瓶责任交接
         'gpsBind': '../../../api/GasCylinder/Bind',//定位终端绑定接口
@@ -46,18 +50,20 @@ commonModule.constant('URI', {
         'cloudUser': '../../../api/CloudUser',//云客服用户接口
         'cloudUserBind': '../../../api/CloudUser/Bind',//云客服用户绑定接口
         'cloudUserUnBind': '../../../api/CloudUser/UnBind',//云客服用户解除绑定接口
-        'adjustPriceSchedules': '../../../api/AdjustPriceSchedules',//调价接口
-        'ticket': '../../../api/Ticket',//气票信息增加
+        //'adjustPriceSchedules': '../../../api/AdjustPriceSchedules',//调价接口
+        'adjustPriceSchedules': 'https://www.yunnanbaijiang.com/api/AdjustPriceSchedules',//调价接口
 
-        'mendType': '../../../api/MendTypes',//报修类型接口
-        'mend': '../../../api/Mend',//报修单接口
-        'securityType': '../../../api/SecurityTypes',//安检类型接口
-        'security': '../../../api/Security',//安检单接口
-        'complaintType': '../../../api/ComplaintTypes',//投诉类型接口
-        'complaint': '../../../api/Complaint',//投诉单接口
+        'ticket': 'https://www.yunnanbaijiang.com/api/Ticket',//气票信息增加
+        'coupon': 'https://www.yunnanbaijiang.com/api/Coupon',//优惠券信息增加
 
-        'subdistrict':'https://restapi.amap.com/v3/config/district',//高德地图行政区域接口
-        'geocode':'https://restapi.amap.com/v3/geocode/geo',//高德地图逆地址解码接口
+        'salesByBayType': 'https://www.yunnanbaijiang.com/api/Report/Sales/ByPayType',//查询销售日报表(按支付类型查询)
+        'salesByCustomerType': 'https://www.yunnanbaijiang.com/api/Report/Sales/ByCustomerType',//查询销售日报表(按支付类型查询)
+        'saleContacts':'https://www.yunnanbaijiang.com/api/Report/SaleContacts',//销售往来日报表查询
+        'stock':'https://www.yunnanbaijiang.com/api/Report/Stock',//查询库存
+        'stockInOut':'https://www.yunnanbaijiang.com/api/Report/StockInOut',//查询出入库数量
+        'salesCash':'https://www.yunnanbaijiang.com/api/Report/SaleCash',//销售现金报表
+
+
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
         'ktyReport1': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/agent/call',//科天云获取坐席-工作组及直拨电话统计报表
         'ktyReport2': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/agent/operation',//科天云获取坐席-操作状态统计报表
@@ -65,11 +71,6 @@ commonModule.constant('URI', {
         'ktyReport4': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/workset/incall/operatetime',//科天云获取工作组-来话处理时长统计报表
         'ktyReport5': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/workset/incall/interval',//科天云获取工作组-来话等待时长分析报表
         'ktyReport6': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/workset/incall/analysis',//科天云获取工作组-来话应答/放弃/溢出分析报表
-
-
-
-
-
 
     }
 });
@@ -164,18 +165,6 @@ commonModule.constant('NavItem', {
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/stockControl",
             icon: "fa-plane"
-        }, {
-            index: 2,
-            name: "报修处理",
-            target: "_blank",
-            href: "./shopCenter.htm#/ShopManage/Mend",
-            icon: "fa-plane"
-        }, {
-            index: 3,
-            name: "安检处理",
-            target: "_blank",
-            href: "./shopCenter.htm#/ShopManage/Security",
-            icon: "fa-plane"
         }]
     },
     'CustomService': {
@@ -207,54 +196,36 @@ commonModule.constant('NavItem', {
             icon: "fa-plane"
         }, {
             index: 4,
-            name: "报修处理",
-            target: "_blank",
-            href: "./customService.htm#/CustomService/Mend",
-            icon: "fa-plane"
-        }, {
-            index: 5,
-            name: "安检处理",
-            target: "_blank",
-            href: "./customService.htm#/CustomService/Security",
-            icon: "fa-plane"
-        }, {
-            index: 6,
-            name: "投诉处理",
-            target: "_blank",
-            href: "./customService.htm#/CustomService/Complaint",
-            icon: "fa-plane"
-        }, {
-            index: 7,
             name: "坐席报表1",
             target: "_blank",
             href: "./customService.htm#/CustomService/report1",
             icon: "fa-table"
         }, {
-            index: 8,
+            index: 5,
             name: "坐席报表2",
             target: "_blank",
             href: "./customService.htm#/CustomService/report2",
             icon: "fa-table"
         }, {
-            index: 9,
+            index: 6,
             name: "工作组报表3",
             target: "_blank",
             href: "./customService.htm#/CustomService/report3",
             icon: "fa-table"
         }, {
-            index: 10,
+            index: 7,
             name: "工作组报表4",
             target: "_blank",
             href: "./customService.htm#/CustomService/report4",
             icon: "fa-table"
         }, {
-            index: 11,
+            index: 8,
             name: "工作组报表5",
             target: "_blank",
             href: "./customService.htm#/CustomService/report5",
             icon: "fa-table"
         }, {
-            index: 12,
+            index: 9,
             name: "工作组报表6",
             target: "_blank",
             href: "./customService.htm#/CustomService/report6",
@@ -345,25 +316,25 @@ commonModule.constant('NavItem', {
                 href: "./financeCenter.htm#/finance/LPGSalesCash",
                 icon: "fa-table"
             }
-            //    {
-            //    index: 0,
-            //    name: "总账报表",
-            //    href: "./financeCenter.htm#/finance/ledger",
-            //    icon: "fa-group"
-            //}, {
-            //    index: 1,
-            //    name: "凭证记录",
-            //    target: "_blank",
-            //    href: "./financeCenter.htm#/finance/voucher",
-            //    icon: "fa-gears"
-            //},
-            //    {
-            //        index: 2,
-            //        name: "工资报表",
-            //        target: "_blank",
-            //        href: "./financeCenter.htm#/finance/wages",
-            //        icon: "fa-plane"
-            //    }
+        //    {
+        //    index: 0,
+        //    name: "总账报表",
+        //    href: "./financeCenter.htm#/finance/ledger",
+        //    icon: "fa-group"
+        //}, {
+        //    index: 1,
+        //    name: "凭证记录",
+        //    target: "_blank",
+        //    href: "./financeCenter.htm#/finance/voucher",
+        //    icon: "fa-gears"
+        //},
+        //    {
+        //        index: 2,
+        //        name: "工资报表",
+        //        target: "_blank",
+        //        href: "./financeCenter.htm#/finance/wages",
+        //        icon: "fa-plane"
+        //    }
         ]
     },
     'DecisionCenter': {

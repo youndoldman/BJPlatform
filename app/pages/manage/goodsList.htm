@@ -213,11 +213,11 @@
                     <button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUpCouponAdjustment()"><i class="fa fa-plus"></i> 新增优惠策略 </button>
 
                     <label class="input">优惠类型：</label>
-                    <label class="input "><select  ng-model="q.discountType" ng-options="discountType for discountType in vm.discountTypes" class="form-control" ng-selected="" ng-change="discountTypeChange()"></select></label>
+                    <label class="input "><select  ng-model="q.discountType" ng-options="discountType for discountType in vm.discountTypes" class="form-control" ng-selected="" ng-change="searchCouponAdjustment()"></select></label>
                     <label class="input">使用方式：</label>
-                    <label class="input"><select  ng-model="q.useType" ng-options="useType for useType in vm.useTypes" class="form-control" ng-selected="" ng-change="useTypeChange()"></select></label>
+                    <label class="input"><select  ng-model="q.useType" ng-options="useType for useType in vm.useTypes" class="form-control" ng-selected="" ng-change="searchCouponAdjustment()"></select></label>
                     <label class="input">状态：</label>
-                    <label class="input"><select ng-model="q.status" ng-options="status for status in vm.status" class="form-control" ng-selected="" ng-change="statusChange()"></select></label>
+                    <label class="input"><select ng-model="q.status" ng-options="status for status in vm.status" class="form-control" ng-selected="" ng-change="searchCouponAdjustment()"></select></label>
 
                 </div>
             </form>
