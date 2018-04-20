@@ -2,7 +2,7 @@
 
 manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'GoodsService', 'title', 'initVal','udcModal','$timeout',function ($scope, close, GoodsService, title, initVal, udcModal,$timeout) {
     $scope.modalTitle = title;
-    $timeout(function() {
+    $scope.$watch('$viewContentLoaded',function () {
         $(function () {
 
             $('#datetimepickerStartExcute').datetimepicker({

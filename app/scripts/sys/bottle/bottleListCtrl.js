@@ -124,70 +124,73 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
 
 bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'title', 'initVal', 'udcModal',function ($scope, close, BottleService, title, initVal, udcModal) {
     //时间空间
-    $(function () {
-        $('#datetimepickerProductionDate').datetimepicker({
-            format: 'YYYY-MM-DD',
-            locale: moment.locale('zh-cn'),
-            //sideBySide:true,
-            showTodayButton:true,
-            toolbarPlacement:'top',
+    $scope.$watch('$viewContentLoaded',function () {
+        $(function () {
+            $('#datetimepickerProductionDate').datetimepicker({
+                format: 'YYYY-MM-DD',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
 
+            });
+            $('#datetimepickerVerifyDate').datetimepicker({
+                format: 'YYYY-MM-DD',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+
+            });
+            $('#datetimepickerNextVerifyDate').datetimepicker({
+                format: 'YYYY-MM-DD',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+
+            });
+            $('#datetimepickerScrapDate').datetimepicker({
+                format: 'YYYY-MM-DD',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+
+            });
         });
-        $('#datetimepickerVerifyDate').datetimepicker({
-            format: 'YYYY-MM-DD',
-            locale: moment.locale('zh-cn'),
-            //sideBySide:true,
-            showTodayButton:true,
-            toolbarPlacement:'top',
-
-        });
-        $('#datetimepickerNextVerifyDate').datetimepicker({
-            format: 'YYYY-MM-DD',
-            locale: moment.locale('zh-cn'),
-            //sideBySide:true,
-            showTodayButton:true,
-            toolbarPlacement:'top',
-
-        });
-        $('#datetimepickerScrapDate').datetimepicker({
-            format: 'YYYY-MM-DD',
-            locale: moment.locale('zh-cn'),
-            //sideBySide:true,
-            showTodayButton:true,
-            toolbarPlacement:'top',
-
+        $(function () {
+            $('#datetimepickerProductionDate').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.vm.bottle.productionDate = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
+            $('#datetimepickerVerifyDate').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.vm.bottle.verifyDate = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
+            $('#datetimepickerNextVerifyDate').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.vm.bottle.nextVerifyDate = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
+            $('#datetimepickerScrapDate').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.vm.bottle.scrapDate = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
         });
     });
-    $(function () {
-        $('#datetimepickerProductionDate').datetimepicker()
-            .on('dp.change', function (ev) {
-                var date = ev.date._d;
-                var month = date.getMonth()+1;
-                $scope.vm.bottle.productionDate = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
-                    +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-            });
-        $('#datetimepickerVerifyDate').datetimepicker()
-            .on('dp.change', function (ev) {
-                var date = ev.date._d;
-                var month = date.getMonth()+1;
-                $scope.vm.bottle.verifyDate = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
-                    +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-            });
-        $('#datetimepickerNextVerifyDate').datetimepicker()
-            .on('dp.change', function (ev) {
-                var date = ev.date._d;
-                var month = date.getMonth()+1;
-                $scope.vm.bottle.nextVerifyDate = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
-                    +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-            });
-        $('#datetimepickerScrapDate').datetimepicker()
-            .on('dp.change', function (ev) {
-                var date = ev.date._d;
-                var month = date.getMonth()+1;
-                $scope.vm.bottle.scrapDate = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
-                    +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-            });
-    });
+
 
 
 
@@ -201,11 +204,13 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
                 {value:1,name:"已启用"},
                 {value:2,name:"已停用"},
                 {value:3,name:"已作废"}],
-            serviceStatus:[{value:0,name:"气站库存"},
-                {value:1,name:"门店库存"},
-                {value:2,name:"在途运输"},
-                {value:3,name:"在途派送"},
-                {value:4,name:"在途运输"}],
+            serviceStatus:[{value:0,name:"待使用"},
+                {value:1,name:"气站库存"},
+                {value:2,name:"门店库存"},
+                {value:3,name:"在途运输"},
+                {value:4,name:"在途派送"},
+                {value:5,name:"客户使用"},
+                {value:6,name:"空瓶回收"}],
             specs:[]
         }
     };

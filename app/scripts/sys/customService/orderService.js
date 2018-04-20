@@ -32,6 +32,8 @@ customServiceApp.service('OrderService', ['$http', 'URI', 'promiseWrapper','MISC
                 note: null,
                 createTime: null,
                 updateTime: null,
+                dispatcher:null,
+                payStatus:null,
                 taskId: taskOrdersFromApi.id
             }
         }
@@ -57,7 +59,9 @@ customServiceApp.service('OrderService', ['$http', 'URI', 'promiseWrapper','MISC
             createTime: taskOrdersFromApi.object.createTime,
             updateTime: taskOrdersFromApi.object.updateTime,
             timeSpan:taskOrdersFromApi.object.timeSpan,
-            taskId: taskOrdersFromApi.id
+            taskId: taskOrdersFromApi.id,
+            dispatcher:taskOrdersFromApi.object.dispatcher,
+            payStatus:taskOrdersFromApi.object.payStatus
         }
     };
 
