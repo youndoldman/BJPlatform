@@ -71,6 +71,8 @@ commonModule.constant('URI', {
         'complaintType': '../../../api/ComplaintTypes',//投诉类型接口
         'complaint': '../../../api/Complaint',//投诉单接口
 
+        'customerCredit': '../../../api/CustomerCredit',//欠款
+
 
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
         'ktyReport1': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/agent/call',//科天云获取坐席-工作组及直拨电话统计报表
@@ -184,6 +186,12 @@ commonModule.constant('NavItem', {
             name: "安检处理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/Security",
+            icon: "fa-plane"
+        }, {
+            index: 4,
+            name: "投诉处理",
+            target: "_blank",
+            href: "./shopCenter.htm#/ShopManage/Complaint",
             icon: "fa-plane"
         }]
     },

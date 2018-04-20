@@ -18,7 +18,7 @@ bottleApp.controller('DepartmentSelectModalCtrl', ['$scope', 'close', 'BottleSer
     var redrawDepartment = function(){
         $scope.chart.init({ 'data': $scope.dataSource });
     };
-    $timeout(function() {
+    $scope.$watch('$viewContentLoaded',function () {
         chartInitial();
         retrieveRootDepartment();
 

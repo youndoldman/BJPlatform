@@ -110,39 +110,41 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
 
     }]);
 
-manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title', 'initVal','$timeout','$interval', function ($scope, close, UserService, title, initVal,$timeout,$interval) {
+manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title', 'initVal','$document','$interval', 'udcModal',function ($scope, close, UserService, title, initVal,$document,$interval,udcModal) {
     $scope.dataSource = {};
     $scope.chart = null;
-    var chartInitial = function() {
+    var chartInitial = function () {
         $scope.chart = $('#chart-container').orgchart({
-            'data' : $scope.dataSource,
+            'data': $scope.dataSource,
             'chartClass': 'edit-state',
             'exportFilename': 'SportsChart',
             'parentNodeSymbol': 'fa-th-large',
             'nodeContent': 'title'
         });
-        $scope.chart.$chartContainer.on('click', '.node', function() {
+        $scope.chart.$chartContainer.on('click', '.node', function () {
             var $this = $(this);
             $scope.vm.user.department.code = $this.find('.content').text();
             $scope.vm.user.department.name = $this.find('.title').text();
             //查询完整的部门路径
             retriveDepartmentInfo();
         });
-    }
-    var redrawDepartment = function(){
-        $scope.chart.init({ 'data': $scope.dataSource });
     };
-    $timeout(function() {
+    var redrawDepartment = function () {
+        $scope.chart.init({'data': $scope.dataSource});
+    };
+
+    $scope.$watch('$viewContentLoaded',function () {
+        console.log(1111);
         chartInitial();
         retrieveRootDepartment();
 
     });
 
     var departmentConvertToDataSoure = function (department) {
-        var chartColors = ["middle-level","product-dept","rd-dept","pipeline1","frontend1"];
-        var random = Math.floor(Math.random()*5);
-        var data = {name:department.name,title:department.code,children:[],className:chartColors[random]};
-        for (var i=0; i<department.lstSubDepartment.length;i++){
+        var chartColors = ["middle-level", "product-dept", "rd-dept", "pipeline1", "frontend1"];
+        var random = Math.floor(Math.random() * 5);
+        var data = {name: department.name, title: department.code, children: [], className: chartColors[random]};
+        for (var i = 0; i < department.lstSubDepartment.length; i++) {
             data.children.push(departmentConvertToDataSoure(department.lstSubDepartment[i]))
         }
         return data;
@@ -157,12 +159,10 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
     //================================================
 
 
-
     $scope.modalTitle = title;
     $scope.vm = {
-        user: {
-        },
-        departmentInfo:"",
+        user: {},
+        departmentInfo: "",
         rootDepartment: {},
     };
     $scope.isModify = false;
@@ -176,11 +176,17 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
     $scope.submit = function (user) {
         if (user.name != "" && title == "新增用户") {
             UserService.createUser(user).then(function () {
+                udcModal.info({"title": "处理结果", "message": "创建用成功！"});
                 $scope.close(true);
+            }, function (value) {
+                udcModal.info({"title": "处理结果", "message": "创建用户失败 " + value.message});
             })
         } else if (user.name != "" && title == "修改用户") {
             UserService.modifyUser(user).then(function () {
+                udcModal.info({"title": "处理结果", "message": "修改用成功！"});
                 $scope.close(true);
+            }, function (value) {
+                udcModal.info({"title": "处理结果", "message": "修改用户失败 " + value.message});
             })
         }
     };
@@ -189,26 +195,26 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
 
 
         $scope.vm.user = _.clone(initVal);
-        if($scope.vm.user.department==null){
-            $scope.vm.user.department = {code:null,name:null};
+        if ($scope.vm.user.department == null) {
+            $scope.vm.user.department = {code: null, name: null};
         }
-        if(title == "修改用户") {
+        if (title == "修改用户") {
             $scope.isModify = true;
         }
         UserService.retrieveGroups().then(function (userGroups) {
             $scope.userGroups = _.map(userGroups.items, UserService.toViewModelGroup);
             //剔除客户
-            for(var i=0; i<$scope.userGroups.length;i++){
-                if($scope.userGroups[i].code=="00004"){//客户
-                    $scope.userGroups.splice(i,1);
+            for (var i = 0; i < $scope.userGroups.length; i++) {
+                if ($scope.userGroups[i].code == "00004") {//客户
+                    $scope.userGroups.splice(i, 1);
                 }
             }
 
-            if(title == "新增用户") {
+            if (title == "新增用户") {
                 $scope.vm.user.userGroup = $scope.userGroups[0];
-            }else {
-                for(var i=0; i<$scope.userGroups.length; i++){
-                    if($scope.vm.user.userGroup.id == $scope.userGroups[i].id){
+            } else {
+                for (var i = 0; i < $scope.userGroups.length; i++) {
+                    if ($scope.vm.user.userGroup.id == $scope.userGroups[i].id) {
                         $scope.vm.user.userGroup = $scope.userGroups[i];
                         break;
                     }
@@ -216,41 +222,39 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
             }
 
         });
-        if(title == "新增用户") {
+        if (title == "新增用户") {
 
-        }else{
+        } else {
             //查询完整的部门路径
             retriveDepartmentInfo();
 
         }
 
 
-
-
         //规避不同作用域的BUG
-        $scope.timer = $interval( function(){
+        $scope.timer = $interval(function () {
             refleshSelectInfo()
         }, 100);
 
     };
-    var refleshSelectInfo = function(){
+    var refleshSelectInfo = function () {
         $scope.vm.user.department = $scope.vm.user.department
         $scope.vm.departmentInfo = $scope.vm.departmentInfo;
 
     };
     //查询完整的部门路径
-    var retriveDepartmentInfo = function(){
-        if($scope.vm.user.department!=null){
+    var retriveDepartmentInfo = function () {
+        if ($scope.vm.user.department != null) {
             console.log($scope.vm.user.department);
             UserService.retrieveDepartmentUpper($scope.vm.user.department.code).then(function (department) {
                 console.log($scope.vm.user.department);
                 $scope.vm.departmentInfo = $scope.vm.user.department.name;
-            var tempDepartment = department.items[0];
-            while(tempDepartment.parentDepartment!=null){
-                tempDepartment = tempDepartment.parentDepartment;
-                $scope.vm.departmentInfo = $scope.vm.departmentInfo+"-"+tempDepartment.name;
-            }
-        })
+                var tempDepartment = department.items[0];
+                while (tempDepartment.parentDepartment != null) {
+                    tempDepartment = tempDepartment.parentDepartment;
+                    $scope.vm.departmentInfo = $scope.vm.departmentInfo + "-" + tempDepartment.name;
+                }
+            })
         }
     }
 

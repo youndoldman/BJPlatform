@@ -18,7 +18,7 @@ customServiceApp.controller('SecurityAssignModalCtrl', ['$scope', 'close', 'Mend
     var redrawDepartment = function(){
         $scope.chart.init({ 'data': $scope.dataSource });
     };
-    $timeout(function() {
+    $scope.$watch('$viewContentLoaded',function () {
         chartInitial();
         retrieveRootDepartment();
 

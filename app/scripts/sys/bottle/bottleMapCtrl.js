@@ -9,6 +9,7 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
         //地图初始化
         $scope.map = null;
 
+
         var pathSimplifierInitial = function(){
             AMapUI.load(['ui/misc/PathSimplifier', 'lib/$'], function(PathSimplifier, $) {
 
@@ -133,7 +134,7 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
 
 
         var infoWindow = new AMap.InfoWindow();
-        $timeout(function() {
+        $scope.$watch('$viewContentLoaded',function () {
             mapInitial();
             pathSimplifierInitial(); //轨迹绘制引擎初始化
         });
