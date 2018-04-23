@@ -391,14 +391,16 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                                     if ($scope.data.goodsList[i].detail[j].code==salesByPayMonthlySumList[k].specCode) {
                                         $scope.data.goodsList[i].detail[j].salesByPayMonthlySum = salesByPayMonthlySumList[k];
 
-                                        $scope.sumYuejieCount +=  $scope.data.goodsList[i].detail[j].salesByPayMonthlySum.count;
-                                        $scope.sumYuejieSum += $scope.data.goodsList[i].detail[j].salesByPayMonthlySum.sum;
+                                        $scope.q.sumYuejieCount +=  $scope.data.goodsList[i].detail[j].salesByPayMonthlySum.count;
+                                        $scope.q.sumYuejieSum += $scope.data.goodsList[i].detail[j].salesByPayMonthlySum.sum;
 
                                     }
                                 }
                             }
                         }
                     }
+                    console.info("");
+                    console.info( $scope.sumYuejieCount );
                 })
 
                 //气票
@@ -462,7 +464,7 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                     startTime:$scope.monthlyData.startTime,
                     endTime:$scope.monthlyData.endTime,
                 };
-
+                console.info(queryParams6);
                 FinanceService.searchSalesByBayType(queryParams6).then(function (salesByPay) {
                     var salesByPayMonthlySumSalesList = salesByPay.items;
                     if(salesByPay.items.length>0){
@@ -657,12 +659,12 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                         &&($scope.data.goodsList[i].detail[j].salesByMonthlySumSales!=null))
                     {
 
-                        $scope.sumCount = $scope.data.goodsList[i].detail[j].salesByPayCash.count + $scope.data.goodsList[i].detail[j].salesByPayOnline.count
+                        $scope.q.sumCount = $scope.data.goodsList[i].detail[j].salesByPayCash.count + $scope.data.goodsList[i].detail[j].salesByPayOnline.count
                             + $scope.data.goodsList[i].detail[j].salesByPayCredit.count + $scope.data.goodsList[i].detail[j].salesByPayMonthlySum.count
                             + $scope.data.goodsList[i].detail[j].salesByPayTicket.count + $scope.data.goodsList[i].detail[j].salesByPayCoupon.count
                             + $scope.data.goodsList[i].detail[j].salesByMonthlySumSales.count;
 
-                        $scope.sumSum = $scope.data.goodsList[i].detail[j].salesByPayCash.sum + $scope.data.goodsList[i].detail[j].salesByPayOnline.sum
+                        $scope.q.sumSum = $scope.data.goodsList[i].detail[j].salesByPayCash.sum + $scope.data.goodsList[i].detail[j].salesByPayOnline.sum
                             + $scope.data.goodsList[i].detail[j].salesByPayCredit.sum + $scope.data.goodsList[i].detail[j].salesByPayMonthlySum.sum
                             + $scope.data.goodsList[i].detail[j].salesByPayTicket.sum + $scope.data.goodsList[i].detail[j].salesByPayCoupon.sum
                             + $scope.data.goodsList[i].detail[j].salesByMonthlySumSales.sum;
