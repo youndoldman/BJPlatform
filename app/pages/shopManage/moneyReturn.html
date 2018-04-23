@@ -1,0 +1,72 @@
+<div class="row" style="margin-top:15px;">
+    <div class="col-md-4">
+        <!-- general form elements -->
+        <div class="panel panel-primary" style="height: 500px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">回款录入</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <div class="panel-body">
+
+                <!--<div class="row">-->
+                    <div class="col-xs-4 text-left input-lg" style="margin-top: 30px">
+                        <label>客户编号</label>
+                    </div>
+                    <div class="col-xs-8" style="margin-left: -50px;margin-top: 30px">
+                        <input type="text" class="form-control input-lg" ng-model="vm.currentCustomer.userId" ng-disabled="true">
+                    </div>
+
+                    <div class="col-xs-4 text-left input-lg" style="margin-top: 30px">
+                        <label>金额</label>
+                    </div>
+                    <div class="col-xs-8" style="margin-left: -50px;margin-top: 30px">
+                        <input type="text" class="form-control input-lg" ng-model="vm.currentCustomer.userId" ng-disabled="true">
+                    </div>
+                <!--</div>-->
+
+                <!--<div class="row" style="margin-top: 5px">-->
+
+                    <button type="save" class="btn btn-primary btn-md pull-left" style="margin-left: 10px" ng-click="initPopUp()">录入回款</button>
+
+                <!--</div>-->
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="panel panel-primary" style="height: 500px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">录入查询</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <div class="panel-body" style="min-height: 250px">
+                <p>关联客户</p>
+                <br/>
+                <table class="table table-bordered table-hover .table-condensed table-striped" style="table-layout:fixed;">
+                    <tr>
+                        <th  style="background: lightblue;text-align: center" width="10%">序号</th>
+                        <th  style="background: lightblue;text-align: center" width="15%">编号</th>
+                        <th  style="background: lightblue;text-align: center" width="15%">姓名</th>
+                        <th  style="background: lightblue;text-align: center" width="25%">电话</th>
+                        <th  style="background: lightblue;text-align: center" width="35%">地址</th>
+                    </tr>
+
+                    <tr ng-repeat="customer in vm.customerList" ng-click="showDetail(customer)">
+                        <td class="message">{{$index+1+pagerCustomer.pageSize*(pagerCustomer.getCurPageNo()-1)}}</td>
+                        <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{customer.userId}}</td>
+                        <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{customer.name}}</td>
+                        <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{customer.phone}}</td>
+                        <td style="overflow:scroll;white-space:nowrap;">{{customer.address.province}}{{customer.address.city}}{{customer.address.county}}{{customer.address.detail}}</td>
+                    </tr>
+                </table>
+                <div ng-if="vm.userList.length == 0" nj-table-no-data></div>
+                <div style="margin-top: -30px" nj-pager pager="pagerCustomer" hidepagesizeoptions=true></div>
+            </div>
+
+        </div>
+    </div>
+
+    </div>

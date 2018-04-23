@@ -148,6 +148,9 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         //}
 
 
+
+
+
     }
 
     $scope.isModify = false;
