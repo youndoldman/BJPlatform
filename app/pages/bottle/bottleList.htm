@@ -29,7 +29,7 @@
             <th width="5%">钢瓶编码</th>
             <th width="5%">钢瓶规格</th>
             <th width="5%">定位终端</th>
-            <th width="5%">电量</th>
+            <th width="5%">空重瓶</th>
             <th width="10%">生产日期</th>
             <th width="10%">上次钢检日期</th>
             <th width="10%">下次钢检日期</th>
@@ -48,7 +48,7 @@
             <td class="message">{{bottle.number}}</td>
             <td class="message">{{bottle.spec.name}}</td>
             <td class="message">{{bottle.locationDevice.number}}</td>
-            <td class="message">{{bottle.locationDevice.electricQuantity}}</td>
+            <td class="message">{{bottle.loadStatus.name}}</td>
             <td class="message">{{bottle.productionDate}}</td>
             <td class="message">{{bottle.verifyDate}}</td>
             <td class="message">{{bottle.nextVerifyDate}}</td>

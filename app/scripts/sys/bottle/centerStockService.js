@@ -14,5 +14,10 @@ bottleApp.service('CenterStockService', ['$http', 'URI', 'promiseWrapper','MISC'
         +"&targetUserId="+targetUserId+"&serviceStatus="+serviceStatus));
     };
 
+    this.modifyBottle = function (bottle) {
+        return promise.wrap($http.put(bottlesUri + "/" + bottle.number, bottle));
+    };
+
+
 }]);
 

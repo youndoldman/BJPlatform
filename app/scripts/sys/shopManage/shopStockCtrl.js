@@ -86,6 +86,8 @@ shopManageApp.controller('ShopStockCtrl', ['$scope', '$rootScope', '$filter', '$
 
         init();
 
+
+
     }]);
 
 shopManageApp.controller('ShopStockModalCtrl', ['$scope', 'close', 'ShopStockService', 'title', 'initVal', 'udcModal','sessionStorage',function ($scope, close, ShopStockService, title, initVal, udcModal,sessionStorage) {
@@ -108,7 +110,7 @@ shopManageApp.controller('ShopStockModalCtrl', ['$scope', 'close', 'ShopStockSer
 
     $scope.submit = function () {
         ShopStockService.handOverBottle($scope.vm.handOver.bottleNumber,$scope.vm.handOver.srcUser,
-            $scope.vm.handOver.destUser,$scope.vm.selectReason.value).then(function () {
+            $scope.vm.handOver.destUser,$scope.vm.selectReason).then(function () {
             if($scope.isModify){
                 udcModal.info({"title": "处理结果", "message": "门店出库成功 "});
             }else {
@@ -121,6 +123,8 @@ shopManageApp.controller('ShopStockModalCtrl', ['$scope', 'close', 'ShopStockSer
 
     };
 
+
+
     var init = function () {
         var currentUser = sessionStorage.getCurUser();
         $scope.vm.bottle = _.clone(initVal);
@@ -132,17 +136,44 @@ shopManageApp.controller('ShopStockModalCtrl', ['$scope', 'close', 'ShopStockSer
         if (title == "门店出库"){
             if($scope.vm.bottle!=null){//有档案出库
                 $scope.vm.handOver.srcUser = $scope.vm.bottle.user.userId;
+            }else{
+                $scope.vm.handOver.srcUser = currentUser.userId;
             }
             $scope.isModify = true;
-            $scope.vm.reasons = [{name:"钢瓶调拨",value:"3"},{name:"钢瓶配送",value:"4"}];
-            $scope.vm.selectReason = $scope.vm.reasons[0];
+            $scope.vm.reasons = [{name:"未知",value:"-1"},{name:"钢瓶调拨",value:"3"},{name:"钢瓶配送",value:"4"}];
+            $scope.vm.selectReason = "-1";
         } else {
             $scope.isModify = false;
             $scope.vm.handOver.destUser = currentUser.userId;
             $scope.vm.reasons = [{name:"门店库存",value:"2"}];
-            $scope.vm.selectReason = $scope.vm.reasons[0];
+            $scope.vm.selectReason = "2";
         }
     };
 
     init();
+
+    $scope.findHandoverReason = function () {
+        var queryParams = {
+            userId:$scope.vm.handOver.destUser//责任人
+        };
+        ShopStockService.retrieveUsers(queryParams).then(function (usersResult) {
+            var usersList = usersResult.items;
+            if(usersList.length==1){
+                var user = usersResult.items[0];
+                if(user.userGroup.code=="00003"){//配送工
+                    $scope.vm.selectReason = "4";
+                }else if(user.userGroup.code=="00007"){//调拨员
+                    $scope.vm.selectReason = "3";
+                }else{
+                    $scope.vm.selectReason = "-1";
+                }
+            }
+            //$scope.close(true);
+        }, function(value) {
+            udcModal.info({"title": "计算移交原因失败", "message": value.message});
+            $scope.vm.selectReason = {name:"未知",value:"-1"};
+        })
+
+    };
+
 }]);

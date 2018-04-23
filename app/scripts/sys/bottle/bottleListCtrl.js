@@ -229,6 +229,8 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
         } else if (bottle.name != "" && title == "修改钢瓶") {
             //去除定位终端字段，才能提交
             bottle.locationDevice = null;
+            //去除空重瓶状态
+            bottle.loadStatus = null;
             BottleService.modifyBottle(bottle).then(function () {
                 udcModal.info({"title": "处理结果", "message": "修改钢瓶信息成功 "});
                 $scope.close(true);

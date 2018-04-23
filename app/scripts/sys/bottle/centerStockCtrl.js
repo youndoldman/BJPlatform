@@ -113,6 +113,7 @@ bottleApp.controller('CenterStockModalCtrl', ['$scope', 'close', 'CenterStockSer
             $scope.vm.handOver.destUser,$scope.vm.selectReason.value).then(function () {
             if($scope.isModify){
                 udcModal.info({"title": "处理结果", "message": "充气站出库成功 "});
+                changeKpToZp($scope.vm.handOver.bottleNumber);//空瓶变重瓶
             }else {
                 udcModal.info({"title": "处理结果", "message": "充气站入库成功 "});
             }
@@ -148,4 +149,15 @@ bottleApp.controller('CenterStockModalCtrl', ['$scope', 'close', 'CenterStockSer
     };
 
     init();
+    var changeKpToZp = function(bottleId){
+        var queryParams = {
+            number:bottleId,//钢瓶编码
+            loadStatus:"LSHeavy"
+        };
+        CenterStockService.modifyBottle(queryParams).then(function () {
+
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": value.message});
+        })
+    };
 }]);
