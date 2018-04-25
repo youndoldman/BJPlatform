@@ -79,6 +79,19 @@ var shopManageApp = angular.module('ShopManageApp', ['ui.router', 'CommonModule'
                 onEnter: function (rootService, NavItem) {
                     rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[4]);
                 }
+            })
+            .state('ShopManage.MoneyReturn',{
+                url:'/MoneyReturn',
+                views: {
+                    "content@ShopManage": {
+                        templateUrl: '../pages/shopManage/moneyReturn.html',
+                        controller: 'MoneyReturnCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[5]);
+                }
             });
         $httpProvider.interceptors.push('HttpInterceptor');
     }]).run(['$rootScope', 'rootService', 'NavItem', function ($rootScope, rootService, NavItem) {

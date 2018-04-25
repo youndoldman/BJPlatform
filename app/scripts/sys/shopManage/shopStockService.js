@@ -17,7 +17,6 @@ shopManageApp.service('ShopStockService', ['$http', 'URI', 'promiseWrapper','MIS
             +"&targetUserId="+targetUserId+"&serviceStatus="+serviceStatus));
     };
 
-<<<<<<< HEAD
     this.retrieveUsers = function (params) {
         return promise.wrap($http.get(usersUri, {params: params}));
     };
@@ -30,8 +29,6 @@ shopManageApp.service('ShopStockService', ['$http', 'URI', 'promiseWrapper','MIS
         return promise.wrap($http.put(bottlesUri + "/" + bottle.number, bottle));
     };
 
-
-=======
     //增加回款
     this.addWriteOff = function (params) {
         return promise.wrap($http.post(writeOffUri, params));
@@ -40,6 +37,5 @@ shopManageApp.service('ShopStockService', ['$http', 'URI', 'promiseWrapper','MIS
     this.searchWriteOffDetail = function (params) {
         return promise.wrap($http.get(writeOffDetailUri, {params: params}));
     };
->>>>>>> jjz_BJSystem
 }]);
 

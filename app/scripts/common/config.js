@@ -7,6 +7,9 @@ commonModule.constant('MISC', {
     }
 });
 
+
+
+
 commonModule.constant('URI', {
     'resources': {
         'loginPage': '../pages/login.htm',//登录页
@@ -181,12 +184,29 @@ commonModule.constant('NavItem', {
             icon: "fa-plane"
         }, {
             index: 2,
+            name: "报修处理",
+            target: "_blank",
+            href: "./shopCenter.htm#/ShopManage/Mend",
+            icon: "fa-plane"
+        }, {
+            index: 3,
+            name: "安检处理",
+            target: "_blank",
+            href: "./shopCenter.htm#/ShopManage/Security",
+            icon: "fa-plane"
+        }, {
+            index: 4,
+            name: "投诉处理",
+            target: "_blank",
+            href: "./shopCenter.htm#/ShopManage/Complaint",
+            icon: "fa-plane"
+        }, {
+            index: 5,
             name: "回款操作",
             target: "_blank",
-            href: "./shopCenter.htm#/ShopManage/moneyReturn",
+            href: "./shopCenter.htm#/ShopManage/MoneyReturn",
             icon: "fa-plane"
-            }
-        ]
+            }]
     },
     'CustomService': {
         roles:[1,2],
@@ -354,7 +374,7 @@ commonModule.constant('NavItem', {
                 target: "_blank",
                 href: "./financeCenter.htm#/finance/LPGSalesCash",
                 icon: "fa-table"
-            }{
+            },{
                 index: 6,
                 name: "银行款信息",
                 target: "_blank",

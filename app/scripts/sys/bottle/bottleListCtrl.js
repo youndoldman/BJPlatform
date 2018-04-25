@@ -240,6 +240,7 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
         }
     };
 
+
     var init = function () {
         $scope.vm.bottle = _.clone(initVal);
         if (title == "修改钢瓶"){
