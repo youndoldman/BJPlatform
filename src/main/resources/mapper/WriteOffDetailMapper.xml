@@ -48,7 +48,7 @@
             </if>
 
             <if test="creditType != null">
-                and t_write_off_detail.credit_type = #{creditType})
+                and t_write_off_detail.credit_type = #{creditType}
             </if>
 
             <if test="startTime != null">

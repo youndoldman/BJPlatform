@@ -36,7 +36,7 @@ public class GasCyrDynRptController
     @RequestMapping(value = "/api/Report/GasCyrDyn", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取门店钢瓶动态统计")
     public ResponseEntity retrieveSaleContactsCreditRpt(@RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
-                                                        @RequestParam(value = "operType", required = true) Integer operType,
+                                                        @RequestParam(value = "operType", required = false) Integer operType,
                                                         @RequestParam(value = "startTime", defaultValue = "") String startTime,
                                                         @RequestParam(value = "endTime", defaultValue = "") String endTime,
                                                         @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
