@@ -44,7 +44,11 @@ public class Clock {
 
             Date bt = df.parse(df.format(Date1));
             Date et = df.parse(df.format(Date2));
-            if (bt.before(et))
+            if (bt.equals(et))
+            {
+                before = true;
+            }
+            else if (bt.before(et))
             {
                 before = true;
             }

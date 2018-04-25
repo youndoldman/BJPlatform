@@ -16,7 +16,7 @@
         select t_department.id as department_id, t_department.name as department_name, t_department.code as department_code,
         t_gas_cylinder_spec.name as spec_name,t_gas_cylinder_spec.code as spec_code,
         sum(t_gas_cyr_dyn_detail.amount) as amount
-        from   t_sysuser,t_department,t_gas_cyr_dyn_detail
+        from   t_sysuser,t_department,t_gas_cyr_dyn_detail,t_gas_cylinder_spec
         where
               t_gas_cyr_dyn_detail.oper_idx = t_sysuser.user_idx
         and   t_sysuser.department_idx = t_department.id

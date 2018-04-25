@@ -91,6 +91,15 @@
                     <!--and  DATE_FORMAT(now(), '%Y-%m-%d')  BETWEEN t_ticket.exp_time_start AND  t_ticket.exp_time_end-->
                 <!--</if>-->
             </if>
+
+            <if test="startSaleTime != null">
+                and t_ticket.create_time >= #{startSaleTime}
+            </if>
+
+            <if test="endSaleTime != null">
+                and #{endSaleTime}  >= t_ticket.create_time
+            </if>
+
         </where>
     </sql>
 

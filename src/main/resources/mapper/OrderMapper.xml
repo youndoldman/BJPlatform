@@ -265,7 +265,7 @@
 
         <if test="originalAmount != null">origal_amount = #{originalAmount},</if>
         <if test="orderAmount != null">amount = #{orderAmount},</if>
-
+        <if test="payTime != null">pay_time = #{payTime},</if>
         <if test="payStatus != null">pay_status = #{payStatus.index},</if>
         <if test="payType != null">pay_type = #{payType.index},</if>
         <if test="recvName != null">recv_name = #{recvName},</if>

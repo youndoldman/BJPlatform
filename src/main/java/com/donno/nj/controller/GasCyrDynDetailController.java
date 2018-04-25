@@ -31,7 +31,7 @@ public class GasCyrDynDetailController
     @OperationLog(desc = "查询钢瓶动态操作信息")
     public ResponseEntity retrieve(@RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
                                    @RequestParam(value = "gasCyrSpecCode", defaultValue = "") String gasCyrSpecCode,
-                                   @RequestParam(value = "operType", required = true) Integer operType,
+                                   @RequestParam(value = "operType", required = false) Integer operType,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)

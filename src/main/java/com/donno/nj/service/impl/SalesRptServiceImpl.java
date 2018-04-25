@@ -39,40 +39,46 @@ public class SalesRptServiceImpl implements SalesRptService
 
             /*电子*/
             Map rptParams = new HashMap<String,String>();
-            rptParams.putAll(rptParams);
+            rptParams.putAll(params);
             rptParams.putAll(ImmutableMap.of("payType", PayType.PTOnLine.getIndex()));
-            List<SalesRpt> salesOnlineRptList = salesByPayTypeRptDao.getSaleRptByPayType(params);
+            List<SalesRpt> salesOnlineRptList = salesByPayTypeRptDao.getSaleRptByPayType(rptParams);
 
             mergeSaleRpt(salesOnlineRptList,salesRptList);
 
             /*现金*/
             rptParams.remove("payType");
             rptParams.putAll(ImmutableMap.of("payType", PayType.PTCash.getIndex()));
-            List<SalesRpt> salesCashRptList = salesByPayTypeRptDao.getSaleRptByPayType(params);
+            List<SalesRpt> salesCashRptList = salesByPayTypeRptDao.getSaleRptByPayType(rptParams);
 
             mergeSaleRpt(salesCashRptList,salesRptList);
 
              /*赊销*/
             rptParams.remove("payType");
             rptParams.putAll(ImmutableMap.of("payType", PayType.PTDebtCredit.getIndex()));
-            List<SalesRpt> salesCreditRptList = salesByPayTypeRptDao.getSaleRptByPayType(params);
+            List<SalesRpt> salesCreditRptList = salesByPayTypeRptDao.getSaleRptByPayType(rptParams);
 
             mergeSaleRpt(salesCreditRptList,salesRptList);
 
              /*月结*/
             rptParams.remove("payType");
             rptParams.putAll(ImmutableMap.of("payType", PayType.PTMonthlyCredit.getIndex()));
-            List<SalesRpt> salesMonthlyCreditRptList = salesByPayTypeRptDao.getSaleRptByPayType(params);
+            List<SalesRpt> salesMonthlyCreditRptList = salesByPayTypeRptDao.getSaleRptByPayType(rptParams);
 
             mergeSaleRpt(salesMonthlyCreditRptList,salesRptList);
 
+            /*气票*/
+            rptParams.remove("payType");
+            rptParams.putAll(ImmutableMap.of("payType", PayType.PTTicket.getIndex() ));
+            List<SalesRpt> salesTicketRptList = salesByPayTypeRptDao.getSaleRptByPayType(rptParams);
+
+            mergeSaleRpt(salesTicketRptList,salesRptList);
+
             /*优惠券*/
             rptParams.remove("payType");
-            rptParams.putAll(ImmutableMap.of("payType", PayType.PTTicket.getIndex()+1 ));
-            List<SalesRpt> salesCouponRptList = salesByPayTypeRptDao.getSaleRptByPayType(params);
+            rptParams.putAll(ImmutableMap.of("payType", PayType.PTCoupon.getIndex() ));
+            List<SalesRpt> salesCouponRptList = salesByPayTypeRptDao.getSaleRptByPayType(rptParams);
 
             mergeSaleRpt(salesCouponRptList,salesRptList);
-
         }
 
         return salesRptList;

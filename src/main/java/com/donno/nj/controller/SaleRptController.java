@@ -122,8 +122,4 @@ public class SaleRptController
         Integer count = salesRptService.countSaleRptByCstType(params);
         return ResponseEntity.ok(ListRep.assemble(salesRptList, count));
     }
-
-
-
-
 }

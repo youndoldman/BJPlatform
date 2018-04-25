@@ -84,7 +84,7 @@ public class SaleCashRptController
         Double saleCash = 0.0;
         Map saleCashParams = new HashMap<String,String>();
         saleCashParams.putAll(params);
-        params.putAll(ImmutableMap.of("payType", PayType.PTCash.getIndex()));
+        saleCashParams.putAll(ImmutableMap.of("payType", PayType.PTCash.getIndex()));
         List<SalesRpt> salesRptList = salesRptService.retrieveSaleRptByPayType(saleCashParams);
         for (SalesRpt salesRpt :salesRptList )
         {
@@ -97,6 +97,15 @@ public class SaleCashRptController
         Double ticketSale = 0.0;
         Map ticketSaleParams = new HashMap<String,String>();
         ticketSaleParams.putAll(params);
+        if (startTime.trim().length() > 0)
+        {
+            ticketSaleParams.putAll(ImmutableMap.of("startSaleTime", startTime));
+        }
+
+        if (endTime.trim().length() > 0)
+        {
+            ticketSaleParams.putAll(ImmutableMap.of("endSaleTime", endTime));
+        }
         List<Ticket> ticketList = ticketService.retrieve(ticketSaleParams);
         for (Ticket ticket :ticketList )
         {
@@ -121,7 +130,7 @@ public class SaleCashRptController
         accCreditParams.remove("startTime");
         accCreditParams.putAll(ImmutableMap.of("payType", PayType.PTDebtCredit.getIndex()));
         salesRptList.clear();
-        salesRptList  = salesRptService.retrieveSaleRptByCstType(accCreditParams);
+        salesRptList  = salesRptService.retrieveSaleRptByPayType(accCreditParams);
         for (SalesRpt salesRpt :salesRptList )
         {
             accCredit = accCredit + salesRpt.getSum();
@@ -135,7 +144,7 @@ public class SaleCashRptController
         accMonthlyCreditParams.remove("startTime");
         accMonthlyCreditParams.putAll(ImmutableMap.of("payType", PayType.PTMonthlyCredit.getIndex()));
         salesRptList.clear();
-        salesRptList  = salesRptService.retrieveSaleRptByCstType(accMonthlyCreditParams);
+        salesRptList  = salesRptService.retrieveSaleRptByPayType(accMonthlyCreditParams);
         for (SalesRpt salesRpt :salesRptList )
         {
             accMonthlyCredit = accMonthlyCredit + salesRpt.getSum();
@@ -168,23 +177,25 @@ public class SaleCashRptController
         }
         saleCashRpt.setMontlyCreditWriteOff(monthlyCreditWriteOff);
 
-        /*气票现金款*/
-        Double ticketCash = 0.0;
-        Map ticketSaleCashParams = new HashMap<String,String>();
-        ticketSaleCashParams.putAll(params);
-        ticketSaleCashParams.putAll(ImmutableMap.of("payType", PayType.PTCash.getIndex()));
-        ticketList.clear();
-        ticketList = ticketService.retrieve(ticketSaleCashParams);
-        for (Ticket ticket :ticketList )
-        {
-            ticketCash = ticketCash + ticket.getPrice();
-        }
+        /*气票销售现金款*/
+//        Double ticketCash = 0.0;
+//
+//        Map ticketSaleCashParams = new HashMap<String,String>();
+//        ticketSaleCashParams.putAll(params);
+////        ticketSaleCashParams.putAll(ImmutableMap.of("payType", PayType.PTCash.getIndex()));
+//        ticketList.clear();
+//        ticketList = ticketService.retrieve(ticketSaleCashParams);
+//        for (Ticket ticket :ticketList )
+//        {
+//            ticketCash = ticketCash + ticket.getPrice();
+//        }
+//        saleCashRpt.setTicketSaleCash(ticketCash);
 
 
-        /*今日结存现金=现金销售+回款+气票现金款-银行存款*/
+        /*今日结存现金=现金销售+回款+气票现金款-银行存款  */
         Double surplusCash = 0.0;
         surplusCash = saleCashRpt.getSaleCash() +  saleCashRpt.getCreditWriteOff() +
-                saleCashRpt.getMontlyCreditWriteOff() + ticketCash - saleCashRpt.getDepositCash();
+                saleCashRpt.getMontlyCreditWriteOff() + saleCashRpt.getTicketSaleCash() - saleCashRpt.getDepositCash();
         saleCashRpt.setSurplusCash(surplusCash);
 
 
