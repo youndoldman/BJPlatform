@@ -176,7 +176,6 @@ commonModule.constant('NavItem', {
             icon: "fa-plane"
             }
         ]
-        
     },
     'CustomService': {
         roles:[1,2],
