@@ -131,7 +131,6 @@ financeApp.controller('dailyMonthlySalesCtrl', ['$scope', '$rootScope', '$filter
         };
 
         $scope.search = function () {
-            $scope.pager.setCurPageNo(1);
             searchData();
         };
 
@@ -155,7 +154,11 @@ financeApp.controller('dailyMonthlySalesCtrl', ['$scope', '$rootScope', '$filter
 
                 FinanceService.searchSalesByCustomerType(queryParams1).then(function (salesByCustomerType) {
                     var salesByCustomerTypeList = salesByCustomerType.items;
-                    console.info(salesByCustomerTypeList);
+                    //console.info(salesByCustomerTypeList);
+
+                    $scope.q.dailyCountZhuzhai = null;
+                    $scope.q.dailySumZhuzhai = null;
+
                     if(salesByCustomerType.items.length>0){
                         for(var i = 0; i < $scope.data.goodsList.length; i++) {
                             for(var j = 0; j < $scope.data.goodsList[i].detail.length; j++) {
@@ -181,11 +184,14 @@ financeApp.controller('dailyMonthlySalesCtrl', ['$scope', '$rootScope', '$filter
                     startTime:$scope.dailyData.startTime,
                     endTime:$scope.dailyData.endTime,
                 };
-                console.info("今日实际销售 餐饮用户");
+                //console.info("今日实际销售 餐饮用户");
 
                 FinanceService.searchSalesByCustomerType(queryParams2).then(function (salesByCustomerType) {
+                    $scope.q.dailyCountCanyin = null;
+                    $scope.q.dailySumCanyin = null;
+
                     var salesByCustomerTypeList = salesByCustomerType.items;
-                    console.info(salesByCustomerTypeList);
+                    //console.info(salesByCustomerTypeList);
                     if(salesByCustomerType.items.length>0){
                         for(var i = 0; i < $scope.data.goodsList.length; i++) {
                             for(var j = 0; j < $scope.data.goodsList[i].detail.length; j++) {
@@ -210,11 +216,13 @@ financeApp.controller('dailyMonthlySalesCtrl', ['$scope', '$rootScope', '$filter
                     startTime:$scope.monthlyData.startTime,
                     endTime:$scope.monthlyData.endTime,
                 };
-                console.info("月累计 普通住宅客户");
+                //console.info("月累计 普通住宅客户");
 
                 FinanceService.searchSalesByCustomerType(queryParams3).then(function (salesByCustomerType) {
+                    $scope.q.monthlyCountZhuzhai = null;
+                    $scope.q.monthlySumZhuzhai = null;
                     var salesByCustomerTypeList = salesByCustomerType.items;
-                    console.info(salesByCustomerTypeList);
+                    //console.info(salesByCustomerTypeList);
                     if(salesByCustomerType.items.length>0){
                         for(var i = 0; i < $scope.data.goodsList.length; i++) {
                             for(var j = 0; j < $scope.data.goodsList[i].detail.length; j++) {
@@ -239,11 +247,14 @@ financeApp.controller('dailyMonthlySalesCtrl', ['$scope', '$rootScope', '$filter
                     startTime:$scope.monthlyData.startTime,
                     endTime:$scope.monthlyData.endTime,
                 };
-                console.info("月累计 餐饮用户");
+                //console.info("月累计 餐饮用户");
 
                 FinanceService.searchSalesByCustomerType(queryParams4).then(function (salesByCustomerType) {
+                    $scope.q.monthlyCountCanyin = null;
+                    $scope.q.monthlySumCanyin = null;
+
                     var salesByCustomerTypeList = salesByCustomerType.items;
-                    console.info(salesByCustomerTypeList);
+                    //console.info(salesByCustomerTypeList);
                     if(salesByCustomerType.items.length>0){
                         for(var i = 0; i < $scope.data.goodsList.length; i++) {
                             for(var j = 0; j < $scope.data.goodsList[i].detail.length; j++) {

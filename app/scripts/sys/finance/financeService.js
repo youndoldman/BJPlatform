@@ -17,6 +17,19 @@ financeApp.service('FinanceService', ['$http', 'URI', 'promiseWrapper', function
     var stockInOutUri = URI.resources.stockInOut;//查询出入库数量
     var salesCashUri = URI.resources.salesCash;//销售现金查询
 
+    var depositDetailUri = URI.resources.depositDetail;//增加存银行款信息
+
+    var writeOffUri = URI.resources.writeOff;//回款
+    var writeOffDetailUri = URI.resources.writeOffDetail;//回款明细
+    //增加回款
+    this.addWriteOff = function (params) {
+        return promise.wrap($http.post(writeOffUri, params));
+    };
+    //回款明细查询
+    this.searchWriteOffDetail = function (params) {
+        return promise.wrap($http.get(writeOffDetailUri, {params: params}));
+    };
+
     //查询客户类型
     this.searchCustomerType = function (params) {
         return promise.wrap($http.get(customerTypeUri, {params: params}));
@@ -62,6 +75,16 @@ financeApp.service('FinanceService', ['$http', 'URI', 'promiseWrapper', function
     //查询现金销售
     this.searchSalesCash = function (params) {
         return promise.wrap($http.get(salesCashUri, {params: params}));
+    }
+
+    //增加存银行款信息
+    this.addDepositDetail = function (params) {
+        return promise.wrap($http.post(depositDetailUri, params));
+    };
+
+    //查询存银行款信息
+    this.searchDepositDetail =  function (params) {
+        return promise.wrap($http.get(depositDetailUri, {params: params}));
     }
 }]);
 

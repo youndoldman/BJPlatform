@@ -92,6 +92,32 @@ var financeApp = angular.module('FinanceApp', ['ui.router', 'CommonModule', 'ang
                     rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[5]);
                 }
             })
+            .state('finance.depositOperation',{
+                url:'/depositOperation',
+                views: {
+                    "content@finance": {
+                        templateUrl: '../pages/finance/depositOperation.html',
+                        controller: 'DepositOperationCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[6]);
+                }
+            })
+            .state('finance.writeOff',{
+                url:'/writeOff',
+                views: {
+                    "content@finance": {
+                        templateUrl: '../pages/finance/writeOff.html',
+                        controller: 'WriteOffCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[7]);
+                }
+            })
             //.state('finance.ledger',{
             //    url:'/ledger',
             //    views: {

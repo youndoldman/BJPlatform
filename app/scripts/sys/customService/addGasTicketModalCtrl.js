@@ -7,6 +7,7 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
     $scope.modalTitle = title;
 
     $scope.currentUser = {};
+
     $timeout(function() {
         $(function () {
             $('#startTimePicker').datetimepicker({

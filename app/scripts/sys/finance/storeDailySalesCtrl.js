@@ -122,6 +122,8 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
             yesterdayYuejiejieyu:[],
             todaySalesCash:[],
             yesterdaySalesCash:[],
+            yesterdayShexiaohuikuan:[],
+            yesterdayYuejiehuikuan:[],
         };
 
         $scope.dailyData={
@@ -169,6 +171,24 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
 
         $scope.search = function () {
             $scope.pager.setCurPageNo(1);
+            //$scope.q.sumYesterdayKucun=null;
+            //$scope.q.sumTodayDiaoruShuliang=null;
+            //$scope.q.sumMonthDiaoru=null;
+            //
+            //$scope.q.sumCashSum=null;$scope.q.sumCashCount=null;
+            //$scope.q.sumPayOnlineSum=null;$scope.q.sumPayOnlineCount=null;
+            //$scope.q.sumCreditSum=null;$scope.q.sumCreditCount=null;
+            //$scope.q.sumYuejieCount=null;$scope.q.sumYuejieSum=null;
+            //$scope.q.sumTicketCount=null;$scope.q.sumTicketSum=null;
+            //$scope.q.sumCouponCount=null;
+            //
+            //$scope.q.sumCount=null;$scope.q.sumSum=null;
+            //
+            //$scope.q.sumTodayAvegPrice=null, $scope.q.sumYueleijiCount=null;
+            //$scope.q.sumYueleijiSum=null;
+            //
+            //$scope.q.sumCurrentKucun=null;$scope.q.sumTodayIn=null;$scope.q.sumTodayOut=null;
+            //$scope.q.sumMonthlyIn=null;
             searchData();
         };
 
@@ -183,10 +203,10 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                     departmentCode:$scope.q.liableDepartmentCode,
                     loadStatus:1,
                 };
-                console.info("查询当前库存");
+                //console.info("查询当前库存");
                 FinanceService.searchStock(params).then(function (stocks) {
                     var stockList = stocks.items;
-                    console.info(stockList);
+                   // console.info(stockList);
                     if(stocks.items.length>0){
                         for(var i = 0; i < $scope.data.goodsList.length; i++) {
                             for(var j = 0; j < $scope.data.goodsList[i].detail.length; j++) {
@@ -212,11 +232,11 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                     startTime:$scope.dailyData.startTime,
                     endTime:$scope.dailyData.endTime,
                 };
-                console.info("查询今日调入数量");
+                //console.info("查询今日调入数量");
 
                 FinanceService.searchStockInOut(params1).then(function (stocksIn) {
                     var stockInList = stocksIn.items;
-                    console.info(stockInList);
+                    //console.info(stockInList);
 
                     if(stocksIn.items.length>0){
                         for(var i = 0; i < $scope.data.goodsList.length; i++) {
@@ -242,11 +262,11 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                     startTime:$scope.dailyData.startTime,
                     endTime:$scope.dailyData.endTime,
                 };
-                console.info("查询今日出库数量");
+                //console.info("查询今日出库数量");
 
                 FinanceService.searchStockInOut(params2).then(function (stocksOut) {
                     var stockOutList = stocksOut.items;
-                    console.info(stockOutList);
+                    //console.info(stockOutList);
 
                     if(stocksOut.items.length>0){
                         for(var i = 0; i < $scope.data.goodsList.length; i++) {
@@ -272,7 +292,7 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                     startTime:$scope.monthlyData.startTime,
                     endTime:$scope.monthlyData.endTime,
                 };
-                console.info("查本月累计调入数量");
+                //console.info("查本月累计调入数量");
 
                 FinanceService.searchStockInOut(params3).then(function (stocksIn) {
                     var stockInList = stocksIn.items;
@@ -302,8 +322,11 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                 };
 
                 FinanceService.searchSalesByBayType(queryParams1).then(function (salesByPay) {
-                    var salesByPayCashList = salesByPay.items;
 
+                    $scope.q.sumCashSum = null;
+                    $scope.q.sumCashCount = null;
+
+                    var salesByPayCashList = salesByPay.items;
                     if(salesByPay.items.length>0){
                         for(var i = 0; i < $scope.data.goodsList.length; i++) {
                             for(var j = 0; j < $scope.data.goodsList[i].detail.length; j++) {
@@ -329,8 +352,10 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                     endTime:$scope.dailyData.endTime,
                 };
                 FinanceService.searchSalesByBayType(queryParams).then(function (salesByPay) {
-                    var salesByPayOnlineList = salesByPay.items;
+                    $scope.q.sumPayOnlineCount = null;
+                    $scope.q.sumPayOnlineSum = null;
 
+                    var salesByPayOnlineList = salesByPay.items;
                     if(salesByPay.items.length>0){
                         for(var i = 0; i < $scope.data.goodsList.length; i++) {
                             for(var j = 0; j < $scope.data.goodsList[i].detail.length; j++) {
@@ -356,8 +381,10 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                     endTime:$scope.dailyData.endTime,
                 };
                 FinanceService.searchSalesByBayType(queryParams2).then(function (salesByPay) {
-                    var salesByPayCreditList = salesByPay.items;
+                    $scope.q.sumCreditCount = null;
+                    $scope.q.sumCreditSum = null;
 
+                    var salesByPayCreditList = salesByPay.items;
                     if(salesByPay.items.length>0){
                         for(var i = 0; i < $scope.data.goodsList.length; i++) {
                             for(var j = 0; j < $scope.data.goodsList[i].detail.length; j++) {
@@ -382,8 +409,10 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                     endTime:$scope.dailyData.endTime,
                 };
                 FinanceService.searchSalesByBayType(queryParams3).then(function (salesByPay) {
-                    var salesByPayMonthlySumList = salesByPay.items;
+                    $scope.q.sumYuejieCount = null;
+                    $scope.q.sumYuejieSum = null;
 
+                    var salesByPayMonthlySumList = salesByPay.items;
                     if(salesByPay.items.length>0){
                         for(var i = 0; i < $scope.data.goodsList.length; i++) {
                             for(var j = 0; j < $scope.data.goodsList[i].detail.length; j++) {
@@ -399,8 +428,8 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                             }
                         }
                     }
-                    console.info("");
-                    console.info( $scope.sumYuejieCount );
+                    //console.info("");
+                    //console.info( $scope.sumYuejieCount );
                 })
 
                 //气票
@@ -412,8 +441,10 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                 };
 
                 FinanceService.searchSalesByBayType(queryParams4).then(function (salesByPay) {
-                    var salesByPayTicketList = salesByPay.items;
+                    $scope.q.sumTicketCount = null;
+                    $scope.q.sumTicketSum = null;
 
+                    var salesByPayTicketList = salesByPay.items;
                     if(salesByPay.items.length>0){
                         for(var i = 0; i < $scope.data.goodsList.length; i++) {
                             for(var j = 0; j < $scope.data.goodsList[i].detail.length; j++) {
@@ -439,8 +470,9 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                 };
 
                 FinanceService.searchSalesByBayType(queryParams5).then(function (salesByPay) {
-                    var salesByPayCouponList = salesByPay.items;
+                    $scope.q.sumCouponCount = null;
 
+                    var salesByPayCouponList = salesByPay.items;
                     if(salesByPay.items.length>0){
                         for(var i = 0; i < $scope.data.goodsList.length; i++) {
                             for(var j = 0; j < $scope.data.goodsList[i].detail.length; j++) {
@@ -464,8 +496,11 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                     startTime:$scope.monthlyData.startTime,
                     endTime:$scope.monthlyData.endTime,
                 };
-                console.info(queryParams6);
+                //console.info(queryParams6);
                 FinanceService.searchSalesByBayType(queryParams6).then(function (salesByPay) {
+                    $scope.q.sumYueleijiCount = null;
+                    $scope.q.sumYueleijiSum = null;
+
                     var salesByPayMonthlySumSalesList = salesByPay.items;
                     if(salesByPay.items.length>0){
                         for(var i = 0; i < $scope.data.goodsList.length; i++) {
@@ -487,27 +522,29 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                 var queryParams7 = {
                     departmentCode:$scope.q.liableDepartmentCode,
                     creditType:0,
-                    writeOffType:0,
+                    writeOffType:1,
                     startTime:$scope.dailyData.startTime,
                     endTime:$scope.dailyData.endTime,
                 };
 
                 FinanceService.searchSaleContacts(queryParams7).then(function (SaleContacts) {
-                    $scope.data.todayShexiaohuikuan = SaleContacts.items;
-                   // console.info("test");
-                    console.info( $scope.data.todayShexiaohuikuan);
+                    $scope.data.todayShexiaohuikuan = SaleContacts.items[0];
+                   //console.info("今日赊销回款");
+                   // console.info( $scope.data.todayShexiaohuikuan);
                 })
                 //销售往来日报表查询:今日赊销结余
                 var queryParams8 = {
                     departmentCode:$scope.q.liableDepartmentCode,
                     creditType:0,
-                    writeOffType:1,
+                    writeOffType:0,
                     startTime:$scope.dailyData.startTime,
                     endTime:$scope.dailyData.endTime,
                 };
 
                 FinanceService.searchSaleContacts(queryParams8).then(function (SaleContacts) {
                     $scope.data.todayShexiaojieyu = SaleContacts.items[0];
+                    //console.info("今日赊销结余");
+                    //console.info($scope.data.todayShexiaojieyu);
                 })
 
                 //销售往来日报表查询:今日月结回款
@@ -521,6 +558,8 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
 
                 FinanceService.searchSaleContacts(queryParams9).then(function (SaleContacts) {
                     $scope.data.todayYuejiehuikuan = SaleContacts.items[0];
+                    //console.info("今日月结回款");
+                    //console.info($scope.data.todayYuejiehuikuan);
                 })
 
                 //销售往来日报表查询:今日月结结余
@@ -534,11 +573,12 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
 
                 FinanceService.searchSaleContacts(queryParams10).then(function (SaleContacts) {
                     $scope.data.todayYuejiejieyu = SaleContacts.items[0];
+                    //console.info("今日月结结余");
+                    //console.info($scope.data.todayYuejiejieyu);
                 })
 
-
-                //销售往来日报表查询:上日赊销结余
-                var queryParams11 = {
+                //销售往来日报表查询:上日赊销回款
+                var queryParams20 = {
                     departmentCode:$scope.q.liableDepartmentCode,
                     creditType:0,
                     writeOffType:1,
@@ -546,8 +586,39 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                     endTime:$scope.yesterdayData.endTime,
                 };
 
+                FinanceService.searchSaleContacts(queryParams20).then(function (SaleContacts) {
+                    $scope.data.yesterdayShexiaohuikuan = SaleContacts.items[0];
+                    console.info("上日赊销回款");
+                    console.info( $scope.data.yesterdayShexiaohuikuan);
+                })
+
+
+                //销售往来日报表查询:上日赊销结余
+                var queryParams11 = {
+                    departmentCode:$scope.q.liableDepartmentCode,
+                    creditType:0,
+                    writeOffType:0,
+                    startTime:$scope.yesterdayData.startTime,
+                    endTime:$scope.yesterdayData.endTime,
+                };
+
                 FinanceService.searchSaleContacts(queryParams11).then(function (SaleContacts) {
                     $scope.data.yesterdayShexiaojieyu = SaleContacts.items[0];
+                })
+
+                //销售往来日报表查询:上日月结回款
+                var queryParams22 = {
+                    departmentCode:$scope.q.liableDepartmentCode,
+                    creditType:1,
+                    writeOffType:1,
+                    startTime:$scope.yesterdayData.startTime,
+                    endTime:$scope.yesterdayData.endTime,
+                };
+
+                FinanceService.searchSaleContacts(queryParams22).then(function (SaleContacts) {
+                    $scope.data.yesterdayYuejiehuikuan = SaleContacts.items[0];
+                    console.info("上日月结回款");
+                    console.info($scope.data.yesterdayYuejiehuikuan);
                 })
 
                 //销售往来日报表查询:上日月结结余
