@@ -74,6 +74,10 @@ commonModule.constant('URI', {
         'customerCredit': '../../../api/CustomerCredit',//欠款
 
 
+        'writeOff':'../../../api/WriteOff',//回款
+        'writeOffDetail':'../../../api/WriteOffDetail',//回款明细信息查询
+        'depositDetail':'../../../api/DepositDetail',//增加存银行款信息记录
+        
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
         'ktyReport1': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/agent/call',//科天云获取坐席-工作组及直拨电话统计报表
         'ktyReport2': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/agent/operation',//科天云获取坐席-操作状态统计报表
@@ -177,23 +181,12 @@ commonModule.constant('NavItem', {
             icon: "fa-plane"
         }, {
             index: 2,
-            name: "报修处理",
+            name: "回款操作",
             target: "_blank",
-            href: "./shopCenter.htm#/ShopManage/Mend",
+            href: "./shopCenter.htm#/ShopManage/moneyReturn",
             icon: "fa-plane"
-        }, {
-            index: 3,
-            name: "安检处理",
-            target: "_blank",
-            href: "./shopCenter.htm#/ShopManage/Security",
-            icon: "fa-plane"
-        }, {
-            index: 4,
-            name: "投诉处理",
-            target: "_blank",
-            href: "./shopCenter.htm#/ShopManage/Complaint",
-            icon: "fa-plane"
-        }]
+            }
+        ]
     },
     'CustomService': {
         roles:[1,2],
@@ -361,6 +354,18 @@ commonModule.constant('NavItem', {
                 target: "_blank",
                 href: "./financeCenter.htm#/finance/LPGSalesCash",
                 icon: "fa-table"
+            }{
+                index: 6,
+                name: "银行款信息",
+                target: "_blank",
+                href: "./financeCenter.htm#/finance/depositOperation",
+                icon: "fa-edit"
+            }, {
+                index: 7,
+                name: "回款操作",
+                target: "_blank",
+                href: "./financeCenter.htm#/finance/writeOff",
+                icon: "fa-edit"
             }
         //    {
         //    index: 0,

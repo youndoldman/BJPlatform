@@ -5,6 +5,8 @@ shopManageApp.service('ShopStockService', ['$http', 'URI', 'promiseWrapper','MIS
     var bottleHandOverUri = URI.resources.bottleHandOver;//钢瓶交接接口
     var usersUri = URI.resources.users;//用户信息查询接口
 
+    var writeOffUri = URI.resources.writeOff;//回款
+    var writeOffDetailUri = URI.resources.writeOffDetail;//回款明细
 
     this.retrieveBottles = function (params) {
         return promise.wrap($http.get(bottlesUri, {params: params}));
@@ -15,6 +17,7 @@ shopManageApp.service('ShopStockService', ['$http', 'URI', 'promiseWrapper','MIS
             +"&targetUserId="+targetUserId+"&serviceStatus="+serviceStatus));
     };
 
+<<<<<<< HEAD
     this.retrieveUsers = function (params) {
         return promise.wrap($http.get(usersUri, {params: params}));
     };
@@ -28,5 +31,15 @@ shopManageApp.service('ShopStockService', ['$http', 'URI', 'promiseWrapper','MIS
     };
 
 
+=======
+    //增加回款
+    this.addWriteOff = function (params) {
+        return promise.wrap($http.post(writeOffUri, params));
+    };
+    //回款明细查询
+    this.searchWriteOffDetail = function (params) {
+        return promise.wrap($http.get(writeOffDetailUri, {params: params}));
+    };
+>>>>>>> jjz_BJSystem
 }]);
 

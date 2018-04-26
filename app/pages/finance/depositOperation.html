@@ -3,32 +3,23 @@
         <!-- general form elements -->
         <div class="panel panel-primary" style="height: 500px;">
             <div class="panel-heading">
-                <h3 class="panel-title">回款录入</h3>
+                <h3 class="panel-title">存银行款录入</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
             <div class="panel-body">
-
-                <!--<div class="row">-->
-                <div class="col-xs-4 text-left input-lg" style="margin-top: 30px">
-                    <label>客户编号</label>
-                </div>
-                <div class="col-xs-8" style="margin-left: -50px;margin-top: 30px">
-                    <input type="text" class="form-control input-lg" ng-model="q.userId">
-                </div>
-
-                <div class="col-xs-4 text-left input-lg" style="margin-top: 30px">
-                    <label>回款方式</label>
-                </div>
-                <div class="col-xs-8" style="margin-left: -50px;margin-top: 30px">
-                    <select name="payType" ng-model="payType" ng-options="payType for payType in vm.payType" class="form-control input-lg" ng-selected="" ng-change="payTypeChange()"></select>
-                </div>
-
                 <div class="col-xs-4 text-left input-lg" style="margin-top: 30px">
                     <label>金额(元)</label>
                 </div>
                 <div class="col-xs-8" style="margin-left: -50px;margin-top: 30px">
                     <input type="text" class="form-control input-lg" ng-model="q.amount" >
+                </div>
+
+                <div class="col-xs-4 text-left input-lg" style="margin-top: 30px">
+                    <label>操作时间</label>
+                </div>
+                <div class="col-xs-8" style="margin-left: -50px;margin-top: 30px">
+                    <input type="text"  id="depositOperTimePicker"  class="form-control input-lg" ng-model="q.operTime" >
                 </div>
 
                 <div class="col-xs-4 text-left input-lg" style="margin-top: 30px">
@@ -38,11 +29,9 @@
                     <input type="text" class="form-control input-lg" ng-model="q.note" >
                 </div>
 
-                <div class="col-xs-7 text-left input-lg" style="margin-top: 30px">
-
-                </div>
+                <div class="col-xs-7 text-left input-lg" style="margin-top: 30px"></div>
                 <div class="col-xs-5 text-left input-lg" style="margin-top: 30px">
-                    <button type="save" class="btn btn-primary btn-lg pull-left" style="margin-left: 10px" ng-click="saveMoneyReturn(q)">录入回款</button>
+                    <button type="save" class="btn btn-primary btn-lg pull-left" style="margin-left: 10px" ng-click="saveDeposit(q)">录入存银行款</button>
                 </div>
 
 
@@ -53,15 +42,15 @@
     <div class="col-md-8">
         <div class="panel panel-primary" style="height: 500px;">
             <div class="panel-heading">
-                <h3 class="panel-title">录入查询</h3>
+                <h3 class="panel-title">存银行款查询</h3>
             </div>
             <!-- /.box-header -->
 
             <div class="toolbar">
                 <form role="form">
                     <div class="inline-group">
-                        <label class="input">用户编号：</label>
-                        <label class="input"><input type="text" class="form-control input-sm"  ng-model="data.userId" ng-change="searchCredit()"> </label>
+                        <label class="input">操作员：</label>
+                        <label class="input"><input type="text" class="form-control input-sm"  ng-model="data.operId" ng-change="searchCredit()"> </label>
                         <label class="input">赊款计入时间：</label>
                         <label class="input"><input type="text"  id="creditPickerStart"  class="form-control" ng-model="data.startTime" ></label>
                         <label class="input">-</label>
@@ -69,9 +58,6 @@
 
                         <button type="button" class="btn btn-sm btn-success pull-right" ng-click="searchCredit()"><i class="fa fa-search"></i> 搜索 </button>
 
-                        <label class="input">欠款用户类型：</label>
-                        <label class="input "><select  ng-model="data.creditType" ng-options="creditType for creditType in vm.creditType" class="form-control" ng-selected="" ng-change="searchCredit()"></select>
-                        </label>
 
                     </div>
                 </form>
@@ -81,22 +67,18 @@
                 <table class="table table-bordered table-hover .table-condensed table-striped" style="table-layout:fixed;">
                     <tr>
                         <th  style="background: lightblue;text-align: center" width="10%">序号</th>
-                        <th  style="background: lightblue;text-align: center" width="15%">用户编号</th>
-                        <th  style="background: lightblue;text-align: center" width="15%">欠款金额</th>
-                        <th  style="background: lightblue;text-align: center" width="15%">回款方式</th>
-                        <th  style="background: lightblue;text-align: center" width="15%">操作员</th>
-                        <th  style="background: lightblue;text-align: center" width="15%">记账时间</th>
-                        <th  style="background: lightblue;text-align: center" width="15%">备注</th>
+                        <th  style="background: lightblue;text-align: center" width="20%">操作员编号</th>
+                        <th  style="background: lightblue;text-align: center" width="20%">金额</th>
+                        <th  style="background: lightblue;text-align: center" width="20%">操作时间</th>
+                        <th  style="background: lightblue;text-align: center" width="20%">备注</th>
 
                     </tr>
 
                     <tr ng-repeat="credit in vm.creditList" ng-click="showDetail(customer)">
                         <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
-                        <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{credit.userId}}</td>
+                        <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{credit.operId}}</td>
                         <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{credit.amount}}</td>
-                        <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{credit.payType.name}}</td>
-                        <td style="overflow:hidden;white-space:nowrap;">{{credit.operId}}</td>
-                        <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{credit.createTime}}</td>
+                        <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{credit.operTime}}</td>
                         <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{credit.note}}</td>
                     </tr>
                 </table>
@@ -108,7 +90,7 @@
         </div>
     </div>
 
-    </div>
+</div>
 
 
 

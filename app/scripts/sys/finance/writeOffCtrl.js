@@ -1,13 +1,15 @@
 /**
- * Created by Administrator on 2018/4/23.
+ * Created by Administrator on 2018/4/25.
+ */
+/**
+ * Created by Administrator on 2018/3/28.
  */
 'use strict';
 
-shopManageApp.controller('MoneyReturnCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
-    'rootService', 'pager', 'udcModal', 'ShopStockService','sessionStorage', function ($scope, $rootScope, $filter, $location, Constants,
+financeApp.controller('WriteOffCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
+    'rootService', 'pager', 'udcModal', 'sessionStorage','FinanceService','$interval',function ($scope, $rootScope, $filter, $location, Constants,
+                                                                                                rootService, pager, udcModal,sessionStorage,FinanceService,$interval) {
 
-                                                                                       rootService, pager, udcModal, ShopStockService, sessionStorage) {
-        //var currentUser = sessionStorage.getCurUser();
 
         $(function () {
             $('#creditPickerStart').datetimepicker({
@@ -92,7 +94,7 @@ shopManageApp.controller('MoneyReturnCtrl', ['$scope', '$rootScope', '$filter', 
 
 
         $scope.saveMoneyReturn = function(returnMoney){
-            ShopStockService.addWriteOff(returnMoney).then(function () {
+            FinanceService.addWriteOff(returnMoney).then(function () {
                 udcModal.info({"title": "处理结果", "message": "回款录入成功 "});
 
             }, function(value) {
@@ -125,7 +127,7 @@ shopManageApp.controller('MoneyReturnCtrl', ['$scope', '$rootScope', '$filter', 
             }
             console.info("回款查询");
             console.info(queryParams);
-            ShopStockService.searchWriteOffDetail(queryParams).then(function (detail) {
+            FinanceService.searchWriteOffDetail(queryParams).then(function (detail) {
                 $scope.pager.update($scope.q, detail.total, queryParams.pageNo);
                 $scope.vm.creditList = detail.items;
                 console.info($scope.vm.creditList );
@@ -141,5 +143,6 @@ shopManageApp.controller('MoneyReturnCtrl', ['$scope', '$rootScope', '$filter', 
         };
 
         init();
+
 
     }]);

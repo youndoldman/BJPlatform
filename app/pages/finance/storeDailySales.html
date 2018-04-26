@@ -223,12 +223,12 @@
 
             <td width="2.8%"  class="message tableContentAdjust">{{q.sumCurrentKucun}}</td>
 
-            <td width="2.8%"  class="message tableContentAdjust">{{data.yesterdayShexiaojieyu.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{(data.yesterdayShexiaojieyu.sum - data.yesterdayShexiaohuikuan.sum)>0 ? (data.yesterdayShexiaojieyu.sum - data.yesterdayShexiaohuikuan.sum):null}}</td>
             <td width="2.8%"  class="message tableContentAdjust">{{data.todayShexiaohuikuan.sum}}</td>
-            <td width="2.8%"  class="message tableContentAdjust">{{data.todayShexiaojieyu.sum}}</td>
-            <td width="2.8%"  class="message tableContentAdjust">{{data.yesterdayYuejiejieyu.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{(data.todayShexiaojieyu.sum - data.todayShexiaohuikuan.sum)>0 ? (data.todayShexiaojieyu.sum - data.todayShexiaohuikuan.sum) : null}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{(data.yesterdayYuejiejieyu.sum - data.yesterdayYuejiehuikuan.sum)>0? (data.yesterdayYuejiejieyu.sum - data.yesterdayYuejiehuikuan.sum) : null}}</td>
             <td width="2.8%"  class="message tableContentAdjust">{{data.todayYuejiehuikuan.sum}}</td>
-            <td width="2.8%"  class="message tableContentAdjust">{{data.todayYuejiejieyu.sum}}</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{(data.todayYuejiejieyu.sum - data.todayYuejiehuikuan.sum) > 0 ? (data.todayYuejiejieyu.sum - data.todayYuejiehuikuan.sum):null}}</td>
 
             <td width="2.8%"  class="message tableContentAdjust">{{data.yesterdaySalesCash.surplusCash}}</td>
             <td width="2.8%"  class="message tableContentAdjust">{{data.todaySalesCash.saleCash}}</td>
@@ -237,7 +237,6 @@
             <td width="2.8%"  class="message tableContentAdjust">{{data.todaySalesCash.ticketSaleCash}}</td>
             <td width="2.8%"  class="message tableContentAdjust">{{data.todaySalesCash.depositCash}}</td>
             <td width="2.8%"  class="message tableContentAdjust">{{data.todaySalesCash.surplusCash}}</td>
-
 
         </tr>
 

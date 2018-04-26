@@ -111,8 +111,6 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
             useType:null,
             status:null,
 
-
-
         };
 
         $scope.config = {
