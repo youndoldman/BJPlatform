@@ -67,8 +67,21 @@ var shopManageApp = angular.module('ShopManageApp', ['ui.router', 'CommonModule'
                     rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[3]);
                 }
             })
-            .state('ShopManage.moneyReturn',{
-                url:'/moneyReturn',
+            .state('ShopManage.Complaint',{
+                url:'/Complaint',
+                views: {
+                    "content@ShopManage": {
+                        templateUrl: '../pages/shopManage/complaintList.htm',
+                        controller: 'ComplaintCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[4]);
+                }
+            })
+            .state('ShopManage.MoneyReturn',{
+                url:'/MoneyReturn',
                 views: {
                     "content@ShopManage": {
                         templateUrl: '../pages/shopManage/moneyReturn.html',
@@ -77,7 +90,7 @@ var shopManageApp = angular.module('ShopManageApp', ['ui.router', 'CommonModule'
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[4]);
+                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[5]);
                 }
             });
         $httpProvider.interceptors.push('HttpInterceptor');

@@ -24,6 +24,9 @@ import com.donno.nj.util.QRCodeUtil;
 import org.springframework.web.bind.annotation.*;
 
 import com.donno.nj.service.OrderService;
+import java.util.HashMap;
+import java.io.ByteArrayOutputStream;
+import java.io.BufferedOutputStream;
 
 
 @RestController
@@ -57,7 +60,7 @@ public class PayController {
     }
 
     @RequestMapping(value = "/api/pay/microApp", method = RequestMethod.GET)
-        public ResponseEntity testQRCode(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "totalFee") String totalFree,
+    public ResponseEntity testQRCode(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "totalFee") String totalFree,
                                      @RequestParam(value = "orderIndex") String orderIndex,
                                      @RequestParam(value = "userCode") String userCode) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
@@ -112,12 +115,20 @@ public class PayController {
         response.setContentType("text/xml");
 
         try {
-            InputStream inputStream = request.getInputStream();
+            String resXml = "";
+            Map<String, String> backxml = new HashMap<String, String>();
+            InputStream inStream;
 
-            byte[] bytes = new byte[0];
-            bytes = new byte[inputStream.available()];
-            inputStream.read(bytes);
-            String notifyData = new String(bytes);// 支付结果通知的xml格式数据
+            inStream = request.getInputStream();
+            ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            while ((len = inStream.read(buffer)) != -1) {
+                outSteam.write(buffer, 0, len);
+            }
+            outSteam.close();
+            inStream.close();
+            String notifyData = new String(outSteam.toByteArray(), "utf-8");// 获取微信调用我们notify_url的返回信息
             Map<String, String> result = weiXinPayService.payNotify(notifyData);
             if(result!=null){
                 //支付结果通知为成功TODO
@@ -137,12 +148,14 @@ public class PayController {
             }else{
 
             }
-            String claimStr ="<xml>\n" +
-                    "  <return_code><![CDATA[SUCCESS]]></return_code>\n" +
-                    "  <return_msg><![CDATA[OK]]></return_msg>\n" +
-                    "</xml>";
-            response.getOutputStream().write(claimStr.getBytes(), 0, claimStr.length());
 
+
+            String claimStr = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>"
+                    + "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
+            BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());
+            out.write(claimStr.getBytes());
+            out.flush();
+            out.close();
 
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (Exception e){
@@ -152,7 +165,7 @@ public class PayController {
 
     @RequestMapping(value = "/api/pay/doRefundOffical", method = RequestMethod.GET)
     public ResponseEntity doRefundOffical(HttpServletRequest request, @RequestParam(value = "totalFee") String totalFee,
-                                     @RequestParam(value = "outTradeNo") String outTradeNo) throws IOException {
+                                          @RequestParam(value = "outTradeNo") String outTradeNo) throws IOException {
         try {
             boolean result = weiXinPayService.doRefundOffical(outTradeNo, totalFee);
             if (result){
@@ -167,7 +180,7 @@ public class PayController {
 
     @RequestMapping(value = "/api/pay/doRefundMicroApp", method = RequestMethod.GET)
     public ResponseEntity doRefundMicroApp(HttpServletRequest request, @RequestParam(value = "totalFee") String totalFee,
-                                     @RequestParam(value = "outTradeNo") String outTradeNo) throws IOException {
+                                           @RequestParam(value = "outTradeNo") String outTradeNo) throws IOException {
         try {
             boolean result = weiXinPayService.doRefundMicroApp(outTradeNo, totalFee);
             if (result){

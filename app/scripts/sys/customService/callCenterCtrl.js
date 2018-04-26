@@ -1,8 +1,8 @@
 'use strict';
 
 customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
-    'rootService', 'pager', 'udcModal', 'CustomerManageService', 'OrderService','sessionStorage','MendSecurityComplaintService',function ($scope, $rootScope, $filter, $location, Constants,
-                                                                           rootService, pager, udcModal, CustomerManageService,OrderService,sessionStorage,MendSecurityComplaintService) {
+    'rootService', 'pager', 'udcModal', 'CustomerManageService', 'OrderService','sessionStorage','MendSecurityComplaintService','$document',function ($scope, $rootScope, $filter, $location, Constants,
+                                                                           rootService, pager, udcModal, CustomerManageService,OrderService,sessionStorage,MendSecurityComplaintService,$document) {
 
 
         var gotoPageCustomer = function (pageNo) {
@@ -117,7 +117,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             CustomerList: [],
             CustomerOrderHistory: [],
             CustomerAutoReportList:[ //不间断供气客户
-            ]
+            ],
+            currentCustomerCredit:null//当前用户欠款
         };
 
         //当前订单信息
@@ -216,6 +217,10 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
         //创建订单
         $scope.createOrder = function () {
+            if($scope.vm.currentCustomer==null){
+                udcModal.info({"title": "错误提示", "message": "请选择客户！"});
+                return;
+            }
             $scope.currentOrder.callInPhone = $scope.vm.callInPhone;
             //$scope.currentOrder.payType = "PTOffline";
             $scope.currentOrder.accessType = "ATCustomService";
@@ -304,7 +309,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
         var searchCustomer = function () {
             //清空表格
-            $scope.vm.customerList = [];
+            $scope.vm.CustomerList = [];
             $scope.vm.currentCustomer = "";
             var queryParams = {
                 userId:$scope.searchParam.customerID,
@@ -318,10 +323,10 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             //以后修改，这里为了演示方便
             CustomerManageService.retrieveCustomers(queryParams).then(function (customers) {
                 $scope.pagerCustomer.update($scope.qCustomer, customers.total, queryParams.pageNo);
-                $scope.vm.customerList=customers.items;
+                $scope.vm.CustomerList=customers.items;
 
-                if($scope.vm.customerList.length>0){
-                    $scope.vm.currentCustomer = $scope.vm.customerList[0];
+                if($scope.vm.CustomerList.length>0){
+                    $scope.vm.currentCustomer = $scope.vm.CustomerList[0];
                     //刷新订单
                     refleshOrder();
                 }
@@ -347,6 +352,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         //将列表中的客户信息显示到详情
         $scope.showDetail = function (customer) {
             $scope.vm.currentCustomer = customer;
+            //查询当前用户欠款
+            retrieveCustomerCredit();
             //查询当前客户的订气记录
             searchOrderHistory();
             //刷新订单
@@ -437,6 +444,10 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
         //创建报修单
         $scope.createMend = function () {
+            if($scope.vm.currentCustomer==null){
+                udcModal.info({"title": "错误提示", "message": "请选择客户！"});
+                return;
+            }
             //设置客户
             var tempCustomer = {userId:""};
             tempCustomer.userId = $scope.vm.currentCustomer.userId;
@@ -466,6 +477,10 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
         //创建安检单
         $scope.createSecurity = function () {
+            if($scope.vm.currentCustomer==null){
+                udcModal.info({"title": "错误提示", "message": "请选择客户！"});
+                return;
+            }
             //设置客户
             var tempCustomer = {userId:""};
             tempCustomer.userId = $scope.vm.currentCustomer.userId;
@@ -495,6 +510,10 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
         //创建投诉单
         $scope.createComplaint = function () {
+            if($scope.vm.currentCustomer==null){
+                udcModal.info({"title": "错误提示", "message": "请选择客户！"});
+                return;
+            }
             //设置客户
             var tempCustomer = {userId:""};
             tempCustomer.userId = $scope.vm.currentCustomer.userId;
@@ -515,4 +534,72 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
         };
 
+        $scope.clearWindow = function(){
+            $scope.vm.currentCustomerCredit= null;
+            $scope.vm.callInPhone = null;
+            $scope.vm.currentCustomer = null,
+            $scope.vm.CustomerList = [];
+            $scope.vm.CustomerOrderHistory = [];
+            $scope.currentOrder = {
+                orderDetailList:[]
+            };
+            //当前报修信息
+            $scope.currentMend= {
+                mendType:{},//报修类型
+                customer:{},//报修用户
+                recvName:null,//联系人
+                recvPhone:null,//联系电话
+                recvAddr:{},//报修地址
+                detail:null,//报修内容
+                reserveTime:null,//预约时间
+            };
+            //当前安检信息
+            $scope.currentSecurity= {
+                securityType:{},//安检类型
+                customer:{},//安检用户
+                recvName:null,//联系人
+                recvPhone:null,//联系电话
+                recvAddr:{},//安检地址
+                detail:null,//安检内容
+                reserveTime:null,//预约时间
+            };
+            //当前投诉信息
+            $scope.currentComplaint= {
+                complaintType:{},//投诉类型
+                customer:{},//投诉用户
+                recvName:null,//联系人
+                recvPhone:null,//联系电话
+                recvAddr:{},//投诉地址
+                detail:null,//投诉内容
+                reserveTime:null,//预约时间
+            };
+            $scope.pagerCustomer.update($scope.qCustomer, 0, 1);
+            $scope.pagerHistory.update($scope.qHistory, 0, 1);
+        };
+        $document.bind("keypress", function(event) {
+
+            if(event.keyCode==10){//ctrl+enter
+                $scope.clearWindow();
+                $scope.$apply();
+            }
+        });
+
+        //查询当前用户欠款
+
+        var retrieveCustomerCredit = function(){
+            var queryParams = {
+                userId:$scope.vm.currentCustomer.userId
+            };
+            CustomerManageService.retrieveCustomerCredit(queryParams).then(function (credit) {
+                var CreditList = credit.items;
+                if(CreditList.length==0){
+                    $scope.vm.currentCustomerCredit = 0+"元";
+                }else{
+                    $scope.vm.currentCustomerCredit = credit.items[0].amount+"元";
+                }
+
+            }, function(value) {
+                udcModal.info({"title": "错误信息", "message": "查询当前用户欠款信息失败 "+value.message});
+            })
+        }
     }]);

@@ -11,7 +11,7 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
     $scope.modalTitle = title;
     $scope.map = null;
     var infoWindow = new AMap.InfoWindow();
-    $timeout(function() {
+    $scope.$watch('$viewContentLoaded',function () {
         mapInitial();
         destNationInitial();
 

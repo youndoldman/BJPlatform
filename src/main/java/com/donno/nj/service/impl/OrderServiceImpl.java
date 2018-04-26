@@ -480,7 +480,8 @@ public class OrderServiceImpl implements OrderService
         }
         else  if (code.equals(ServerConstantValue.SETTLEMENT_TYPE_COMMON_USER) )//普通用户
         {
-            order.setPayType(PayType.PTOnLine);
+            //order.setPayType(PayType.PTOnLine);
+            //不做处理
         }
         else
         {
@@ -577,6 +578,12 @@ public class OrderServiceImpl implements OrderService
             {
                 payType = srcOrder.getPayType();
             }
+
+            if(newOrder.getPayStatus() == PayStatus.PSPaied)
+            {
+                newOrder.setPayTime(new Date());
+            }
+
             updatePayStatus(newOrder.getPayStatus(),payType,srcOrder.getCustomer(),srcOrder);
         }
 

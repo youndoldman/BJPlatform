@@ -118,11 +118,19 @@
         </div>
         <br>
         <div class="row">
-          <div  class="col-xs-2 text-left">
+          <div class="col-xs-2 text-left">
+            <label>客户欠款</label>
+          </div>
+          <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
+            <input type="text" class="form-control input-sm" ng-model="vm.currentCustomerCredit" ng-disabled="true"/>
+
+          </div>
+          <div style="margin-left: 20px;" class="col-xs-2 text-left">
             <label>客户备注</label>
           </div>
-          <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-10">
+          <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
             <input type="text" class="form-control  input-sm" ng-model="vm.currentCustomer.note" ng-disabled="true">
+
           </div>
         </div>
         <hr>
@@ -189,7 +197,7 @@
             <th  style="background: lightblue;text-align: center" width="35%">地址</th>
           </tr>
 
-          <tr ng-repeat="customer in vm.customerList" ng-click="showDetail(customer)">
+          <tr ng-repeat="customer in vm.CustomerList" ng-click="showDetail(customer)">
             <td class="message">{{$index+1+pagerCustomer.pageSize*(pagerCustomer.getCurPageNo()-1)}}</td>
             <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{customer.userId}}</td>
             <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{customer.name}}</td>
@@ -524,7 +532,7 @@
               <div class="col-md-4" style="margin-top: 5px">
                 <div class="input-group">
                   <span class="input-group-addon">送气地址</span>
-                  <input type="text" class="form-control" value={{currentOrder.recvAddr.province}}{{currentOrder.recvAddr.city}}{{currentOrder.recvAddr.country}}{{currentOrder.recvAddr.detail}}>
+                  <input type="text" class="form-control" value={{currentOrder.recvAddr.province}}{{currentOrder.recvAddr.city}}{{currentOrder.recvAddr.country}}{{currentOrder.recvAddr.detail}} ng-disabled="true">
                 </div>
               </div>
               <div class="col-md-4" style="margin-top: 5px">
@@ -589,7 +597,7 @@
               <div class="col-md-4" style="margin-top: 5px">
                 <div class="input-group">
                   <span class="input-group-addon">维修地址</span>
-                  <input type="text" class="form-control" value={{currentMend.recvAddr.province}}{{currentMend.recvAddr.city}}{{currentMend.recvAddr.country}}{{currentMend.recvAddr.detail}}>
+                  <input type="text" class="form-control" value={{currentMend.recvAddr.province}}{{currentMend.recvAddr.city}}{{currentMend.recvAddr.country}}{{currentMend.recvAddr.detail}} ng-disabled="true">
                 </div>
               </div>
 
@@ -639,7 +647,7 @@
               <div class="col-md-4" style="margin-top: 5px">
                 <div class="input-group">
                   <span class="input-group-addon">安检地址</span>
-                  <input type="text" class="form-control" value={{currentSecurity.recvAddr.province}}{{currentSecurity.recvAddr.city}}{{currentSecurity.recvAddr.country}}{{currentSecurity.recvAddr.detail}}>
+                  <input type="text" class="form-control" value={{currentSecurity.recvAddr.province}}{{currentSecurity.recvAddr.city}}{{currentSecurity.recvAddr.country}}{{currentSecurity.recvAddr.detail}} ng-disabled="true">
                 </div>
               </div>
 
@@ -689,7 +697,7 @@
               <div class="col-md-4" style="margin-top: 5px">
                 <div class="input-group">
                   <span class="input-group-addon">投诉地址</span>
-                  <input type="text" class="form-control" value={{currentComplaint.recvAddr.province}}{{currentComplaint.recvAddr.city}}{{currentComplaint.recvAddr.country}}{{currentComplaint.recvAddr.detail}}>
+                  <input type="text" class="form-control" value={{currentComplaint.recvAddr.province}}{{currentComplaint.recvAddr.city}}{{currentComplaint.recvAddr.country}}{{currentComplaint.recvAddr.detail}} ng-disabled="true">
                 </div>
               </div>
 

@@ -17,19 +17,19 @@
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label-large">原责任人：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="srcUser" class="form-control" ng-model="vm.handOver.srcUser"  required>
+                            <input type="text" name="srcUser" class="form-control" ng-model="vm.handOver.srcUser" ng-disabled="isModify" required>
                         </div>
                     </div>
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label-large">移交责任人：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="destUser" class="form-control" ng-model="vm.handOver.destUser"  ng-disabled="!isModify" required>
+                            <input type="text" name="destUser" class="form-control" ng-model="vm.handOver.destUser"   ng-change="findHandoverReason()" ng-disabled="!isModify" required>
                         </div>
                     </div>
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label-large">移交原因：</label>
                         <div class="col-sm-8 input-width">
-                            <select name="spec" ng-model="vm.selectReason" ng-options="reason.name for reason in vm.reasons" class="form-control" ng-selected=""></select>
+                            <select name="spec" ng-model="vm.selectReason" ng-options="reason.value as reason.name for reason in vm.reasons" class="form-control" ng-disabled="true"></select>
                         </div>
                     </div>
                 </div>

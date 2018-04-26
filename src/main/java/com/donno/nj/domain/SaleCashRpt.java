@@ -24,7 +24,7 @@ public class SaleCashRpt implements Serializable
     private Double accCredit ;  //往日赊销（截止当前待收回款）
     private Double accMonthlyCredit ;  //往日月结（截止当前待收回款）
 
-    private Double surplusCash; //今日结存现金（现金销售-银行存款+回款）
+    private Double surplusCash; //今日结存现金（现金销售-银行存款+回款+气票款）
 
     public SaleCashRpt()
     {

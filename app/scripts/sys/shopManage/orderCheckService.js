@@ -29,6 +29,8 @@ shopManageApp.service('OrderCheckService', ['$http', 'URI', 'promiseWrapper','MI
                 note: null,
                 createTime: null,
                 updateTime: null,
+                dispatcher:null,
+                payStatus:null,
                 taskId: taskOrdersFromApi.id
             }
         }
@@ -54,7 +56,9 @@ shopManageApp.service('OrderCheckService', ['$http', 'URI', 'promiseWrapper','MI
             createTime: taskOrdersFromApi.object.createTime,
             updateTime: taskOrdersFromApi.object.updateTime,
             timeSpan:taskOrdersFromApi.object.timeSpan,
-            taskId: taskOrdersFromApi.id
+            taskId: taskOrdersFromApi.id,
+            dispatcher:taskOrdersFromApi.object.dispatcher,
+            payStatus:taskOrdersFromApi.object.payStatus
         }
     };
 

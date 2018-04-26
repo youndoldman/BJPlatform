@@ -31,7 +31,7 @@
        t_gas_cyr_dyn_detail.oper_type,
         t_gas_cyr_dyn_detail.amount,t_gas_cyr_dyn_detail.note,t_gas_cyr_dyn_detail.create_time,t_gas_cyr_dyn_detail.update_time,
         t_gas_cylinder_spec.code as gas_cyr_spec_code, t_gas_cylinder_spec.name as gas_cyr_spec_name,
-        t_user.user_id
+        t_user.user_id as oper_user_id
     </sql>
 
     <sql id="InsertColumnList">
@@ -110,7 +110,7 @@
         VALUES(
         (select id from t_user where user_id = #{operUserId} ),
         (select id from t_gas_cylinder_spec where code = #{gasCyrSpecCode} ),
-        #{gasCyrDynOperType},
+        #{gasCyrDynOperType.index},
         #{amount},#{note})
     </insert>
 
