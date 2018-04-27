@@ -168,10 +168,10 @@ public class AdjustPriceScheduleServiceImpl implements AdjustPriceScheduleServic
     @OperationLog(desc = "删除调价计划信息")
     public void deleteById(Integer id)
     {
-        /*删除订单总表*/
+        /*删除计划总表*/
         adjustPriceScheduleDao.delete(id);
 
-        /*删除订单详细表*/
+        /*删除详表*/
         adjustPriceScheduleDetailDao.deleteByScheduleIdx(id);
     }
 

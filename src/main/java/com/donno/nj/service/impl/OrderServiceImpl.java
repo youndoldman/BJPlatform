@@ -199,12 +199,20 @@ public class OrderServiceImpl implements OrderService
             {
                 throw new ServerSideBusinessException("商品信息不正确！", HttpStatus.NOT_ACCEPTABLE);
             }
+
             Goods good = goodsDao.findByCode(orderDetail.getGoods().getCode());
             if (good == null)
             {
                 throw new ServerSideBusinessException("商品信息不存在！", HttpStatus.NOT_ACCEPTABLE);
             }
             orderDetail.setGoods(good);
+
+            /*检查商品是否停止销售或者下架*/
+            if (orderDetail.getGoods().getStatus() != 0)
+            {
+                String message = String.format("商品%s已经暂停销售!",orderDetail.getGoods().getName());
+                throw new ServerSideBusinessException(message, HttpStatus.NOT_ACCEPTABLE);
+            }
 
             /*查询优惠,计算满足条件的每件商品优惠后价格，及订单总金额*/
             if (customer.getSettlementType().getCode().equals(ServerConstantValue.SETTLEMENT_TYPE_COMMON_USER) ||
