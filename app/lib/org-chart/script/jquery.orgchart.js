@@ -127,7 +127,7 @@
       var that = this;
       var $exportBtn = $('<button>', {
         'class': 'oc-export-btn' + (this.options.chartClass !== '' ? ' ' + this.options.chartClass : ''),
-        'text': 'Export',
+        'text': '导出',
         'click': function(e) {
           e.preventDefault();
           that.export();

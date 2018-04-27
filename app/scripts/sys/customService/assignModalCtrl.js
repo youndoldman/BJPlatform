@@ -11,11 +11,11 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
     $scope.modalTitle = title;
     $scope.map = null;
     var infoWindow = new AMap.InfoWindow();
-    $scope.$watch('$viewContentLoaded',function () {
+
+    $timeout(function(){
         mapInitial();
         destNationInitial();
-
-    });
+    },300);
     //地图初始化
     var mapInitial = function() {
         $scope.map = new AMap.Map('mapContainer', {

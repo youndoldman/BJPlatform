@@ -1,4 +1,4 @@
-<div class="modal" tabindex="-1">
+<div class="modal" tabindex="-1"  data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <form name="goodsForm" novalidate>
@@ -14,16 +14,18 @@
                         <div class="col-sm-8 input-width">
                             <input type="text" name="code" class="form-control" ng-model="vm.goods.code" required>
                         </div>
+                        <label class="input-tips" ng-show="goodsForm.code.$error.required || goodsForm.code.$invalid">&nbsp;*&nbsp;必填项</label>
+
                     </div>
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label">商品名称：</label>
                         <div class="col-sm-8 input-width">
                             <input type="text" name="name" class="form-control" ng-model="vm.goods.name"  required>
                         </div>
+                        <label class="input-tips" ng-show="goodsForm.name.$error.required || goodsForm.name.$invalid">&nbsp;*&nbsp;必填项</label>
                     </div>
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label">商品类型：</label>
-
                         <div class="col-sm-8 input-width">
                             <select name="goodsType" ng-model="vm.goods.goodsType" ng-options="goodsType.name for goodsType in vm.goodsTypesList" class="form-control" ng-selected=""></select>
                         </div>
@@ -33,29 +35,32 @@
                         <div class="col-sm-8 input-width">
                             <input type="text" name="specifications" class="form-control" ng-model="vm.goods.specifications"  required>
                         </div>
+                        <label class="input-tips" ng-show="goodsForm.specifications.$error.required || goodsForm.specifications.$invalid">&nbsp;*&nbsp;必填项</label>
                     </div>
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label">单位：</label>
                         <div class="col-sm-8 input-width">
                             <input type="text" name="unit" class="form-control" ng-model="vm.goods.unit"  required>
                         </div>
+                        <label class="input-tips" ng-show="goodsForm.unit.$error.required || goodsForm.unit.$invalid">&nbsp;*&nbsp;必填项</label>
                     </div>
                     <div class="input-group pdb15">
-                        <label class="col-sm-4 control-label input-label">重量：</label>
+                        <label class="col-sm-4 control-label input-label">重量(kg)：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="number" name="weight" class="form-control" ng-model="vm.goods.weight"  required>
+                            <input type="number" name="weight" class="form-control" ng-model="vm.goods.weight"  min="0" onkeyup="this.value=this.value.replace(/\-/g,'');" required>
                         </div>
                     </div>
                     <div class="input-group pdb15">
-                        <label class="col-sm-4 control-label input-label">价格：</label>
+                        <label class="col-sm-4 control-label input-label">价格(元)：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="number" name="price" class="form-control" ng-model="vm.goods.price"  required>
+                            <input type="number" name="price" class="form-control" ng-model="vm.goods.price"   min="0" onkeyup="this.value=this.value.replace(/\-/g,'');" required>
                         </div>
+                        <label class="input-tips" ng-show="goodsForm.price.$error.required || goodsForm.price.$invalid">&nbsp;*&nbsp;必填项</label>
                     </div>
                     <div class="input-group pdb15">
-                        <label class="col-sm-4 control-label input-label">有效期：</label>
+                        <label class="col-sm-4 control-label input-label">有效期(天)：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="number" name="lifeExpectancy" class="form-control" ng-model="vm.goods.lifeExpectancy"  required>
+                            <input type="number" name="lifeExpectancy" class="form-control" ng-model="vm.goods.lifeExpectancy"   min="0" onkeyup="this.value=this.value.replace(/\-/g,'');" required>
                         </div>
                     </div>
                     <div class="input-group pdb15">
@@ -76,8 +81,10 @@
 
 
                 <div class="modal-footer">
-                    <button type="submit" ng-click="submit(vm.goods)" class="btn btn-primary" data-dismiss="modal">上传</button>
-                    <button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" ng-click="submit(vm.goods)" class="btn btn-primary" data-dismiss="modal"
+                            ng-disabled="goodsForm.code.$error.required || goodsForm.name.$error.required||
+                            goodsForm.specifications.$error.required || goodsForm.price.$error.required|| goodsForm.unit.$error.required">确认</button>
+                    <button type="button" ng-click="close(true)" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </form>
         </div>

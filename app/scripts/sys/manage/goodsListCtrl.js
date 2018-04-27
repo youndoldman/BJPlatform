@@ -297,6 +297,8 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
                         GoodsService.deleteGoods(goods).then(function () {
                             udcModal.info({"title": "处理结果", "message": "删除商品信息成功 "});
                             searchGoods();
+                        }, function (value) {
+                            udcModal.info({"title": "处理结果", "message": "删除商品信息失败 " + value.message});
                         });
                     }
                 })
@@ -309,6 +311,8 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
                         GoodsService.deleteGoodsType(goodsType).then(function () {
                             udcModal.info({"title": "处理结果", "message": "删除商品类型成功 "});
                             searchGoodsTypes();
+                        }, function (value) {
+                            udcModal.info({"title": "处理结果", "message": "删除商品类型失败 " + value.message});
                         });
                     }
                 })

@@ -42,7 +42,7 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
                         +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
                 });
         });
-    });
+    },300);
 
     $scope.q = {
         customer:{userId:null},

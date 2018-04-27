@@ -15,15 +15,20 @@ manageApp.controller('GoodsModalCtrl', ['$scope', 'close', 'GoodsService', 'titl
     };
 
     $scope.submit = function (goods) {
+        //修改商品类型结构
         if (title == "新增商品") {
             GoodsService.createGoods(goods).then(function () {
                 udcModal.info({"title": "处理结果", "message": "新增商品成功 "});
                 $scope.close(true);
+            }, function (value) {
+                udcModal.info({"title": "处理结果", "message": "新增商品失败 " + value.message});
             })
         } else if (title == "修改商品") {
             GoodsService.modifyGoods(goods).then(function () {
                 udcModal.info({"title": "处理结果", "message": "修改商品成功 "});
                 $scope.close(true);
+            }, function (value) {
+                udcModal.info({"title": "处理结果", "message": "修改商品失败 " + value.message});
             })
         }
     };
@@ -48,7 +53,16 @@ manageApp.controller('GoodsModalCtrl', ['$scope', 'close', 'GoodsService', 'titl
         };
         GoodsService.retrieveGoodsTypes(queryParams).then(function (goodsTypes) {
             $scope.vm.goodsTypesList = _.map(goodsTypes.items, GoodsService.toViewModelGoodsTypes);
-            $scope.vm.goods.goodsType = $scope.vm.goodsTypesList[0];
+            if(!$scope.isModify){
+                $scope.vm.goods.goodsType = $scope.vm.goodsTypesList[0];
+            }else{
+                for(var tempGoods in $scope.vm.goodsTypesList){
+                    if($scope.vm.goods.goodsType.code==$scope.vm.goodsTypesList[tempGoods].code){
+                        $scope.vm.goods.goodsType = $scope.vm.goodsTypesList[tempGoods];
+                    }
+                }
+
+            }
         });
     };
 
