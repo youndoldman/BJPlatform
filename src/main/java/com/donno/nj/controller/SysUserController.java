@@ -147,7 +147,8 @@ public class SysUserController
                                    @RequestParam(value = "departmentCode", defaultValue = "") Integer departmentCode,
                                    @RequestParam(value = "mobilePhone", defaultValue = "") String mobilePhone,
                                    @RequestParam(value = "officePhone", defaultValue = "") String officePhone,
-                                   @RequestParam(value = "aliveStatus", required = false) AliveStatus aliveStatus,
+//                                   @RequestParam(value = "aliveStatus", required = false) AliveStatus aliveStatus,
+                                   @RequestParam(value = "aliveStatus", required = false) Integer aliveStatus,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
