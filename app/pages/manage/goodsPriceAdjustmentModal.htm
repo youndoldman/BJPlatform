@@ -1,4 +1,4 @@
-﻿<div class="modal" tabindex="-1">
+﻿<div class="modal" tabindex="-1" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog"  style=" width: 1000px;">
         <div class="modal-content">
             <form name="userForm" novalidate>
@@ -38,13 +38,13 @@
                                 </div>
 
                                 <div class="row" style="margin-top: 15px">
-                                    <label class="col-md-2 control-label input-label">现价：</label>
+                                    <label class="col-md-2 control-label input-label">现价(元)：</label>
                                     <div class="col-md-3 input-width-sm">
                                         <input type="number"  class="form-control" ng-model="temp.selectedGoods.price" disabled>
                                     </div>
-                                    <label class="col-md-2 control-label input-label">调价：</label>
+                                    <label class="col-md-2 control-label input-label">调价(元)：</label>
                                     <div class="col-md-3 input-width-sm">
-                                        <input type="number"  class="form-control" ng-model="temp.adjustGoodsPrice" >
+                                        <input type="number"  class="form-control" ng-model="temp.adjustGoodsPrice" min="0" onkeyup="this.value=this.value.replace(/\-/g,'');" >
                                     </div>
                                 </div>
 
@@ -63,8 +63,8 @@
                                     <td style="background: lightblue;text-align: center" width="12%">商品名称</td>
                                     <td style="background: lightblue;text-align: center" width="10%">商品类型</td>
                                     <td style="background: lightblue;text-align: center" width="10%">商品规格</td>
-                                    <td style="background: lightblue;text-align: center" width="9%">现价</td>
-                                    <td style="background: lightblue;text-align: center" width="10%">调价</td>
+                                    <td style="background: lightblue;text-align: center" width="9%">现价(元)</td>
+                                    <td style="background: lightblue;text-align: center" width="10%">调价(元)</td>
                                     <td style="background: lightblue;text-align: center" width="5%">操作</td>
                                 </tr>
                                 </thead>

@@ -18,11 +18,10 @@ customServiceApp.controller('ComplaintAssignModalCtrl', ['$scope', 'close', 'Men
     var redrawDepartment = function(){
         $scope.chart.init({ 'data': $scope.dataSource });
     };
-    $scope.$watch('$viewContentLoaded',function () {
+    $timeout(function(){
         chartInitial();
         retrieveRootDepartment();
-
-    });
+    },300);
 
     var departmentConvertToDataSoure = function (department) {
         var chartColors = ["middle-level","product-dept","rd-dept","pipeline1","frontend1"];

@@ -122,9 +122,9 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
 
     }]);
 
-bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'title', 'initVal', 'udcModal',function ($scope, close, BottleService, title, initVal, udcModal) {
+bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'title', 'initVal', 'udcModal','$timeout',function ($scope, close, BottleService, title, initVal, udcModal,$timeout) {
     //时间空间
-    $scope.$watch('$viewContentLoaded',function () {
+    $timeout(function(){
         $(function () {
             $('#datetimepickerProductionDate').datetimepicker({
                 format: 'YYYY-MM-DD',
@@ -132,7 +132,6 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
                 //sideBySide:true,
                 showTodayButton:true,
                 toolbarPlacement:'top',
-
             });
             $('#datetimepickerVerifyDate').datetimepicker({
                 format: 'YYYY-MM-DD',
@@ -189,7 +188,7 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
                         +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
                 });
         });
-    });
+    },300);
 
 
 

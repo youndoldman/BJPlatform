@@ -1,8 +1,8 @@
 'use strict';
 
 manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
-    'rootService', 'pager', 'udcModal', 'UserService', function ($scope, $rootScope, $filter, $location, Constants,
-                                                                 rootService, pager, udcModal, UserService) {
+    'rootService', 'pager', 'udcModal', 'UserService', '$timeout', function ($scope, $rootScope, $filter, $location, Constants,
+                                                                 rootService, pager, udcModal, UserService,$timeout) {
         var gotoPage = function (pageNo) {
             $scope.pager.setCurPageNo(pageNo);
             searchUsers();
@@ -64,8 +64,11 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
                 .then(function (result) {
                     if (result) {
                         UserService.deleteUser(user).then(function () {
+                            udcModal.info({"title": "处理结果", "message": "删除用户成功 "});
                             searchUsers();
-                        });
+                        }, function (value) {
+                            udcModal.info({"title": "处理结果", "message": "修改用户失败 " + value.message});
+                        })
                     }
                 })
         };
@@ -110,7 +113,7 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
 
     }]);
 
-manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title', 'initVal','$document','$interval', 'udcModal',function ($scope, close, UserService, title, initVal,$document,$interval,udcModal) {
+manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title', 'initVal','$document','$interval', 'udcModal','$timeout',function ($scope, close, UserService, title, initVal,$document,$interval,udcModal,$timeout) {
     $scope.dataSource = {};
     $scope.chart = null;
     var chartInitial = function () {
@@ -133,12 +136,10 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
         $scope.chart.init({'data': $scope.dataSource});
     };
 
-    $scope.$watch('$viewContentLoaded',function () {
-        console.log(1111);
+    $timeout(function(){
         chartInitial();
         retrieveRootDepartment();
-
-    });
+    },300);
 
     var departmentConvertToDataSoure = function (department) {
         var chartColors = ["middle-level", "product-dept", "rd-dept", "pipeline1", "frontend1"];
@@ -177,7 +178,7 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
         if (user.name != "" && title == "新增用户") {
             UserService.createUser(user).then(function () {
                 udcModal.info({"title": "处理结果", "message": "创建用成功！"});
-                $scope.close(true);
+                //$scope.close(true);
             }, function (value) {
                 udcModal.info({"title": "处理结果", "message": "创建用户失败 " + value.message});
             })
