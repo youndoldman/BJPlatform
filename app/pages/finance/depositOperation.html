@@ -1,7 +1,7 @@
-<div class="row" style="margin-top:15px;">
+<div class="row" style="margin-top:10px;">
     <div class="col-md-4">
         <!-- general form elements -->
-        <div class="panel panel-primary" style="height: 500px;">
+        <div class="panel panel-primary" style="height: 930px;">
             <div class="panel-heading">
                 <h3 class="panel-title">存银行款录入</h3>
             </div>
@@ -9,14 +9,14 @@
             <!-- form start -->
             <div class="panel-body">
                 <div class="col-xs-4 text-left input-lg" style="margin-top: 30px">
-                    <label>金额(元)</label>
+                    <label>金额(元)</label><span style="color:red">*</span>
                 </div>
                 <div class="col-xs-8" style="margin-left: -50px;margin-top: 30px">
                     <input type="text" class="form-control input-lg" ng-model="q.amount" >
                 </div>
 
                 <div class="col-xs-4 text-left input-lg" style="margin-top: 30px">
-                    <label>操作时间</label>
+                    <label>操作时间</label><span style="color:red">*</span>
                 </div>
                 <div class="col-xs-8" style="margin-left: -50px;margin-top: 30px">
                     <input type="text"  id="depositOperTimePicker"  class="form-control input-lg" ng-model="q.operTime" >
@@ -29,9 +29,12 @@
                     <input type="text" class="form-control input-lg" ng-model="q.note" >
                 </div>
 
-                <div class="col-xs-7 text-left input-lg" style="margin-top: 30px"></div>
-                <div class="col-xs-5 text-left input-lg" style="margin-top: 30px">
-                    <button type="save" class="btn btn-primary btn-lg pull-left" style="margin-left: 10px" ng-click="saveDeposit(q)">录入存银行款</button>
+
+                <div class="col-xs-8 text-left input-lg" style="margin-top: 30px">
+                    <span style="color:red">带*是必填项</span>
+                </div>
+                <div class="col-xs-4 text-left input-lg" style="margin-top: 30px">
+                    <button type="save" class="btn btn-primary btn-lg pull-left" style="margin-left: 10px" ng-click="saveDeposit(q)">保存</button>
                 </div>
 
 
@@ -40,7 +43,7 @@
     </div>
 
     <div class="col-md-8">
-        <div class="panel panel-primary" style="height: 500px;">
+        <div class="panel panel-primary" style="height: 930px;">
             <div class="panel-heading">
                 <h3 class="panel-title">存银行款查询</h3>
             </div>

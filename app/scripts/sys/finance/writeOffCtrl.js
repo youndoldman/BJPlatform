@@ -10,7 +10,8 @@ financeApp.controller('WriteOffCtrl', ['$scope', '$rootScope', '$filter', '$loca
     'rootService', 'pager', 'udcModal', 'sessionStorage','FinanceService','$interval',function ($scope, $rootScope, $filter, $location, Constants,
                                                                                                 rootService, pager, udcModal,sessionStorage,FinanceService,$interval) {
 
-
+        var windowHeight = document.documentElement.clientHeight;
+        console.info(windowHeight);
         $(function () {
             $('#creditPickerStart').datetimepicker({
                 format: 'YYYY-MM-DD HH:mm',
@@ -140,6 +141,10 @@ financeApp.controller('WriteOffCtrl', ['$scope', '$rootScope', '$filter', '$loca
             $scope.data.creditType = "所有类型";
 
             $scope.searchCredit();
+
+            //var doc = document.getElementById("panel1").height;
+            //console.info(doc);
+            ////document.getElementById("panel2").height= windowHeight;
         };
 
         init();

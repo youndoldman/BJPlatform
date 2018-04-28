@@ -1,5 +1,5 @@
 <div class="modal" tabindex="-1" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="width: 750px">
         <div class="modal-content">
             <form name="userForm" novalidate>
                 <div class="modal-header">
@@ -12,13 +12,13 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-xs-2 text-left">
-                                <label>客户编号</label>
+                                <label>客户编号</label><span style="color:red">*</span>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
                                 <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.userId">
                             </div>
                             <div style="margin-left: 20px;" class="col-xs-2 text-left">
-                                <label>客户姓名</label>
+                                <label>客户姓名</label><span style="color:red">*</span>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
                                 <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.name">
@@ -27,13 +27,13 @@
                         <br>
                         <div class="row"  ng-if="!isModify">
                             <div class="col-xs-2 text-left">
-                                <label>办理人信息</label>
+                                <label>办理人编号</label><span style="color:red">*</span>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
                                 <input type="text" class="form-control input-sm" ng-model="currentUser.userId">
                             </div>
                             <div style="margin-left: 20px;" class="col-xs-2 text-left">
-                                <label>气票编号</label>
+                                <label>气票编号</label><span style="color:red">*</span>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">
                                 <!--<input type="text" class="form-control input-sm" ng-model="q.ticketSn">-->
@@ -43,14 +43,14 @@
                         <br >
                         <div class="row">
                             <div class="col-xs-2 text-left">
-                                <label>规格代码</label>
+                                <label>规格代码</label><span style="color:red">*</span>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">
                                 <select name="specCode" ng-model="specCode" ng-options="goods.name for goods in vm.goodsList" class="form-control" ng-selected="" ng-change="specCodeChange()"></select>
 
                             </div>
                             <div style="margin-left: 20px;" class="col-xs-2 text-left">
-                                <label>使用状态</label>
+                                <label>使用状态</label><span style="color:red">*</span>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">
                                 <select  ng-model="state" ng-options="ticketStatus for ticketStatus in vm.ticketStates" class="form-control" ng-selected="" ng-change="ticketStatusChange()"></select>
@@ -59,13 +59,13 @@
                         <br>
                         <div class="row">
                             <div class="col-xs-2 text-left">
-                                <label>有效期起始</label>
+                                <label>有效期起始</label><span style="color:red">*</span>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
                                 <label class="input"><input type="text"  id="startTimePicker"  class="form-control" ng-model="q.startDate"></label>
                             </div>
                             <div style="margin-left: 20px;" class="col-xs-2 text-left">
-                                <label>有效期终止</label>
+                                <label>有效期终止</label><span style="color:red">*</span>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
                                 <label class="input"><input type="text"  id="endTimePicker"  class="form-control" ng-model="q.endDate"></label>
@@ -82,6 +82,14 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                        </div>
+
+                        <div class="row">
+                            <div  class="col-xs-4 text-left">
+                                <label style="color:red">带*是必填项</label>
+                            </div>
+                        </div>
 
                     </div>
                 </div>

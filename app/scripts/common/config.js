@@ -11,7 +11,7 @@ commonModule.constant('URI', {
     'resources': {
         'loginPage': '../pages/login.htm',//登录页
         'mainPage': '../pages/mainCenter.htm',//首页
-        'users': '../../../api/sysusers',//系统用户接口
+        'users': 'https://www.yunnanbaijiang.com/api/sysusers',//系统用户接口
         'department': 'https://www.yunnanbaijiang.com/api/Department',//部门接口
         'groups': '../../../api/groups',//组接口
         'customers': 'https://www.yunnanbaijiang.com/api/customers',//客户接口
@@ -28,7 +28,7 @@ commonModule.constant('URI', {
 
         'customerCallin':'../../../api/CustomerCallIn',//电话关联的客户资料查询接口
         'login':'https://www.yunnanbaijiang.com/api/sysusers/login',//系统用户登录接口
-        'logout':'../../../api/sysusers/logout',//系统用户登出接口
+        'logout':'https://www.yunnanbaijiang.com/api/sysusers/logout',//系统用户登出接口
         'orders':'https://www.yunnanbaijiang.com/api/Orders',　　　　　//订气订单接口
         'orderCancel':'../../../api/CancelOrder',　　　　　//订气作废接口
 
@@ -47,9 +47,9 @@ commonModule.constant('URI', {
         'gpsBind': '../../../api/GasCylinder/Bind',//定位终端绑定接口
         'gpsUnBind': '../../../api/GasCylinder/UnBind',//定位终端解除绑定接口
         'bottleSpecQuery': '../../../api/GasCylinderSpec',//钢瓶规格查询
-        'cloudUser': '../../../api/CloudUser',//云客服用户接口
-        'cloudUserBind': '../../../api/CloudUser/Bind',//云客服用户绑定接口
-        'cloudUserUnBind': '../../../api/CloudUser/UnBind',//云客服用户解除绑定接口
+        'cloudUser': 'https://www.yunnanbaijiang.com/api/CloudUser',//云客服用户接口
+        'cloudUserBind': 'https://www.yunnanbaijiang.com/api/CloudUser/Bind',//云客服用户绑定接口
+        'cloudUserUnBind': 'https://www.yunnanbaijiang.com/api/CloudUser/UnBind',//云客服用户解除绑定接口
         //'adjustPriceSchedules': '../../../api/AdjustPriceSchedules',//调价接口
         'adjustPriceSchedules': 'https://www.yunnanbaijiang.com/api/AdjustPriceSchedules',//调价接口
 
