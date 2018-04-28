@@ -87,32 +87,27 @@
     <sql id="JoinSelectColumn">
         t_user.id, t_user.user_id,t_user.name,t_user.identity,t_user.group_idx,  t_user.password,t_user.note,t_user.create_time,t_user.update_time,
         t_sysuser.department_idx,t_sysuser.job_number,t_sysuser.mobile_phone,t_sysuser.office_phone,t_sysuser.email,t_sysuser.alive_status,t_sysuser.alive_update_time
-        </sql>
+    </sql>
 
-    <select id="getList" resultMap="DetailResultMap">
-        SELECT <include refid="JoinSelectColumn"/>
-        FROM <include refid="JoinTableList"/>
+    <sql id="getListCondition">
         WHERE
         (<include refid="JoinWhereCondition"/>)
 
         <if test="userId != null">
-            and (t_user.user_id = '${userId}')
+            AND t_user.user_id like CONCAT(CONCAT('%', #{userId}), '%')
         </if>
 
         <if test="userName != null">
-            and (t_user.name = '${userName}')
+            AND t_user.name like CONCAT(CONCAT('%', #{userName}), '%')
         </if>
 
         <if test="identity != null">
             and (t_user.identity = '${identity}')
         </if>
 
-        <if test="aliveStatus != null">
-            and (t_user.alive_status = '${aliveStatus}')
-        </if>
 
         <if test="jobNumber != null">
-            and (t_sysuser.job_number = '${jobNumber}')
+            AND t_sysuser.job_number like CONCAT(CONCAT('%', #{jobNumber}), '%')
         </if>
 
         <if test="groupCode != null">
@@ -124,12 +119,22 @@
         </if>
 
         <if test="mobilePhone != null">
-            and (t_sysuser.mobile_phone = '${mobilePhone}')
+            AND t_sysuser.mobile_phone like CONCAT(CONCAT('%', #{mobilePhone}), '%')
         </if>
 
         <if test="officePhone != null">
-            and (t_sysuser.office_phone = '${officePhone}')
+            AND t_sysuser.office_phone like CONCAT(CONCAT('%', #{officePhone}), '%')
         </if>
+
+        <if test="aliveStatus != null">
+            and (t_sysuser.alive_status = '${aliveStatus}')
+        </if>
+    </sql>
+
+    <select id="getList" resultMap="DetailResultMap">
+        SELECT <include refid="JoinSelectColumn"/>
+        FROM <include refid="JoinTableList"/>
+        <include refid="getListCondition"/>
 
         <if test="orderBy != null">
             <if test="orderBy != ''">
@@ -147,45 +152,7 @@
     <select id="count" resultType="Integer">
         SELECT COUNT(*)
         FROM <include refid="JoinTableList"/>
-        WHERE
-        (<include refid="JoinWhereCondition"/>)
-
-        <if test="userId != null">
-            and (t_user.user_id = '${userId}')
-        </if>
-
-        <if test="userName != null">
-            and (t_user.name = '${userName}')
-        </if>
-
-        <if test="identity != null">
-            and (t_user.identity = '${identity}')
-        </if>
-
-        <if test="jobNumber != null">
-            and (t_sysuser.job_number = '${jobNumber}')
-        </if>
-
-        <if test="groupCode != null">
-            AND  t_user.group_idx = ( select id from t_group where code =#{groupCode} )
-        </if>
-
-        <if test="departmentCode != null">
-            AND  t_sysuser.department_idx = ( select id from t_department where code = #{departmentCode} )
-        </if>
-
-        <if test="mobilePhone != null">
-            and (t_sysuser.mobile_phone = '${mobilePhone}')
-        </if>
-
-        <if test="officePhone != null">
-            and (t_sysuser.office_phone = '${officePhone}')
-        </if>
-
-        <if test="aliveStatus != null">
-            and (t_user.alive_status = '${aliveStatus}')
-        </if>
-
+        <include refid="getListCondition"/>
     </select>
 
     <select id="findByUserId" resultMap="DetailResultMap">

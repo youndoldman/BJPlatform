@@ -18,11 +18,15 @@ manageApp.controller('GoodsTypeModalCtrl', ['$scope', 'close', 'GoodsService', '
             GoodsService.createGoodsType(goodsType).then(function () {
                 udcModal.info({"title": "处理结果", "message": "新增商品类型成功 "});
                 $scope.close(true);
+            }, function (value) {
+                udcModal.info({"title": "处理结果", "message": "新增商品类型失败 " + value.message});
             })
         } else if (goodsType.name != "" &&goodsType.code != ""&& title == "修改商品类型") {
             GoodsService.modifyGoodsType(goodsType, $scope.vm.goodsOldCode).then(function () {
                 udcModal.info({"title": "处理结果", "message": "修改商品类型成功 "});
                 $scope.close(true);
+            }, function (value) {
+                udcModal.info({"title": "处理结果", "message": "修改商品类型失败 " + value.message});
             })
         }
     };

@@ -10,7 +10,7 @@
     <div class="toolbar">
         <form role="form">
             <div class="inline-group">
-                <label class="input"><input type="text" class="form-control input-sm" ng-model="q.userName" ng-change="search()" placeholder="用户名称"> </label>
+                <label class="input"><input type="text" class="form-control input-sm" ng-model="q.userName" ng-change="search()" placeholder="用户名"> </label>
                 <button type="submit" class="btn btn-sm btn-primary" ng-click="search()"><i class="fa fa-search"></i> 搜索 </button>
                 <label class="input col-sm-offset-1">角色：<select  class="input-sm" ng-model="q.userGroup" ng-options="userGroup.name for userGroup in vm.userGroups" class="form-control" ng-selected="" ng-change="search()"></select></label>
                 <button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUp()"><i class="fa fa-plus"></i> 新增用户 </button>
@@ -51,9 +51,9 @@
             <td class="message">{{user.officePhone}}</td>
             <td class="message">{{user.email}}</td>
             <td class="operate">
-                <button title="详情" ng-click="viewDetails(user)" type="button" class="btn btn-primary btn-outline btn-xs">
-                    <i class="fa fa-info-circle"></i>
-                </button>
+                <!--<button title="详情" ng-click="viewDetails(user)" type="button" class="btn btn-primary btn-outline btn-xs">-->
+                    <!--<i class="fa fa-info-circle"></i>-->
+                <!--</button>-->
                 <button title="修改" ng-click="modify(user)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="fa fa-edit"></i>
                 </button>

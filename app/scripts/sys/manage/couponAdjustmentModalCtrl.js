@@ -41,7 +41,7 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
                         +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
                 });
         });
-    });
+    },300);
 
     $scope.vm = {
         discountType:["直减","百分比折扣"],

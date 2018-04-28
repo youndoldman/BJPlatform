@@ -163,7 +163,7 @@ public class CustomerController
 
         if (phone.trim().length() > 0)
         {
-            params.putAll(ImmutableMap.of("phone", number));
+            params.putAll(ImmutableMap.of("phone", phone));
         }
 
         if (addrProvince.trim().length() > 0)

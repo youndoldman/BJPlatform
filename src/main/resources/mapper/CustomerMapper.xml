@@ -142,18 +142,17 @@
         t_user.user_id = #{userId}
     </select>
 
-    <select id="getList" resultMap="DetailResultMap">
-    SELECT <include refid="JoinSelectColumn"/>
-    FROM <include refid="JoinTableList"/>
+
+    <sql id="getListCondition">
         WHERE
         (<include refid="JoinWhereCondition"/>)
 
         <if test="userId != null">
-            AND  t_user.user_id = #{userId}
+            AND t_user.user_id like CONCAT(CONCAT('%', #{userId}), '%')
         </if>
 
         <if test="userName != null">
-            AND  t_user.name = #{userName}
+            AND t_user.name like CONCAT(CONCAT('%', #{userName}), '%')
         </if>
 
         <if test="identity != null">
@@ -161,7 +160,7 @@
         </if>
 
         <if test="number != null">
-          AND  cst_number = #{number}
+            AND cst_number like CONCAT(CONCAT('%', #{number}), '%')
         </if>
 
         <if test="groupCode != null">
@@ -189,7 +188,7 @@
         </if>
 
         <if test="phone != null">
-            AND  phone = #{phone}
+            AND phone like CONCAT(CONCAT('%', #{phone}), '%')
         </if>
 
         <if test="addrProvince != null">
@@ -207,6 +206,12 @@
         <if test="addrDetail != null">
             AND  addr_detail like CONCAT(CONCAT('%', #{addrDetail}), '%')
         </if>
+    </sql>
+
+    <select id="getList" resultMap="DetailResultMap">
+    SELECT <include refid="JoinSelectColumn"/>
+    FROM <include refid="JoinTableList"/>
+        <include refid="getListCondition"/>
 
         <if test="orderBy != null">
             <if test="orderBy != ''">
@@ -225,69 +230,7 @@
     <select id="count" resultType="Integer">
         SELECT count(*)
         FROM <include refid="JoinTableList"/>
-        WHERE
-        (<include refid="JoinWhereCondition"/>)
-
-        <if test="userId != null">
-            AND  t_user.user_id = #{userId}
-        </if>
-
-        <if test="userName != null">
-            AND  t_user.name = #{userName}
-        </if>
-
-        <if test="identity != null">
-            AND  t_user.identity = #{identity}
-        </if>
-
-        <if test="number != null">
-            AND  cst_number = #{number}
-        </if>
-
-        <if test="groupCode != null">
-            AND  t_user.group_idx = ( select id from t_group where code =#{groupCode} )
-        </if>
-
-        <if test="status != null">
-            AND  status = #{status}
-        </if>
-
-        <if test="customerTypeCode != null">
-            AND  cst_type = ( select id from t_customer_type where code =#{customerTypeCode} )
-        </if>
-
-        <if test="customerLevelCode != null">
-            AND  cst_level = ( select id from t_customer_level where code =#{customerLevelCode} )
-        </if>
-
-        <if test="customerSourceCode != null">
-            AND  cst_source = ( select id from t_customer_source where code =#{customerSourceCode} )
-        </if>
-
-        <if test="companyName != null">
-            AND  cst_company_name = ( select id from t_customer_company where name =#{companyName} )
-        </if>
-
-        <if test="phone != null">
-            AND  phone = #{phone}
-        </if>
-
-        <if test="addrProvince != null">
-            AND  addr_province = #{addrProvince}
-        </if>
-
-        <if test="addrCity != null">
-            AND  addr_city = #{addrCity}
-        </if>
-
-        <if test="addrCounty != null">
-            AND  addr_county = #{addrCounty}
-        </if>
-
-        <if test="addrDetail != null">
-            AND  addr_detail like CONCAT(CONCAT('%', #{addrDetail}), '%')
-        </if>
-
+        <include refid="getListCondition"/>
 
     </select>
 

@@ -3,11 +3,13 @@ package com.donno.nj.controller;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.*;
+import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.*;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -89,6 +91,11 @@ public class AdjustPriceScheduleController
         Optional<AdjustPriceSchedule> scheduleOptional = adjustPriceScheduleService.findById(id);
         if (scheduleOptional.isPresent())
         {
+            if(scheduleOptional.get().getStatus() == AdjustPriceScheduleStatus.APSEffecitve)
+            {
+                throw new ServerSideBusinessException("该调价计划已经执行，禁止修改！", HttpStatus.NOT_ACCEPTABLE);
+            }
+
             adjustPriceScheduleService.update(scheduleOptional.get().getId(),newAdjustPriceSchedule);
             responseEntity = ResponseEntity.ok().build();
         }
@@ -109,6 +116,11 @@ public class AdjustPriceScheduleController
         Optional<AdjustPriceSchedule> scheduleOptional = adjustPriceScheduleService.findById(id);
         if (scheduleOptional.isPresent())
         {
+            if(scheduleOptional.get().getStatus() == AdjustPriceScheduleStatus.APSEffecitve)
+            {
+                throw new ServerSideBusinessException("该调价计划已经执行，禁止删除！", HttpStatus.NOT_ACCEPTABLE);
+            }
+
             adjustPriceScheduleService.deleteById(scheduleOptional.get().getId());
             responseEntity = ResponseEntity.noContent().build();
         }
@@ -119,5 +131,4 @@ public class AdjustPriceScheduleController
 
         return responseEntity;
     }
-
 }

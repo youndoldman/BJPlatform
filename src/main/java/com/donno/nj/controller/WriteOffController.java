@@ -27,10 +27,12 @@ public class WriteOffController
 
 
     @RequestMapping(value = "/api/WriteOffDetail", method = RequestMethod.GET, produces = "application/json")
-    @OperationLog(desc = "获取气票信息列表")
+    @OperationLog(desc = "获取回款信息列表")
     public ResponseEntity retrieve(
                                    @RequestParam(value = "userId", defaultValue = "") String userId,
                                    @RequestParam(value = "creditType", required = false) Integer creditType,
+                                   @RequestParam(value = "startTime", defaultValue = "") String startTime,
+                                   @RequestParam(value = "endTime", defaultValue = "") String endTime,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
@@ -45,6 +47,16 @@ public class WriteOffController
         if (creditType != null)
         {
             params.putAll(ImmutableMap.of("creditType", creditType));
+        }
+
+        if (startTime.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("startTime", startTime));
+        }
+
+        if (endTime.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("endTime", endTime));
         }
 
         params.putAll(paginationParams(pageNo, pageSize, orderBy));

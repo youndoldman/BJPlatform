@@ -11,7 +11,7 @@ manageApp.controller('DepartmentCtrl', ['$scope', '$rootScope', '$filter', '$loc
                 'data' : $scope.dataSource,
                 'chartClass': 'edit-state',
                 'exportButton': true,
-                'exportFilename': 'SportsChart',
+                'exportFilename': '部门组织架构',
                 'parentNodeSymbol': 'fa-th-large',
                 'nodeContent': 'title'
             });
@@ -57,11 +57,12 @@ manageApp.controller('DepartmentCtrl', ['$scope', '$rootScope', '$filter', '$loc
             });
         };
 
-
-        var init = function () {
+        $timeout(function(){
             chartInitial();
             retrieveRootDepartment();
+        },300);
 
+        var init = function () {
 
             //规避不同作用域的BUG
             $scope.timer = $interval( function(){
