@@ -47,6 +47,9 @@ public class OrderServiceImpl implements OrderService
     private WorkFlowService workFlowService;
 
     @Autowired
+    private CustomerCallInDao customerCallInDao;
+
+    @Autowired
     private GroupDao groupDao;
 
     @Autowired
@@ -110,7 +113,6 @@ public class OrderServiceImpl implements OrderService
         {
             throw new ServerSideBusinessException("订单信息不全，请补充订单信息！", HttpStatus.NOT_ACCEPTABLE);
         }
-
 
         /*默认非加急*/
         if (order.getUrgent() == null)
@@ -249,6 +251,23 @@ public class OrderServiceImpl implements OrderService
 
         /*启动流程*/
         createWorkFlow(order);
+
+         /*增加呼叫记录*/
+        if(order.getAccessType() == AccessType.ATCustomService)
+        {
+            if (order.getCallInPhone() == null && order.getCallInPhone().trim().length() == 0)
+            {
+                throw new ServerSideBusinessException("缺少客户呼入电话信息！", HttpStatus.NOT_ACCEPTABLE);
+            }
+            CustomerCallIn customerCallIn = new CustomerCallIn();
+            customerCallIn.setPhone(order.getCallInPhone());
+            customerCallIn.setCustomer(customer);
+            customerCallIn.setCounty(customer.getAddress().getCounty());
+            customerCallIn.setCity(customer.getAddress().getCity());
+            customerCallIn.setProvince(customer.getAddress().getProvince());
+            customerCallIn.setDetail(customer.getAddress().getDetail());
+            customerCallInDao.insert(customerCallIn);
+        }
 
         /*订单创建日志*/
         OrderOperHistory(order,order.getOrderStatus());
