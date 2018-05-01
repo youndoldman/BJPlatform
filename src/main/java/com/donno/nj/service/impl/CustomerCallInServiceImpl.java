@@ -77,19 +77,19 @@ public class CustomerCallInServiceImpl implements CustomerCallInService
         customerCallInDao.insert(customerCallIn);
 
         /*检查呼叫信息是否已经存在，若存在，更新时间*/
-//        Map params = new HashMap<String,String>();
-//        params.putAll(ImmutableMap.of("phone", customerCallIn.getPhone()));
-//        params.putAll(ImmutableMap.of("userId", userId));
-//        params.putAll(ImmutableMap.of("province", customerCallIn.getProvince()));
-//        params.putAll(ImmutableMap.of("city", customerCallIn.getCity()));
-//        params.putAll(ImmutableMap.of("county", customerCallIn.getCounty()));
-//        params.putAll(ImmutableMap.of("detail", customerCallIn.getDetail()));
-//        List<CustomerCallIn> customerCallIns = customerCallInDao.getList(params);
-//        if (customerCallIns.size() == 0)
-//        {
-//            customerCallIn.setCustomer(user);
-//            customerCallInDao.insert(customerCallIn);
-//        }
+        Map params = new HashMap<String,String>();
+        params.putAll(ImmutableMap.of("phone", customerCallIn.getPhone()));
+        params.putAll(ImmutableMap.of("userId", userId));
+        params.putAll(ImmutableMap.of("province", customerCallIn.getProvince()));
+        params.putAll(ImmutableMap.of("city", customerCallIn.getCity()));
+        params.putAll(ImmutableMap.of("county", customerCallIn.getCounty()));
+        params.putAll(ImmutableMap.of("detail", customerCallIn.getDetail()));
+        List<CustomerCallIn> customerCallIns = customerCallInDao.getList(params);
+        if (customerCallIns.size() == 0)
+        {
+            customerCallIn.setCustomer(user);
+            customerCallInDao.insert(customerCallIn);
+        }
 //        else
 //        {
 //            // customerCallInDao.update(customerCallIn);
