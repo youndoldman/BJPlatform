@@ -94,12 +94,20 @@
     <script type="text/javascript" src="../lib/org-chart/script/jquery.orgchart.js"></script>
 
     <style>
-        /*table  button{width:40px;height:55px;border:none;}*/
 
-        .label-title{min-width: 70px; font-size: 14px; font-weight: bold; height: 22px; text-align: center;
+        *{font-family:"微软雅黑"}
+        /*.btn{background-color:#e6f3fc;border: 1px solid #b1defd;height:30px;}*/
+        /*table button{width:40px;height:55px;border:none;}*/
+
+        .label-title{min-width: 120px; font-size: 14px; font-weight: bold; height: 25px; text-align: center;
             display: inline-block;width: 100%;}
-        .label-content{min-width: 70px; font-size: 14px; text-align: center; height: 22px; padding: 2px 5px;
-            box-shadow: inset 2px 2px 2px #4DFFFF; border-radius: 4px; background: #00FFFF;display: inline-block;}
+        .label-content{min-width: 120px; font-size: 14px; text-align: center; height: 25px; padding: 5px 5px;
+            color:#fff;box-shadow: inset 2px 2px 2px #337ab7; border-radius: 4px; background: #337ab7;display: inline-block;}
+
+
+        .label-content-phone{min-width: 150px; font-size: 18px; text-align: center; height: 25px; padding: 5px 5px;
+           color:#fff; box-shadow: inset 2px 2px 2px #337ab7; border-radius: 4px; background: #337ab7;display: inline-block;}
+
 
         .register{background: url(../images/web-phone/register.png) no-repeat;}
         .register-disabled{background: url(../images/web-phone/register1.png) no-repeat;}
@@ -116,6 +124,7 @@
         .notready{background: url(../images/web-phone/unset.png) no-repeat;}
         .notready-disabled{background: url(../images/web-phone/unset1.png) no-repeat;}
         .notready:hover{border:1px solid #b1defd;background-color:#e6f3fc;}
+
 
         .busy{background: url(../images/web-phone/changeStatusBusy.png) no-repeat;}
         .busy-disabled{background: url(../images/web-phone/changeStatusBusy1.png) no-repeat;}
@@ -141,12 +150,13 @@
         .hangup-disabled{background: url(../images/web-phone/hangup1.png) no-repeat}
         .hangup:hover{border:1px solid #b1defd;background-color:#e6f3fc;}
 
-        @media print {
-            .noprint { display: none }
-            table,th,td{
-                border: 1px solid #C7C7C7;
-            }
-        }
+        .transfer{background: url(../images/web-phone/transfer.png) no-repeat}
+        .transfer-disabled{background: url(../images/web-phone/transfer1.png) no-repeat}
+        .transfer:hover{border:1px solid #b1defd;background-color:#e6f3fc;}
+
+        .threeway{background: url(../images/web-phone/threeway.png) no-repeat}
+        .threeway-disabled{background: url(../images/web-phone/threeway1.png) no-repeat}
+        .threeway:hover{border:1px solid #b1defd;background-color:#e6f3fc;}
     </style>
     <style type="text/css">
         .orgchart td.left, .orgchart td.right, .orgchart td.top { border-color: #aaa; }

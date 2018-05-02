@@ -90,7 +90,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             securityTypesList:[],//安检类型
             selectedSecurityType:{},//当前选择的安检类型
             complaintTypesList:[],//投诉类型
-            selectedComplaintType:{}//当前选择的投诉类型
+            selectedComplaintType:{},//当前选择的投诉类型
+
         };
 
         $scope.searchParam = {
@@ -112,7 +113,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
 
         $scope.vm = {
-            callInPhone:"13913015340",
+            callInPhone:null,//呼入电话
+            callOutPhone:null,//呼出电话
             currentCustomer:null,
             CustomerList: [],
             CustomerOrderHistory: [],
@@ -374,6 +376,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             };
             var queryParams = {
                 typeName: $scope.temp.selectedGoodsType.name,
+                status:0//0 正常上市
             };
             CustomerManageService.retrieveGoods(queryParams).then(function (goods) {
                 $scope.temp.goodsList = goods.items;
@@ -602,4 +605,53 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 udcModal.info({"title": "错误信息", "message": "查询当前用户欠款信息失败 "+value.message});
             })
         }
+
+        //监听来电事件
+        $scope.$on("Event_Callin", function(e, m) {
+            $scope.vm.callInPhone = m;
+            //查询相关联的客户
+
+            searchCallInCustomer($scope.vm.callInPhone);
+        });
+
+        //监听呼出号码变化的事件
+        $scope.$on("Event_CallOutPhoneChanged", function(e, m) {
+            $scope.vm.callOutPhone = m;
+            //查询相关联的客户
+            if(m==""){
+
+            }else{
+                searchCallInCustomer($scope.vm.callOutPhone);
+            }
+
+        });
+
+
+        //查询呼入电话的曾经订气的客户
+        var searchCallInCustomer = function (callInPhone) {
+            //清空表格
+            $scope.vm.CustomerList = [];
+            $scope.vm.currentCustomer = "";
+            var queryParams = {
+                phone:callInPhone,
+                pageSize: $scope.pagerCustomer.pageSize
+            };
+
+            CustomerManageService.retrieveCustomerCallin(queryParams).then(function (customers) {
+                $scope.pagerCustomer.update($scope.qCustomer, customers.total, queryParams.pageNo);
+                $scope.vm.CustomerList = [];
+                $scope.vm.currentCustomer = null;
+                for(var i=0; i<customers.items.length; i++){
+                    var tempCustomer = customers.items[i].customer;
+                    $scope.vm.CustomerList.push(tempCustomer);
+                }
+
+                if($scope.vm.CustomerList.length>0){
+                    $scope.vm.currentCustomer = $scope.vm.CustomerList[0];
+                    //刷新订单
+                    refleshOrder();
+                }
+            });
+
+        };
     }]);
