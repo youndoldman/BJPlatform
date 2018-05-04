@@ -160,8 +160,8 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
                     GasCylinderPosition gasPosition = new GasCylinderPosition();
                     gasPosition.setCode(gasCylinder.getNumber());
                     String position =  userPosition.getLongitude().toString();
-                    position.concat(",");
-                    position.concat(userPosition.getLatitude().toString());
+                    position = position.concat(",");
+                    position = position.concat(userPosition.getLatitude().toString());
                     gasPosition.setLocation(position);
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
                     gasPosition.setCreateTime(df.format(new Date()));

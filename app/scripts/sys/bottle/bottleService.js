@@ -9,6 +9,9 @@ bottleApp.service('BottleService', ['$http', 'URI', 'promiseWrapper', function (
     var bottleSpecQueryUri = URI.resources.bottleSpecQuery;//钢瓶规格查询
     var departmentUri = URI.resources.department;//部门查询接口
 
+    var gasCylinderPositionUri = URI.resources.gasCylinderPosition;//钢瓶轨迹查询
+
+
     this.toViewModel = function (bottleFromApi) {
         return {
             id: bottleFromApi.id,
@@ -48,6 +51,12 @@ bottleApp.service('BottleService', ['$http', 'URI', 'promiseWrapper', function (
     //查询部门信息(下级递归)
     this.retrieveDepartmentLower = function (code) {
         return promise.wrap($http.get(departmentUri + "/Lower"+"?code=" +code));
+    };
+
+
+    //查询钢瓶轨迹
+    this.retrieveGasCylinderPosition = function (params) {
+        return promise.wrap($http.get(gasCylinderPositionUri,{params: params}));
     };
 }]);
 

@@ -77,9 +77,17 @@ commonModule.constant('URI', {
         'customerCredit': '../../../api/CustomerCredit',//欠款
 
 
+
         'writeOff':'../../../api/WriteOff',//回款
         'writeOffDetail':'../../../api/WriteOffDetail',//回款明细信息查询
         'depositDetail':'../../../api/DepositDetail',//增加存银行款信息记录
+
+        'gasCylinderSpec':'../../../api/GasCylinderSpec',//查询钢瓶规格
+        'addGasCylinderSpec':'../../../api/GasCyrDynDetail',//钢检瓶动态增加
+        'reportGasCyrDyn':'../../../api/Report/GasCyrDyn',//钢检瓶报表查询
+        'gasCyrChargeSpec':'../../../api/GasCyrChargeSpec',//钢瓶收费标准查询
+
+        'gasCylinderPosition':'../../../api/GasCylinderPosition',//钢瓶轨迹查询
         
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
         'ktyReport1': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/agent/call',//科天云获取坐席-工作组及直拨电话统计报表
@@ -205,8 +213,14 @@ commonModule.constant('NavItem', {
             name: "回款操作",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/MoneyReturn",
-            icon: "fa-plane"
-            }]
+            icon: "fa-edit"
+        }, {
+            index: 5,
+            name: "钢检瓶",
+            target: "_blank",
+            href: "./shopCenter.htm#/ShopManage/checkBottle",
+            icon: "fa-edit"
+        }]
     },
     'CustomService': {
         roles:[1,2],
@@ -358,30 +372,30 @@ commonModule.constant('NavItem', {
                 icon: "fa-table"
             }, {
                 index: 3,
-                name: "LPG销售情况",
+                name: "库存统计表",
                 target: "_blank",
-                href: "./financeCenter.htm#/finance/LPGSales",
+                href: "./financeCenter.htm#/finance/checkStock",
                 icon: "fa-table"
             }, {
+                //    index: 4,
+                //    name: "LPG销售往来",
+                //    target: "_blank",
+                //    href: "./financeCenter.htm#/finance/LPGSalesBalance",
+                //    icon: "fa-table"
+                //}, {
+                //    index: 5,
+                //    name: "LPG销售现金",
+                //    target: "_blank",
+                //    href: "./financeCenter.htm#/finance/LPGSalesCash",
+                //    icon: "fa-table"
+                //},{
                 index: 4,
-                name: "LPG销售往来",
-                target: "_blank",
-                href: "./financeCenter.htm#/finance/LPGSalesBalance",
-                icon: "fa-table"
-            }, {
-                index: 5,
-                name: "LPG销售现金",
-                target: "_blank",
-                href: "./financeCenter.htm#/finance/LPGSalesCash",
-                icon: "fa-table"
-            },{
-                index: 6,
                 name: "银行款信息",
                 target: "_blank",
                 href: "./financeCenter.htm#/finance/depositOperation",
                 icon: "fa-edit"
             }, {
-                index: 7,
+                index: 5,
                 name: "回款操作",
                 target: "_blank",
                 href: "./financeCenter.htm#/finance/writeOff",

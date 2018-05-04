@@ -10,7 +10,6 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
         };
         $scope.location = function(lon,lan)
         {
-            console.log(lon+"------"+lan);
             BottleService.location(lon, lan);
         };
         $scope.pager = pager.init('BottleListCtrl', gotoPage);
