@@ -167,7 +167,7 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
                     gasPosition.setCreateTime(df.format(new Date()));
 
                     gasCylinderPosList.add(gasPosition);
-                    
+
                 }
 
                 if (gasCylinderPosList.size() > 0)
