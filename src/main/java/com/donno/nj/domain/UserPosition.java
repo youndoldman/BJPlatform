@@ -10,8 +10,8 @@ public class UserPosition implements Serializable
 {
     private Integer id;
     private Integer userIdx;
-    private double longitude;
-    private double latitude;
+    private Double longitude;
+    private Double latitude;
     private Date createTime;
     private Date updateTime;
 
@@ -29,12 +29,12 @@ public class UserPosition implements Serializable
         return userIdx;
     }
 
-    public double getLongitude()
+    public Double getLongitude()
     {
         return longitude;
     }
 
-    public double getLatitude()
+    public Double getLatitude()
     {
         return  latitude;
     }
@@ -59,12 +59,12 @@ public class UserPosition implements Serializable
         this.userIdx = userIdx;
     }
 
-    public void setLongitude(double longitude)
+    public void setLongitude(Double longitude)
     {
         this.longitude = longitude;
     }
 
-    public void setLatitude(double latitude)
+    public void setLatitude(Double latitude)
     {
         this.latitude = latitude;
     }
