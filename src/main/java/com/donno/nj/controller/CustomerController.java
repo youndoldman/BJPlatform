@@ -3,6 +3,7 @@ package com.donno.nj.controller;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.*;
+import com.donno.nj.logger.DebugLogger;
 import com.donno.nj.service.*;
 
 
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +107,9 @@ public class CustomerController
                                             @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                             @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
     {
+        String logInfo = String.format("start query :%s",new Date());
+        DebugLogger.log(logInfo);
+
         Map params = new HashMap<String,String>();
         if (userId.trim().length() > 0)
         {
@@ -191,7 +196,13 @@ public class CustomerController
 
         List<Customer> customers = customerService.retrieve(params);
 
+        logInfo = String.format("after retrive :%s",new Date());
+        DebugLogger.log(logInfo);
+
         Integer customerCount = customerService.count(params);
+
+        logInfo = String.format("end query :%s",new Date());
+        DebugLogger.log(logInfo);
 
         return ResponseEntity.ok(ListRep.assemble(customers, customerCount));
     }

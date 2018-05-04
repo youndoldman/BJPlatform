@@ -284,7 +284,7 @@ public class OrderServiceImpl implements OrderService
             params.putAll(ImmutableMap.of("city", customerCallIn.getCity()));
             params.putAll(ImmutableMap.of("county", customerCallIn.getCounty()));
             params.putAll(ImmutableMap.of("detail", customerCallIn.getDetail()));
-            List<CustomerCallIn> customerCallIns = customerCallInDao.getList(params);
+            List<CustomerCallIn> customerCallIns =  customerCallInDao.getList(params);
             if (customerCallIns.size() == 0)
             {
                 customerCallIn.setCustomer(customer);

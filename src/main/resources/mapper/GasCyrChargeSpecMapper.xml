@@ -24,8 +24,8 @@
 
 
     <sql id="QueryColumnList">
-       t_gas_cylinder_spec.id,t_gas_cylinder_spec.gas_cyr_spec_idx, t_gas_cylinder_spec.charge_type,
-        t_gas_cylinder_spec.price,t_gas_cylinder_spec.note,t_gas_cylinder_spec.create_time,t_gas_cylinder_spec.update_time,
+       t_gas_cyr_charge_spec.id,t_gas_cyr_charge_spec.gas_cyr_spec_idx, t_gas_cyr_charge_spec.charge_type,
+        t_gas_cyr_charge_spec.price,t_gas_cyr_charge_spec.note,t_gas_cyr_charge_spec.create_time,t_gas_cyr_charge_spec.update_time,
         t_gas_cylinder_spec.code as gas_cyr_spec_code, t_gas_cylinder_spec.name as gas_cyr_spec_name
     </sql>
 
@@ -45,7 +45,7 @@
             </if>
 
             <if test="chargeType != null">
-                and  t_gas_cyr_charge_spec.chargeType  = #{chargeType}
+                and  t_gas_cyr_charge_spec.charge_type  = #{chargeType}
             </if>
         </where>
     </sql>

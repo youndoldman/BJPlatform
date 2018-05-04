@@ -34,7 +34,7 @@
         </if>
 
         <if test="operType != null">
-            and t_customer_credit_detail.credit_type = #{operType}
+            and t_gas_cyr_dyn_detail.oper_type = #{operType}
         </if>
 
         group by t_department.id,t_gas_cylinder_spec.id

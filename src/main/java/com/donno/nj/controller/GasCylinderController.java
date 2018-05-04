@@ -26,7 +26,7 @@ public class GasCylinderController
     private GasCylinderService gasCylinderService;
 
     @RequestMapping(value = "/api/GasCylinder", method = RequestMethod.GET, produces = "application/json")
-    @OperationLog(desc = "获取商品列表")
+    @OperationLog(desc = "获取钢瓶列表")
     public ResponseEntity retrieve(@RequestParam(value = "number", defaultValue = "") String number,
                                    @RequestParam(value = "specCode", defaultValue = "") String specCode,
                                    @RequestParam(value = "lifeStatus", required = false) Integer lifeStatus,
