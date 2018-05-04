@@ -53,12 +53,12 @@ var financeApp = angular.module('FinanceApp', ['ui.router', 'CommonModule', 'ang
                     rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[2]);
                 }
             })
-            .state('finance.LPGSales',{
-                url:'/LPGSales',
+            .state('finance.checkStock',{
+                url:'/checkStock',
                 views: {
                     "content@finance": {
-                        templateUrl: '../pages/finance/LPGSales.html',
-                        controller: 'LPGSalesCtrl',
+                        templateUrl: '../pages/finance/checkStock.html',
+                        controller: 'checkStockCtrl',
                         resolve: {}
                     }
                 },
@@ -66,32 +66,32 @@ var financeApp = angular.module('FinanceApp', ['ui.router', 'CommonModule', 'ang
                     rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[3]);
                 }
             })
-            .state('finance.LPGSalesBalance',{
-                url:'/LPGSalesBalance',
-                views: {
-                    "content@finance": {
-                        templateUrl: '../pages/finance/LPGSalesBalance.html',
-                        controller: 'LPGSalesBalanceCtrl',
-                        resolve: {}
-                    }
-                },
-                onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[4]);
-                }
-            })
-            .state('finance.LPGSalesCash',{
-                url:'/LPGSalesCash',
-                views: {
-                    "content@finance": {
-                        templateUrl: '../pages/finance/LPGSalesCash.html',
-                        controller: 'LPGSalesCashCtrl',
-                        resolve: {}
-                    }
-                },
-                onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[5]);
-                }
-            })
+            //.state('finance.LPGSalesBalance',{
+            //    url:'/LPGSalesBalance',
+            //    views: {
+            //        "content@finance": {
+            //            templateUrl: '../pages/finance/LPGSalesBalance.html',
+            //            controller: 'LPGSalesBalanceCtrl',
+            //            resolve: {}
+            //        }
+            //    },
+            //    onEnter: function (rootService, NavItem) {
+            //        rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[4]);
+            //    }
+            //})
+            //.state('finance.LPGSalesCash',{
+            //    url:'/LPGSalesCash',
+            //    views: {
+            //        "content@finance": {
+            //            templateUrl: '../pages/finance/LPGSalesCash.html',
+            //            controller: 'LPGSalesCashCtrl',
+            //            resolve: {}
+            //        }
+            //    },
+            //    onEnter: function (rootService, NavItem) {
+            //        rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[5]);
+            //    }
+            //})
             .state('finance.depositOperation',{
                 url:'/depositOperation',
                 views: {
@@ -102,7 +102,7 @@ var financeApp = angular.module('FinanceApp', ['ui.router', 'CommonModule', 'ang
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[6]);
+                    rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[4]);
                 }
             })
             .state('finance.writeOff',{
@@ -115,7 +115,7 @@ var financeApp = angular.module('FinanceApp', ['ui.router', 'CommonModule', 'ang
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[7]);
+                    rootService.updateActiveNavL2(NavItem.FinanceCenter.menuItems[5]);
                 }
             })
             //.state('finance.ledger',{

@@ -92,6 +92,19 @@ var shopManageApp = angular.module('ShopManageApp', ['ui.router', 'CommonModule'
                 onEnter: function (rootService, NavItem) {
                     rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[5]);
                 }
+            })
+            .state('ShopManage.checkBottle',{
+                url:'/checkBottle',
+                views: {
+                    "content@ShopManage": {
+                        templateUrl: '../pages/shopManage/checkBottle.html',
+                        controller: 'CheckBottleCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[6]);
+                }
             });
         $httpProvider.interceptors.push('HttpInterceptor');
     }]).run(['$rootScope', 'rootService', 'NavItem', function ($rootScope, rootService, NavItem) {

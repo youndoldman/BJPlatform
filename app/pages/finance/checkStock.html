@@ -1,0 +1,114 @@
+<style>
+    .tableContentAdjust{
+        text-align: center;
+        vertical-align: middle;
+    }
+    .inputStyle{
+        width:100%;
+        background-color: inherit;
+        border: none;
+    }
+
+    @media print {
+        .noprint {
+            display: none
+        }
+        table, th, td {
+            height: 40px;
+            border: 1px solid #C7C7C7;
+        }
+        .border1{
+            border:1px solid #C7C7C7;
+        }
+        input{
+            border:none;
+        }
+    }
+</style>
+<div class="ribbon ">
+    <a href=""><span class="home fa fa-home"></span></a>
+    <ol class="breadcrumb">
+        <li>库存统计表</li>
+    </ol>
+</div>
+
+<div class="table-wrapper ">
+    <div class="toolbar">
+        <form role="form">
+            <div class="row">
+                <div class="col-md-2">
+                    <span style="color:red">*</span>
+                    <label class="input"><input type="text" class="form-control input-md" ng-model="q.liableDepartmentCode" ng-change="search()" placeholder="编报部门"> </label>
+                    <span class="glyphicon glyphicon-calendar" ng-click="initDepartmentSelect()"></span>
+                </div>
+                <div class="col-md-4">
+                    <label class="input">今日销售时间：</label>
+                    <span style="color:red">*</span>
+                    <label class="input"><input type="text"  id="datetimepickerDailyTimeStart"  class="form-control" ng-model="dailyData.startTime"></label>
+                    <label class="input">至</label>
+                    <label class="input"><input type="text"  id="datetimepickerDailyTimeEnd"  class="form-control" ng-model="dailyData.endTime"></label>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="input">月累计销售时间：</label>
+                    <span style="color:red">*</span>
+                    <label class="input"><input type="text"  id="datetimepickerMonthlyTimeStart"  class="form-control" ng-model="monthlyData.startTime"></label>
+                    <label class="input">至</label>
+                    <label class="input"><input type="text"  id="datetimepickerMonthlyTimeEnd"  class="form-control" ng-model="monthlyData.endTime"></label>
+                </div>
+                <div class="col-md-1">
+                    <button ng-click="search()" class="btn btn-sm btn-primary noprint"><i class="fa fa-search"></i>查询 </button>
+                </div>
+                <div class="col-md-1">
+                    <button ng-click="printPage()" class="btn btn-sm btn-primary noprint pull-right"><i class="fa fa-print"></i>打印</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <label style="color:red">带*是必填项</label>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <table id="dailyMonthlySalesTable" class="table table-striped table-hover props table-sm table-bordered table-condensed">
+        <thead>
+        <tr>
+            <td width="20%" class="message tableContentAdjust">编报部门</td>
+            <td width="80%" colspan="4"  class="message tableContentAdjust">{{q.liableDepartmentCode}}</td>
+        </tr>
+
+
+        <tr>
+            <td width="20%" class="message tableContentAdjust">钢瓶规格</td>
+            <td width="20%" class="message tableContentAdjust">上日库存(瓶)</td>
+            <td width="20%" class="message tableContentAdjust">今日调入数量(瓶)</td>
+            <td width="20%" class="message tableContentAdjust">本月累计调入(瓶)</td>
+            <td width="20%" class="message tableContentAdjust">今日实际库存(瓶)</td>
+        </tr>
+
+        </thead>
+
+        <tr  ng-repeat="item in data.gasCylinderSpecList">
+            <td width="20%" class="message tableContentAdjust">{{item.name}}</td>
+            <td width="20%"  class="message tableContentAdjust">{{(item.currentKucun.amount + item.todayStockIn.amount - item.todayStockOut.amount) > 0 ? (item.currentKucun.amount + item.todayStockIn.amount - item.todayStockOut.amount) : null}}</td>
+            <td width="20%"  class="message tableContentAdjust">{{item.todayStockIn.amount}}</td>
+            <td width="20%"  class="message tableContentAdjust">{{item.monthlyStockIn.amount}}</td>
+            <td width="20%"  class="message tableContentAdjust">{{item.currentKucun.amount}}</td>
+        </tr>
+
+        <tr>
+            <td width="20%" class="message tableContentAdjust">合计</td>
+            <td width="20%"  class="message tableContentAdjust">{{(q.sumCurrentKucun + q.sumTodayIn - q.sumTodayOut) > 0 ? (q.sumCurrentKucun + q.sumTodayIn - q.sumTodayOut) : null}}</td>
+            <td width="20%"  class="message tableContentAdjust">{{q.sumTodayIn}}</td>
+            <td width="20%"  class="message tableContentAdjust">{{q.sumMonthlyIn}}</td>
+
+            <td width="20%"  class="message tableContentAdjust">{{q.sumCurrentKucun}}</td>
+
+        </tr>
+
+    </table>
+
+</div>

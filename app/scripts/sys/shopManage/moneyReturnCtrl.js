@@ -102,7 +102,6 @@ shopManageApp.controller('MoneyReturnCtrl', ['$scope', '$rootScope', '$filter', 
         }
 
         $scope.searchCredit = function () {
-            console.info("click button");
             var queryParams = {
                 userId: $scope.data.userId,
                 //creditType:$scope.data.creditType,
