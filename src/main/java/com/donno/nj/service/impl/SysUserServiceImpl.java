@@ -151,16 +151,23 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
                 List<GasCylinder> gasCylinderLst= gasCylinderDao.getList(params);
                 for (GasCylinder gasCylinder:gasCylinderLst)
                 {
+                    /*实时位置*/
+                    gasCylinder.setLongitude(userPosition.getLongitude());
+                    gasCylinder.setLatitude(userPosition.getLatitude());
+                    gasCylinderDao.update(gasCylinder);
+
+                    /*历史轨迹*/
                     GasCylinderPosition gasPosition = new GasCylinderPosition();
                     gasPosition.setCode(gasCylinder.getNumber());
-                    String position =  gasCylinder.getLongitude().toString();
+                    String position =  userPosition.getLongitude().toString();
                     position.concat(",");
-                    position.concat(gasCylinder.getLatitude().toString());
+                    position.concat(userPosition.getLatitude().toString());
                     gasPosition.setLocation(position);
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
                     gasPosition.setCreateTime(df.format(new Date()));
 
                     gasCylinderPosList.add(gasPosition);
+                    
                 }
 
                 if (gasCylinderPosList.size() > 0)

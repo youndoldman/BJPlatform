@@ -146,7 +146,4 @@
         <include refid="getListCondition"/>
     </select>
 
-
-
-
 </mapper>
