@@ -139,8 +139,8 @@ financeApp.controller('dailyMonthlySalesCtrl', ['$scope', '$rootScope', '$filter
         };
 
         var searchData = function () {
-            if(($scope.q.liableDepartmentCode.length>0)&&($scope.dailyData.startTime.length>0)&& ($scope.dailyData.endTime.length>0)
-                &&($scope.monthlyData.startTime.length>0)&& ($scope.monthlyData.endTime.length>0))
+            if(($scope.q.liableDepartmentCode!=null)&&($scope.dailyData.startTime!=null)&& ($scope.dailyData.endTime!=null)
+                &&($scope.monthlyData.startTime!=null)&& ($scope.monthlyData.endTime!=null))
             {
 
                 //今日实际销售 普通住宅客户:00001
@@ -299,6 +299,7 @@ financeApp.controller('dailyMonthlySalesCtrl', ['$scope', '$rootScope', '$filter
                             tempList.type = goods.items[0].goodsType.name;
                         }
                         $scope.data.goodsList.push(tempList);
+                        //console.info($scope.data.goodsList);
                     });
                 }
             });

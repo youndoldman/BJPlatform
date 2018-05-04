@@ -101,7 +101,6 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
 
         var gotoPage = function (pageNo) {
             $scope.pager.setCurPageNo(pageNo);
-            //searchData();
         };
 
         $scope.pager = pager.init('storeDailySalesCtrl', gotoPage);
@@ -171,24 +170,6 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
 
         $scope.search = function () {
             $scope.pager.setCurPageNo(1);
-            //$scope.q.sumYesterdayKucun=null;
-            //$scope.q.sumTodayDiaoruShuliang=null;
-            //$scope.q.sumMonthDiaoru=null;
-            //
-            //$scope.q.sumCashSum=null;$scope.q.sumCashCount=null;
-            //$scope.q.sumPayOnlineSum=null;$scope.q.sumPayOnlineCount=null;
-            //$scope.q.sumCreditSum=null;$scope.q.sumCreditCount=null;
-            //$scope.q.sumYuejieCount=null;$scope.q.sumYuejieSum=null;
-            //$scope.q.sumTicketCount=null;$scope.q.sumTicketSum=null;
-            //$scope.q.sumCouponCount=null;
-            //
-            //$scope.q.sumCount=null;$scope.q.sumSum=null;
-            //
-            //$scope.q.sumTodayAvegPrice=null, $scope.q.sumYueleijiCount=null;
-            //$scope.q.sumYueleijiSum=null;
-            //
-            //$scope.q.sumCurrentKucun=null;$scope.q.sumTodayIn=null;$scope.q.sumTodayOut=null;
-            //$scope.q.sumMonthlyIn=null;
             searchData();
         };
 
@@ -721,7 +702,6 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
 
         //计算数量、金额合计
         var calculateCountSumSum = function () {
-            //console.log("calculateCountSumSum");
             for(var i = 0; i < $scope.data.goodsList.length; i++) {
                 for(var j = 0; j < $scope.data.goodsList[i].detail.length; j++) {
                     if(($scope.data.goodsList[i].detail[j].salesByPayCash!=null)&&($scope.data.goodsList[i].detail[j].salesByPayOnline!=null)

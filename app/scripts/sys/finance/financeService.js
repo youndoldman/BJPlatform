@@ -21,6 +21,13 @@ financeApp.service('FinanceService', ['$http', 'URI', 'promiseWrapper', function
 
     var writeOffUri = URI.resources.writeOff;//回款
     var writeOffDetailUri = URI.resources.writeOffDetail;//回款明细
+
+    var gasCylinderSpecUri = URI.resources.gasCylinderSpec;//钢瓶规格
+
+    var reportGasCyrDynUri = URI.resources.reportGasCyrDyn;//钢检瓶报表查询
+
+    var gasCyrChargeSpecUri = URI.resources.gasCyrChargeSpec;//钢瓶收费标准查询
+
     //增加回款
     this.addWriteOff = function (params) {
         return promise.wrap($http.post(writeOffUri, params));
@@ -86,5 +93,21 @@ financeApp.service('FinanceService', ['$http', 'URI', 'promiseWrapper', function
     this.searchDepositDetail =  function (params) {
         return promise.wrap($http.get(depositDetailUri, {params: params}));
     }
+
+
+    //查询钢瓶规格
+    this.retrieveGasCylinderSpecUri = function (params) {
+        return promise.wrap($http.get(gasCylinderSpecUri, {params: params}));
+    };
+
+    //钢检瓶报表查询
+    this.retrieveReportGasCyrDyn = function (params) {
+        return promise.wrap($http.get(reportGasCyrDynUri, {params: params}));
+    };
+
+    //钢瓶收费标准查询
+    this.searchGasCyrChargeSpec  = function (params) {
+        return promise.wrap($http.get(gasCyrChargeSpecUri, {params: params}));
+    };
 }]);
 

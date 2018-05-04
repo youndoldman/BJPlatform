@@ -37,5 +37,22 @@ shopManageApp.service('ShopStockService', ['$http', 'URI', 'promiseWrapper','MIS
     this.searchWriteOffDetail = function (params) {
         return promise.wrap($http.get(writeOffDetailUri, {params: params}));
     };
+
+    var gasCylinderSpecUri = URI.resources.gasCylinderSpec;//钢瓶规格
+
+
+    //查询钢瓶规格
+    this.retrieveGasCylinderSpecUri = function (params) {
+        return promise.wrap($http.get(gasCylinderSpecUri, {params: params}));
+    };
+
+    var addGasCylinderSpecUri = URI.resources.addGasCylinderSpec;//钢检瓶动态增加
+    this.addGasCylinderSpecUri = function (params) {
+        return promise.wrap($http.post(addGasCylinderSpecUri, params));
+    };
+
+    this.searchGasCylinder = function (params) {
+        return promise.wrap($http.get(addGasCylinderSpecUri, {params: params}));
+    };
 }]);
 

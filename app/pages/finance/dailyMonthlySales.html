@@ -37,11 +37,13 @@
         <form role="form">
             <div class="row">
                 <div class="col-md-2">
+                    <span style="color:red">*</span>
                     <label class="input"><input type="text" class="form-control input-md" ng-model="q.liableDepartmentCode" ng-change="search()" placeholder="编报部门"> </label>
                     <span class="glyphicon glyphicon-calendar" ng-click="initDepartmentSelect()"></span>
                 </div>
                 <div class="col-md-4">
                     <label class="input">今日销售时间：</label>
+                    <span style="color:red">*</span>
                     <label class="input"><input type="text"  id="datetimepickerDailyTimeStart"  class="form-control" ng-model="dailyData.startTime"></label>
                     <label class="input">至</label>
                     <label class="input"><input type="text"  id="datetimepickerDailyTimeEnd"  class="form-control" ng-model="dailyData.endTime"></label>
@@ -49,6 +51,7 @@
 
                 <div class="col-md-4">
                     <label class="input">月累计销售时间：</label>
+                    <span style="color:red">*</span>
                     <label class="input"><input type="text"  id="datetimepickerMonthlyTimeStart"  class="form-control" ng-model="monthlyData.startTime"></label>
                     <label class="input">至</label>
                     <label class="input"><input type="text"  id="datetimepickerMonthlyTimeEnd"  class="form-control" ng-model="monthlyData.endTime"></label>
@@ -60,6 +63,13 @@
                     <button ng-click="printPage()" class="btn btn-sm btn-primary noprint pull-right"><i class="fa fa-print"></i>打印</button>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <label style="color:red">带*是必填项</label>
+                </div>
+            </div>
+
         </form>
     </div>
 
