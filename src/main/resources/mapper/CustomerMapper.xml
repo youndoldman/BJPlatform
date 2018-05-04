@@ -231,11 +231,6 @@
         SELECT count(*)
         FROM <include refid="JoinTableList"/>
         <include refid="getListCondition"/>
-
     </select>
-
-
-
-
 
 </mapper>
