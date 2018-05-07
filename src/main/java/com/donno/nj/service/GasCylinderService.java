@@ -21,7 +21,7 @@ public interface GasCylinderService
 
     void update(String number, GasCylinder newGasCylinder);
 
-    void updateSvcStatus(String number,Integer serviceStatus,String srcUserId,String targetUserId);
+    void updateSvcStatus(String number,Integer serviceStatus,String srcUserId,String targetUserId,String note);
 
     void deleteById(Integer id);
 

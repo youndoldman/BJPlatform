@@ -275,7 +275,7 @@ public class GasCylinderServiceImpl implements GasCylinderService
 
     @Override
     @OperationLog(desc = "修改钢瓶业务状态信息")
-    public void updateSvcStatus(String number,Integer serviceStatus,String srcUserId,String targetUserId)
+    public void updateSvcStatus(String number,Integer serviceStatus,String srcUserId,String targetUserId,String note)
     {
        /*参数校验*/
         if (number == null || number.trim().length() == 0 )
@@ -348,6 +348,7 @@ public class GasCylinderServiceImpl implements GasCylinderService
             gasCylinderSvcStatusOpHis.setSrcUser(srcUser);
             gasCylinderSvcStatusOpHis.setTargetUser(targetUser);
             gasCylinderSvcStatusOpHis.setOptime(new Date() );
+            gasCylinderSvcStatusOpHis.setNote(note);
             gasCylinderSvcStatusOpHisDao.insert(gasCylinderSvcStatusOpHis);
 
             /*入库信息*/

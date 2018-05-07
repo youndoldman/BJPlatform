@@ -18,6 +18,8 @@ public class GasCylinderSvcStatusOpHis implements Serializable
     private User targetUser;
     private Date optime;
 
+    private String note;
+
 
     public GasCylinderSvcStatusOpHis()
     {
@@ -56,7 +58,13 @@ public class GasCylinderSvcStatusOpHis implements Serializable
 
 
 
+    public String getNote() {
+        return note;
+    }
 
+    public GasCylinder getGasCylinder() {
+        return gasCylinder;
+    }
 
     public void setId(Integer id)
     {
@@ -78,7 +86,6 @@ public class GasCylinderSvcStatusOpHis implements Serializable
         this.targetUser = targetUser;
     }
 
-
     public void  setServiceStatus(GasCynServiceStatus serviceStatus)
     {
         this.serviceStatus = serviceStatus;
@@ -88,7 +95,9 @@ public class GasCylinderSvcStatusOpHis implements Serializable
     {
         this.optime = optime;
     }
-
+    public void setNote(String note) {
+        this.note = note;
+    }
 
     @Override
     public String toString()
