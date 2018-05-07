@@ -196,9 +196,6 @@ public class CustomerController
 
         List<Customer> customers = customerService.retrieve(params);
 
-        logInfo = String.format("after retrive :%s",new Date());
-        DebugLogger.log(logInfo);
-
         Integer customerCount = customerService.count(params);
 
         logInfo = String.format("end query :%s",new Date());

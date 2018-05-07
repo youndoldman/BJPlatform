@@ -5,6 +5,19 @@
 
     <resultMap id="DetailResultMap" type="com.donno.nj.domain.GasCylinderSvcStatusOpHis">
         <id column="id" property="id" jdbcType="INTEGER"/>
+        <id column="gas_cyr_svc_status" property="serviceStatus"  typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+
+        <result column="op_time" property="optime" jdbcType="TIMESTAMP"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+
+        <association property="gasCylinder" column="gas_cyr_idx" select="com.donno.nj.dao.GasCylinderDao.findById">
+        </association>
+
+        <association property="srcUser" column="src_user_idx" select="com.donno.nj.dao.UserDao.findById">
+        </association>
+
+        <association property="targetUser" column="target_user_idx" select="com.donno.nj.dao.UserDao.findById">
+        </association>
 
     </resultMap>
 
@@ -21,5 +34,42 @@
         VALUES( #{gasCylinder.id},#{serviceStatus.index}, #{srcUser.id} , #{targetUser.id},#{optime})
     </insert>
 
+    <sql id = "getListCondition">
+    <where>
+    <if test="number != null">  gas_cyr_idx = ( select id from t_gas_cylinder where number = #{number}) </if>
+    <if test="startTime != null">
+            and   t_gas_cyr_svc_status_op_his.op_time >=   #{startTime}
+    </if>
+
+    <if test="endTime != null">
+            and    #{endTime}  >=   t_gas_cyr_svc_status_op_his.op_time
+    </if>
+
+    </where>
+    </sql>
+
+
+    <select id="getList" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblGasCylinderSvcOpHis"/>
+        <include refid="getListCondition"/>
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+
+    <select id="count" resultType="Integer">
+        SELECT COUNT(id)
+        FROM <include refid="TblGasCylinderSvcOpHis"/>
+        <include refid="getListCondition"/>
+    </select>
 
 </mapper>
