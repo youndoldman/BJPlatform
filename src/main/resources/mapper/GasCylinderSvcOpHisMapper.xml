@@ -8,6 +8,10 @@
         <id column="gas_cyr_svc_status" property="serviceStatus"  typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
 
         <result column="op_time" property="optime" jdbcType="TIMESTAMP"/>
+
+        <result column="longitude" property="longitude" jdbcType="DOUBLE"/>
+        <result column="latitude" property="latitude" jdbcType="DOUBLE"/>
+
         <result column="note" property="note" jdbcType="VARCHAR"/>
 
         <association property="gasCylinder" column="gas_cyr_idx" select="com.donno.nj.dao.GasCylinderDao.findById">
@@ -26,12 +30,12 @@
     </sql>
 
     <sql id="InsertColumnList">
-        gas_cyr_idx,gas_cyr_svc_status,src_user_idx,target_user_idx,op_time
+        gas_cyr_idx,gas_cyr_svc_status,src_user_idx,target_user_idx,longitude,latitude,op_time
     </sql>
 
     <insert id="insert"  keyProperty="id" useGeneratedKeys="true">
         INSERT IGNORE INTO <include refid="TblGasCylinderSvcOpHis"/>(<include refid="InsertColumnList"/>)
-        VALUES( #{gasCylinder.id},#{serviceStatus.index}, #{srcUser.id} , #{targetUser.id},#{optime})
+        VALUES( #{gasCylinder.id},#{serviceStatus.index}, #{srcUser.id} , #{targetUser.id},#{longitude},#{latitude},#{optime})
     </insert>
 
     <sql id = "getListCondition">

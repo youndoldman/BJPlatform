@@ -348,6 +348,12 @@ public class GasCylinderServiceImpl implements GasCylinderService
             gasCylinderSvcStatusOpHis.setSrcUser(srcUser);
             gasCylinderSvcStatusOpHis.setTargetUser(targetUser);
             gasCylinderSvcStatusOpHis.setOptime(new Date() );
+
+            //取经纬度信息
+//            gasCylinderSvcStatusOpHis.setLongitude(longitude);
+//            gasCylinderSvcStatusOpHis.setLatitude(latitude);
+
+
             gasCylinderSvcStatusOpHis.setNote(note);
             gasCylinderSvcStatusOpHisDao.insert(gasCylinderSvcStatusOpHis);
 
