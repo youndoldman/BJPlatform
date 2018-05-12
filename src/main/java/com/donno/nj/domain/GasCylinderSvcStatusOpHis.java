@@ -18,6 +18,10 @@ public class GasCylinderSvcStatusOpHis implements Serializable
     private User targetUser;
     private Date optime;
 
+    private Double longitude;
+    private Double latitude;
+
+
     private String note;
 
 
@@ -56,7 +60,13 @@ public class GasCylinderSvcStatusOpHis implements Serializable
         return  optime;
     }
 
+    public Double getLongitude() {
+        return longitude;
+    }
 
+    public Double getLatitude() {
+        return latitude;
+    }
 
     public String getNote() {
         return note;
@@ -95,6 +105,15 @@ public class GasCylinderSvcStatusOpHis implements Serializable
     {
         this.optime = optime;
     }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
     public void setNote(String note) {
         this.note = note;
     }

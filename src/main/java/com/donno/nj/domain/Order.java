@@ -238,6 +238,8 @@ public class Order implements Serializable
         this.payType = payType;
     }
 
+
+
     public void setAccessType(AccessType accessType)
     {
         this.accessType = accessType;
@@ -248,12 +250,12 @@ public class Order implements Serializable
         this.recvAddr = recvAddr;
     }
 
-    private void setRecvLongitude(Double recvLongitude)
+    public void setRecvLongitude(Double recvLongitude)
     {
         this.recvLongitude = recvLongitude;
     }
 
-    private  void setRecvLatitude(Double recvLatitude)
+    public  void setRecvLatitude(Double recvLatitude)
     {
         this.recvLatitude = recvLatitude;
     }
