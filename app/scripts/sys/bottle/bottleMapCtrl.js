@@ -16,6 +16,7 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
                 showTodayButton:true,
                 toolbarPlacement:'top',
             });
+
             $('#datetimepickerEnd').datetimepicker({
                 format: 'YYYY-MM-DD HH:mm',
                 locale: moment.locale('zh-cn'),
@@ -26,19 +27,23 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
             });
         });
         $(function () {
+            function p(s) {
+                return s < 10 ? '0' + s: s;
+            }
+
             $('#datetimepickerStart').datetimepicker()
                 .on('dp.change', function (ev) {
                     var date = ev.date._d;
                     var month = date.getMonth()+1;
-                    $scope.q.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
-                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                    $scope.q.startTime = date.getFullYear()+"-"+p(month)+"-"+p(date.getDate())+" "
+                        +p(date.getHours())+":"+p(date.getMinutes())+":"+p(date.getSeconds());
                 });
             $('#datetimepickerEnd').datetimepicker()
                 .on('dp.change', function (ev) {
                     var date = ev.date._d;
                     var month = date.getMonth()+1;
-                    $scope.q.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
-                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                    $scope.q.endTime = date.getFullYear()+"-"+p(month)+"-"+p(date.getDate())+" "
+                        +p(date.getHours())+":"+p(date.getMinutes())+":"+p(date.getSeconds());
                 });
         });
 
@@ -105,14 +110,15 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
             });
         };
         //标注钢瓶的历史操作记录
-        var markHistory = function(pathDataFileName){
-            $scope.map.clearMap( );
+        var markHistory = function(){
+            $scope.map.clearMap();
+            console.log($scope.vm.historyList);
 
             for(var i = 0, marker; i < $scope.vm.historyList.length; i++){
                 var contents = $scope.vm.historyList[i].srcUser+"->"+
                     $scope.vm.historyList[i].destUser+"--"+$scope.vm.historyList[i].detail+"--"+
                     $scope.vm.historyList[i].createTime;
-                console.log(contents);
+
                 marker=new AMap.Marker({
                     position:[$scope.vm.historyList[i].longititude, $scope.vm.historyList[i].latitude],
                     map:$scope.map
@@ -129,6 +135,7 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
         //绘制轨迹
         var drawPath = function(pathDataFileName){
             $scope.pathSimplifierIns.clearPathNavigators();
+
 
 
             var paths = [];
@@ -272,14 +279,14 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
         $scope.q = {
             bottleCode: null,
             selectBottleCode: null,
-            startTime:"2018-01-01: 00:00:00",
-            endTime:"2018-06-01: 00:00:00",
+            startTime:"",
+            endTime:"",
         };
 
         $scope.vm = {
             bottleList: [],
-            historyList:[],
-            selectedBottlePath:{"name":null, "path":[]}
+            historyList:[],//钢瓶交接记录
+            selectedBottlePath:{"name":null, "path":[]}//钢瓶轨迹
         };
 
         $scope.search = function () {
@@ -361,7 +368,10 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
 
         //钢瓶定位
         $scope.location = function (longitude,latitude) {
+
             $scope.map.clearMap( );
+            $scope.pathSimplifierIns.setData([]);
+            $scope.pathSimplifierIns.clearPathNavigators();
             var iconBottle = new AMap.Icon({
                 image : '../images/icon/bottle.ico',//24px*24px
                 //icon可缺省，缺省时为默认的蓝色水滴图标，
@@ -382,28 +392,24 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
         $scope.displayHistory = function (number) {
             $scope.q.selectBottleCode = number;
             //绘制轨迹
+
             getPath(number);
-            //查询变更历史
-            $scope.vm.historyList = [{srcUser:"周源",destUser:"王远斌",detail:"重瓶充气站出库，调拨中",createTime:"2018-01-18 13:00:01",longititude:102.7278090000,latitude:25.1333240000},
-                {srcUser:"王远斌",destUser:"卢坤",detail:"重瓶茨坝门店入库",createTime:"2018-01-18 14:00:01",longititude:102.7384240000,latitude:25.1519370000},
-                {srcUser:"卢坤",destUser:"小李",detail:"重瓶茨坝门店出库,配送中",createTime:"2018-01-15 13:00:01",longititude:102.7384240000,latitude:25.1519370000},
-                {srcUser:"小李",destUser:"小唐",detail:"重瓶到用户家",createTime:"2018-01-16 13:00:01",longititude:102.7411690000,latitude:25.1471670000},
-            ];
-
-            //绘制变更历史
-            markHistory();
-
+            //查询变更历史，绘制变更历史
+            $scope.getBottleTakeOverHistoryByCode(number, $scope.q.startTime, $scope.q.endTime);
         };
 
 
 
 
         var init = function () {
+            $scope.pagerBottle.pageSize=5;
+            $scope.pagerOpsLog.pageSize=5;
             searchBottles();
 
         };
 
         var getPath = function (bottleCode) {
+            $scope.vm.selectedBottlePath = {"name":null, "path":[]}//钢瓶轨迹
             $scope.vm.selectedBottlePath.name = "钢瓶号： "+bottleCode;
             $scope.getBottlePathByCode(bottleCode, $scope.q.startTime, $scope.q.endTime);
         };
@@ -434,6 +440,32 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
                     drawPath();
                 }
 
+            });
+        };
+
+
+        //查询钢瓶交接记录
+        $scope.getBottleTakeOverHistoryByCode = function (number, startTime, endTime) {
+            $scope.vm.historyList = [];
+            var queryParams = {
+                startTime: startTime,
+                endTime: endTime
+            };
+
+            BottleService.retrieveGasCylinderTakeOverHistory(number, queryParams).then(function (historys) {
+                for(var i=0; i<historys.items.length; i++){
+                    var tempHistory = {srcUser:"", destUser:"", detail:"", createTime:"", longititude:"", latitude:""};
+                    tempHistory.srcUser = historys.items[i].srcUser.userId+"("+historys.items[i].srcUser.name+")";
+                    tempHistory.destUser = historys.items[i].targetUser.userId+"("+historys.items[i].targetUser.name+")";
+                    tempHistory.detail = historys.items[i].note;
+                    tempHistory.createTime = historys.items[i].optime;
+
+                    tempHistory.longititude = historys.items[i].longitude;
+                    tempHistory.latitude = historys.items[i].latitude;
+                    $scope.vm.historyList.push(tempHistory);
+                }
+                //显示记录
+                markHistory();
             });
         };
         init();

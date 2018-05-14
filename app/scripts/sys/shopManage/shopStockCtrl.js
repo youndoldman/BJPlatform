@@ -94,6 +94,7 @@ shopManageApp.controller('ShopStockModalCtrl', ['$scope', 'close', 'ShopStockSer
     $scope.modalTitle = title;
     $scope.isModify = false;
     $scope.vm = {
+        currentUser: {},
         bottle: {},
         handOver:{
             srcUser:null,
@@ -109,8 +110,15 @@ shopManageApp.controller('ShopStockModalCtrl', ['$scope', 'close', 'ShopStockSer
     };
 
     $scope.submit = function () {
+        var note = "";//详细交接原因
+        if($scope.isModify){
+            note = $scope.vm.currentUser.department.name+"钢瓶出库";
+        }else{
+            note = $scope.vm.currentUser.department.name+"钢瓶入库";
+        }
+
         ShopStockService.handOverBottle($scope.vm.handOver.bottleNumber,$scope.vm.handOver.srcUser,
-            $scope.vm.handOver.destUser,$scope.vm.selectReason).then(function () {
+            $scope.vm.handOver.destUser,$scope.vm.selectReason, note).then(function () {
             if($scope.isModify){
                 udcModal.info({"title": "处理结果", "message": "门店出库成功 "});
             }else {
@@ -126,7 +134,7 @@ shopManageApp.controller('ShopStockModalCtrl', ['$scope', 'close', 'ShopStockSer
 
 
     var init = function () {
-        var currentUser = sessionStorage.getCurUser();
+        $scope.vm.currentUser = sessionStorage.getCurUser();
         $scope.vm.bottle = _.clone(initVal);
         if ($scope.vm.bottle==null){
             $scope.vm.handOver.bottleNumber = null;
@@ -137,14 +145,14 @@ shopManageApp.controller('ShopStockModalCtrl', ['$scope', 'close', 'ShopStockSer
             if($scope.vm.bottle!=null){//有档案出库
                 $scope.vm.handOver.srcUser = $scope.vm.bottle.user.userId;
             }else{
-                $scope.vm.handOver.srcUser = currentUser.userId;
+                $scope.vm.handOver.srcUser = $scope.vm.currentUser.userId;
             }
             $scope.isModify = true;
             $scope.vm.reasons = [{name:"未知",value:"-1"},{name:"钢瓶调拨",value:"3"},{name:"钢瓶配送",value:"4"}];
             $scope.vm.selectReason = "-1";
         } else {
             $scope.isModify = false;
-            $scope.vm.handOver.destUser = currentUser.userId;
+            $scope.vm.handOver.destUser = $scope.vm.currentUser.userId;
             $scope.vm.reasons = [{name:"门店库存",value:"2"}];
             $scope.vm.selectReason = "2";
         }

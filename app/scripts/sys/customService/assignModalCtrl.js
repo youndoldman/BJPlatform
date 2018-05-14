@@ -15,6 +15,8 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
     $timeout(function(){
         mapInitial();
         destNationInitial();
+        //查找在线的配送工
+        searchWorkers();
     },300);
     //地图初始化
     var mapInitial = function() {
@@ -135,6 +137,8 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
         });
         for (var i=0;i<$scope.vm.onLineWorkersList.length;i++){
 
+            console.log($scope.vm.onLineWorkersList[i].userPosition.longitude);
+            console.log($scope.vm.onLineWorkersList[i].userPosition.latitude);
             var markerDest = new AMap.Marker({
                 icon : iconWorker,//24px*24px
                 position : [$scope.vm.onLineWorkersList[i].userPosition.longitude, $scope.vm.onLineWorkersList[i].userPosition.latitude],
@@ -153,12 +157,11 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
 
     var init = function () {
         $scope.vm.currentOrder = _.clone(initVal);
-        //查找在线的配送工
-        searchWorkers();
+
         //规避不同作用域的BUG
         $scope.timer = $interval( function(){
             refleshWorkerInfo()
-        }, 100);
+        }, 200);
 
         //mapInit();
     };

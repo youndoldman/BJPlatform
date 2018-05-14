@@ -30,12 +30,12 @@
     </sql>
 
     <sql id="InsertColumnList">
-        gas_cyr_idx,gas_cyr_svc_status,src_user_idx,target_user_idx,longitude,latitude,op_time
+        gas_cyr_idx,gas_cyr_svc_status,src_user_idx,target_user_idx,longitude,latitude,op_time,note
     </sql>
 
     <insert id="insert"  keyProperty="id" useGeneratedKeys="true">
         INSERT IGNORE INTO <include refid="TblGasCylinderSvcOpHis"/>(<include refid="InsertColumnList"/>)
-        VALUES( #{gasCylinder.id},#{serviceStatus.index}, #{srcUser.id} , #{targetUser.id},#{longitude},#{latitude},#{optime})
+        VALUES( #{gasCylinder.id},#{serviceStatus.index}, #{srcUser.id} , #{targetUser.id},#{longitude},#{latitude},#{optime},#{note})
     </insert>
 
     <sql id = "getListCondition">

@@ -88,6 +88,8 @@ commonModule.constant('URI', {
         'gasCyrChargeSpec':'../../../api/GasCyrChargeSpec',//钢瓶收费标准查询
 
         'gasCylinderPosition':'../../../api/GasCylinderPosition',//钢瓶轨迹查询
+        'gasCylinderTakeOverHistory':'../../../api/GasCylinder/TakeOver/History',//钢瓶交接记录查询
+
         
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
         'ktyReport1': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/agent/call',//科天云获取坐席-工作组及直拨电话统计报表
