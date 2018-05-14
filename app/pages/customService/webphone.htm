@@ -2,19 +2,20 @@
 
 
     <table style="border:1px solid #c4dff6;background-color:#ecf2f7;">
-        <div>
         <tr>
             <td><button id="register" class="register" style="width:40px;height:55px;border:none;"></button></td>
             <td><button id="unregister" class="unregister" style="display: none;width:40px;height:55px;border:none;"></button></td>
-            <td><button id="ready" class="ready" style="width:40px;height:55px;border:none;"></button></td>
+            <td><button id="ready" class="ready" style="width:40px;height:55px;border:none;"></button></button></td>
             <td><button id="notready" class="notready" style="width:40px;height:55px;border:none;"></button></td>
             <td><button id="busy" class="busy" style="width:40px;height:55px;border:none;"></button></td>
-            <td><input type="text" name="tel_num" id="tel_num" style="width:150px"></td>
+            <td><input type="text" name="tel_num" id="tel_num" style="width:150px" ng-model="vm.callOutPhone"></td>
             <td><button id="makecall" class="makecall" style="width:40px;height:55px;border:none;"></button></td>
             <td><button id="answer" class="answer" style="width:40px;height:55px;border:none;"></button></td>
             <td><button id="hangup" class="hangup" style="width:40px;height:55px;border:none;"></button></td>
             <td><button id="hold" class="hold" style="width:40px;height:55px;border:none;"></button></td>
-            <td><button id="unhold" class="unhold" style="display: none;width:40px;height:55px;border:none;"></button></td>
+            <td><button id="unhold" class="unhold" style="display: none;" style="width:40px;height:55px;border:none;"></button></td>
+            <td><button id="transfer" class="transfer" style="width:40px;height:55px;border:none;"></button></td>
+            <td><button id="threeway" class="threeway" style="width:40px;height:55px;border:none;"></button></td>
             <td>
                 <div style="margin-left: 5px">
                     <div style="margin:0 auto"><label class="label-title">电话状态</label></div>
@@ -24,7 +25,7 @@
 
             <td>
                 <div style="margin-left: 5px">
-                    <div style="margin:0 auto"><label class="label-title">通话时长</label></div>
+                    <div style="margin:0 auto"><label class="label-title">时长</label></div>
                     <div style="margin:0 auto"><label class="label-content" id="calltime">00:00:00</label></div>
                 </div>
             </td>
@@ -39,11 +40,13 @@
             <td>
                 <div style="margin-left: 5px">
                     <div style="margin:0 auto"><label class="label-title">客户号码</label></div>
-                    <div style="margin:0 auto"><label class="label-content" id="callnumber">&nbsp;&nbsp;</label></div>
+                    <div style="margin:0 auto"><label class="label-content-phone" id="callnumber">&nbsp;&nbsp;</label></div>
                 </div>
             </td>
         </tr>
-            </div>
     </table>
+    <audio src="../images/web-phone/ring.wav" loop id="ringAudio"></audio>
+
+
 
 </div>

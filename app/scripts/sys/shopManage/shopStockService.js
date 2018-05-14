@@ -12,9 +12,9 @@ shopManageApp.service('ShopStockService', ['$http', 'URI', 'promiseWrapper','MIS
         return promise.wrap($http.get(bottlesUri, {params: params}));
     };
 
-    this.handOverBottle = function (number,srcUserId,targetUserId,serviceStatus) {
+    this.handOverBottle = function (number,srcUserId,targetUserId,serviceStatus, note) {
         return promise.wrap($http.put(bottleHandOverUri+"/"+number+"?srcUserId="+srcUserId
-            +"&targetUserId="+targetUserId+"&serviceStatus="+serviceStatus));
+            +"&targetUserId="+targetUserId+"&serviceStatus="+serviceStatus+"&note="+note));
     };
 
     this.retrieveUsers = function (params) {

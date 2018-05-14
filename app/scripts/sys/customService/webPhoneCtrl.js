@@ -1,13 +1,14 @@
 ﻿'use strict';
 
 customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
-    'rootService', 'pager', 'udcModal', 'CustomerManageService', 'OrderService','sessionStorage',function ($scope, $rootScope, $filter, $location, Constants,
-                                                                                                           rootService, pager, udcModal, CustomerManageService,OrderService,sessionStorage) {
+    'rootService', 'pager', 'udcModal', 'CustomerManageService', 'OrderService','sessionStorage','$timeout',function ($scope, $rootScope, $filter, $location, Constants,
+                                                                                                                      rootService, pager, udcModal, CustomerManageService,OrderService,sessionStorage,$timeout) {
 
 
 
         $scope.vm = {
-          cloudUser:{}
+            cloudUser:{},
+            callOutPhone:null
         };
 
 
@@ -33,10 +34,15 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
 
         var init = function () {
             searchCloudUsers();
-
         };
+        $timeout(function(){
+            init();
+        },300);
 
-        init();
+        $scope.$watch('vm.callOutPhone',function(newValue,oldValue){
+            $rootScope.$broadcast("Event_CallOutPhoneChanged", newValue);
+        });
+
         //电话条的集成
         function foo(data) {
             console.log(data.msg);
@@ -47,7 +53,6 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
             }else if(data.msg === "BUSY"){
                 stateBusy();
             }else if(data.msg === "RINGING"){
-                console.log(data);
                 stateRing();
             }else if(data.msg === "ANSWERED"){
                 stateAnswer();
@@ -59,6 +64,7 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
                 stateLogout();
                 alert('您已登出！');
             }
+
         };
 
         function callCenterLogin(){
@@ -69,8 +75,16 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
             var password = $scope.vm.cloudUser.password;
 
 
-            var config = {uname: name, pwd: password,debug: true, isAutoAnswer: true, stateListenerCallBack: foo};
-            console.log(config);
+
+            var config = {
+                uname: name,
+                pwd: password,
+                debug: true,
+                isAutoAnswer: true,
+                forceAnswerWhenRing: false,
+                autoReady: false,
+                stateListenerCallBack: foo,
+                popScreanCallback: popScrean};
             CallHelper.init(config, initCallback);
 
             document.getElementById('register').addEventListener('click', function () {
@@ -113,20 +127,36 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
             document.getElementById('hangup').addEventListener('click', function () {
                 CallHelper.hangup();
             }, false);
+
+            document.getElementById('transfer').addEventListener('click', function(){
+                var thirdNum = document.getElementById('tel_num').value.replace(/\s/g,'');;
+                CallHelper.transfer(thirdNum);
+            }, false);
+
+            document.getElementById('threeway').addEventListener('click', function(){
+                var thirdNum = document.getElementById('tel_num').value.replace(/\s/g,'');;
+                CallHelper.threeCall(thirdNum);
+            }, false);
         };
+
+        function popScrean(data){
+            document.getElementById('callnumber').innerHTML = data;
+            //广播来电事件
+            $rootScope.$broadcast("Event_Callin", data);
+        }
 
         function initCallback(data){
             console.info('issuccess : ' + data.successChange);
             console.info('msg : ' + data.msg);
+            console.info('agentnumber: ' + data.data.agentnumber);
             if(data.successChange){
                 CallHelper.ready(stateCallBack);
                 //alert('您已登录成功！');
+                document.getElementById('agentnumber').innerHTML = data.data.agentnumber;
             }else{
-                udcModal.info({"title": "错误信息", "message": "登录失败，请检查云客服账号密码 "});
-                //alert('登录失败，请检查账号密码!');
+                alert('登录失败，请检查账号密码!');
             }
         }
-
 
         function inviteCallBack(data){
             console.log("call state is :" + data.state);
@@ -137,8 +167,6 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
             console.info("successChange is :" + data.successChange);
             console.info("changeState is :" + data.changeState);
         }
-
-
 
 
         function stateLogout() {
@@ -158,7 +186,12 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
             setButtonDisplayBlock('hold');
             setButtonDisplayNone('unhold');
 
+            setButtonDisabled('transfer');
+            setButtonDisabled('threeway');
+
             document.getElementById('callstate').innerHTML = '签出';
+            document.getElementById('agentnumber').innerHTML = '&nbsp;';
+            time_stop();
         }
 
         function stateReady() {
@@ -178,7 +211,14 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
             setButtonDisplayBlock('hold');
             setButtonDisplayNone('unhold');
 
+            setButtonDisabled('transfer');
+            setButtonDisabled('threeway');
+
             document.getElementById('callstate').innerHTML = '就绪';
+
+            //状态放浏览器缓存中，如果是上个状态没变化 不要执行这个
+            time_stop();
+            time_run();
         }
 
         function stateNotReady() {
@@ -198,7 +238,12 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
             setButtonDisplayBlock('hold');
             setButtonDisplayNone('unhold');
 
-            document.getElementById('callstate').innerHTML = '未就绪';
+            setButtonDisabled('transfer');
+            setButtonDisabled('threeway');
+
+            document.getElementById('callstate').innerHTML = '离席';
+            time_stop();
+            time_run();
         }
 
         function stateBusy() {
@@ -218,7 +263,12 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
             setButtonDisplayBlock('hold');
             setButtonDisplayNone('unhold');
 
+            setButtonDisabled('transfer');
+            setButtonDisabled('threeway');
+
             document.getElementById('callstate').innerHTML = '示忙';
+            time_stop();
+            time_run();
         }
 
         function stateRing() {
@@ -239,11 +289,16 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
             setButtonDisplayBlock('hold');
             setButtonDisplayNone('unhold');
 
+            setButtonDisabled('transfer');
+            setButtonDisabled('threeway');
+
             document.getElementById('callstate').innerHTML = '振铃中';
+            document.getElementById('ringAudio').play();
+            time_stop();
+            time_run();
         }
 
         function stateAnswer() {
-            console.log(222);
             setButtonDisabled('register');
             setButtonUseable('unregister');
             setButtonDisabled('ready');
@@ -260,7 +315,13 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
             setButtonDisplayBlock('hold');
             setButtonDisplayNone('unhold');
 
+            setButtonUseable('transfer');
+            setButtonUseable('threeway');
+
             document.getElementById('callstate').innerHTML = '通话中';
+            document.getElementById('ringAudio').pause();
+            time_stop();
+            time_run();
         }
 
         function stateHold() {
@@ -279,6 +340,9 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
             setButtonDisplayBlock('unregister');
             setButtonDisplayNone('hold');
             setButtonDisplayBlock('unhold');
+
+            setButtonDisabled('transfer');
+            setButtonDisabled('threeway');
 
             document.getElementById('callstate').innerHTML = '保持中';
         }
@@ -300,8 +364,13 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
             setButtonDisplayBlock('hold');
             setButtonDisplayNone('unhold');
 
+            setButtonDisabled('transfer');
+            setButtonDisabled('threeway');
+
             document.getElementById('callstate').innerHTML = '挂机';
             document.getElementById('callnumber').innerHTML = '&nbsp;';
+            document.getElementById('ringAudio').pause();
+            time_stop();
         }
 
         function setButtonUseable(buttonId) {
@@ -322,6 +391,7 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
             document.getElementById(buttonId).style.display = 'block';
         }
 
+
         function two_char(n) {
             return n >= 10 ? n : '0'+n;
         }
@@ -340,5 +410,8 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
         function time_stop() {
             clearInterval(timer);
         }
+
+
+
 
     }]);

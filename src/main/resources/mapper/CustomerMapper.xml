@@ -148,11 +148,12 @@
         (<include refid="JoinWhereCondition"/>)
 
         <if test="userId != null">
-            AND t_user.user_id like CONCAT(CONCAT('%', #{userId}), '%')
+            AND t_user.user_id like CONCAT(#{userId}, '%')
         </if>
 
         <if test="userName != null">
-            AND t_user.name like CONCAT(CONCAT('%', #{userName}), '%')
+
+            AND t_user.name like CONCAT( #{userName}, '%')
         </if>
 
         <if test="identity != null">
@@ -160,7 +161,7 @@
         </if>
 
         <if test="number != null">
-            AND cst_number like CONCAT(CONCAT('%', #{number}), '%')
+            AND cst_number like CONCAT( #{number}, '%')
         </if>
 
         <if test="groupCode != null">
@@ -188,7 +189,7 @@
         </if>
 
         <if test="phone != null">
-            AND phone like CONCAT(CONCAT('%', #{phone}), '%')
+            AND phone like CONCAT( #{phone}, '%')
         </if>
 
         <if test="addrProvince != null">
@@ -231,11 +232,6 @@
         SELECT count(*)
         FROM <include refid="JoinTableList"/>
         <include refid="getListCondition"/>
-
     </select>
-
-
-
-
 
 </mapper>

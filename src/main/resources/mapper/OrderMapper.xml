@@ -79,7 +79,7 @@
         id > 0
 
         <if test="orderSn != null">
-        AND  order_sn = #{orderSn}
+        AND  order_sn  like CONCAT( #{orderSn}, '%')
         </if>
 
         <if test="callInPhone != null">
@@ -172,7 +172,7 @@
         id > 0
 
         <if test="orderSn != null">
-            AND  order_sn = #{orderSn}
+            AND  order_sn  like CONCAT( #{orderSn}, '%')
         </if>
 
         <if test="callInPhone != null">

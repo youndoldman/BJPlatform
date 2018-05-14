@@ -15,6 +15,7 @@ var shopManageApp = angular.module('ShopManageApp', ['ui.router', 'CommonModule'
                     rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[0]);
                 }
             })
+
             .state('ShopManage.orderCheck',{
                 url:'/orderCheck',
                 views: {

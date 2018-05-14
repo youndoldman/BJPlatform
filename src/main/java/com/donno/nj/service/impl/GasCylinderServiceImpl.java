@@ -45,6 +45,11 @@ public class GasCylinderServiceImpl implements GasCylinderService
     @Autowired
     GasCylinderInOutDao gasCylinderInOutDao;
 
+    @Autowired
+    SysUserDao sysUserDao;
+
+
+
     @Override
     public Optional<GasCylinder> findByNumber(String number)
     {
@@ -275,7 +280,7 @@ public class GasCylinderServiceImpl implements GasCylinderService
 
     @Override
     @OperationLog(desc = "修改钢瓶业务状态信息")
-    public void updateSvcStatus(String number,Integer serviceStatus,String srcUserId,String targetUserId)
+    public void updateSvcStatus(String number,Integer serviceStatus,String srcUserId,String targetUserId,String note)
     {
        /*参数校验*/
         if (number == null || number.trim().length() == 0 )
@@ -348,6 +353,29 @@ public class GasCylinderServiceImpl implements GasCylinderService
             gasCylinderSvcStatusOpHis.setSrcUser(srcUser);
             gasCylinderSvcStatusOpHis.setTargetUser(targetUser);
             gasCylinderSvcStatusOpHis.setOptime(new Date() );
+
+            //取经纬度信息
+            User user;
+            SysUser sysSrcUser = sysUserDao.findByUserId(srcUser.getUserId());
+            SysUser sysTargetUser = sysUserDao.findByUserId(targetUser.getUserId());
+            UserPosition srcUserPosition = null;
+            UserPosition targetUserPosition = null;
+            if(sysSrcUser != null){
+                srcUserPosition = sysSrcUser.getUserPosition();
+            }
+            if(sysTargetUser != null){
+                targetUserPosition = sysTargetUser.getUserPosition();
+            }
+            //两个经纬度取一个
+            if(srcUserPosition != null){
+                gasCylinderSvcStatusOpHis.setLongitude(srcUserPosition.getLongitude());
+                gasCylinderSvcStatusOpHis.setLatitude(srcUserPosition.getLatitude());
+            } else if(targetUserPosition != null){
+                gasCylinderSvcStatusOpHis.setLongitude(targetUserPosition.getLongitude());
+                gasCylinderSvcStatusOpHis.setLatitude(targetUserPosition.getLatitude());
+            }
+
+            gasCylinderSvcStatusOpHis.setNote(note);
             gasCylinderSvcStatusOpHisDao.insert(gasCylinderSvcStatusOpHis);
 
             /*入库信息*/

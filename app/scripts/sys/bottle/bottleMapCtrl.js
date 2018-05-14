@@ -8,7 +8,44 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
         $scope.PathSimplifier = null;
         //地图初始化
         $scope.map = null;
+        $(function () {
+            $('#datetimepickerStart').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
 
+            $('#datetimepickerEnd').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+
+            });
+        });
+        $(function () {
+            function p(s) {
+                return s < 10 ? '0' + s: s;
+            }
+
+            $('#datetimepickerStart').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.startTime = date.getFullYear()+"-"+p(month)+"-"+p(date.getDate())+" "
+                        +p(date.getHours())+":"+p(date.getMinutes())+":"+p(date.getSeconds());
+                });
+            $('#datetimepickerEnd').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.endTime = date.getFullYear()+"-"+p(month)+"-"+p(date.getDate())+" "
+                        +p(date.getHours())+":"+p(date.getMinutes())+":"+p(date.getSeconds());
+                });
+        });
 
         var pathSimplifierInitial = function(){
             AMapUI.load(['ui/misc/PathSimplifier', 'lib/$'], function(PathSimplifier, $) {
@@ -69,18 +106,19 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
                 console.log($scope.pathSimplifierIns);
                 window.pathSimplifierIns = $scope.pathSimplifierIns;
 
-                $('<div id="loadingTip">加载数据，请稍候...</div>').appendTo(document.body);
+                //$('<div id="loadingTip">加载数据，请稍候...</div>').appendTo(document.body);
             });
         };
         //标注钢瓶的历史操作记录
-        var markHistory = function(pathDataFileName){
-            $scope.map.clearMap( );
+        var markHistory = function(){
+            $scope.map.clearMap();
+            console.log($scope.vm.historyList);
 
             for(var i = 0, marker; i < $scope.vm.historyList.length; i++){
                 var contents = $scope.vm.historyList[i].srcUser+"->"+
                     $scope.vm.historyList[i].destUser+"--"+$scope.vm.historyList[i].detail+"--"+
                     $scope.vm.historyList[i].createTime;
-                console.log(contents);
+
                 marker=new AMap.Marker({
                     position:[$scope.vm.historyList[i].longititude, $scope.vm.historyList[i].latitude],
                     map:$scope.map
@@ -97,9 +135,13 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
         //绘制轨迹
         var drawPath = function(pathDataFileName){
             $scope.pathSimplifierIns.clearPathNavigators();
-            $.getJSON('../images/test-data/'+pathDataFileName, function(d) {
+
+
+
+            var paths = [];
+            paths.push($scope.vm.selectedBottlePath);
                 $('#loadingTip').remove();
-                $scope.pathSimplifierIns.setData(d);
+                $scope.pathSimplifierIns.setData(paths);
                 function onload() {
                     $scope.pathSimplifierIns.renderLater();
                 }
@@ -128,7 +170,7 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
                     }
                 });
                 navg1.start();
-            });
+
 
         };
 
@@ -215,26 +257,36 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
         };
         //========================
 
-
-        var gotoPage = function (pageNo) {
-            $scope.pager.setCurPageNo(pageNo);
-            searchBottles();
-        };
         $scope.location = function(lon,lan)
         {
-            console.log(lon+"------"+lan);
             BottleService.location(lon, lan);
-        }
-        $scope.pager = pager.init('BottleListCtrl', gotoPage);
-        var historyQ = $scope.pager.getQ();
+        };
+        var gotoPageBottles = function (pageNo) {
+            $scope.pagerBottle.setCurPageNo(pageNo);
+            searchBottles();
+        };
+
+        $scope.pagerBottle = pager.init('BottleListCtrl', gotoPageBottles);
+
+        var gotoPageOpsLog = function (pageNo) {
+            $scope.pagerOpsLog.setCurPageNo(pageNo);
+            searchOpsLog();
+        };
+
+        $scope.pagerOpsLog = pager.init('BottleListCtrl', gotoPageOpsLog);
+
 
         $scope.q = {
-            bottleName: historyQ.bottleName || ""
+            bottleCode: null,
+            selectBottleCode: null,
+            startTime:"",
+            endTime:"",
         };
 
         $scope.vm = {
             bottleList: [],
-            historyList:[]
+            historyList:[],//钢瓶交接记录
+            selectedBottlePath:{"name":null, "path":[]}//钢瓶轨迹
         };
 
         $scope.search = function () {
@@ -289,20 +341,37 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
 
         var searchBottles = function () {
             var queryParams = {
-                name: $scope.q.bottleName,
-                pageNo: $scope.pager.getCurPageNo(),
-                pageSize: $scope.pager.pageSize
+                number: $scope.q.bottleCode,
+                pageNo: $scope.pagerBottle.getCurPageNo(),
+                pageSize: $scope.pagerBottle.pageSize
             };
 
             BottleService.retrieveBottles(queryParams).then(function (bottles) {
-                $scope.pager.update($scope.q, bottles.total, queryParams.pageNo);
+                $scope.pagerBottle.update($scope.q, bottles.total, queryParams.pageNo);
                 $scope.vm.bottleList = bottles.items;
             });
         };
 
+        //查询钢瓶的生命历程
+        var searchOpsLog = function () {
+            var queryParams = {
+                number: $scope.q.selectBottleCode,
+                pageNo: $scope.pagerOpsLog.getCurPageNo(),
+                pageSize: $scope.pagerOpsLog.pageSize
+            };
+            //
+            //BottleService.retrieveBottles(queryParams).then(function (bottles) {
+            //    $scope.pager.update($scope.q, bottles.total, queryParams.pageNo);
+            //    $scope.vm.bottleList = bottles.items;
+            //});
+        };
+
         //钢瓶定位
         $scope.location = function (longitude,latitude) {
+
             $scope.map.clearMap( );
+            $scope.pathSimplifierIns.setData([]);
+            $scope.pathSimplifierIns.clearPathNavigators();
             var iconBottle = new AMap.Icon({
                 image : '../images/icon/bottle.ico',//24px*24px
                 //icon可缺省，缺省时为默认的蓝色水滴图标，
@@ -321,33 +390,84 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
 
         //钢瓶历史轨迹
         $scope.displayHistory = function (number) {
-            if (number=="0001"){
-                drawPath("display_1.json");
-                $scope.vm.historyList = [{srcUser:"周源",destUser:"王远斌",detail:"重瓶充气站出库，调拨中",createTime:"2018-01-18 13:00:01",longititude:102.7278090000,latitude:25.1333240000},
-                    {srcUser:"王远斌",destUser:"卢坤",detail:"重瓶茨坝门店入库",createTime:"2018-01-18 14:00:01",longititude:102.7384240000,latitude:25.1519370000},
-                    {srcUser:"卢坤",destUser:"小李",detail:"重瓶茨坝门店出库,配送中",createTime:"2018-01-15 13:00:01",longititude:102.7384240000,latitude:25.1519370000},
-                    {srcUser:"小李",destUser:"小唐",detail:"重瓶到用户家",createTime:"2018-01-16 13:00:01",longititude:102.7411690000,latitude:25.1471670000},
-                ];
+            $scope.q.selectBottleCode = number;
+            //绘制轨迹
 
-            }else{
-                drawPath("display_2.json");
-                $scope.vm.historyList = [{srcUser:"周源",destUser:"小蒋",detail:"重瓶充气站出库，调拨中",createTime:"2018-01-18 13:00:01",longititude:102.7278090000,latitude:25.1333240000},
-                    {srcUser:"小蒋",destUser:"小刚",detail:"重瓶北辰门店入库",createTime:"2018-01-18 14:00:01",longititude:102.741977,latitude:25.079041},
-                    {srcUser:"小刚",destUser:"小朱",detail:"重瓶北辰门店出库,配送中",createTime:"2018-01-15 13:00:01",longititude:102.741977,latitude:25.079041},
-                    {srcUser:"小朱",destUser:"小源",detail:"重瓶到用户家",createTime:"2018-01-16 13:00:01",longititude:102.7460360000,latitude:25.0727670000},
-                ];
-            }
-            markHistory();
-
+            getPath(number);
+            //查询变更历史，绘制变更历史
+            $scope.getBottleTakeOverHistoryByCode(number, $scope.q.startTime, $scope.q.endTime);
         };
 
 
 
 
         var init = function () {
+            $scope.pagerBottle.pageSize=5;
+            $scope.pagerOpsLog.pageSize=5;
             searchBottles();
+
         };
 
+        var getPath = function (bottleCode) {
+            $scope.vm.selectedBottlePath = {"name":null, "path":[]}//钢瓶轨迹
+            $scope.vm.selectedBottlePath.name = "钢瓶号： "+bottleCode;
+            $scope.getBottlePathByCode(bottleCode, $scope.q.startTime, $scope.q.endTime);
+        };
+
+
+
+        //查询钢瓶轨迹
+        $scope.getBottlePathByCode = function (number, startTime, endTime) {
+            var queryParams = {
+                number: number,
+                startTime: startTime,
+                endTime: endTime
+            };
+            console.log("getBottlePathByCode:  "+number+"   "+startTime+"   "+endTime);
+            BottleService.retrieveGasCylinderPosition(queryParams).then(function (paths) {
+
+                $scope.vm.selectedBottlePath.total+=paths.total;
+
+                for(var i=0; i<paths.items.length; i++){
+                    var location = paths.items[i].location.split(","); //字符分割
+                    $scope.vm.selectedBottlePath.path.push(location);
+                }
+                if(paths.total == 5000){
+                    $scope.getBottlePathByCode(paths.items[paths.items.length-1].code, paths.items[paths.items.length-1].createTime, $scope.q.endTime);
+                }else{
+                    console.log($scope.vm.selectedBottlePath);
+                    //数据获取完毕，可以绘制轨迹
+                    drawPath();
+                }
+
+            });
+        };
+
+
+        //查询钢瓶交接记录
+        $scope.getBottleTakeOverHistoryByCode = function (number, startTime, endTime) {
+            $scope.vm.historyList = [];
+            var queryParams = {
+                startTime: startTime,
+                endTime: endTime
+            };
+
+            BottleService.retrieveGasCylinderTakeOverHistory(number, queryParams).then(function (historys) {
+                for(var i=0; i<historys.items.length; i++){
+                    var tempHistory = {srcUser:"", destUser:"", detail:"", createTime:"", longititude:"", latitude:""};
+                    tempHistory.srcUser = historys.items[i].srcUser.userId+"("+historys.items[i].srcUser.name+")";
+                    tempHistory.destUser = historys.items[i].targetUser.userId+"("+historys.items[i].targetUser.name+")";
+                    tempHistory.detail = historys.items[i].note;
+                    tempHistory.createTime = historys.items[i].optime;
+
+                    tempHistory.longititude = historys.items[i].longitude;
+                    tempHistory.latitude = historys.items[i].latitude;
+                    $scope.vm.historyList.push(tempHistory);
+                }
+                //显示记录
+                markHistory();
+            });
+        };
         init();
 
     }]);

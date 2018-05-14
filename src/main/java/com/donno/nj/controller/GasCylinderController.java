@@ -3,8 +3,11 @@ package com.donno.nj.controller;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.GasCylinder;
+import com.donno.nj.domain.GasCylinderSvcStatusOpHis;
+import com.donno.nj.logger.DebugLogger;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.GasCylinderService;
+import com.donno.nj.service.GasCylinderSvcOpHisService;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +29,11 @@ public class GasCylinderController
     @Autowired
     private GasCylinderService gasCylinderService;
 
+    @Autowired
+    private GasCylinderSvcOpHisService gasCylinderSvcOpHisService;
+
     @RequestMapping(value = "/api/GasCylinder", method = RequestMethod.GET, produces = "application/json")
-    @OperationLog(desc = "获取商品列表")
+    @OperationLog(desc = "获取钢瓶列表")
     public ResponseEntity retrieve(@RequestParam(value = "number", defaultValue = "") String number,
                                    @RequestParam(value = "specCode", defaultValue = "") String specCode,
                                    @RequestParam(value = "lifeStatus", required = false) Integer lifeStatus,
@@ -37,6 +44,9 @@ public class GasCylinderController
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
     {
+        String logInfo = String.format("start query :%s",new Date());
+        DebugLogger.log(logInfo);
+
         Map params = new HashMap<String,String>();
 
         if (number.trim().length() > 0)
@@ -70,11 +80,13 @@ public class GasCylinderController
             params.putAll(ImmutableMap.of("liableDepartmentCode", liableDepartmentCode));
         }
 
-
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
         List<GasCylinder> gasCylinders = gasCylinderService.retrieve(params);
         Integer count = gasCylinderService.count(params);
+
+        logInfo = String.format("end query :%s",new Date());
+        DebugLogger.log(logInfo);
 
         return ResponseEntity.ok(ListRep.assemble(gasCylinders, count));
     }
@@ -110,15 +122,53 @@ public class GasCylinderController
     public ResponseEntity updateCynSvcStatus(@PathVariable("number") String number,
                                              @RequestParam(value = "srcUserId", defaultValue = "",required = true) String srcUserId,
                                              @RequestParam(value = "targetUserId", defaultValue = "",required = true) String targetUserId,
-                                             @RequestParam(value = "serviceStatus", required = true) Integer serviceStatus)
+                                             @RequestParam(value = "serviceStatus", required = true) Integer serviceStatus,
+                                             @RequestParam(value = "note", defaultValue = "")  String note)
     {
         ResponseEntity responseEntity;
-        gasCylinderService.updateSvcStatus(number,serviceStatus,srcUserId,targetUserId);
+        gasCylinderService.updateSvcStatus(number,serviceStatus,srcUserId,targetUserId,note);
         responseEntity = ResponseEntity.ok().build();
 
         return responseEntity;
     }
 
+    @OperationLog(desc = "查询钢瓶业务状态变化历史")
+    @RequestMapping(value = "/api/GasCylinder/TakeOver/History/{number}", method = RequestMethod.GET)
+    public ResponseEntity getCynSvcStatusOpHis(@PathVariable("number") String number,
+                                             @RequestParam(value = "startTime", defaultValue = "") String startTime,
+                                             @RequestParam(value = "endTime", defaultValue = "") String endTime,
+                                             @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
+                                             @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
+                                             @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
+    {
+        ResponseEntity responseEntity;
+
+        Map params = new HashMap<String,String>();
+
+        if (number.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("number", number));
+        }
+
+        if (startTime.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("startTime", startTime));
+        }
+
+
+        if (endTime.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("endTime", endTime));
+        }
+
+        params.putAll(paginationParams(pageNo, pageSize, orderBy));
+
+        List<GasCylinderSvcStatusOpHis> gasCylinderSvcStatusOpHises =   gasCylinderSvcOpHisService.retrieve(params);
+        Integer count = gasCylinderSvcOpHisService.count(params);
+
+        return ResponseEntity.ok(ListRep.assemble(gasCylinderSvcStatusOpHises, count));
+
+    }
 
 
     @OperationLog(desc = "删除钢瓶信息")

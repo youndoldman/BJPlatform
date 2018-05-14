@@ -211,7 +211,7 @@ public class TableStoreServiceImpl implements TableStoreService
         rangeRowQueryCriteria.addColumnsToGet("location");
 
         List<GasCylinderPosition> locationList = new ArrayList<GasCylinderPosition>();
-        while (true) {
+//        while (true) {
             GetRangeResponse getRangeResponse = client.getRange(new GetRangeRequest(rangeRowQueryCriteria));
             for (Row row : getRangeResponse.getRows()) {
                 GasCylinderPosition gasCylinderPosition = new GasCylinderPosition();
@@ -223,12 +223,12 @@ public class TableStoreServiceImpl implements TableStoreService
             }
 
             // 若nextStartPrimaryKey不为null, 则继续读取.
-            if (getRangeResponse.getNextStartPrimaryKey() != null) {
-                rangeRowQueryCriteria.setExclusiveEndPrimaryKey(getRangeResponse.getNextStartPrimaryKey());
-            } else {
-                break;
-            }
-        }
+//            if (getRangeResponse.getNextStartPrimaryKey() != null) {
+//                rangeRowQueryCriteria.setInclusiveStartPrimaryKey(getRangeResponse.getNextStartPrimaryKey());
+//            } else {
+//                break;
+//            }
+//        }
         return locationList;
     }
 

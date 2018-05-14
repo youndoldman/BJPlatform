@@ -73,6 +73,9 @@ public class CustomerCallInServiceImpl implements CustomerCallInService
             throw new ServerSideBusinessException("用户信息错误",HttpStatus.NOT_ACCEPTABLE);
         }
 
+        customerCallIn.setCustomer(user);
+        customerCallInDao.insert(customerCallIn);
+
         /*检查呼叫信息是否已经存在，若存在，更新时间*/
         Map params = new HashMap<String,String>();
         params.putAll(ImmutableMap.of("phone", customerCallIn.getPhone()));
@@ -87,10 +90,10 @@ public class CustomerCallInServiceImpl implements CustomerCallInService
             customerCallIn.setCustomer(user);
             customerCallInDao.insert(customerCallIn);
         }
-        else
-        {
-            // customerCallInDao.update(customerCallIn);
-        }
+//        else
+//        {
+//            // customerCallInDao.update(customerCallIn);
+//        }
     }
 
 

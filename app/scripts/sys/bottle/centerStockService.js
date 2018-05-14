@@ -9,9 +9,9 @@ bottleApp.service('CenterStockService', ['$http', 'URI', 'promiseWrapper','MISC'
         return promise.wrap($http.get(bottlesUri, {params: params}));
     };
 
-    this.handOverBottle = function (number,srcUserId,targetUserId,serviceStatus) {
+    this.handOverBottle = function (number,srcUserId,targetUserId,serviceStatus, note) {
         return promise.wrap($http.put(bottleHandOverUri+"/"+number+"?srcUserId="+srcUserId
-        +"&targetUserId="+targetUserId+"&serviceStatus="+serviceStatus));
+            +"&targetUserId="+targetUserId+"&serviceStatus="+serviceStatus+"&note="+note));
     };
 
     this.modifyBottle = function (bottle) {

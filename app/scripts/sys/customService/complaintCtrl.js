@@ -70,7 +70,7 @@ customServiceApp.controller('ComplaintCtrl', ['$scope', '$rootScope', '$filter',
 
         $scope.search = function () {
             $scope.pager.setCurPageNo(1);
-            searchcomplaint();
+            searchComplaint();
         };
 
         $scope.initPopUp = function () {

@@ -16,6 +16,7 @@ shopManageApp.controller('ComplaintCtrl', ['$scope', '$rootScope', '$filter', '$
                 showTodayButton:true,
                 toolbarPlacement:'top',
             });
+
             $('#datetimepickerEnd').datetimepicker({
                 format: 'YYYY-MM-DD HH:mm',
                 locale: moment.locale('zh-cn'),
@@ -71,7 +72,7 @@ shopManageApp.controller('ComplaintCtrl', ['$scope', '$rootScope', '$filter', '$
 
         $scope.search = function () {
             $scope.pager.setCurPageNo(1);
-            searchcomplaint();
+            searchComplaint();
         };
 
         $scope.initPopUp = function () {

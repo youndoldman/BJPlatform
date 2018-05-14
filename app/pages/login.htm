@@ -38,18 +38,19 @@
 
                         <fieldset class="clearfix">
 
-                            <p><span class="fa fa-user"></span><input type="text" name="userId" Placeholder="Username" ng-model="userInfo.userId" required></p>
-                            <p><span class="fa fa-lock"></span><input type="password" name="password" Placeholder="Password" ng-keyup="myKeyup($event)" ng-model="userInfo.password" required></p>
+                            <p><span class="fa fa-user"></span><input type="text" name="userId" Placeholder="用户名" ng-model="userInfo.userId" required></p>
+                            <p><span class="fa fa-lock"></span><input type="password" name="password" Placeholder="密码" ng-keyup="myKeyup($event)" ng-model="userInfo.password" required></p>
                             <!-- JS because of IE support; better: placeholder="Password" -->
                             <div class="input-tips">
                                     <span ng-show="userForm.userId.$error.required || userForm.password.$error.required">
                                         <span class="star">&nbsp;*&nbsp;</span>必填项，请输入有效的账户信息</span>
                             </div>
+
                             <div>
-                                <span style="width:30%; text-align:left;  display: inline-block;"><a class="small-text"
-                                                                                                     href="#">忘记密码?</a></span>
-                                <span style="width:30%; text-align:right;  display: inline-block;"><a href="#" class="btn btn-info" ng-click="login()" ng-disabled="userForm.userId.$error.required || userForm.password.$error.required">登录</a></span>
-                                <span style="width:30%; text-align:right;  display: inline-block;"><a href="../pages/register/RegisterStep1.html" class="btn btn-info">注册</a></span>
+                                <!--<span style="width:30%; text-align:left;  display: inline-block;"><a class="small-text"-->
+                                                                                                     <!--href="#">忘记密码?</a></span>-->
+                                <span style="width:100%; text-align:right;  display: inline-block;"><a href="#" class="btn btn-info" ng-click="login()" ng-disabled="userForm.userId.$error.required || userForm.password.$error.required">登录</a></span>
+                                <!--<span style="width:30%; text-align:right;  display: inline-block;"><a href="../pages/register/RegisterStep1.html" class="btn btn-info">注册</a></span>-->
                             </div>
                         </fieldset>
                         <div class="clearfix"></div>

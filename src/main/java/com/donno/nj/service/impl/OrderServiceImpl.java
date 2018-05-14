@@ -47,6 +47,9 @@ public class OrderServiceImpl implements OrderService
     private WorkFlowService workFlowService;
 
     @Autowired
+    private CustomerCallInDao customerCallInDao;
+
+    @Autowired
     private GroupDao groupDao;
 
     @Autowired
@@ -110,7 +113,6 @@ public class OrderServiceImpl implements OrderService
         {
             throw new ServerSideBusinessException("订单信息不全，请补充订单信息！", HttpStatus.NOT_ACCEPTABLE);
         }
-
 
         /*默认非加急*/
         if (order.getUrgent() == null)
@@ -250,8 +252,49 @@ public class OrderServiceImpl implements OrderService
         /*启动流程*/
         createWorkFlow(order);
 
+        /*增加呼叫记录*/
+        addCallIn(customer,order);
+
         /*订单创建日志*/
         OrderOperHistory(order,order.getOrderStatus());
+    }
+
+    void addCallIn(Customer customer,Order order)
+    {
+        if(order.getAccessType() == AccessType.ATCustomService)
+        {
+            if (order.getCallInPhone() == null && order.getCallInPhone().trim().length() == 0)
+            {
+                throw new ServerSideBusinessException("缺少客户呼入电话信息！", HttpStatus.NOT_ACCEPTABLE);
+            }
+            CustomerCallIn customerCallIn = new CustomerCallIn();
+            customerCallIn.setPhone(order.getCallInPhone());
+            customerCallIn.setCustomer(customer);
+            customerCallIn.setCounty(customer.getAddress().getCounty());
+            customerCallIn.setCity(customer.getAddress().getCity());
+            customerCallIn.setProvince(customer.getAddress().getProvince());
+            customerCallIn.setDetail(customer.getAddress().getDetail());
+
+
+            /*检查呼叫信息是否已经存在，若存在，更新时间*/
+            Map params = new HashMap<String,String>();
+            params.putAll(ImmutableMap.of("phone", customerCallIn.getPhone()));
+            params.putAll(ImmutableMap.of("userId", customer.getUserId()));
+            params.putAll(ImmutableMap.of("province", customerCallIn.getProvince()));
+            params.putAll(ImmutableMap.of("city", customerCallIn.getCity()));
+            params.putAll(ImmutableMap.of("county", customerCallIn.getCounty()));
+            params.putAll(ImmutableMap.of("detail", customerCallIn.getDetail()));
+            List<CustomerCallIn> customerCallIns =  customerCallInDao.getList(params);
+            if (customerCallIns.size() == 0)
+            {
+                customerCallIn.setCustomer(customer);
+                customerCallInDao.insert(customerCallIn);
+            }
+//            else
+//            {
+//                customerCallInDao.update(customerCallIn);
+//            }
+        }
     }
 
     public  Float discount(OrderDetail orderDetail,Customer customer)

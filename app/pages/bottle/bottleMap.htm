@@ -1,19 +1,25 @@
 <div id="mapContainer" class="col-xs-12 col-sm-9 col-md-9 col-lg-9 div-bordered" style="height:930px"></div>
 <div  class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
     <div class="ribbon">
-    <a href=""><span class="home fa fa-home"></span></a>
-    <ol class="breadcrumb">
-        <li>钢瓶列表</li>
-    </ol>
-</div>
+        <a href=""><span class="home fa fa-home"></span></a>
+        <ol class="breadcrumb">
+            <li>钢瓶列表</li>
+        </ol>
+    </div>
 
 
     <div class="table-wrapper table-bordered" style="height: 430px">
         <div class="toolbar">
             <form role="form">
                 <div class="inline-group">
-                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.userName" ng-change="search()" placeholder="钢瓶编码"> </label>
-                    <button type="submit" class="btn btn-sm btn-primary" ng-click=""><i class="fa fa-search"></i> 搜索 </button>
+                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.bottleCode" ng-change="search()" placeholder="钢瓶编码"> </label>
+                    <!--<button type="submit" class="btn btn-sm btn-primary" ng-click=""><i class="fa fa-search"></i> 搜索 </button>-->
+                    <!--<label class="input">时间：</label>-->
+                </div>
+                <div class="inline-group" style="margin-top: 5px">
+                    <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control input-sm" ng-model="q.startTime"></label>
+                    <label class="input">—</label>
+                    <label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control input-sm" ng-model="q.endTime"></label>
                 </div>
             </form>
         </div>
@@ -21,31 +27,33 @@
             <thead>
             <tr>
                 <th width="1%"></th>
-                <th width="20%">钢瓶编码</th>
-                <th width="15%">钢瓶规格</th>
-                <th width="40%">生产日期</th>
-                <th width="25%">操作</th>
+                <th width="15%">序号</th>
+                <th width="30%">编码</th>
+                <th width="20%">规格</th>
+                <!--<th width="40%">生产日期</th>-->
+                <th width="35%">操作</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="bottle in vm.bottleList">
                 <td></td>
+                <td class="message">{{$index+1+pagerBottle.pageSize*(pagerBottle.getCurPageNo()-1)}}</td>
                 <td class="message">{{bottle.number}}</td>
                 <td class="message">{{bottle.spec.name}}</td>
-                <td class="message">{{bottle.createTime}}</td>
+                <!--<td class="message">{{bottle.createTime}}</td>-->
                 <td class="operate">
                     <button title="查看位置" ng-click="location(bottle.longitude, bottle.latitude)" type="button" class="btn btn-primary btn-outline btn-xs">
-                        <i class="fa fa-info-circle"></i>
+                        <i class="">定位</i>
                     </button>
                     <button title="历史轨迹" ng-click="displayHistory(bottle.number)" type="button" class="btn btn-primary btn-outline btn-xs">
-                        <i class="fa fa-times-circle-o"></i>
+                        <i class="">轨迹</i>
                     </button>
                 </td>
             </tr>
             </tbody>
         </table>
         <div ng-if="vm.bottleList.length == 0" nj-table-no-data></div>
-        <div nj-pager pager="pager"></div>
+        <div nj-pager pager="pagerBottle" hidepagesizeoptions=true></div>
     </div>
 
     <p/>
@@ -78,6 +86,6 @@
             </tbody>
         </table>
         <div ng-if="vm.bottleList.length == 0" nj-table-no-data></div>
-        <div nj-pager pager="pager"></div>
+        <div nj-pager pager="pagerOpsLog" hidepagesizeoptions=true></div>
     </div>
 </div>

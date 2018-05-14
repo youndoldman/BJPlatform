@@ -47,21 +47,20 @@
             AND
             t_gas_cyr_dyn_detail.oper_idx = t_user.id
             <if test="gasCyrSpecCode != null">
-                and t_gas_cyr_charge_spec.gas_cyr_spec_idx = ( select id from t_gas_cylinder_spec where code = #{gasCyrSpecCode} )
+                and t_gas_cyr_dyn_detail.gas_cyr_spec_idx = ( select id from t_gas_cylinder_spec where code = #{gasCyrSpecCode} )
             </if>
 
             <if test="operType != null">
-                and  t_gas_cyr_charge_spec.oper_type  = #{operType}
+                and  t_gas_cyr_dyn_detail.oper_type  = #{operType}
             </if>
 
             <if test="startTime != null">
-                and   t_gas_cyr_charge_spec.create_time >=   #{startTime}
+                and   t_gas_cyr_dyn_detail.create_time >=   #{startTime}
             </if>
 
             <if test="endTime != null">
-                and    #{endTime}  >=   t_gas_cyr_charge_spec.create_time
+                and    #{endTime}  >=   t_gas_cyr_dyn_detail.create_time
             </if>
-
 
         </where>
     </sql>
@@ -102,8 +101,6 @@
         AND
         t_gas_cyr_dyn_detail.id = #{id}
     </select>
-
-
 
     <insert id="insert">
         INSERT IGNORE INTO <include refid="TableName"/>(<include refid="InsertColumnList"/>)

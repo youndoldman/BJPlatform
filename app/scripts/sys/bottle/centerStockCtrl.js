@@ -93,6 +93,7 @@ bottleApp.controller('CenterStockModalCtrl', ['$scope', 'close', 'CenterStockSer
     $scope.modalTitle = title;
     $scope.isModify = false;
     $scope.vm = {
+        currentUser: {},
         bottle: {},
         handOver:{
             bottleNumber:null,
@@ -108,9 +109,15 @@ bottleApp.controller('CenterStockModalCtrl', ['$scope', 'close', 'CenterStockSer
     };
 
     $scope.submit = function () {
+        var note = "";//详细交接原因
+        if($scope.isModify){
+            note = $scope.vm.currentUser.department.name+"钢瓶出库";
+        }else{
+            note = $scope.vm.currentUser.department.name+"钢瓶入库";
+        }
 
         CenterStockService.handOverBottle($scope.vm.handOver.bottleNumber,$scope.vm.handOver.srcUser,
-            $scope.vm.handOver.destUser,$scope.vm.selectReason.value).then(function () {
+            $scope.vm.handOver.destUser,$scope.vm.selectReason.value, note).then(function () {
             if($scope.isModify){
                 udcModal.info({"title": "处理结果", "message": "充气站出库成功 "});
                 changeKpToZp($scope.vm.handOver.bottleNumber);//空瓶变重瓶
@@ -125,7 +132,7 @@ bottleApp.controller('CenterStockModalCtrl', ['$scope', 'close', 'CenterStockSer
     };
 
     var init = function () {
-        var currentUser = sessionStorage.getCurUser();
+        $scope.vm.currentUser = sessionStorage.getCurUser();
         $scope.vm.bottle = _.clone(initVal);
         if ($scope.vm.bottle==null){
             $scope.vm.handOver.bottleNumber = null;
@@ -142,7 +149,7 @@ bottleApp.controller('CenterStockModalCtrl', ['$scope', 'close', 'CenterStockSer
             $scope.vm.selectReason = $scope.vm.reasons[0];
         } else {
             $scope.isModify = false;
-            $scope.vm.handOver.destUser = currentUser.userId;
+            $scope.vm.handOver.destUser = $scope.vm.currentUser.userId;
             $scope.vm.reasons = [{name:"充气站库存",value:"1"}];
             $scope.vm.selectReason = $scope.vm.reasons[0];
         }
@@ -160,4 +167,5 @@ bottleApp.controller('CenterStockModalCtrl', ['$scope', 'close', 'CenterStockSer
             udcModal.info({"title": "错误信息", "message": value.message});
         })
     };
+
 }]);

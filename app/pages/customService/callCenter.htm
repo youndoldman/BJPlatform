@@ -141,7 +141,7 @@
           <div style="margin-left: -20px;margin-top: -8px;"class="col-xs-4">
             <input type="text" class="form-control  input-sm" ng-model="searchParam.customerID">
           </div>
-          <div style="margin-left: 0px;" class="col-xs-2 text-left">
+          <div style="margin-left: 20px;" class="col-xs-2 text-left">
             <label>客户姓名</label>
           </div>
           <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
@@ -155,23 +155,19 @@
           <div style="margin-left: -20px;margin-top: -8px;"class="col-xs-4">
             <input type="text" class="form-control  input-sm" ng-model="searchParam.phone">
           </div>
-          <div style="margin-left: 0px;" class="col-xs-2 text-left">
+          <div style="margin-left: 20px;" class="col-xs-2 text-left">
             <label>客户地址</label>
           </div>
           <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
             <input type="text" class="form-control input-sm" ng-model="searchParam.address">
           </div>
-          <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-1">
-            <button type="search" class="btn btn-flat" ng-click="search()"><i class="fa fa-search"></i></button>
-
-          </div>
         </div>
 
         <div class="row" style="margin-top: 5px">
+          <button type="save" class="btn btn-primary btn-md" style="margin-left: 10px" ng-click="initPopUp()">新建客户</button>
+          <button type="save" class="btn btn-primary btn-md" style="margin-right: 10px" ng-click="modify(vm.currentCustomer)">资料修改</button>
+          <button type="search" class="btn btn-flat pull-right"  style="margin-right: 10px" ng-click="search()"><i class="fa fa-search"></i></button>
 
-          <button type="save" class="btn btn-primary btn-md pull-left" style="margin-left: 10px" ng-click="initPopUp()">新建客户</button>
-
-          <button type="save" class="btn btn-primary btn-md pull-right" style="margin-right: 10px" ng-click="modify(vm.currentCustomer)">资料修改</button>
         </div>
 
       </div>
@@ -396,20 +392,20 @@
               <br/>
               <br/>
               <div style="margin-top:20px">
-              <table class="table table-bordered table-hover .table-condensed table-striped" style="table-layout:fixed;">
-                <tr>
-                  <th  width="20%" style="background: lightblue;text-align: center">编号</th>
-                  <th  width="20%" style="background: lightblue;text-align: center">姓名</th>
-                  <th  width="30%" style="background: lightblue;text-align: center">电话</th>
-                  <th  width="20%" style="background: lightblue;text-align: center">详情</th>
-                </tr>
-                <tr ng-repeat="customer in vm.CustomerAutoReportList" ng-click="showDetail(customer)" ng-class="{danger:true}">
-                  <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{customer.userId}}</td>
-                  <td title="{{customer.address.province}}{{customer.address.city}}{{customer.address.county}}{{customer.address.detail}}" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{customer.name}}</td>
-                  <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{customer.phone}}</td>
-                  <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">缺气报警</td>
-                </tr>
-              </table>
+                <table class="table table-bordered table-hover .table-condensed table-striped" style="table-layout:fixed;">
+                  <tr>
+                    <th  width="20%" style="background: lightblue;text-align: center">编号</th>
+                    <th  width="20%" style="background: lightblue;text-align: center">姓名</th>
+                    <th  width="30%" style="background: lightblue;text-align: center">电话</th>
+                    <th  width="20%" style="background: lightblue;text-align: center">详情</th>
+                  </tr>
+                  <tr ng-repeat="customer in vm.CustomerAutoReportList" ng-click="showDetail(customer)" ng-class="{danger:true}">
+                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{customer.userId}}</td>
+                    <td title="{{customer.address.province}}{{customer.address.city}}{{customer.address.county}}{{customer.address.detail}}" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{customer.name}}</td>
+                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{customer.phone}}</td>
+                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">缺气报警</td>
+                  </tr>
+                </table>
               </div>
             </div>
 
@@ -459,7 +455,7 @@
           </div>
           <div class="col-md-1 col-md-offset-2" style="margin-top: 5px">
             <div class="input-group">
-              <button class="btn btn-sm btn-primary"  ng-click="createOrder()"><i class="fa fa-plus"></i> 生成订单 </button>
+              <button class="btn btn-sm btn-primary pull-right"  ng-click="createOrder()"><i class="fa fa-plus"></i> 生成i订单 </button>
             </div>
 
           </div>
@@ -571,13 +567,20 @@
       <div class="tab-pane fade" id="tab2">
         <div class="panel panel-primary" style="min-height: 300px;">
           <div class="panel-body">
-            <div class="row col-md-7" style="margin-top: 5px">
+            <div class="row col-md-12" style="margin-top: 5px">
+              <div class="col-md-7">
                 <div class="input-group">
                   <span class="input-group-addon">报修类型</span>
                   <select name="mendType" ng-model="temp.selectedMendType" ng-options="mendType.name for mendType in temp.mendTypesList" class="form-control" ng-selected=""></select>
                 </div>
+              </div>
+              <div class="col-md-5">
+                <div class="input-group">
+                  <button class="btn btn-sm btn-primary "  ng-click="createMend()"><i class="fa fa-plus"></i> 生成报修订单</button>
+                </div>
+              </div>
             </div>
-            <div class="row" >
+            <div class="row  col-md-12" >
               <div class="col-md-7" style="margin-top: 5px;min-height: 200px">
                 <span class="input-group-addon">报修描述</span>
                 <textarea class="form-control" rows="8" ng-model="currentMend.detail"></textarea>
@@ -611,9 +614,6 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-2 col-md-offset-1" style="margin-top: 5px">
-                <button class="btn btn-primary"  ng-click="createMend()">生成报修订单</button>
-              </div>
             </div>
           </div>
         </div>
@@ -621,13 +621,20 @@
       <div class="tab-pane fade" id="tab3">
         <div class="panel panel-primary" style="min-height: 300px;">
           <div class="panel-body">
-            <div class="row col-md-7" style="margin-top: 5px">
-              <div class="input-group">
+            <div class="row col-md-12" style="margin-top: 5px">
+              <div class="col-md-7">
+                <div class="input-group">
                 <span class="input-group-addon">安检类型</span>
                 <select name="securityType" ng-model="temp.selectedSecurityType" ng-options="securityType.name for securityType in temp.securityTypesList" class="form-control" ng-selected=""></select>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="input-group">
+                  <button class="btn btn-sm btn-primary "  ng-click="createComplaint()"><i class="fa fa-plus"></i> 生成安检订单</button>
+                </div>
               </div>
             </div>
-            <div class="row" >
+            <div class="row　col-md-12" >
               <div class="col-md-7" style="margin-top: 5px;min-height: 200px">
                 <span class="input-group-addon">安检描述</span>
                 <textarea class="form-control" rows="8" ng-model="currentSecurity.detail"></textarea>
@@ -661,9 +668,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-2 col-md-offset-1" style="margin-top: 5px">
-                <button class="btn btn-primary"  ng-click="createSecurity()">生成安检订单</button>
-              </div>
+
             </div>
           </div>
         </div>
@@ -671,13 +676,20 @@
       <div class="tab-pane fade" id="tab4">
         <div class="panel panel-primary" style="min-height: 300px;">
           <div class="panel-body">
-            <div class="row col-md-7" style="margin-top: 5px">
-              <div class="input-group">
+            <div class="row col-md-12" style="margin-top: 5px">
+              <div class="col-md-7">
+                <div class="input-group">
                 <span class="input-group-addon">投诉类型</span>
                 <select name="complaintType" ng-model="temp.selectedComplaintType" ng-options="complaintType.name for complaintType in temp.complaintTypesList" class="form-control" ng-selected=""></select>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="input-group">
+                  <button class="btn btn-sm btn-primary "  ng-click="createComplaint()"><i class="fa fa-plus"></i> 生成投诉订单</button>
+                </div>
               </div>
             </div>
-            <div class="row" >
+            <div class="row　col-md-12" >
               <div class="col-md-7" style="margin-top: 5px;min-height: 200px">
                 <span class="input-group-addon">投诉描述</span>
                 <textarea class="form-control" rows="8" ng-model="currentComplaint.detail"></textarea>
@@ -701,19 +713,16 @@
                 </div>
               </div>
 
-              <div class="col-md-4" style="margin-top: 5px">
-                <div class="form-group">
+              <!--<div class="col-md-4" style="margin-top: 5px">-->
+              <!--<div class="form-group">-->
 
 
-                  <div class='input-group date'>
-                    <span class="input-group-addon">预约时间</span>
-                    <input type='text' class="form-control"  id='datetimepickerComplaint' ng-model="currentMend.reserveTime"/>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-2 col-md-offset-1" style="margin-top: 5px">
-                <button class="btn btn-primary"  ng-click="createComplaint()">生成投诉订单</button>
-              </div>
+              <!--<div class='input-group date'>-->
+              <!--<span class="input-group-addon">预约时间</span>-->
+              <!--<input type='text' class="form-control"  id='datetimepickerComplaint' ng-model="currentMend.reserveTime"/>-->
+              <!--</div>-->
+              <!--</div>-->
+              <!--</div>-->
             </div>
           </div>
         </div>
