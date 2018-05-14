@@ -730,6 +730,7 @@ financeApp.controller('checkBottleCtrl', ['$scope', '$rootScope', '$filter', '$l
         };
 
         var init = function () {
+            $scope.pager.pageSize=10;
             //searchData();
             //查询钢瓶类型规格
             var queryParams = {};

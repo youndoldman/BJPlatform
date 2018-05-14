@@ -24,6 +24,21 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
                 showTodayButton:true,
                 toolbarPlacement:'top',
             });
+
+            $('#startTimePicker1').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm:ss',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
+            $('#endTimePicker1').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm:ss',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
         });
 
         $(function () {
@@ -41,6 +56,21 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
                     $scope.q.endDate = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
                         +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
                 });
+
+            $('#startTimePicker1').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.startDate1 = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
+            $('#endTimePicker1').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.endDate1 = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
         });
     },300);
 
@@ -48,15 +78,23 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
         customer:{userId:null},
         operator:{userId:null},
         specCode:null,
-        ticketStatus:null,
+        ticketSn:null,
         startDate:null,
         endDate:null,
-        note:null
+        note:null,
+
+        specCode1:null,
+        quantity:null,
+        startDate1:null,
+        endDate1:null,
+        note1:null
     };
 
     $scope.vm = {
         ticketStates:["待使用","已使用"],
         goodsList:[],
+        selectedGoods:{},
+        selectedGoods1:{},
         currentGasTicket:{},
         currentCustomer: {
             userId:null,
@@ -89,7 +127,17 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
         close(result, 500);
     };
 
-    $scope.submit = function (ticketInfo) {
+    $scope.ticketSubmit = function () {
+        var ticketInfo = {
+            customer:$scope.q.customer,
+            operator:$scope.q.operator,
+            ticketSn:$scope.q.ticketSn,
+            specCode:$scope.q.specCode,
+            ticketStatus:0,
+            startDate:$scope.q.startDate,
+            endDate:$scope.q.endDate,
+            note:$scope.q.note,
+        };
         console.info(ticketInfo);
 
         if (title == "增加气票") {
@@ -97,18 +145,31 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
                 udcModal.info({"title": "处理结果", "message": "新增气票信息成功 "});
                 $scope.close(true);
             }, function(value) {
-                // failure
                 udcModal.info({"title": "处理结果", "message": "新增气票失败 "+value.message});
             })
         }
-        //else if (customer.name != "" && title == "修改客户") {
-        //    CustomerManageService.modifyCustomer(customer).then(function () {
-        //        udcModal.info({"title": "处理结果", "message": "修改客户信息成功 "});
-        //        $scope.close(true);
-        //    }, function(value) {
-        //        udcModal.info({"title": "处理结果", "message": "修改客户失败 "+value.message});
-        //    })
-        //}
+    };
+
+    $scope.couponSubmit = function (couponInfo) {
+        var couponInfo = {
+            customer:$scope.q.customer,
+            operator:$scope.q.operator,
+            specCode:$scope.q.specCode1,
+            couponStatus:0,
+            startDate:$scope.q.startDate1,
+            endDate:$scope.q.endDate1,
+            note:$scope.q.note1,
+        };
+        console.info(couponInfo);
+        for(var i = 0; i< $scope.q.quantity; i++)
+        {
+            CustomerManageService.addCoupon(couponInfo).then(function () {
+                udcModal.info({"title": "处理结果", "message": "新增优惠券成功 "});
+                $scope.close(true);
+            }, function(value) {
+                udcModal.info({"title": "处理结果", "message": "新增优惠券失败 "+value.message});
+            })
+        }
     };
 
     $scope.provincesChange = function () {
@@ -174,6 +235,7 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
         $scope.currentUser = sessionStorage.getCurUser();
         $scope.q.operator.userId = $scope.currentUser.userId;
         $scope.q.customer.userId = $scope.vm.currentCustomer.userId;
+
         $scope.searchGoods();
 
 
@@ -243,29 +305,24 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
         };
         CustomerManageService.retrieveGoods(queryParams).then(function (goods) {
             $scope.vm.goodsList = goods.items;
-            //console.info($scope.vm.goodsList)
+
+            $scope.vm.selectedGoods = $scope.vm.goodsList[0];
+            $scope.q.specCode = $scope.vm.selectedGoods.code;
+            $scope.vm.selectedGoods1 = $scope.vm.goodsList[0];
+            $scope.q.specCode1 = $scope.vm.selectedGoods1.code;
+
         });
     };
 
     $scope.specCodeChange = function () {
-        //console.info($scope.specCode.name);
-        for (var i = 0; i < $scope.vm.goodsList.length; i++) {
-            if ($scope.specCode.name == $scope.vm.goodsList[i].name) {
-                $scope.q.specCode = $scope.vm.goodsList[i].code;
-                console.info($scope.q.specCode);
-            }
-        }
+        $scope.q.specCode = $scope.vm.selectedGoods.code;
+        console.info( $scope.q.specCode)
     }
 
-    $scope.ticketStatusChange = function(){
-        if($scope.state=="待使用")
-        {
-            $scope.q.ticketStatus = 0;
-        }
-        else if($scope.state=="已使用")
-        {
-            $scope.q.ticketStatus = 1;
-        }
+    $scope.specCodeChange1 = function () {
+        $scope.q.specCode1 = $scope.vm.selectedGoods1.code;
+        console.info( $scope.q.specCode1)
     }
+
     init();
 }]);

@@ -263,7 +263,7 @@ financeApp.controller('checkStockCtrl', ['$scope', '$rootScope', '$filter', '$lo
         };
 
         var init = function () {
-
+            $scope.pager.pageSize=10;
             //查询钢瓶类型规格
             var queryParams = {};
             FinanceService.retrieveGasCylinderSpecUri(queryParams).then(function (GasCylinderSpec) {
@@ -271,21 +271,6 @@ financeApp.controller('checkStockCtrl', ['$scope', '$rootScope', '$filter', '$lo
                 //$scope.data.selectedGoodsType = $scope.data.goodsTypesList[0];
                 console.info($scope.data.gasCylinderSpecList);
 
-                //for(var i = 0; i < $scope.data.goodsTypesList.length; i++)
-                //{
-                //    //$scope.data.goodsTableContext.goodsName = $scope.data.goodsTypesList[i].name
-                //    var queryParams = {
-                //        typeName: $scope.data.goodsTypesList[i].name,
-                //    };
-                //    FinanceService.retrieveGoods(queryParams).then(function (goods) {
-                //        var tempList = {type:null,detail:[]};
-                //        tempList.detail = goods.items;
-                //        if(goods.items.length > 0){
-                //            tempList.type = goods.items[0].goodsType.name;
-                //        }
-                //        $scope.data.goodsList.push(tempList);
-                //    });
-                //}
             });
 
 
