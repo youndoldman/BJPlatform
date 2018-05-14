@@ -93,6 +93,7 @@ customServiceApp.controller('OrderDeliveryCtrl', ['$scope', '$rootScope', '$filt
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize
             };
+            console.info(queryParams);
             var curUser = sessionStorage.getCurUser();
             OrderService.retrieveTaskOrders(curUser.userId, queryParams).then(function (tasks) {
                 $scope.pager.update($scope.q, tasks.total, queryParams.pageNo);

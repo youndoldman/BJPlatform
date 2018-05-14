@@ -132,6 +132,7 @@ shopManageApp.controller('MoneyReturnCtrl', ['$scope', '$rootScope', '$filter', 
         };
 
         var init = function () {
+            $scope.pager.pageSize=10;
             $scope.payType = "电子";
             $scope.q.payType = 0;
             $scope.data.creditType = "所有类型";

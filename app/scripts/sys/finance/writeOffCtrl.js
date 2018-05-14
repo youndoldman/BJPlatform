@@ -141,7 +141,7 @@ financeApp.controller('WriteOffCtrl', ['$scope', '$rootScope', '$filter', '$loca
             $scope.data.creditType = "所有类型";
 
             $scope.searchCredit();
-
+            $scope.pager.pageSize=10;
             //var doc = document.getElementById("panel1").height;
             //console.info(doc);
             ////document.getElementById("panel2").height= windowHeight;
