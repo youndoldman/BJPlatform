@@ -68,6 +68,9 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
         /*校验用户是否存在*/
         checkUserExist(customer.getUserId());
 
+        /*校验客户电话号码*/
+        checkPhone(customer.getPhone());
+
         /*用户组信息校验*/
         setCustomerGroup(customer);
 
@@ -172,6 +175,20 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
         {
             checkCustomerCompanyUpdate(newCustomer);
         }
+
+        /*客户电话*/
+        if (newCustomer.getPhone() != null)
+        {
+            if ( newCustomer.getPhone().equals(srcCustomer.getPhone()) )//userid 不修改
+            {
+                newCustomer.setPhone(null);
+            }
+            else
+            {
+                checkPhone(newCustomer.getPhone());
+            }
+        }
+
 
         /*更新基表数据*/
         if(newCustomer.getUserId() != null || newCustomer.getUserGroup()!= null || newCustomer.getName()!= null
@@ -533,6 +550,20 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
         else
         {
             throw new ServerSideBusinessException("系统缺少客户组信息，无法创建客户",HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
+
+    public void checkPhone(String userPhone)
+    {
+        if(userPhone == null || userPhone.trim().length() == 0)
+        {
+            throw new ServerSideBusinessException("请输入客户电话号码",HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (customerDao.findByUserPhone(userPhone) != null)
+        {
+            throw new ServerSideBusinessException("电话号码"+userPhone+"已经存在",HttpStatus.CONFLICT);
         }
     }
 

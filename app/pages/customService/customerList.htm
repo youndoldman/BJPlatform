@@ -16,7 +16,7 @@
                 <label class="input">客户姓名：</label>
                 <label class="input"><input type="text"  class="form-control" ng-model="q.CustomerName"></label>
                 <button type="submit" class="btn btn-sm btn-primary" ng-click="search()"><i class="fa fa-search"></i> 搜索 </button>
-                <button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUp()"><i class="fa fa-plus"></i> 新增用户 </button>
+                <!--<button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUp()"><i class="fa fa-plus"></i> 新增用户 </button>-->
             </div>
         </form>
     </div>
@@ -49,14 +49,11 @@
             <td class="message">{{customer.phone}}</td>
             <td class="message">{{customer.address.province}}{{customer.address.city}}{{customer.address.county}}{{customer.address.detail}}</td>
             <td class="operate">
-                <button title="详情" ng-click="viewDetails(customer)" type="button" class="btn btn-primary btn-outline btn-xs">
-                    <i class="fa fa-info-circle"></i>
-                </button>
+                <!--<button title="详情" ng-click="viewDetails(customer)" type="button" class="btn btn-primary btn-outline btn-xs">-->
+                    <!--<i class="fa fa-info-circle"></i>-->
+                <!--</button>-->
                 <button title="修改" ng-click="modify(customer)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="fa fa-edit"></i>
-                </button>
-                <button title="删除" ng-click="delete(customer)" type="button" class="btn btn-primary btn-outline btn-xs">
-                    <i class="fa fa-trash-o"></i>
                 </button>
                 <!--<button title="增加气票/优惠券" ng-hide="!isTicketUser(customer)" ng-click="addCoupon(customer)" type="button" class="btn btn-primary btn-outline btn-xs">-->
                     <!--<i class="fa fa-plus-square-o "></i>-->
@@ -69,6 +66,9 @@
                 </button>
                 <button title="查看气票/优惠券" ng-hide="!isTicketUser(customer)" ng-click="deleteGasTicket(customer)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="fa fa-minus-square-o "></i>
+                </button>
+                <button title="删除" ng-click="delete(customer)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <i class="fa fa-trash-o"></i>
                 </button>
             </td>
         </tr>
