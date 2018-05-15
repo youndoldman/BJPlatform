@@ -66,7 +66,9 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
                         CustomerManageService.deleteCustomer(customer).then(function () {
                             searchCustomer();
                             udcModal.info({"title": "处理结果", "message": "删除客户信息成功 "});
-                        });
+                        }, function(value) {
+                            udcModal.info({"title": "错误信息", "message": "删除客户信息失败 " + value.message});
+                        })
                     }
                 })
         };

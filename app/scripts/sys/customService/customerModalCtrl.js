@@ -6,6 +6,7 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
 
     $scope.vm = {
         currentCustomer: {
+            phone:null,
             address:{
                 "province":"",
                 "city":"",
@@ -46,18 +47,24 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
             //console.info(customer);
             CustomerManageService.createCustomer(customer).then(function () {
                 udcModal.info({"title": "处理结果", "message": "新增客户信息成功 "});
-                $scope.close(true);
+
             }, function(value) {
-                // failure
                 udcModal.info({"title": "处理结果", "message": "新增客户失败 "+value.message});
             })
         } else if (customer.name != "" && title == "修改客户") {
             CustomerManageService.modifyCustomer(customer).then(function () {
                 udcModal.info({"title": "处理结果", "message": "修改客户信息成功 "});
-                $scope.close(true);
             }, function(value) {
                 udcModal.info({"title": "处理结果", "message": "修改客户失败 "+value.message});
             })
+        }
+    };
+
+    $scope.closeModal = function () {
+        //新建客户的资料传到母页
+        if($scope.vm.currentCustomer.userId!=null){
+            var result = {value:true, param:$scope.vm.currentCustomer.userId};
+            $scope.close(result);
         }
     };
 
@@ -125,6 +132,8 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
         getProvincesConfig("中国");
         //初始化地址信息
         if(title == "新增客户") {
+            console.log(initVal)
+            $scope.vm.currentCustomer.phone = _.clone(initVal);
             $scope.vm.currentCustomer.address.province = "云南省";
             getCitysConfig($scope.vm.currentCustomer.address.province);
             $scope.vm.currentCustomer.address.city = "昆明市";

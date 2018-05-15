@@ -1,13 +1,12 @@
-﻿<div class="modal" tabindex="-1">
+﻿<div class="modal" tabindex="-1"  data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <form name="userForm" novalidate>
                 <div class="modal-header">
-                    <button type="button" class="close" ng-click="close(false)" data-dismiss="modal"
-                            aria-hidden="true">&times;</button>
+                    <!--<button type="button" class="close" ng-click="close(false)" data-dismiss="modal"-->
+                            <!--aria-hidden="true">&times;</button>-->
                     <h4 class="modal-title">&nbsp;{{modalTitle}}&nbsp;</h4>
                 </div>
-
                 <div class="modal-body">
                     <div class="panel-body">
                         <div class="row">
@@ -15,7 +14,7 @@
                                 <label>客户编号</label>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.userId">
+                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.userId" ng-disabled="isModify">
                             </div>
                             <div style="margin-left: 20px;" class="col-xs-2 text-left">
                                 <label>客户姓名</label>
@@ -145,8 +144,8 @@
 
 
                 <div class="modal-footer">
-                    <button type="submit" ng-click="submit(vm.currentCustomer)" class="btn btn-primary" data-dismiss="modal">保存</button>
-                    <button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" ng-click="submit(vm.currentCustomer)" class="btn btn-primary">保存</button>
+                    <button type="button" ng-click="closeModal()" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </form>
         </div>

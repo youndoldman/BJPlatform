@@ -2,7 +2,7 @@
 
 customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
     'rootService', 'pager', 'udcModal', 'CustomerManageService', 'OrderService','sessionStorage','MendSecurityComplaintService','$document',function ($scope, $rootScope, $filter, $location, Constants,
-                                                                           rootService, pager, udcModal, CustomerManageService,OrderService,sessionStorage,MendSecurityComplaintService,$document) {
+                                                                                                                                                      rootService, pager, udcModal, CustomerManageService,OrderService,sessionStorage,MendSecurityComplaintService,$document) {
 
 
         var gotoPageCustomer = function (pageNo) {
@@ -252,11 +252,16 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 controller: "CustomerModalCtrl",
                 inputs: {
                     title: '新增客户',
-                    initVal: {}
+                    initVal: $scope.vm.callInPhone//增加呼入号码的传入
                 }
             }).then(function (result) {
-                if (result) {
-                    searchCustomer();
+                if (result.value) {
+                    var queryParams = {
+                        userId:result.param,
+                        pageNo: $scope.pagerCustomer.getCurPageNo(),
+                        pageSize: $scope.pagerCustomer.pageSize
+                    };
+                    searchCustomerByParams(queryParams);
                 }
             })
         };
@@ -278,8 +283,13 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                     initVal: customer
                 }
             }).then(function (result) {
-                if (result) {
-                    searchCustomer();
+                if (result.value) {
+                    var queryParams = {
+                        userId:result.param,
+                        pageNo: $scope.pagerCustomer.getCurPageNo(),
+                        pageSize: $scope.pagerCustomer.pageSize
+                    };
+                    searchCustomerByParams(queryParams);
                 }
             })
         };
@@ -314,10 +324,10 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             $scope.vm.CustomerList = [];
             $scope.vm.currentCustomer = "";
             var queryParams = {
-                userId:$scope.searchParam.customerID,
-                userName:$scope.searchParam.customerName,
-                phone:$scope.searchParam.phone,
-                addrDetail:$scope.searchParam.address,
+                userId: $scope.searchParam.customerID,
+                userName: $scope.searchParam.customerName,
+                phone: $scope.searchParam.phone,
+                addrDetail: $scope.searchParam.address,
                 pageNo: $scope.pagerCustomer.getCurPageNo(),
                 pageSize: $scope.pagerCustomer.pageSize
             }
@@ -325,33 +335,49 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             //以后修改，这里为了演示方便
             CustomerManageService.retrieveCustomers(queryParams).then(function (customers) {
                 $scope.pagerCustomer.update($scope.qCustomer, customers.total, queryParams.pageNo);
-                $scope.vm.CustomerList=customers.items;
+                $scope.vm.CustomerList = customers.items;
 
-                if($scope.vm.CustomerList.length>0){
+                if ($scope.vm.CustomerList.length > 0) {
                     $scope.vm.currentCustomer = $scope.vm.CustomerList[0];
-                    //刷新订单
-                    refleshOrder();
+                    $scope.showDetail($scope.vm.currentCustomer);
                 }
             });
-
-            //CustomerManageService.retrieveCustomerCallin(queryParams).then(function (customersCallIn) {
-            //    $scope.pager.update($scope.q, customersCallIn.total, queryParams.pageNo);
-            //    for(var i=0;i<customersCallIn.items.length;i++)
-            //    {
-            //        var customer = customersCallIn.items[i].customer;
-            //        if(customer != null) {
-            //            $scope.vm.customerList.push(customer);
-            //        }
-            //    }
-            //    if($scope.vm.customerList.length>0){
-            //        $scope.vm.currentCustomer = $scope.vm.customerList[0];
-            //        //刷新订单
-            //        refleshOrder();
-            //    }
-            //});
         };
 
-        //将列表中的客户信息显示到详情
+        var searchCustomerByParams = function (Params) {
+            //清空表格
+            $scope.vm.CustomerList = [];
+            $scope.vm.currentCustomer = "";
+
+            //以后修改，这里为了演示方便
+            CustomerManageService.retrieveCustomers(Params).then(function (customers) {
+                $scope.pagerCustomer.update($scope.qCustomer, customers.total, Params.pageNo);
+                $scope.vm.CustomerList = customers.items;
+
+                if ($scope.vm.CustomerList.length > 0) {
+                    $scope.vm.currentCustomer = $scope.vm.CustomerList[0];
+                    $scope.showDetail($scope.vm.currentCustomer);
+                }
+            });
+        };
+
+        //CustomerManageService.retrieveCustomerCallin(queryParams).then(function (customersCallIn) {
+        //    $scope.pager.update($scope.q, customersCallIn.total, queryParams.pageNo);
+        //    for(var i=0;i<customersCallIn.items.length;i++)
+        //    {
+        //        var customer = customersCallIn.items[i].customer;
+        //        if(customer != null) {
+        //            $scope.vm.customerList.push(customer);
+        //        }
+        //    }
+        //    if($scope.vm.customerList.length>0){
+        //        $scope.vm.currentCustomer = $scope.vm.customerList[0];
+        //        //刷新订单
+        //        refleshOrder();
+        //    }
+        //});
+
+//将列表中的客户信息显示到详情
         $scope.showDetail = function (customer) {
             $scope.vm.currentCustomer = customer;
             //查询当前用户欠款
@@ -368,7 +394,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             refleshComplaint();
         };
 
-        //商品类型改变
+//商品类型改变
         $scope.goodsTypeChange = function () {
             //获取区
             if ($scope.temp.selectedGoodsType==null) {
@@ -428,11 +454,11 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 $scope.temp.selectedComplaintType = $scope.temp.complaintTypesList[0];
             });
             //不间断供气测试
-            searchCustomerTest();
+            //searchCustomerTest();
         };
         init();
 
-        //刷新维修订单的数据
+//刷新维修订单的数据
         var refleshMend = function() {
             if($scope.vm.currentCustomer == null){
                 udcModal.info({"title": "错误信息", "message": "请选择客户 "});
@@ -445,7 +471,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         };
 
 
-        //创建报修单
+//创建报修单
         $scope.createMend = function () {
             if($scope.vm.currentCustomer==null){
                 udcModal.info({"title": "错误提示", "message": "请选择客户！"});
@@ -465,7 +491,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             })
         };
 
-        //刷新安检订单的数据
+//刷新安检订单的数据
         var refleshSecurity = function() {
             if($scope.vm.currentCustomer == null){
                 udcModal.info({"title": "错误信息", "message": "请选择客户 "});
@@ -478,7 +504,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         };
 
 
-        //创建安检单
+//创建安检单
         $scope.createSecurity = function () {
             if($scope.vm.currentCustomer==null){
                 udcModal.info({"title": "错误提示", "message": "请选择客户！"});
@@ -498,7 +524,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             })
         };
 
-        //刷新投诉订单的数据
+//刷新投诉订单的数据
         var refleshComplaint = function() {
             if($scope.vm.currentCustomer == null){
                 udcModal.info({"title": "错误信息", "message": "请选择客户 "});
@@ -511,7 +537,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         };
 
 
-        //创建投诉单
+//创建投诉单
         $scope.createComplaint = function () {
             if($scope.vm.currentCustomer==null){
                 udcModal.info({"title": "错误提示", "message": "请选择客户！"});
@@ -541,7 +567,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             $scope.vm.currentCustomerCredit= null;
             $scope.vm.callInPhone = null;
             $scope.vm.currentCustomer = null,
-            $scope.vm.CustomerList = [];
+                $scope.vm.CustomerList = [];
             $scope.vm.CustomerOrderHistory = [];
             $scope.currentOrder = {
                 orderDetailList:[]
@@ -576,6 +602,14 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 detail:null,//投诉内容
                 reserveTime:null,//预约时间
             };
+
+            //搜索条件
+            $scope.searchParam = {
+                customerID:null,
+                customerName:null,
+                phone:null,
+                address:null
+            };
             $scope.pagerCustomer.update($scope.qCustomer, 0, 1);
             $scope.pagerHistory.update($scope.qHistory, 0, 1);
         };
@@ -587,7 +621,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             }
         });
 
-        //查询当前用户欠款
+//查询当前用户欠款
 
         var retrieveCustomerCredit = function(){
             var queryParams = {
@@ -606,19 +640,19 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             })
         }
 
-        //监听来电事件
+//监听来电事件
         $scope.$on("Event_Callin", function(e, m) {
+            $scope.clearWindow();
             $scope.vm.callInPhone = m;
             //查询相关联的客户
-
             searchCallInCustomer($scope.vm.callInPhone);
         });
 
-        //监听呼出号码变化的事件
+//监听呼出号码变化的事件
         $scope.$on("Event_CallOutPhoneChanged", function(e, m) {
             $scope.vm.callOutPhone = m;
             //查询相关联的客户
-            if(m==""){
+            if((m=="")||(m==null)){
 
             }else{
                 searchCallInCustomer($scope.vm.callOutPhone);
@@ -627,18 +661,19 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         });
 
 
-        //查询呼入电话的曾经订气的客户
+//查询呼入电话的曾经订气的客户
         var searchCallInCustomer = function (callInPhone) {
             //清空表格
             $scope.vm.CustomerList = [];
             $scope.vm.currentCustomer = "";
             var queryParams = {
                 phone:callInPhone,
-                pageSize: $scope.pagerCustomer.pageSize
+                pageSize: $scope.pagerCustomer.pageSize,
+                pageNo: 1
             };
 
             CustomerManageService.retrieveCustomerCallin(queryParams).then(function (customers) {
-                $scope.pagerCustomer.update($scope.qCustomer, customers.total, queryParams.pageNo);
+                $scope.pagerCustomer.update($scope.qCustomer, customers.total, 1);
                 $scope.vm.CustomerList = [];
                 $scope.vm.currentCustomer = null;
                 for(var i=0; i<customers.items.length; i++){
@@ -648,8 +683,15 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
                 if($scope.vm.CustomerList.length>0){
                     $scope.vm.currentCustomer = $scope.vm.CustomerList[0];
-                    //刷新订单
-                    refleshOrder();
+                    $scope.showDetail($scope.vm.currentCustomer);
+                }else{
+                    //如果没有订气记录,按照来电号码搜寻客户资料
+                    var queryParams = {
+                        phone:$scope.vm.callInPhone,
+                        pageNo: $scope.pagerCustomer.getCurPageNo(),
+                        pageSize: $scope.pagerCustomer.pageSize
+                    };
+                    searchCustomerByParams(queryParams);
                 }
             });
 
