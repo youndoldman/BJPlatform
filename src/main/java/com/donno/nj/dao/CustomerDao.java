@@ -10,5 +10,7 @@ public interface CustomerDao extends BaseDao<Customer>
 
     void deleteByUserIdx(Integer id);
 
+    Customer findByUserPhone(String userPhone);
+
 
 }

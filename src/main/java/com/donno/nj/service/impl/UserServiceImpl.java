@@ -50,6 +50,9 @@ public class UserServiceImpl  implements UserService
         }
     }
 
+
+
+
     public void checkUserGroup(User user)
     {
         Group group;

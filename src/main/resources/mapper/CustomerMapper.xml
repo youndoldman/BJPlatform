@@ -142,6 +142,17 @@
         t_user.user_id = #{userId}
     </select>
 
+    <select id="findByUserPhone" resultMap="DetailResultMap">
+        SELECT <include refid="JoinSelectColumn"/>
+        FROM <include refid="JoinTableList"/>
+        WHERE
+        (<include refid="JoinWhereCondition"/>)
+        AND
+        t_customer.phone = #{userPhone}
+    </select>
+
+
+
 
     <sql id="getListCondition">
         WHERE

@@ -27,10 +27,8 @@ import static com.donno.nj.util.ParamMapBuilder.paginationParams;
 @RestController
 public class CustomerTypeController
 {
-
     @Autowired
     CustomerTypeService customerTypeService ;
-
 
     @RequestMapping(value = "/api/CustomerType", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取客户类型信息列表")
@@ -76,7 +74,6 @@ public class CustomerTypeController
         return responseEntity;
     }
 
-
     @OperationLog(desc = "修改用户类型信息")
     @RequestMapping(value = "/api/CustomerType", method = RequestMethod.PUT)
     public ResponseEntity update(@RequestParam(value = "code", defaultValue = "",required = true) String code,
@@ -90,7 +87,6 @@ public class CustomerTypeController
         }
         else
         {
-
             Optional<CustomerType> customerType = customerTypeService.findByCode(code);
             if (customerType.isPresent())
             {
@@ -105,8 +101,6 @@ public class CustomerTypeController
 
         return responseEntity;
     }
-
-
 
     @OperationLog(desc = "删除用户类型信息")
     @RequestMapping(value = "/api/CustomerType", method = RequestMethod.DELETE)
