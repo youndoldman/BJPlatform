@@ -556,15 +556,16 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
 
     public void checkPhone(String userPhone)
     {
-        if(userPhone == null || userPhone.trim().length() == 0)
-        {
-            throw new ServerSideBusinessException("请输入客户电话号码",HttpStatus.NOT_ACCEPTABLE);
-        }
-
-        if (customerDao.findByUserPhone(userPhone) != null)
-        {
-            throw new ServerSideBusinessException("电话号码"+userPhone+"已经存在",HttpStatus.CONFLICT);
-        }
+        //20180516,暂不使用唯一号码
+//        if(userPhone == null || userPhone.trim().length() == 0)
+//        {
+//            throw new ServerSideBusinessException("请输入客户电话号码",HttpStatus.NOT_ACCEPTABLE);
+//        }
+//
+//        if (customerDao.findByUserPhone(userPhone) != null)
+//        {
+//            throw new ServerSideBusinessException("电话号码"+userPhone+"已经存在",HttpStatus.CONFLICT);
+//        }
     }
 
 
