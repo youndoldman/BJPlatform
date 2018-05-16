@@ -202,6 +202,7 @@ public class OrderController
                                    @RequestParam(value = "dispatcherId", defaultValue = "") String dispatcherId,
                                    @RequestParam(value = "startTime", defaultValue = "") String startTime,
                                    @RequestParam(value = "endTime", defaultValue = "") String endTime,
+                                   @RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
@@ -285,6 +286,11 @@ public class OrderController
         if ( dispatcherId != null && dispatcherId.trim().length() > 0 )
         {
             params.putAll(ImmutableMap.of("dispatcherId", dispatcherId));
+        }
+
+        if (departmentCode.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("departmentCode", departmentCode));
         }
 
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
