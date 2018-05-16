@@ -9,9 +9,9 @@
 
     <div class="toolbar">
         <form role="form">
-            <div class="row">
-                <div class="col-md-11">
-                    <div class="col-md-8">
+            <div class="">
+                <div style="margin-left: -20px">
+                    <div class="col-md-7" >
                         <label class="input">订单状态：</label>
                         <label class="input"><select  ng-model="q.orderStatus" ng-options="orderStatus.value for orderStatus in vm.orderStatus" class="form-control" ng-selected="" ng-change="orderStatusSearchChange()"></select></label>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -23,17 +23,17 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <label class="input">支付状态：</label>
                         <label class="input"><select  ng-model="q.payStatus" ng-options="payStatus.value for payStatus in vm.payStatus" class="form-control" ng-selected="" ng-change="payStatusSearchChange()"></select></label>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <h1></h1>
                         <label class="input">订单编号：</label>
                         <label class="input"><input type="text"  class="form-control" ng-model="q.orderSn"></label>
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <label class="input">订单客户：</label>
                         <label class="input"><input type="text"  class="form-control" ng-model="q.userId"></label>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <label class="input">配送人员：</label>
+                        <label class="input">配送员：</label>
                         <label class="input"><input type="text"  class="form-control" ng-model="q.dispatcherId"></label>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <label class="input">时间：</label>
                         <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>
                         <label class="input">—</label>
@@ -41,10 +41,8 @@
                         <button title="删除时间" ng-click="deleteTimeRange()" type="button" class="btn btn-primary btn-outline btn-xs">
                             <i class="fa fa-trash-o"></i>
                         </button>
+                        <button  ng-click="search()" class="btn btn-md btn-primary pull-right"><i class="fa fa-search"></i> 搜索 </button>
                     </div>
-                </div>
-                <div class="col-md-1">
-                    <button  ng-click="search()" class="btn btn-md btn-primary pull-right"><i class="fa fa-search"></i> 搜索 </button>
                 </div>
             </div>
             <!--<div class="row" style="margin-top: 10px">-->
@@ -102,7 +100,6 @@
             <td class="message" title="电话：{{order.recvPhone}}">{{order.recvName}}</td>
 
             <td class="message" title="姓名：{{order.dispatcher.name}} 电话：{{order.dispatcher.mobilePhone}} 工号：{{order.dispatcher.jobNumber}}">{{order.dispatcher.userId}}</td>
-
             <td class="message">{{order.dispatcher.department.name}}</td>
             <td class="message">{{order.payStatus.name}}</td>
             <td class="message">{{order.orderAmount}}</td>
@@ -115,12 +112,12 @@
                 <!--<button title="修改" ng-click="modify(order)" type="button" class="btn btn-primary btn-outline btn-xs">-->
                 <!--<i class="fa fa-edit"></i>-->
                 <!--</button>-->
-                <button title="指派" ng-if="order.taskId" ng-click="assign(order)" type="button" class="btn btn-primary btn-outline btn-xs">
-                    <i class="">指派</i>
-                </button>
-                <button title="作废" ng-if="order.orderStatus!=3&&order.orderStatus!=4" ng-click="delete(order)" type="button" class="btn btn-primary btn-outline btn-xs">
-                    <i class="">作废</i>
-                </button>
+                <!--<button title="指派" ng-if="order.taskId" ng-click="assign(order)" type="button" class="btn btn-primary btn-outline btn-xs">-->
+                    <!--<i class="">指派</i>-->
+                <!--</button>-->
+                <!--<button title="作废" ng-if="order.orderStatus!=3&&order.orderStatus!=4" ng-click="delete(order)" type="button" class="btn btn-primary btn-outline btn-xs">-->
+                    <!--<i class="">作废</i>-->
+                <!--</button>-->
             </td>
         </tr>
         </tbody>

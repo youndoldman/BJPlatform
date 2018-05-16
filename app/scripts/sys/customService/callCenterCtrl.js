@@ -638,7 +638,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             }, function(value) {
                 udcModal.info({"title": "错误信息", "message": "查询当前用户欠款信息失败 "+value.message});
             })
-        }
+        };
+
 
 //监听来电事件
         $scope.$on("Event_Callin", function(e, m) {
@@ -648,6 +649,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             searchCallInCustomer($scope.vm.callInPhone);
         });
 
+
 //监听呼出号码变化的事件
         $scope.$on("Event_CallOutPhoneChanged", function(e, m) {
             $scope.vm.callOutPhone = m;
@@ -655,7 +657,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             if((m=="")||(m==null)){
 
             }else{
-                searchCallInCustomer($scope.vm.callOutPhone);
+                //searchCallInCustomer($scope.vm.callOutPhone);//以后有中继线路再放开
             }
 
         });

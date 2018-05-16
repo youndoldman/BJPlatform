@@ -188,36 +188,42 @@ commonModule.constant('NavItem', {
             icon: "fa-group"
         }, {
             index: 1,
+            name: "订单查询",
+            target: "_blank",
+            href: "./shopCenter.htm#/ShopManage/orderList",
+            icon: "fa-plane"
+        }, {
+            index: 2,
             name: "库存管理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/stockControl",
             icon: "fa-plane"
         }, {
-            index: 2,
+            index: 3,
             name: "报修处理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/Mend",
             icon: "fa-plane"
         }, {
-            index: 3,
+            index: 4,
             name: "安检处理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/Security",
             icon: "fa-plane"
         }, {
-            index: 4,
+            index: 5,
             name: "投诉处理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/Complaint",
             icon: "fa-plane"
         }, {
-            index: 5,
+            index: 6,
             name: "回款操作",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/MoneyReturn",
             icon: "fa-edit"
         }, {
-            index: 5,
+            index: 7,
             name: "钢检瓶",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/checkBottle",
@@ -350,7 +356,7 @@ commonModule.constant('NavItem', {
     //    }]
     //},
     'FinanceCenter': {
-        roles:[1],
+        roles:[1,5],
         name: "财务管理",
         href: "./financeCenter.htm",
         menuItems: [
