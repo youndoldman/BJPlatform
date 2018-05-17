@@ -120,7 +120,7 @@ public class WriteOffDetailServiceImpl implements WriteOffDetailService
         }
         else
         {
-            customerCredit.setAmount(customerCredit.getAmount() + writeOffDetail.getAmount());
+            customerCredit.setAmount(customerCredit.getAmount() - writeOffDetail.getAmount());
             customerCreditDao.update(customerCredit);
         }
 
