@@ -1,14 +1,8 @@
 package com.donno.nj.service.impl;
 
 import com.donno.nj.aspect.OperationLog;
-import com.donno.nj.dao.GoodsDao;
-import com.donno.nj.dao.GoodsTypeDao;
-import com.donno.nj.dao.OrderDao;
-import com.donno.nj.dao.OrderDetailDao;
-import com.donno.nj.domain.AdjustPriceHistory;
-import com.donno.nj.domain.Goods;
-import com.donno.nj.domain.GoodsType;
-import com.donno.nj.domain.Group;
+import com.donno.nj.dao.*;
+import com.donno.nj.domain.*;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.service.GoodsService;
 import com.google.common.base.Optional;
@@ -34,6 +28,9 @@ public class GoodsServiceImpl implements GoodsService
 
     @Autowired
     private OrderDetailDao orderDetailDao;
+
+    @Autowired
+    private AreaDao areaDao;
 
 
     @Override
@@ -70,6 +67,22 @@ public class GoodsServiceImpl implements GoodsService
             throw new ServerSideBusinessException("商品信息不全，请补充商品信息！", HttpStatus.NOT_ACCEPTABLE);
         }
 
+        /*区域信息*/
+        Area area = goods.getArea();
+        if (area == null || area.getProvince() == null || area.getCity() == null || area.getCounty() == null)
+        {
+            throw new ServerSideBusinessException("缺少商品区域信息！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        Area targetArea =  areaDao.findByArea(area.getProvince(),area.getCity(),area.getCounty());
+        if(targetArea == null)
+        {
+           areaDao.insert(area);
+        }
+        else
+        {
+            area.setId(targetArea.getId());
+        }
 
         /*商品类型信息校验*/
         if (goods.getGoodsType() != null || goods.getGoodsType().getCode() == null || goods.getGoodsType().getCode().trim().length() == 0)

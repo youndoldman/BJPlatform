@@ -18,6 +18,9 @@ public class Goods implements Serializable
     private Integer lifeExpectancy;
 
     private GoodsType goodsType;
+
+    private Area area;
+
     private String  note;
     private Date createTime;
     private Date updateTime;
@@ -73,6 +76,10 @@ public class Goods implements Serializable
     public GoodsType getGoodsType()
     {
         return goodsType;
+    }
+
+    public Area getArea() {
+        return area;
     }
 
     public Float getPrice()
@@ -149,6 +156,10 @@ public class Goods implements Serializable
     public void setGoodsType(GoodsType goodsType)
     {
         this.goodsType = goodsType;
+    }
+
+    public void setArea(Area area) {
+        this.area = area;
     }
 
     public void setNote(String note)

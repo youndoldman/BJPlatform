@@ -35,7 +35,11 @@ public class GoodsController
 
     @RequestMapping(value = "/api/Goods", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取商品列表")
-    public ResponseEntity retrieve(@RequestParam(value = "typeCode", defaultValue = "") String typeCode,
+    public ResponseEntity retrieve(
+                                   @RequestParam(value = "province", defaultValue = "") String province,
+                                   @RequestParam(value = "city", defaultValue = "") String city,
+                                   @RequestParam(value = "county", defaultValue = "") String county,
+                                   @RequestParam(value = "typeCode", defaultValue = "") String typeCode,
                                    @RequestParam(value = "typeName", defaultValue = "") String typeName,
                                    @RequestParam(value = "code", defaultValue = "") String code,
                                    @RequestParam(value = "name", defaultValue = "") String name,
@@ -45,6 +49,21 @@ public class GoodsController
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
     {
         Map params = new HashMap<String,String>();
+
+        if (province.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("province", province));
+        }
+
+        if (city.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("city", city));
+        }
+
+        if (county.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("county", county));
+        }
 
         if (typeCode.trim().length() > 0)
         {

@@ -19,6 +19,10 @@
 
         <association property="goodsType" column="type_idx" select="com.donno.nj.dao.GoodsTypeDao.findById">
         </association>
+
+        <association property="area" column="area_idx" select="com.donno.nj.dao.AreaDao.findById">
+        </association>
+
     </resultMap>
 
     <sql id="TblGoods">
@@ -26,12 +30,12 @@
     </sql>
 
     <sql id="InsertColumnList">
-       code, name ,type_idx,specifications,unit,weight,life_expectancy,price,status,note
+       code, name ,type_idx,area_idx,specifications,unit,weight,life_expectancy,price,status,note
     </sql>
 
     <insert id="insert">
         INSERT IGNORE INTO <include refid="TblGoods"/>(<include refid="InsertColumnList"/>)
-        VALUES( #{code}, #{name} , #{goodsType.id},#{specifications},#{unit},#{weight},#{lifeExpectancy},#{price}, #{status}, #{note})
+        VALUES( #{code}, #{name} , #{goodsType.id},#{area.id},#{specifications},#{unit},#{weight},#{lifeExpectancy},#{price}, #{status}, #{note})
     </insert>
 
     <delete id="deleteByIdx" parameterType="java.lang.Integer">
@@ -75,32 +79,36 @@
         id =  #{id}
     </select>
 
+    <sql id="getListCondition">
+        <where>
+            <if test="province != null">
+                area_idx in (select id from t_area where province = #{province}
+                <if test="city != null">and city = #{city}
+                    <if test="county != null">
+                        and county = #{county}
+                    </if>
+                </if>
+                )
+            </if>
+
+            <if test="code != null">AND  code = #{code}</if>
+            <if test="name != name">
+                AND  name like CONCAT(CONCAT('%', #{name}), '%')
+            </if>
+            <if test="specifications != null">AND  specifications = #{specifications}</if>
+            <if test="weight != null">AND  weight = #{weight}</if>
+            <if test="life_expectancy != null">AND  life_expectancy = #{life_expectancy}</if>
+            <if test="price != null">AND  price = #{price}</if>
+            <if test="status != null">AND  status = #{status}</if>
+            <if test="typeCode != null">AND  type_idx = ( select id from t_goods_type where code = #{typeCode})</if>
+            <if test="typeName != null">AND  type_idx = ( select id from t_goods_type where name like CONCAT(CONCAT('%', #{typeName}), '%') )</if>
+        </where>
+    </sql>
 
     <select id="getList" resultMap="DetailResultMap">
     SELECT *
     FROM <include refid="TblGoods"/>
-    WHERE
-        id > 0
-        <if test="code != null">AND  code = #{code}</if>
-
-        <if test="name != name">
-            AND  name like CONCAT(CONCAT('%', #{name}), '%')
-        </if>
-
-        <if test="specifications != null">AND  specifications = #{specifications}</if>
-
-        <if test="weight != null">AND  weight = #{weight}</if>
-
-        <if test="life_expectancy != null">AND  life_expectancy = #{life_expectancy}</if>
-
-        <if test="price != null">AND  price = #{price}</if>
-
-        <if test="status != null">AND  status = #{status}</if>
-
-        <if test="typeCode != null">AND  type_idx = ( select id from t_goods_type where code = #{typeCode})</if>
-
-        <if test="typeName != null">AND  type_idx = ( select id from t_goods_type where name like CONCAT(CONCAT('%', #{typeName}), '%') )</if>
-
+        <include refid="getListCondition"/>
         <if test="orderBy != null">
             <if test="orderBy != ''">
                 ORDER BY   ${orderBy}
@@ -118,26 +126,7 @@
     <select id="count" resultType="Integer">
         SELECT COUNT(*)
         FROM <include refid="TblGoods"/>
-        WHERE
-        id > 0
-        <if test="code != null">AND  code = #{code}</if>
-
-        <if test="name != name">
-            AND  name = like CONCAT(CONCAT('%', #{name}), '%')
-        </if>
-
-        <if test="specifications != null">AND  specifications = #{specifications}</if>
-
-        <if test="weight != null">AND  weight = #{weight}</if>
-
-        <if test="life_expectancy != null">AND  life_expectancy = #{life_expectancy}</if>
-
-        <if test="price != null">AND  price = #{price}</if>
-
-        <if test="status != null">AND  status = #{status}</if>
-
-        <if test="typeCode != null">AND  type_idx = ( select id from t_goods_type where code = #{typeCode})</if>
-
+        <include refid="getListCondition"/>
     </select>
 
     <select id="getAdjustPriceHistory" resultType="com.donno.nj.domain.AdjustPriceHistory">
