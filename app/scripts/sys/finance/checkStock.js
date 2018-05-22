@@ -117,6 +117,13 @@ financeApp.controller('checkStockCtrl', ['$scope', '$rootScope', '$filter', '$lo
 
         $scope.search = function () {
             $scope.pager.setCurPageNo(1);
+            for(var i = 0; i < $scope.data.gasCylinderSpecList.length; i++) {
+                $scope.data.gasCylinderSpecList[i].currentKucun = null;
+                $scope.data.gasCylinderSpecList[i].todayStockIn = null;
+                $scope.data.gasCylinderSpecList[i].todayStockOut = null;
+                $scope.data.gasCylinderSpecList[i].monthlyStockIn = null;
+
+            }
             searchData();
         };
 

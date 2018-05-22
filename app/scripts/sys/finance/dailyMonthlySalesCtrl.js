@@ -126,11 +126,21 @@ financeApp.controller('dailyMonthlySalesCtrl', ['$scope', '$rootScope', '$filter
         var historyQ = $scope.pager.getQ();
 
         var gotoPage = function (pageNo) {
-            $scope.pager.setCurPageNo(pageNo);
+            $scope.pager.setCurPageNo(1);
             //searchData();
         };
 
         $scope.search = function () {
+            $scope.pager.setCurPageNo(1);
+            for(var i = 0; i < $scope.data.goodsList.length; i++) {
+                for(var j = 0; j < $scope.data.goodsList[i].detail.length; j++) {
+                    $scope.data.goodsList[i].detail[j].salesByCustomerTypeDailyZhuzhai= null;
+                    $scope.data.goodsList[i].detail[j].salesByCustomerTypeDailyCanyin= null;
+                    $scope.data.goodsList[i].detail[j].salesByCustomerTypeMonthlyZhuzhai= null;
+                    $scope.data.goodsList[i].detail[j].salesByCustomerTypeMonthlyCanyin= null;
+
+                }
+            }
             searchData();
         };
 
