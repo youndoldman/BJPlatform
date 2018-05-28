@@ -356,7 +356,7 @@ commonModule.constant('NavItem', {
     //    }]
     //},
     'FinanceCenter': {
-        roles:[1,5],
+        roles:[1,5,8],
         name: "财务管理",
         href: "./financeCenter.htm",
         menuItems: [

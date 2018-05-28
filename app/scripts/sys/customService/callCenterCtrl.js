@@ -120,7 +120,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             CustomerOrderHistory: [],
             CustomerAutoReportList:[ //不间断供气客户
             ],
-            currentCustomerCredit:null//当前用户欠款
+            currentCustomerCredit:null,//当前用户欠款
+            orderStatusDisplay:["待派送","派送中","待核单","已完成","已作废"]
         };
 
         //当前订单信息
@@ -221,6 +222,10 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         $scope.createOrder = function () {
             if($scope.vm.currentCustomer==null){
                 udcModal.info({"title": "错误提示", "message": "请选择客户！"});
+                return;
+            }
+            if($scope.vm.callInPhone==null){
+                udcModal.info({"title": "错误提示", "message": "无呼入号码！"});
                 return;
             }
             $scope.currentOrder.callInPhone = $scope.vm.callInPhone;

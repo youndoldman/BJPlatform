@@ -34,6 +34,7 @@ financeApp.controller('DepartmentSelectModalCtrl', ['$scope', 'close', 'FinanceS
         }
         return data;
     };
+
     var retrieveRootDepartment = function () {
         FinanceService.retrieveDepartmentLower("root").then(function (rootDepartment) {
             $scope.vm.rootDepartment = rootDepartment.items[0];
