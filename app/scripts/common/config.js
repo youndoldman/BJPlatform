@@ -63,6 +63,15 @@ commonModule.constant('URI', {
         'stockInOut':'http://47.106.71.160/api/Report/StockInOut',//查询出入库数量
         'salesCash':'http://47.106.71.160/api/Report/SaleCash',//销售现金报表
 
+        'mendType': 'http://47.106.71.160/api/MendTypes',//报修类型接口
+        'mend': 'http://47.106.71.160/api/Mend',//报修单接口
+        'securityType': 'http://47.106.71.160/api/SecurityTypes',//安检类型接口
+        'security': 'http://47.106.71.160/api/Security',//安检单接口
+        'complaintType': 'http://47.106.71.160/api/ComplaintTypes',//投诉类型接口
+        'complaint': 'http://47.106.71.160/api/Complaint',//投诉单接口
+
+        'customerCredit': 'http://47.106.71.160/api/CustomerCredit',//欠款
+
         'writeOff':'http://47.106.71.160/api/WriteOff',//回款
         'writeOffDetail':'http://47.106.71.160/api/WriteOffDetail',//回款明细信息查询
         'depositDetail':'http://47.106.71.160/api/DepositDetail',//增加存银行款信息记录

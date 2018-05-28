@@ -68,6 +68,7 @@ shopManageApp.controller('MendCtrl', ['$scope', '$rootScope', '$filter', '$locat
             mendSn:null,
             processStatus:{}
 
+
         };
 
         $scope.search = function () {
@@ -105,6 +106,24 @@ shopManageApp.controller('MendCtrl', ['$scope', '$rootScope', '$filter', '$locat
                 }
             })
         };
+
+        //打印报修单
+        $scope.printMend = function (mend) {
+            udcModal.show({
+                templateUrl: "./shopManage/mendBill.html",
+                controller: "MendBillCtrl",
+                inputs: {
+                    title: '打印报修单',
+                    initVal: mend
+                }
+            }).then(function (result) {
+                if (result) {
+                    searchMend();
+                }
+            })
+        };
+
+
 
         var searchMend = function () {
 
