@@ -127,6 +127,35 @@ financeApp.controller('checkBottleCtrl', ['$scope', '$rootScope', '$filter', '$l
 
         $scope.search = function () {
             $scope.pager.setCurPageNo(1);
+            for(var i = 0; i < $scope.data.gasCylinderSpecList.length; i++) {
+                $scope.data.gasCylinderSpecList[i].currentKucun = null;
+                $scope.data.gasCylinderSpecList[i].todayStockIn = null;
+                $scope.data.gasCylinderSpecList[i].todayStockOut = null;
+
+                $scope.data.gasCylinderSpecList[i].todayLingyong = null;
+                $scope.data.gasCylinderSpecList[i].thisMonthLingyong = null;
+                $scope.data.gasCylinderSpecList[i].todaySongjian = null;
+                $scope.data.gasCylinderSpecList[i].thisMonthSongjian = null;
+                $scope.data.gasCylinderSpecList[i].todayTuiweixiuping = null;
+                $scope.data.gasCylinderSpecList[i].thisMonthTuiweixiuping = null;
+                $scope.data.gasCylinderSpecList[i].todayShouqu = null;
+                $scope.data.gasCylinderSpecList[i].thisMonthShouqu = null;
+                $scope.data.gasCylinderSpecList[i].todayTuibaofeiping = null;
+                $scope.data.gasCylinderSpecList[i].thisMonthTuibaofeiping = null;
+                $scope.data.gasCylinderSpecList[i].todayTuiyajinping = null;
+
+                $scope.data.gasCylinderSpecList[i].thisMonthTuiyajinping = null;
+                $scope.data.gasCylinderSpecList[i].todayYaping = null;
+                $scope.data.gasCylinderSpecList[i].thisMonthYaping = null;
+                $scope.data.gasCylinderSpecList[i].bottleCheckFee = null;
+                $scope.data.gasCylinderSpecList[i].bottleMortgageFee = null;
+
+
+
+
+
+
+            }
             searchData();
         };
 
@@ -162,7 +191,7 @@ financeApp.controller('checkBottleCtrl', ['$scope', '$rootScope', '$filter', '$l
                     startTime:$scope.dailyData.startTime,
                     endTime:$scope.dailyData.endTime,
                 };
-                //console.info("查询今日库存");
+               // console.info("查询今日库存");
                 //console.info(params);
                 FinanceService.searchStock(params).then(function (stocks) {
                     $scope.q.sumCurrentKucun = null;
@@ -179,7 +208,10 @@ financeApp.controller('checkBottleCtrl', ['$scope', '$rootScope', '$filter', '$l
 
                                 }
                             }
+
                         }
+                        //console.info( $scope.q.sumCurrentKucun);
+                        //console.info($scope.data.gasCylinderSpecList);
                     }
                 })
 
@@ -192,7 +224,7 @@ financeApp.controller('checkBottleCtrl', ['$scope', '$rootScope', '$filter', '$l
                     startTime:$scope.dailyData.startTime,
                     endTime:$scope.dailyData.endTime,
                 };
-               // console.info("查询今日调入数量");
+
 
                 FinanceService.searchStockInOut(params1).then(function (stocksIn) {
                     $scope.q.sumTodayIn = null;
@@ -209,8 +241,11 @@ financeApp.controller('checkBottleCtrl', ['$scope', '$rootScope', '$filter', '$l
 
                                     $scope.q.sumTodayIn +=  $scope.data.gasCylinderSpecList[i].todayStockIn.amount;
                                 }
+
                             }
                         }
+                        //console.info("查询今日调入数量");
+                        //console.info($scope.q.sumTodayIn);
                         //console.info($scope.data.gasCylinderSpecList);
                     }
                 })
@@ -219,11 +254,10 @@ financeApp.controller('checkBottleCtrl', ['$scope', '$rootScope', '$filter', '$l
                 var params2 = {
                     departmentCode:$scope.q.liableDepartmentCode,
                     loadStatus:1,
-                    stockType:1,//出库为0
+                    stockType:1,//出库为1
                     startTime:$scope.dailyData.startTime,
                     endTime:$scope.dailyData.endTime,
                 };
-                //console.info("查询今日出库数量");
 
                 FinanceService.searchStockInOut(params2).then(function (stocksOut) {
                     $scope.q.sumTodayOut = null;
@@ -241,8 +275,11 @@ financeApp.controller('checkBottleCtrl', ['$scope', '$rootScope', '$filter', '$l
 
                                 }
                             }
+
                         }
-                       // console.info($scope.data.gasCylinderSpecList);
+                       // console.info("查询今日出库数量");
+                       // console.info($scope.q.sumTodayOut);
+                       //console.info($scope.data.gasCylinderSpecList);
                     }
                 })
 
@@ -284,7 +321,7 @@ financeApp.controller('checkBottleCtrl', ['$scope', '$rootScope', '$filter', '$l
                     startTime:$scope.dailyData.startTime,
                     endTime:$scope.dailyData.endTime,
                 };
-                //console.info("查本日领用数量");
+
                 //console.info(p0);
                 FinanceService.retrieveReportGasCyrDyn(p0).then(function (reportGasCyrDyn) {
                    $scope.q.sumTodayLingyong= null;
@@ -302,8 +339,11 @@ financeApp.controller('checkBottleCtrl', ['$scope', '$rootScope', '$filter', '$l
                                 }
                             }
                         }
+                        //console.info("查本日领用数量");
+                        //console.info($scope.q.sumTodayLingyong)
                         //console.info($scope.data.gasCylinderSpecList);
                     }
+
                 })
 
                 //查本月累计领用数量
@@ -331,6 +371,7 @@ financeApp.controller('checkBottleCtrl', ['$scope', '$rootScope', '$filter', '$l
                                 }
                             }
                         }
+
                         //console.info($scope.data.gasCylinderSpecList);
                     }
                 })

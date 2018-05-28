@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+    <style type="text/css">
+        *{padding:0;margin: 0;}
+        h1{font-size: 20px;}
+        h3{font-size: 16px;}
+        .left{
+            float: left;
+        }
+        .right{
+            float:right;
+        }
+        .clearfix{
+            clear: both;
+        }
+        ul{list-style: none;}
+        li{list-style: none;display: inline}
+        .print_container{
+            padding: 20px;
+            width: 420px;
+        }
+        .section1{
+        }
+        .section2 label{
+            display: block;
+        }
+        .section3 label{
+            display: block;
+        }
+        .section4{
+        }
+        .section4 .total label{
+            display: block;
+        }
+        .section4 .other_fee{
+            border-bottom: 1px solid #DADADA;
+        }
+        .section5 label{
+            display: block;
+        }
+
+        tr td{
+            border: 1px solid #DADADA;
+        }
+        @media print {
+            ul{list-style: none;}
+            li{list-style: none;display: inline}
+            .modal-body {height: auto;}
+            .noprint {display: none }
+        }
+    </style>
+
+    <!--<script language=javascript>-->
+        <!--function doPrint() {-->
+            <!--bdhtml = window.document.body.innerHTML;-->
+            <!--sprnstr = "&lt;!&ndash;startprint&ndash;&gt;"; //开始打印标识字符串有17个字符-->
+            <!--eprnstr = "&lt;!&ndash;endprint&ndash;&gt;"; //结束打印标识字符串-->
+            <!--prnhtml = bdhtml.substr(bdhtml.indexOf(sprnstr) + 17); //从开始打印标识之后的内容-->
+            <!--prnhtml = prnhtml.substring(0, prnhtml.indexOf(eprnstr)); //截取开始标识和结束标识之间的内容-->
+            <!--window.document.body.innerHTML = prnhtml; //把需要打印的指定内容赋给body.innerHTML-->
+            <!--window.print(); //调用浏览器的打印功能打印指定区域-->
+            <!--window.document.body.innerHTML = bdhtml;-->
+        <!--}//重新给页面内容赋值；-->
+    <!--</script>-->
+
+</head>
+
+
+<div class="modal" tabindex="-1" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" style="width: 420px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">&nbsp;报修单&nbsp;</h4>
+            </div>
+
+            <div id="div_print" class="modal-body" >
+
+                    <div  class="print_container">
+                        <div class="section3">
+                            <ul>
+                                <li>订单编号:</li>
+                                <li>{{vm.mend.mendSn}}</li>
+                                <li>报修时间:</li>
+                                <li>{{vm.mend.createTime}}</li>
+                            </ul>
+                            <!--<label>订单编号:</label>-->
+                            <!--<input type="text" class="form-control input-sm" ng-model="vm.mend.mendSn">-->
+                        </div>
+                        <div class="section4">
+                            <div style="border: 1px solid #DADADA;">
+                                <table style="width: 100%;">
+                                    <tbody>
+                                    <tr>
+                                        <td width="30%">
+                                            <li>客户:</li>
+                                            <li>{{vm.mend.recvName}}</li>
+                                        </td>
+
+                                        <td width="40%">
+                                            <li>电话:</li>
+                                            <li>{{vm.mend.recvPhone}}</li>
+                                        </td>
+
+                                        <td width="30%">
+                                            <li>处理人:</li>
+                                            <li>{{vm.mend.dealedUser}}</li>
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td colspan="3">
+                                            <li>客户地址:</li>
+                                            <li>{{vm.mend.recvAddr.province}}{{vm.mend.recvAddr.city}}{{vm.mend.recvAddr.county}}{{vm.mend.recvAddr.detail}}</li>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>{{vm.mend.mendType.name}}</td>
+                                        <td colspan="2">{{vm.mend.detail}}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="3">处理结果:</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="3">处理方法:</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">维修人签名:</td>
+                                        <td>客户签名:</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="3">
+                                            <li>请检查处理人的工作:</li>
+                                            <li>
+                                                <input class="input-md" type="checkbox">
+                                            </li>
+                                            <li>穿戴工作服、证</li>
+                                            <li>
+                                                <input class="input-md" type="checkbox">
+                                            </li>
+                                            <li>核对钢瓶号</li>
+                                            <li>
+                                            <input class="input-md" type="checkbox">
+                                            </li>
+                                            <li>已关闭钢瓶角阀</li>
+                                            <li>
+                                                <input class="input-md" type="checkbox">
+                                            </li>
+                                            <li>检漏、试火</li>
+                                            <li>&nbsp</li>
+                                            <li>完成时间:</li>
+                                            <li>
+                                                <input class="input-md" style="border: none;border-bottom:1px solid;">
+                                            </li>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td >
+                                            <li>开单人:</li>
+                                            <li>{{vm.curUser.userId}}</li>
+                                        </td>
+                                        <td colspan="2">
+                                            <li>门店:</li>
+                                            <li>{{vm.curUser.department.name}}</li>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">备注：尊敬的用户，请您注意用气安全！
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="submit" ng-click="doPrint()" class="btn  btn-primary "><i class="fa fa-print"></i>打印</button>
+                <button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--<body   class="modal-body">-->
+<!--<div id="div_print">-->
+    <!--<div class="print_container">-->
+        <!--<h1>给顾客专用</h1>-->
+        <!--<span>**************************</span>-->
+        <!--<div class="section1">-->
+            <!--<h3>百度外卖</h3>-->
+            <!--<h3>在线支付预约</h3>-->
+        <!--</div>-->
+        <!--<span>**************************</span>-->
+        <!--<div class="section2">-->
+            <!--<label>期望送达时间：5678</label>-->
+            <!--<label>订单备注：1111</label>-->
+        <!--</div>-->
+        <!--<span>**************************</span>-->
+        <!--<div class="section3">-->
+            <!--<label>订单编号：567890</label>-->
+            <!--<label>下单时间：1111</label>-->
+        <!--</div>-->
+        <!--<span>**************************</span>-->
+        <!--<div class="section4">-->
+            <!--<div style="border-bottom: 1px solid #DADADA;">-->
+                <!--&lt;!&ndash;<ul>-->
+                    <!--<div>菜单名称     数量    金额</div>-->
+                    <!--<li>米饭米饭 米饭 米饭 米饭 米饭 米饭       2    28元</li>-->
+                    <!--<li>米饭      2    28元</li>-->
+                <!--</ul>&ndash;&gt;-->
+                <!--<table style="width: 100%;">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<td width="60%">菜单名称</td>-->
+                        <!--<td width="20%">数量</td>-->
+                        <!--<td width="20%">金额</td>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                        <!--<td>米饭</td>-->
+                        <!--<td>2</td>-->
+                        <!--<td>28.00</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>米饭</td>-->
+                        <!--<td>2</td>-->
+                        <!--<td>28.00</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>米饭</td>-->
+                        <!--<td>2</td>-->
+                        <!--<td>28.00</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            <!--</div>-->
+            <!--<div class="other_fee">-->
+                <!--<div class="canh">-->
+                    <!--<label class="left">餐盒费</label>-->
+                    <!--<label class="right">0</label>-->
+                    <!--<div class="clearfix"></div>-->
+                <!--</div>-->
+                <!--<div class="peis">-->
+                    <!--<label class="left">配送费</label>-->
+                    <!--<label class="right">0</label>-->
+                    <!--<div class="clearfix"></div>-->
+                <!--</div>-->
+                <!--<div class="manj">-->
+                    <!--<label class="left">立减优惠</label>-->
+                    <!--<label class="right">0</label>-->
+                    <!--<div class="clearfix"></div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="total">-->
+                <!--<label class="left">总计</label>-->
+                <!--<label class="right">39</label>-->
+                <!--<div class="clearfix"></div>-->
+            <!--</div>-->
+            <!--<div style="text-align: right;">-->
+                <!--<label>顾客已付款</label>-->
+            <!--</div>-->
+            <!--<span>**************************</span>-->
+        <!--</div>-->
+        <!--<div class="section5">-->
+            <!--<label>姓名：小花</label>-->
+            <!--<label>地址：北京</label>-->
+            <!--<label>电话：67890</label>-->
+        <!--</div>-->
+        <!--<span>**************************</span>-->
+    <!--</div>-->
+<!--</div>-->
+<!--</body>-->
