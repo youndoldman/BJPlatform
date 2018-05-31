@@ -10,6 +10,7 @@ import java.util.Map;
 public interface DepartmentDao extends BaseDao<Department>
 {
     Department findByCode(String code);
+    List<Department> findSubDep(Integer id);
 
     List<Department> getSubDepList(Map params);
     Integer countSubDep(Map m);

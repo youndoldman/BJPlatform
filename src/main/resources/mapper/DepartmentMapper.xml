@@ -58,7 +58,6 @@
         <where>
             parent_idx = #{id}
         </where>
-
     </select>
 
 

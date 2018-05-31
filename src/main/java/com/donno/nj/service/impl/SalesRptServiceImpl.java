@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
@@ -35,7 +32,7 @@ public class SalesRptServiceImpl implements SalesRptService
     @Override
     public List<SalesRpt> retrieveSaleRptByPayType(Map params)
     {
-        List<SalesRpt> salesRptList = new ArrayList<SalesRpt>();;
+        List<SalesRpt> salesRptList = new ArrayList<SalesRpt>();
         if (params.containsKey("departmentCode"))
         {
             recurseCalSaleRptByPayType(params,salesRptList);
@@ -56,8 +53,8 @@ public class SalesRptServiceImpl implements SalesRptService
         {
             throw new ServerSideBusinessException("部门信息不存在！", HttpStatus.NOT_ACCEPTABLE);
         }
-
-        if (department.getLstSubDepartment().size() > 0 )
+        department.setLstSubDepartment(departmentDao.findSubDep(department.getId()));
+        if ( department.getLstSubDepartment() != null && department.getLstSubDepartment().size() > 0 )
         {
             for (Department childDep : department.getLstSubDepartment())
             {
@@ -66,7 +63,7 @@ public class SalesRptServiceImpl implements SalesRptService
                 subParam.remove("departmentCode");
                 subParam.putAll(ImmutableMap.of("departmentCode", childDep.getCode()));
 
-                List<SalesRpt> subSaleRpt  = null;
+                List<SalesRpt> subSaleRpt  = new ArrayList<SalesRpt>();
                 recurseCalSaleRptByPayType(subParam,subSaleRpt);
 
                 mergeSaleRpt(subSaleRpt,salesRptList);
@@ -82,7 +79,9 @@ public class SalesRptServiceImpl implements SalesRptService
     {
         if (params.containsKey("payType"))
         {
-            salesRptList = salesByPayTypeRptDao.getSaleRptByPayType(params);
+            List<SalesRpt> getSaleRpt = salesByPayTypeRptDao.getSaleRptByPayType(params);
+
+            salesRptList.addAll(getSaleRpt);
         }
         else //无paytype 计算 和值
         {
