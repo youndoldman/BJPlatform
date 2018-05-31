@@ -44,6 +44,11 @@ public class UserServiceImpl  implements UserService
     @OperationLog(desc = "检查目标用户是否存在")
     public void checkUserExist(String userId)
     {
+        if (userId.trim().length() == 0)
+        {
+            throw new ServerSideBusinessException("请填写用户编号！",HttpStatus.NOT_ACCEPTABLE);
+        }
+
         if (userDao.findByUserId(userId) != null)
         {
             throw new ServerSideBusinessException("用户"+userId+"已经存在",HttpStatus.CONFLICT);

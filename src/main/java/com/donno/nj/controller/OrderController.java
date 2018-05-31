@@ -192,6 +192,7 @@ public class OrderController
                                    @RequestParam(value = "orderStatus", required = false) Integer orderStatus,
                                    @RequestParam(value = "payStatus", required = false) PayStatus payStatus,
                                    @RequestParam(value = "payType", required = false) PayType payType,
+                                   @RequestParam(value = "invoiceStatus", required = false) Integer invoiceStatus,
                                    @RequestParam(value = "accessType", required = false) AccessType accessType,
                                    @RequestParam(value = "addrProvince", defaultValue = "") String addrProvince,
                                    @RequestParam(value = "addrCity", defaultValue = "") String addrCity,
@@ -226,6 +227,11 @@ public class OrderController
         if (orderStatus != null)
         {
             params.putAll(ImmutableMap.of("orderStatus", orderStatus));
+        }
+
+        if (invoiceStatus != null)
+        {
+            params.putAll(ImmutableMap.of("invoiceStatus", invoiceStatus));
         }
 
         if (payStatus != null)

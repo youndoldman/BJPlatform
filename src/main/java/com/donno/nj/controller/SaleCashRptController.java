@@ -177,21 +177,6 @@ public class SaleCashRptController
         }
         saleCashRpt.setMontlyCreditWriteOff(monthlyCreditWriteOff);
 
-        /*气票销售现金款*/
-//        Double ticketCash = 0.0;
-//
-//        Map ticketSaleCashParams = new HashMap<String,String>();
-//        ticketSaleCashParams.putAll(params);
-////        ticketSaleCashParams.putAll(ImmutableMap.of("payType", PayType.PTCash.getIndex()));
-//        ticketList.clear();
-//        ticketList = ticketService.retrieve(ticketSaleCashParams);
-//        for (Ticket ticket :ticketList )
-//        {
-//            ticketCash = ticketCash + ticket.getPrice();
-//        }
-//        saleCashRpt.setTicketSaleCash(ticketCash);
-
-
         /*今日结存现金=现金销售+回款+气票现金款-银行存款  */
         Double surplusCash = 0.0;
         surplusCash = saleCashRpt.getSaleCash() +  saleCashRpt.getCreditWriteOff() +

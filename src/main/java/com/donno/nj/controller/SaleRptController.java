@@ -2,8 +2,10 @@ package com.donno.nj.controller;
 
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
+import com.donno.nj.dao.UserDao;
 import com.donno.nj.domain.PayType;
 import com.donno.nj.domain.SalesRpt;
+import com.donno.nj.domain.User;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.SalesRptService;
@@ -27,22 +29,39 @@ public class SaleRptController
     @Autowired
     private SalesRptService salesRptService;
 
+
+    @Autowired
+    private UserDao userDao;
+
     @RequestMapping(value = "/api/Report/Sales/ByPayType", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取门店销售报表（按支付方式）")
     public ResponseEntity retrieveByPayType(@RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
-                                                @RequestParam(value = "startTime", defaultValue = "") String startTime,
-                                                @RequestParam(value = "endTime", defaultValue = "") String endTime,
-                                                @RequestParam(value = "payStatus", required = false) Integer payStatus,
-                                                @RequestParam(value = "payType", required = false) Integer payType,
-                                                @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
-                                                @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
-                                                @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
+                                            @RequestParam(value = "startTime", defaultValue = "") String startTime,
+                                            @RequestParam(value = "endTime", defaultValue = "") String endTime,
+                                            @RequestParam(value = "payStatus", required = false) Integer payStatus,
+                                            @RequestParam(value = "payType", required = false) Integer payType,
+                                            @RequestParam(value = "dispatchUserId", defaultValue = "") String dispatchUserId,
+                                            @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
+                                            @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
+                                            @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
     {
         Map params = new HashMap<String,String>();
 
         if (departmentCode.trim().length() > 0)
         {
             params.putAll(ImmutableMap.of("departmentCode", departmentCode));
+        }
+
+        if (dispatchUserId.trim().length() > 0)
+        {
+            User user =userDao.findByUserId(dispatchUserId);
+            if (user == null)
+            {
+                throw new ServerSideBusinessException("配送工信息不存在！", HttpStatus.NOT_ACCEPTABLE);
+            }
+
+            Integer dispatchUserIdx = user.getId();
+            params.putAll(ImmutableMap.of("dispatchUserIdx", dispatchUserIdx));
         }
 
 

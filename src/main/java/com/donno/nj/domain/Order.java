@@ -20,6 +20,8 @@ public class Order implements Serializable
 
     private Integer orderStatus;//订单状态
     private PayStatus payStatus;
+
+    private InvoiceStatus invoiceStatus; //是否已开发票
     private Boolean urgent;//是否加急
 
     private Integer timeSpan;//订单创建到当前时间的时间差，分钟为单位,前台用于 警示 提示
@@ -100,6 +102,10 @@ public class Order implements Serializable
     public PayStatus getPayStatus()
     {
         return payStatus;
+    }
+
+    public InvoiceStatus getInvoiceStatus() {
+        return invoiceStatus;
     }
 
     public Boolean getUrgent()
@@ -202,6 +208,10 @@ public class Order implements Serializable
     public void setPayStatus(PayStatus payStatus)
     {
         this.payStatus = payStatus;
+    }
+
+    public void setInvoiceStatus(InvoiceStatus invoiceStatus) {
+        this.invoiceStatus = invoiceStatus;
     }
 
     public void setUrgent(Boolean urgent)

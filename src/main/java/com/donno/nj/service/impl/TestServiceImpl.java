@@ -161,7 +161,7 @@ public class TestServiceImpl implements TestService
 
     void  AddCustomer()
     {
-        Integer targetCount = 500000;
+        Integer targetCount = 500;
         Map params = new HashMap<String,String>();
 
         List<SettlementType> settlementTypes = settlementTypeDao.getList(params);
