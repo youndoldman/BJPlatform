@@ -1,13 +1,17 @@
 package com.donno.nj.service.impl;
 
+import com.donno.nj.dao.DepartmentDao;
 import com.donno.nj.dao.SalesByCstTypeRptDao;
 import com.donno.nj.dao.SalesByPayTypeRptDao;
+import com.donno.nj.domain.Department;
 import com.donno.nj.domain.PayType;
 import com.donno.nj.domain.SalesRpt;
 
+import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.service.SalesRptService;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,18 +29,63 @@ public class SalesRptServiceImpl implements SalesRptService
     @Autowired
     private SalesByCstTypeRptDao salesByCstTypeRptDao;
 
+    @Autowired
+    private DepartmentDao departmentDao;
+
     @Override
     public List<SalesRpt> retrieveSaleRptByPayType(Map params)
     {
-        List<SalesRpt> salesRptList = null;
+        List<SalesRpt> salesRptList = new ArrayList<SalesRpt>();;
+        if (params.containsKey("departmentCode"))
+        {
+            recurseCalSaleRptByPayType(params,salesRptList);
+        }
+        else
+        {
+            CalSaleRptByPayType(params,salesRptList);
+        }
+
+        return salesRptList;
+    }
+
+    public void recurseCalSaleRptByPayType(Map params, List<SalesRpt> salesRptList)
+    {
+        String departmentCode = params.get("departmentCode").toString();
+        Department department = departmentDao.findByCode(departmentCode);
+        if(department == null)
+        {
+            throw new ServerSideBusinessException("部门信息不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (department.getLstSubDepartment().size() > 0 )
+        {
+            for (Department childDep : department.getLstSubDepartment())
+            {
+                Map subParam = new HashMap<String,String>();
+                subParam.putAll(params);
+                subParam.remove("departmentCode");
+                subParam.putAll(ImmutableMap.of("departmentCode", childDep.getCode()));
+
+                List<SalesRpt> subSaleRpt  = null;
+                recurseCalSaleRptByPayType(subParam,subSaleRpt);
+
+                mergeSaleRpt(subSaleRpt,salesRptList);
+            }
+        }
+        else
+        {
+            CalSaleRptByPayType(params,salesRptList);
+        }
+    }
+
+    public void CalSaleRptByPayType(Map params, List<SalesRpt> salesRptList)
+    {
         if (params.containsKey("payType"))
         {
             salesRptList = salesByPayTypeRptDao.getSaleRptByPayType(params);
         }
         else //无paytype 计算 和值
         {
-            salesRptList = new ArrayList<SalesRpt>();
-
             /*电子*/
             Map rptParams = new HashMap<String,String>();
             rptParams.putAll(params);
@@ -80,9 +129,8 @@ public class SalesRptServiceImpl implements SalesRptService
 
             mergeSaleRpt(salesCouponRptList,salesRptList);
         }
-
-        return salesRptList;
     }
+
 
     @Override
     public Integer countSaleRptByPayType(Map params) {

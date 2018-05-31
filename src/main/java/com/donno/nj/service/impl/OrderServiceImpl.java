@@ -586,9 +586,15 @@ public class OrderServiceImpl implements OrderService
 
             variables.put(ServerConstantValue.ACT_FW_STG_1_CANDI_USERS,candUser);
         }
+        else
+        {
+            throw new ServerSideBusinessException("系统暂无配送人员，无法创建订单！", HttpStatus.NOT_ACCEPTABLE);
+        }
 
-        workFlowService.createWorkFlow(WorkFlowTypes.GAS_ORDER_FLOW,order.getCustomer().getUserId(),variables,order.getOrderSn());
-
+        if (workFlowService.createWorkFlow(WorkFlowTypes.GAS_ORDER_FLOW,order.getCustomer().getUserId(),variables,order.getOrderSn()) < 0)
+        {
+            throw new ServerSideBusinessException("流程控制器创建失败！", HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 
     @Override

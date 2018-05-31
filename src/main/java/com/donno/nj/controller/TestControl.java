@@ -19,22 +19,22 @@ public class TestControl
 
     public TestControl() throws Exception
     {
-//        timer = new Timer();
-//        timer.schedule(new TimerTask()
-//        {
-//            @Override
-//            public void run()
-//            {
-//                if (testService != null)
-//                {
-//                    new Thread(testService).start();
-//
-//                    /*d定时器终止*/
-//                    this.cancel();
-//
-//                }
-//            }
-//        }, 0, 500);
+        timer = new Timer();
+        timer.schedule(new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                if (testService != null)
+                {
+                    new Thread(testService).start();
+
+                    /*d定时器终止*/
+                    this.cancel();
+
+                }
+            }
+        }, 0, 500);
     }
 
 }

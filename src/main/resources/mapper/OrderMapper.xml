@@ -14,6 +14,8 @@
 
         <result column="status" property="orderStatus" jdbcType="INTEGER"/>
         <result column="pay_status" property="payStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+
+        <result column="invoice_status" property="invoiceStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
         <result column="time_span" property="timeSpan" jdbcType="INTEGER"/>
 
         <result column="urgent" property="urgent" jdbcType="BOOLEAN"/>
@@ -45,7 +47,6 @@
     <sql id="TblOrder">
         t_order
     </sql>
-
 
     <sql id="InsertColumnList">
         order_sn,call_in_phone,customer_idx ,amount,origal_amount,pay_type,access_type,status,pay_status,urgent,reserve_time,
@@ -88,6 +89,10 @@
 
             <if test="orderStatus != null">
                 AND  status = #{orderStatus}
+            </if>
+
+            <if test="invoiceStatus != null">
+                AND  invoice_status = #{invoiceStatus}
             </if>
 
             <if test="payStatus != null">
@@ -200,6 +205,7 @@
         <if test="payTime != null">pay_time = #{payTime},</if>
         <if test="payStatus != null">pay_status = #{payStatus.index},</if>
         <if test="payType != null">pay_type = #{payType.index},</if>
+        <if test="invoiceStatus != null">invoice_status = #{invoiceStatus.index},</if>
         <if test="recvName != null">recv_name = #{recvName},</if>
         <if test="recvPhone != null">recv_phone = #{recvPhone},</if>
         <if test="urgent != null">urgent = #{urgent},</if>

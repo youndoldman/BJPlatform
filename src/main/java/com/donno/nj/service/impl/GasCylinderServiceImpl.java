@@ -313,12 +313,8 @@ public class GasCylinderServiceImpl implements GasCylinderService
             }
 
             /*钢瓶当前责任人校验*/
-            if (gasCylinderOptional.get().getUser() == null || !gasCylinderOptional.get().getUser().getId().equals(srcUser.getId()))
-            {
-                throw new ServerSideBusinessException("该钢瓶原责任人校验错误！", HttpStatus.NOT_ACCEPTABLE);
-            }
+            CheckGasCynUser(gasCylinderOptional.get(),serviceStatus,srcUser);
         }
-
 
         User targetUser = userDao.findByUserId(targetUserId);
         if (targetUser == null)
@@ -326,85 +322,144 @@ public class GasCylinderServiceImpl implements GasCylinderService
             throw new ServerSideBusinessException("目的用户不存在！", HttpStatus.NOT_FOUND);
         }
 
-        /*如果钢瓶业务状态为待使用，则不校验原责任人*/
-//        if (gasCylinderOptional.get().getServiceStatus().getIndex() == GasCynServiceStatus.UnUsed.getIndex())
-//        {
-//            /*钢瓶当前责任人校验*/
-//            if (gasCylinderOptional.get().getUser() == null || !gasCylinderOptional.get().getUser().getId().equals(srcUser.getId()))
-//            {
-//                throw new ServerSideBusinessException("该钢瓶原责任人校验错误！", HttpStatus.NOT_ACCEPTABLE);
-//            }
-//        }
-
-
         /*钢瓶业务状态修改*/
         gasCylinderDao.updateSvcStatus(gasCylinderOptional.get().getId(),serviceStatus);
 
-        /*关联责任人是否存在，不存在则增加关联责任人，若存在则更新*/
+        /*关联责任人是否存在，若存在则更新*/
         GasCynUserRel gasCynUserRel = gasCynUserRelDao.findBindRel(gasCylinderOptional.get().getId());
+        if (gasCynUserRel == null)
+        {
+            throw new ServerSideBusinessException("该钢瓶原责任人为空！", HttpStatus.NOT_ACCEPTABLE);
+        }
         gasCynUserRelDao.updateBindedUser(gasCynUserRel.getId(),targetUser.getId());
 
-        /*操作历史*/
         if (gasCylinderOptional.get().getServiceStatus().getIndex() != GasCynServiceStatus.UnUsed.getIndex())
         {
-            GasCylinderSvcStatusOpHis gasCylinderSvcStatusOpHis = new GasCylinderSvcStatusOpHis();
-            gasCylinderSvcStatusOpHis.setGasCylinder(gasCylinderOptional.get());
-            gasCylinderSvcStatusOpHis.setServiceStatus(GasCynServiceStatus.values()[serviceStatus]);
-            gasCylinderSvcStatusOpHis.setSrcUser(srcUser);
-            gasCylinderSvcStatusOpHis.setTargetUser(targetUser);
-            gasCylinderSvcStatusOpHis.setOptime(new Date() );
+            /*操作历史*/
+            SvcStatusOpHis(srcUser,targetUser,serviceStatus,gasCylinderOptional.get(),note);
 
-            //取经纬度信息
-            User user;
-            SysUser sysSrcUser = sysUserDao.findByUserId(srcUser.getUserId());
-            SysUser sysTargetUser = sysUserDao.findByUserId(targetUser.getUserId());
-            UserPosition srcUserPosition = null;
-            UserPosition targetUserPosition = null;
-            if(sysSrcUser != null){
-                srcUserPosition = sysSrcUser.getUserPosition();
-            }
-            if(sysTargetUser != null){
-                targetUserPosition = sysTargetUser.getUserPosition();
-            }
-            //两个经纬度取一个
-            if(srcUserPosition != null){
-                gasCylinderSvcStatusOpHis.setLongitude(srcUserPosition.getLongitude());
-                gasCylinderSvcStatusOpHis.setLatitude(srcUserPosition.getLatitude());
-            } else if(targetUserPosition != null){
-                gasCylinderSvcStatusOpHis.setLongitude(targetUserPosition.getLongitude());
-                gasCylinderSvcStatusOpHis.setLatitude(targetUserPosition.getLatitude());
-            }
+            /* 出入库*/
+            GasCylinderInOut(gasCylinderOptional.get(),serviceStatus,srcUser,targetUser);
 
-            gasCylinderSvcStatusOpHis.setNote(note);
-            gasCylinderSvcStatusOpHisDao.insert(gasCylinderSvcStatusOpHis);
+            /*空重瓶状态更改*/
+            UpdGasCynLoadStatus(gasCylinderOptional.get(),serviceStatus);
+        }
+    }
 
-            /*入库信息*/
-            if ( ((gasCylinderOptional.get().getServiceStatus().getIndex() == GasCynServiceStatus.Transporting.getIndex()) && (serviceStatus == GasCynServiceStatus.StoreStock.getIndex()))
-                  || ((gasCylinderOptional.get().getServiceStatus().getIndex() == GasCynServiceStatus.Dispatching.getIndex()) && (serviceStatus == GasCynServiceStatus.StoreStock.getIndex())) )
+    public void UpdGasCynLoadStatus(GasCylinder gasCylinder,Integer serviceStatus)
+    {
+        /*气站出库，更改为重瓶*/
+        if ( ((gasCylinder.getServiceStatus().getIndex() == GasCynServiceStatus.StationStock.getIndex())
+                        && (serviceStatus == GasCynServiceStatus.Transporting.getIndex())) //气站库存-->出库
+                )
+        {
+            GasCylinder newGasCylinder = new GasCylinder();
+            newGasCylinder.setId(gasCylinder.getId());
+            newGasCylinder.setLoadStatus(LoadStatus.LSHeavy);
+            gasCylinderDao.update(newGasCylinder);
+        }
+    }
+
+    public void CheckGasCynUser(GasCylinder gasCylinder,Integer serviceStatus,User srcUser)
+    {
+        if (gasCylinder.getUser() == null )
+        {
+            throw new ServerSideBusinessException("该钢瓶原责任人为空！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        /*出库时，只需校验是否同一个部门*/
+        if ( ((gasCylinder.getServiceStatus().getIndex() == GasCynServiceStatus.StoreStock.getIndex())
+                && (serviceStatus == GasCynServiceStatus.Dispatching.getIndex())) //门店库存-->派送
+                ||
+                ((gasCylinder.getServiceStatus().getIndex() == GasCynServiceStatus.StationStock.getIndex())
+                        && (serviceStatus == GasCynServiceStatus.Transporting.getIndex())) //气站库存-->出库
+                )
+        {
+            SysUser gasSysUser = sysUserDao.findByUserId(gasCylinder.getUser().getUserId());
+            if (gasSysUser == null )
             {
-                GasCylinderInOut gasCylinderInOut = new GasCylinderInOut();
-                gasCylinderInOut.setSrcUser(srcUser);
-                gasCylinderInOut.setTargetUser(targetUser);
-                gasCylinderInOut.setGasCylinder(gasCylinderOptional.get());
-                gasCylinderInOut.setStockType(StockType.STStockIn);
-                gasCylinderInOut.setAmount(1);
-                gasCylinderInOut.setOptime(new Date());
-                gasCylinderInOutDao.insert(gasCylinderInOut);
+                throw new ServerSideBusinessException("该钢瓶原责任人校验错误！未查找到钢瓶责任人", HttpStatus.NOT_ACCEPTABLE);
             }
-
-            /*出库信息*/
-            if ( ((gasCylinderOptional.get().getServiceStatus().getIndex() == GasCynServiceStatus.StoreStock.getIndex()) && (serviceStatus == GasCynServiceStatus.Dispatching.getIndex())))
+            SysUser srcSysUser = sysUserDao.findByUserId(srcUser.getUserId());
+            if (srcSysUser == null )
             {
-                GasCylinderInOut gasCylinderInOut = new GasCylinderInOut();
-                gasCylinderInOut.setSrcUser(srcUser);
-                gasCylinderInOut.setTargetUser(targetUser);
-                gasCylinderInOut.setGasCylinder(gasCylinderOptional.get());
-                gasCylinderInOut.setStockType(StockType.STStockOut);
-                gasCylinderInOut.setAmount(1);
-                gasCylinderInOut.setOptime(new Date());
-                gasCylinderInOutDao.insert(gasCylinderInOut);
+                throw new ServerSideBusinessException("该钢瓶原责任人校验错误！未查找到钢瓶责任人", HttpStatus.NOT_ACCEPTABLE);
+            }
+            if ( gasSysUser.getDepartment().getId() != srcSysUser.getDepartment().getId() )
+            {
+                throw new ServerSideBusinessException("该钢瓶原责任人校验错误！当前用户没有操作权限！", HttpStatus.NOT_ACCEPTABLE);
             }
         }
+        else
+        {
+            if ( !gasCylinder.getUser().getId().equals(srcUser.getId()))
+            {
+                throw new ServerSideBusinessException("该钢瓶原责任人校验错误！", HttpStatus.NOT_ACCEPTABLE);
+            }
+        }
+    }
+
+    public void GasCylinderInOut(GasCylinder gasCylinder,Integer serviceStatus,User srcUser,User targetUser)
+    {
+        /*入库信息*/
+        if ( ((gasCylinder.getServiceStatus().getIndex() == GasCynServiceStatus.Transporting.getIndex()) && (serviceStatus == GasCynServiceStatus.StoreStock.getIndex()))
+                || ((gasCylinder.getServiceStatus().getIndex() == GasCynServiceStatus.Dispatching.getIndex()) && (serviceStatus == GasCynServiceStatus.StoreStock.getIndex())) )
+        {
+            GasCylinderInOut gasCylinderInOut = new GasCylinderInOut();
+            gasCylinderInOut.setSrcUser(srcUser);
+            gasCylinderInOut.setTargetUser(targetUser);
+            gasCylinderInOut.setGasCylinder(gasCylinder);
+            gasCylinderInOut.setStockType(StockType.STStockIn);
+            gasCylinderInOut.setAmount(1);
+            gasCylinderInOut.setOptime(new Date());
+            gasCylinderInOutDao.insert(gasCylinderInOut);
+        }
+
+            /*出库信息*/
+        if ( ((gasCylinder.getServiceStatus().getIndex() == GasCynServiceStatus.StoreStock.getIndex()) && (serviceStatus == GasCynServiceStatus.Dispatching.getIndex())))
+        {
+            GasCylinderInOut gasCylinderInOut = new GasCylinderInOut();
+            gasCylinderInOut.setSrcUser(srcUser);
+            gasCylinderInOut.setTargetUser(targetUser);
+            gasCylinderInOut.setGasCylinder(gasCylinder);
+            gasCylinderInOut.setStockType(StockType.STStockOut);
+            gasCylinderInOut.setAmount(1);
+            gasCylinderInOut.setOptime(new Date());
+            gasCylinderInOutDao.insert(gasCylinderInOut);
+        }
+    }
+
+    public void SvcStatusOpHis(User srcUser,User targetUser,Integer serviceStatus,GasCylinder gasCylinder,String note)
+    {
+        GasCylinderSvcStatusOpHis gasCylinderSvcStatusOpHis = new GasCylinderSvcStatusOpHis();
+        gasCylinderSvcStatusOpHis.setGasCylinder(gasCylinder);
+        gasCylinderSvcStatusOpHis.setServiceStatus(GasCynServiceStatus.values()[serviceStatus]);
+        gasCylinderSvcStatusOpHis.setSrcUser(srcUser);
+        gasCylinderSvcStatusOpHis.setTargetUser(targetUser);
+        gasCylinderSvcStatusOpHis.setOptime(new Date() );
+
+        //取经纬度信息
+        SysUser sysSrcUser = sysUserDao.findByUserId(srcUser.getUserId());
+        SysUser sysTargetUser = sysUserDao.findByUserId(targetUser.getUserId());
+        UserPosition srcUserPosition = null;
+        UserPosition targetUserPosition = null;
+        if(sysSrcUser != null){
+            srcUserPosition = sysSrcUser.getUserPosition();
+        }
+        if(sysTargetUser != null){
+            targetUserPosition = sysTargetUser.getUserPosition();
+        }
+        //两个经纬度取一个
+        if(srcUserPosition != null){
+            gasCylinderSvcStatusOpHis.setLongitude(srcUserPosition.getLongitude());
+            gasCylinderSvcStatusOpHis.setLatitude(srcUserPosition.getLatitude());
+        } else if(targetUserPosition != null){
+            gasCylinderSvcStatusOpHis.setLongitude(targetUserPosition.getLongitude());
+            gasCylinderSvcStatusOpHis.setLatitude(targetUserPosition.getLatitude());
+        }
+
+        gasCylinderSvcStatusOpHis.setNote(note);
+        gasCylinderSvcStatusOpHisDao.insert(gasCylinderSvcStatusOpHis);
     }
 
     @Override
