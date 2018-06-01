@@ -3,7 +3,7 @@
  */
 'use strict';
 
-manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper', function ($http, URI, promise) {
+manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper','MISC', function ($http, URI, promise,MISC) {
 
     var goodsUri = URI.resources.goods;
     var goodsTypesUri = URI.resources.goodsTypes;
@@ -13,6 +13,13 @@ manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper', function ($
     var customerLevelUri = URI.resources.customerLevel;
 
     var discountStrategiesUri = URI.resources.discountStrategies;
+    var key = MISC.keys.gaodeKey;
+    var subdistrictUri = URI.resources.subdistrict;
+    //行政区域查询
+    this.retrieveSubdistrict = function (keyWords) {
+        return promise.wrap($http.get(subdistrictUri+"?key="+key+"&keywords="+keyWords));
+    };
+
 
     this.toViewModelGoods = function (goodsFromApi) {
         return {

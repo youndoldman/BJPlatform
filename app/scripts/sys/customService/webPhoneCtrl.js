@@ -21,6 +21,7 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
             CustomerManageService.retrieveCloudUsers(queryParams).then(function (cloudUsers) {
                 if(cloudUsers.total!=0){
                     $scope.vm.cloudUser = cloudUsers.items[0];
+                    sessionStorage.setKTYCurUser(cloudUsers);
                     //呼叫中心初始化
                     callCenterLogin();
                 }else{

@@ -33,19 +33,19 @@
         <form role="form">
             <div class="row">
                 <div class="col-md-3">
-                    <label class="input">坐席工号：</label>
+                    <label class="text">坐席工号：</label><span style="color:red">*</span>
                     <label class="input"><input type="text" class="form-control input-md" ng-model="q.userId"> </label>
                 </div>
                 <div class="col-md-4">
-                    <label class="input">时间范围：</label>
+                    <label class="text">时间范围：</label><span style="color:red">*</span>
                     <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>
-                    <label class="input">至</label>
+                    <label class="text">至</label>
                     <label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control" ng-model="q.endTime"></label>
                 </div>
                 <div class="col-md-3">
-                    <label class="input">日期类型：</label>
+                    <label class="text">日期类型：</label><span style="color:red">*</span>
                     <label class="input"><select  ng-model="q.type" ng-options="type for type in vm.types" class="form-control" ng-selected=""></select></label>
-                    <label class="input">间隔数：</label>
+                    <label class="text">间隔数：</label><span style="color:red">*</span>
                     <label class="input"><select  ng-model="q.interval" ng-options="interval for interval in vm.intervals" class="form-control" ng-selected=""></select></label>
                 </div>
                 <div class="col-md-1">
@@ -55,6 +55,11 @@
                     <button ng-click="printPage()" class="btn btn-sm btn-primary noprint pull-right"><i class="fa fa-print"></i>打印</button>
                 </div>
 
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label style="color:red">带*是必填项</label>
+                </div>
             </div>
         </form>
     </div>
@@ -89,7 +94,7 @@
         <tbody>
         <tr  ng-repeat="item in vm.dataList">
             <td class="message tableContentAdjust">{{item.date}}</td>
-            <td class="message tableContentAdjust">{{item.agentUserId}}</td>
+            <td class="message tableContentAdjust">{{item.agentUserName}}</td>
             <td class="message tableContentAdjust">{{item.totalCallData.count}}</td>
             <td class="message tableContentAdjust">{{item.totalCallData.hitRate}}</td>
             <td class="message tableContentAdjust">{{item.totalCallData.totalOperationInSec}}</td>

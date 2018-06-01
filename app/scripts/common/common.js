@@ -62,6 +62,13 @@ commonModule.service('sessionStorage', ['$window', function ($window) {
         }
     };
 
+    self.getKTYCurUser = function () {
+        return angular.fromJson($window.sessionStorage.getItem("KTYcurUser"));
+    }
+    self.setKTYCurUser = function (data) {
+        $window.sessionStorage.setItem("KTYcurUser", angular.toJson(data));
+    }
+
     self.getCurUser = function () {
         return angular.fromJson($window.sessionStorage.getItem("curUser"));
     }
