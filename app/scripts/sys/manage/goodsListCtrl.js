@@ -330,6 +330,7 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
             GoodsService.retrieveGoods(queryParams).then(function (goods) {
                 $scope.pagerGoods.update($scope.q, goods.total, queryParams.pageNo);
                 $scope.vm.goodsList = _.map(goods.items, GoodsService.toViewModel);
+                console.log($scope.vm.goodsList);
             });
         };
 

@@ -37,6 +37,8 @@ customServiceApp.controller('Report1Ctrl', ['$scope', '$rootScope', '$filter', '
                 });
         });
 
+        $scope.currentKTYUser = {};
+
         var gotoPage = function (pageNo) {
             $scope.pager.setCurPageNo(pageNo);
             searchData();
@@ -70,6 +72,8 @@ customServiceApp.controller('Report1Ctrl', ['$scope', '$rootScope', '$filter', '
 
         $scope.search = function () {
             $scope.pager.setCurPageNo(1);
+            $scope.vm.dataList = null;
+            $scope.vm.lastDataList = null;
             searchData();
         };
 
@@ -79,88 +83,88 @@ customServiceApp.controller('Report1Ctrl', ['$scope', '$rootScope', '$filter', '
 
         var searchData = function () {
             //先登录授权，拿到token、orgId、userId
-            KtyService.authenticate("58531181@qq.com","123456").then(function (response) {
-                $scope.q.token = response.data.token;
-                var queryParams = {
-                    agentUserIds: $scope.q.userId,
-                    //agentUserName: $scope.q.userName,
-                    type: $scope.q.type,
-                    interval: $scope.q.interval,
-                    begin: $scope.q.startTime,
-                    end: $scope.q.endTime
-                };
-                KtyService.retrieveReport1(queryParams, $scope.q.token).then(function (response) {
-                    $scope.vm.dataList = response.data;
-                    $scope.vm.lastDataList = $scope.vm.dataList[$scope.vm.dataList.length-1];
-                    //console.log($scope.vm.lastDataList);
-                    $scope.vm.dataList .splice($scope.vm.dataList.length-1, 1);
+            var userName = $scope.currentKTYUser.items[0].userId;
+            var password = $scope.currentKTYUser.items[0].password;
+            if(($scope.q.userId!=null) && ($scope.q.startTime!=null) && ($scope.q.endTime!=null) && ($scope.q.type!=null) && ($scope.q.interval!=null))
+            {
+                KtyService.authenticate(userName,password).then(function (response) {
+                    $scope.q.token = response.data.token;
+                    var queryParams = {
+                        agentNames: $scope.q.userId,
+                        //agentUserName: $scope.q.userName,
+                        type: $scope.q.type,
+                        interval: $scope.q.interval,
+                        begin: $scope.q.startTime,
+                        end: $scope.q.endTime
+                    };
+                    KtyService.retrieveReport1(queryParams, $scope.q.token).then(function (response) {
+                        $scope.vm.dataList = response.data;
+                        $scope.vm.lastDataList = $scope.vm.dataList[$scope.vm.dataList.length-1];
+                        //console.log($scope.vm.lastDataList);
+                        $scope.vm.dataList .splice($scope.vm.dataList.length-1, 1);
+                    }, function(value) {
+                        if(value.code == "40007")
+                        {
+                            $scope.vm.dataList = null;
+                            udcModal.info({"title": "查询失败", "message": "未找到呼叫记录"});
+                        }
+                        else if(value.code == "40021")
+                        {
+                            $scope.vm.dataList = null;
+                            udcModal.info({"title": "查询失败", "message": "未找到指定部门人员信息"});
+                        }
+                        else if(value.code == "40025")
+                        {
+                            $scope.vm.dataList = null;
+                            udcModal.info({"title": "查询失败", "message": "参数异常"});
+                        }
+                        else if(value.code == "40026")
+                        {
+                            $scope.vm.dataList = null;
+                            udcModal.info({"title": "查询失败", "message": "时间范围长度超出限制（最大三个月间隔）"});
+                        }
+                        else if(value.code == "50000")
+                        {
+                            $scope.vm.dataList = null;
+                            udcModal.info({"title": "查询失败", "message": "系统内部错误"});
+                        }
+                    });
                 }, function(value) {
-                    //$scope.vm.dataList = null;
-                    //udcModal.info({"title": "查询失败", "message": "请输入相关的查询条件"});
-                    if(value.code == "40007")
+                    if(value.code == "40001")
                     {
                         $scope.vm.dataList = null;
-                        udcModal.info({"title": "查询失败", "message": "未找到呼叫记录"});
+                        udcModal.info({"title": "连接结果", "message": "用户名或密码不正确"});
                     }
-                    else if(value.code == "40021")
+                    else if(value.code == "40002")
                     {
                         $scope.vm.dataList = null;
-                        udcModal.info({"title": "查询失败", "message": "未找到指定部门人员信息"});
+                        udcModal.info({"title": "连接结果", "message": "用户名或密码为空"});
                     }
-                    else if(value.code == "40025")
+                    else if(value.code == "40003")
                     {
                         $scope.vm.dataList = null;
-                        udcModal.info({"title": "查询失败", "message": "参数异常"});
+                        udcModal.info({"title": "连接结果", "message": "用户权限不正确"});
                     }
-                    else if(value.code == "40026")
+                    else if(value.code == "40004")
                     {
                         $scope.vm.dataList = null;
-                        udcModal.info({"title": "查询失败", "message": "时间范围长度超出限制（最大三个月间隔）"});
+                        udcModal.info({"title": "连接结果", "message": "用户认证不存在或已过期"});
                     }
                     else if(value.code == "50000")
                     {
                         $scope.vm.dataList = null;
-                        udcModal.info({"title": "查询失败", "message": "系统内部错误"});
+                        udcModal.info({"title": "连接结果", "message": "系统内部错误"});
                     }
-                });
-            }, function(value) {
-                if(value.code == "40001")
-                {
-                    $scope.vm.dataList = null;
-                    udcModal.info({"title": "连接结果", "message": "用户名或密码不正确"});
-                }
-                else if(value.code == "40002")
-                {
-                    $scope.vm.dataList = null;
-                    udcModal.info({"title": "连接结果", "message": "用户名或密码为空"});
-                }
-                else if(value.code == "40003")
-                {
-                    $scope.vm.dataList = null;
-                    udcModal.info({"title": "连接结果", "message": "用户权限不正确"});
-                }
-                else if(value.code == "40004")
-                {
-                    $scope.vm.dataList = null;
-                    udcModal.info({"title": "连接结果", "message": "用户认证不存在或已过期"});
-                }
-                else if(value.code == "50000")
-                {
-                    $scope.vm.dataList = null;
-                    udcModal.info({"title": "连接结果", "message": "系统内部错误"});
-                }
-            })
+                })
+            }
+            else
+            {
+                udcModal.info({"title": "提醒", "message": "请填写坐席工号，选择日期范围、间隔类型和间隔数"});
+            }
         };
 
         var init = function () {
-            //searchData();
-            //var currentDate = new Date();
-            //var currentMonth = currentDate.getMonth()+1;
-            //$scope.data.endTime = currentDate.getFullYear()+"-"+currentMonth+"-"+currentDate.getDate()+" "
-            //    +currentDate.getHours()+":"+currentDate.getMinutes()+":"+currentDate.getSeconds();
-            ////console.log($scope.data.endTime);
-            ////默认结束时间为当前时间
-            //$scope.q.endTime = $scope.data.endTime;
+            $scope.currentKTYUser = sessionStorage.getKTYCurUser();
         };
         init();
     }]);

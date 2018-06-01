@@ -1,10 +1,10 @@
 'use strict';
 
 customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
-    'rootService', 'pager', 'udcModal', 'CustomerManageService', 'OrderService','sessionStorage','MendSecurityComplaintService','$document',function ($scope, $rootScope, $filter, $location, Constants,
-                                                                                                                                                      rootService, pager, udcModal, CustomerManageService,OrderService,sessionStorage,MendSecurityComplaintService,$document) {
+    'rootService', 'pager', 'udcModal', 'CustomerManageService', 'OrderService','sessionStorage','MendSecurityComplaintService','$document','KtyService',
+    function ($scope, $rootScope, $filter, $location, Constants, rootService, pager, udcModal, CustomerManageService,OrderService,sessionStorage,MendSecurityComplaintService,$document,KtyService) {
 
-
+        $scope.currentKTYUser = {};
         var gotoPageCustomer = function (pageNo) {
             $scope.pagerCustomer.setCurPageNo(pageNo);
             searchCustomer();
@@ -13,6 +13,14 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             $scope.pagerHistory.setCurPageNo(pageNo);
             searchOrderHistory();
         };
+
+        var gotoPageCallReport = function (pageNo) {
+            $scope.pagerCallReport.setCurPageNo(pageNo);
+            searchCallReport();
+        };
+
+        $scope.pagerCallReport = pager.init('CustomerListCtrl', gotoPageCallReport);
+
         $scope.pagerCustomer = pager.init('CustomerListCtrl', gotoPageCustomer);
 
         $scope.pagerHistory = pager.init('CustomerListCtrl', gotoPageHistory);
@@ -47,6 +55,19 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 showTodayButton:true,
                 toolbarPlacement:'top',
             });
+            //查询电话记录
+            $('#datetimepickerStart').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
+            $('#datetimepickerEnd').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
         });
 
         $(function () {
@@ -78,6 +99,21 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                     $scope.currentComplaint.reserveTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
                         +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
                 });
+            $('#datetimepickerStart').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
+            //查询电话记录
+            $('#datetimepickerEnd').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
         });
         $scope.temp = {
             selectedGoodsType:{},
@@ -91,9 +127,11 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             selectedSecurityType:{},//当前选择的安检类型
             complaintTypesList:[],//投诉类型
             selectedComplaintType:{},//当前选择的投诉类型
-
         };
-
+        $scope.q = {
+            startTime:null,
+            endTime:null
+        };
         $scope.searchParam = {
             customerID:null,
             customerName:null,
@@ -101,16 +139,9 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             address:null
         };
 
-
-
-
-        $scope.qCustomer = {
-
-        };
-        $scope.qHistory = {
-
-        };
-
+        $scope.qCustomer = {};
+        $scope.qHistory = {};
+        $scope.qCallReport = {};
 
         $scope.vm = {
             callInPhone:null,//呼入电话
@@ -121,6 +152,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             CustomerAutoReportList:[ //不间断供气客户
             ],
             currentCustomerCredit:null,//当前用户欠款
+            callReportList:[],
             orderStatusDisplay:["待派送","派送中","待核单","已完成","已作废"]
         };
 
@@ -310,6 +342,75 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 })
         };
 
+        $scope.searchReport = function(){
+            $scope.vm.callReportList = null;
+            $scope.pagerCallReport.setCurPageNo(1);
+            searchCallReport();
+        }
+
+        var searchCallReport = function () {
+            $scope.vm.callReportList = [];
+
+            var userName = $scope.currentKTYUser.items[0].userId;
+            var password = $scope.currentKTYUser.items[0].password;
+            KtyService.authenticate(userName,password).then(function (response) {
+                $scope.q.token = response.data.token;
+                var queryParams = {
+                    order:"sec",
+                    page: $scope.pagerCallReport.getCurPageNo(),
+                    per_page: $scope.pagerCallReport.pageSize,
+                    sortBy:"durationInSec",
+                    from:$scope.q.startTime,
+                    to:$scope.q.endTime
+                }
+
+                KtyService.retrieveCallreport(queryParams, $scope.q.token).then(function (response) {
+                    $scope.vm.callReportList = response.data;
+                    console.log($scope.vm.callReportList);
+                    console.log($scope.vm.callReportList.data.length);
+                    $scope.pagerCallReport.update($scope.qCallReport, response.total, queryParams.pageNo);
+                }, function(value) {
+                    if(value.code == "40007")
+                    {
+                        $scope.vm.dataList = null;
+                        udcModal.info({"title": "查询失败", "message": "用户认证不存在或已过期"});
+                    }
+                    else if(value.code == "50000")
+                    {
+                        $scope.vm.dataList = null;
+                        udcModal.info({"title": "查询失败", "message": "系统内部错误"});
+                    }
+                });
+            }, function(value) {
+                if(value.code == "40001")
+                {
+                    $scope.vm.dataList = null;
+                    udcModal.info({"title": "连接结果", "message": "用户名或密码不正确"});
+                }
+                else if(value.code == "40002")
+                {
+                    $scope.vm.dataList = null;
+                    udcModal.info({"title": "连接结果", "message": "用户名或密码为空"});
+                }
+                else if(value.code == "40003")
+                {
+                    $scope.vm.dataList = null;
+                    udcModal.info({"title": "连接结果", "message": "用户权限不正确"});
+                }
+                else if(value.code == "40004")
+                {
+                    $scope.vm.dataList = null;
+                    udcModal.info({"title": "连接结果", "message": "用户认证不存在或已过期"});
+                }
+                else if(value.code == "50000")
+                {
+                    $scope.vm.dataList = null;
+                    udcModal.info({"title": "连接结果", "message": "系统内部错误"});
+                }
+            })
+
+        }
+
         var searchOrderHistory = function () {
             //清空表格
             $scope.vm.CustomerOrderHistory = [];
@@ -405,10 +506,22 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             if ($scope.temp.selectedGoodsType==null) {
                 return;
             };
-            var queryParams = {
-                typeName: $scope.temp.selectedGoodsType.name,
-                status:0//0 正常上市
-            };
+            if($scope.vm.currentCustomer == null){
+                var queryParams = {
+                    typeName: $scope.temp.selectedGoodsType.name,
+                    status:0,//0 正常上市,
+                };
+            }
+            else {
+                var queryParams = {
+                    typeName: $scope.temp.selectedGoodsType.name,
+                    status:0,//0 正常上市,
+                    province:$scope.vm.currentCustomer.address.province,
+                    city:$scope.vm.currentCustomer.address.city,
+                    county:$scope.vm.currentCustomer.address.county,
+                };
+            }
+//console.info(queryParams);
             CustomerManageService.retrieveGoods(queryParams).then(function (goods) {
                 $scope.temp.goodsList = goods.items;
                 $scope.temp.selectedGoods = $scope.temp.goodsList[0];
@@ -428,6 +541,11 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         };
 
         var init = function () {
+            $scope.currentKTYUser = sessionStorage.getKTYCurUser();
+
+            $scope.pagerCallReport.pageSize = 10;
+            $scope.pagerCallReport.update($scope.qCallReport, 0, 1);
+
             $scope.pagerCustomer.pageSize=3;
             $scope.pagerHistory.pageSize=2;
             $scope.pagerCustomer.update($scope.qCustomer, 0, 1);
@@ -571,12 +689,13 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         $scope.clearWindow = function(){
             $scope.vm.currentCustomerCredit= null;
             $scope.vm.callInPhone = null;
-            $scope.vm.currentCustomer = null,
-                $scope.vm.CustomerList = [];
+            $scope.vm.currentCustomer = null;
+            $scope.vm.CustomerList = [];
             $scope.vm.CustomerOrderHistory = [];
             $scope.currentOrder = {
                 orderDetailList:[]
             };
+            $scope.vm.callReportList=[];
             //当前报修信息
             $scope.currentMend= {
                 mendType:{},//报修类型
