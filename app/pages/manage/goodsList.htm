@@ -49,7 +49,6 @@
                     </button>
                 </td>
             </tr>
-
             </tbody>
         </table>
         <div ng-if="vm.userList.length == 0" nj-table-no-data></div>
@@ -82,9 +81,9 @@
             <thead>
             <tr>
                 <th width="1%"></th>
-                <td width="5%">序号</td>
+                <td width="4%">序号</td>
                 <td width="8%">商品号</td>
-                <td width=10%">商品名称</td>
+                <td width="8%">商品名称</td>
                 <td width="8%">商品类型</td>
                 <td width="8%">商品规格</td>
                 <td width="8%">单位</td>
@@ -92,8 +91,9 @@
                 <td width="8%">价格(元)</td>
                 <td width="8%">有效期(天)</td>
                 <td width="8%">状态</td>
-                <td width="10%">说明</td>
-                <td width="10%">操 作</td>
+                <td width="7%">所属区域</td>
+                <td width="8%">说明</td>
+                <td width="8%">操 作</td>
             </tr>
             </thead>
             <tbody>
@@ -109,6 +109,7 @@
                 <td class="message">{{good.price}}</td>
                 <td class="message">{{good.lifeExpectancy}}</td>
                 <td class="message">{{config.goodsStatusList[good.status].name}}</td>
+                <td class="message">{{good.area.province}}{{good.area.city}}{{good.area.county}}</td>
                 <td class="message">{{good.note}}</td>
                 <td class="operate">
                     <button title="修改" ng-click="modifyGoods(good)" type="button" class="btn btn-primary btn-outline btn-xs">
