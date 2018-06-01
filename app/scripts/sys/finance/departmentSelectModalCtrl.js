@@ -10,7 +10,11 @@ financeApp.controller('DepartmentSelectModalCtrl', ['$scope', 'close', 'FinanceS
             'chartClass': 'edit-state',
             'exportFilename': 'SportsChart',
             'parentNodeSymbol': 'fa-th-large',
-            'nodeContent': 'title'
+            'nodeContent': 'title',
+            'direction': 'l2r',
+            'visibleLevel':'3',
+            'pan':true
+            //'toggleSiblingsResp':true
         });
         $scope.chart.$chartContainer.on('click', '.node', function() {
             var $this = $(this);

@@ -8,20 +8,20 @@
                     <h4 class="modal-title">&nbsp;{{modalTitle}}&nbsp;</h4>
                 </div>
                 <div class="col-md-8">
-                <div class="modal-body">
-                    <div class="ribbon">
-                        <a href=""><span class="home fa fa-home"></span></a>
-                        <ol class="breadcrumb">
-                            <li>云南百江燃气有限公司组织架构</li>
-                        </ol>
-                    </div>
+                    <div class="modal-body">
+                        <div class="ribbon">
+                            <a href=""><span class="home fa fa-home"></span></a>
+                            <ol class="breadcrumb">
+                                <li>云南百江燃气有限公司组织架构</li>
+                            </ol>
+                        </div>
 
-                    <div>
-                        <div id="chart-container"  on-finish-render="ngRepeatFinished"></div>
-                    </div>
+                        <div>
+                            <div id="chart-container"  on-finish-render="ngRepeatFinished"></div>
+                        </div>
 
+                    </div>
                 </div>
-                    </div>
                 <div class="col-md-4">
                     <div class="modal-body">
                         <div class="input-group pdb15">
@@ -97,11 +97,16 @@
                 </div>
 
                 <div class="modal-footer" >
-                    <button type="submit" ng-click="submit(vm.user);" class="btn btn-primary"
-                            ng-disabled="userForm.userId.$error.required || userForm.password.$error.required
-                            || userForm.jobNumber.$error.required|| userForm.department.$error.required">创建</button>
-                    <button type="button" ng-click="close(true)" class="btn btn-default" data-dismiss="modal">关闭</button>
-                </div>
+                    <div class="modal-footer" >
+                        <button type="submit" ng-click="submit(vm.user);" class="btn btn-primary"
+                                ng-disabled="userForm.userId.$error.required || userForm.password.$error.required
+                            || userForm.jobNumber.$error.required|| userForm.department.$error.required" ng-show="isModify">修改</button>
+
+                        <button type="submit" ng-click="submit(vm.user);" class="btn btn-primary"
+                                ng-disabled="userForm.userId.$error.required || userForm.password.$error.required
+                            || userForm.jobNumber.$error.required|| userForm.department.$error.required" ng-show="!isModify">创建</button>
+                        <button type="button" ng-click="close(true)" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
             </form>
         </div>
     </div>

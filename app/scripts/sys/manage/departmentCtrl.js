@@ -13,7 +13,12 @@ manageApp.controller('DepartmentCtrl', ['$scope', '$rootScope', '$filter', '$loc
                 'exportButton': true,
                 'exportFilename': '部门组织架构',
                 'parentNodeSymbol': 'fa-th-large',
-                'nodeContent': 'title'
+                'nodeContent': 'title',
+                'direction': 'l2r',
+                'visibleLevel':'3',
+                //'toggleSiblingsResp':true
+
+                'pan':true
             });
             $scope.chart.$chartContainer.on('click', '.node', function() {
                 var $this = $(this);

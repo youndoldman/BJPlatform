@@ -122,7 +122,11 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
             'chartClass': 'edit-state',
             'exportFilename': 'SportsChart',
             'parentNodeSymbol': 'fa-th-large',
-            'nodeContent': 'title'
+            'nodeContent': 'title',
+            'direction': 'l2r',
+            'visibleLevel':'3',
+            'pan':true
+            //'toggleSiblingsResp':true
         });
         $scope.chart.$chartContainer.on('click', '.node', function () {
             var $this = $(this);
@@ -185,7 +189,7 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
         } else if (user.name != "" && title == "修改用户") {
             UserService.modifyUser(user).then(function () {
                 udcModal.info({"title": "处理结果", "message": "修改用成功！"});
-                $scope.close(true);
+                //$scope.close(true);
             }, function (value) {
                 udcModal.info({"title": "处理结果", "message": "修改用户失败 " + value.message});
             })
