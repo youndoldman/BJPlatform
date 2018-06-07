@@ -213,6 +213,35 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
             };
             $scope.pager.setCurPageNo(1);
             searchOrder();
-        }
+        };
+
+        //发表状态改变
+        $scope.invoiceStatusChanged = function (order) {
+            var modifiedOrder = {orderSn:order.orderSn,invoiceStatus:null};
+            var message = null;
+            if(order.invoiceStatus.index==0){//没开发票
+                modifiedOrder.invoiceStatus = "ISInvoiced";
+                message = "确认开发票";
+
+            }else{
+                modifiedOrder.invoiceStatus = "ISUnInvoice";
+                message = "取消发票记录";
+            }
+            udcModal.confirm({"title": "发票", "message": message+"？,订单编号: " + order.orderSn})
+                .then(function (result) {
+                    if (result) {
+                        OrderService.modifyOrder(modifiedOrder).then(function (value) {
+                            searchOrder();
+                            udcModal.info({"title": "处理结果", "message": message+"成功"});
+                        }, function(value) {
+                            searchOrder();
+                            udcModal.info({"title": "处理结果", "message": message+"失败 "+value.message});
+                        })
+                    }else{
+                        searchOrder();
+                    }
+                })
+        };
+
 
     }]);

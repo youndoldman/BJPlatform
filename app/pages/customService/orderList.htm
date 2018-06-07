@@ -76,7 +76,7 @@
             <th width="5%">订单客户</th>
 
 
-            <th width="18%">收货地址</th>
+            <th width="15%">收货地址</th>
             <th width="4%">收货人</th>
             <th width="4%">配送员</th>
             <th width="5%">所属门店</th>
@@ -85,6 +85,7 @@
             <th width="5%">金额(元)</th>
             <th width="9%">创建时间</th>
             <th width="9%">预约时间</th>
+            <th width="4%">发票</th>
             <th width="15%">操作</th>
         </tr>
         </thead>
@@ -109,7 +110,9 @@
             <td class="message">{{order.orderAmount}}</td>
             <td class="message">{{order.createTime}}</td>
             <td class="message">{{order.reserveTime}}</td>
+            <td class="message"><input type="checkbox" ng-checked="order.invoiceStatus.index==1" ng-model="order.invoiceStatusFlag" ng-click="invoiceStatusChanged(order)"/></td>
             <td class="operate">
+
                 <button title="详情" ng-click="viewDetails(order)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="">详情</i>
                 </button>

@@ -9,16 +9,16 @@ manageApp.controller('DepartmentCtrl', ['$scope', '$rootScope', '$filter', '$loc
         var chartInitial = function() {
             $scope.chart = $('#chart-container').orgchart({
                 'data' : $scope.dataSource,
-                'chartClass': 'edit-state',
+                //'chartClass': 'edit-state',
                 'exportButton': true,
                 'exportFilename': '部门组织架构',
                 'parentNodeSymbol': 'fa-th-large',
                 'nodeContent': 'title',
-                'direction': 'l2r',
-                'visibleLevel':'3',
-                //'toggleSiblingsResp':true
+                'direction': 'l2r'
+                //'visibleLevel':'4',
+                //'toggleSiblingsResp':true,
+                //'pan':true
 
-                'pan':true
             });
             $scope.chart.$chartContainer.on('click', '.node', function() {
                 var $this = $(this);
@@ -26,7 +26,8 @@ manageApp.controller('DepartmentCtrl', ['$scope', '$rootScope', '$filter', '$loc
                 $scope.q.selectDepartment.name = $this.find('.title').text();
                 console.log($scope.vm.selectDepartmentCode);
             });
-        }
+        };
+
         var redrawDepartment = function(){
             $scope.chart.init({ 'data': $scope.dataSource });
         };
