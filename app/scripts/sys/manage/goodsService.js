@@ -81,10 +81,14 @@ manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper','MISC', func
     this.createGoods = function (goods) {
         return promise.wrap($http.post(goodsUri, goods));
     };
-
-    this.modifyGoods = function (goods) {
-        return promise.wrap($http.put(goodsUri + "/" + goods.code, goods));
+    //
+    //this.modifyGoods = function (goods) {
+    //    return promise.wrap($http.put(goodsUri + "/" + goods.code, goods));
+    //};
+    this.modifyGoods = function (originalGoodsCode,goods) {
+        return promise.wrap($http.put(goodsUri + "/" + originalGoodsCode, goods));
     };
+
 
     //添加调价策略
     this.createAdjustPriceSchedules = function (adjustPriceSchedules) {

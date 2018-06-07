@@ -96,10 +96,14 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
 
         $scope.pagerCouponAdjustment = pager.init('GoodsListCtrl', gotoPageCouponAdjustment);
 
-        var historyQ = $scope.pagerGoodsTypes.getQ();
+        var historyQ1 = $scope.pagerGoodsTypes.getQ();
+        var historyQ2 = $scope.pagerGoods.getQ();
+        var historyQ3 = $scope.pagerGoodsPriceAdjustment.getQ();
+        var historyQ4 = $scope.pagerCouponAdjustment.getQ();
 
         $scope.q = {
             goodsType:"",
+            goodsName:"",
             adjustName:null,     //调价计划名称
             adjustStartTime:null,//调价计划开始时间
             adjustEndTime:null,   //调价计划结束时间
@@ -247,7 +251,7 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
                 templateUrl: "./manage/goodsModal.html",
                 controller:  "GoodsModalCtrl",
                 inputs: {
-                    title: '修改商品',
+                    title: '新增商品',
                     initVal: goods
                 }
             }).then(function (result) {
@@ -321,8 +325,9 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
 
 
         var searchGoods = function () {
+            //console.log($scope.q.goodsName)
             var queryParams = {
-                typeName: $scope.q.goodsType,
+                name: $scope.q.goodsName,
                 pageNo: $scope.pagerGoods.getCurPageNo(),
                 pageSize: $scope.pagerGoods.pageSize
             };
@@ -330,7 +335,7 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
             GoodsService.retrieveGoods(queryParams).then(function (goods) {
                 $scope.pagerGoods.update($scope.q, goods.total, queryParams.pageNo);
                 $scope.vm.goodsList = _.map(goods.items, GoodsService.toViewModel);
-                console.log($scope.vm.goodsList);
+                //console.log($scope.vm.goodsList);
             });
         };
 
@@ -341,6 +346,7 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
             };
 
             GoodsService.retrieveGoodsTypes(queryParams).then(function (goodsTypes) {
+
                 $scope.pagerGoodsTypes.update($scope.q, goodsTypes.total, queryParams.pageNo);
                 $scope.vm.goodsTypesList = _.map(goodsTypes.items, GoodsService.toViewModelGoodsTypes);
             });
@@ -434,14 +440,12 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
             $scope.q.status = "所有状态";
 
             $scope.pagerCouponAdjustment.pageSize=5;
-            $scope.pagerGoodsTypes.pageSize=10;
+            $scope.pagerGoodsTypes.pageSize=5;
             $scope.pagerGoodsPriceAdjustment.pageSize=5;
-            $scope.pagerGoodsTypes.pageSize=10;
-            $scope.pagerGoods.pageSize=10;
+            $scope.pagerGoods.pageSize=5;
             searchGoodsTypes();
             searchGoods();
             $scope.searchGoodsPriceAdjustment();
-
             $scope.searchCouponAdjustment();
         };
 
