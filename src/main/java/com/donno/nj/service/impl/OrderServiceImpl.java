@@ -755,7 +755,7 @@ public class OrderServiceImpl implements OrderService
         {
             String strCandiUser =  (String)variables.get(ServerConstantValue.ACT_FW_STG_2_CANDI_USERS);
 
-            SysUser candiUser = sysUserDao.findByUserId(strCandiUser);
+            SysUser candiUser = sysUserDao.findByUId(strCandiUser);
             orderDao.insertDistatcher(newOrder.getId(),candiUser.getId());
         }
 

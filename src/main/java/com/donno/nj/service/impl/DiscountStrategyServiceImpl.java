@@ -137,7 +137,7 @@ public class DiscountStrategyServiceImpl implements DiscountStrategyService
     }
 
     @OperationLog(desc = "检查优惠方案，未生效方案触发")
-    public void DiscountTrigger()
+    public void discountTrigger()
     {
         /*查询待生效优惠方案*/
         Map params = new HashMap<String,String>();
