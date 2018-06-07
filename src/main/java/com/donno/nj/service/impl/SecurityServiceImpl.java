@@ -165,7 +165,7 @@ public class SecurityServiceImpl implements SecurityService
         }
         else
         {
-            SysUser sysUser = sysUserDao.findByUserId(newsecurity.getDealedUser().getUserId());
+            SysUser sysUser = sysUserDao.findByUId(newsecurity.getDealedUser().getUserId());
             if ( sysUser == null)
             {
                 throw new ServerSideBusinessException("安检处理用户信息不正确，没有该用户信息！", HttpStatus.NOT_ACCEPTABLE);

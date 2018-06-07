@@ -14,17 +14,17 @@ public class SaleCashRpt implements Serializable
     private String departmentCode;
     private String departmentName;
 
-    private Double saleCash;  //现金销款(现金销售额
-    private Double ticketSaleCash;  //气票销售
-    private Double depositCash;  //存银行款
+    private Float saleCash;  //现金销款(现金销售额
+    private Float ticketSaleCash;  //气票销售
+    private Float depositCash;  //存银行款
 
-    private Double creditWriteOff;  //赊销回款
-    private Double montlyCreditWriteOff;  //月结回款
+    private Float creditWriteOff;  //赊销回款
+    private Float montlyCreditWriteOff;  //月结回款
 
-    private Double accCredit ;  //往日赊销（截止当前待收回款）
-    private Double accMonthlyCredit ;  //往日月结（截止当前待收回款）
+    private Float accCredit ;  //往日赊销（截止当前待收回款）
+    private Float accMonthlyCredit ;  //往日月结（截止当前待收回款）
 
-    private Double surplusCash; //今日结存现金（现金销售-银行存款+回款+气票款）
+    private Float surplusCash; //今日结存现金（现金销售-银行存款+回款+气票款）
 
     public SaleCashRpt()
     {
@@ -38,35 +38,35 @@ public class SaleCashRpt implements Serializable
         return departmentCode;
     }
 
-    public Double getSaleCash() {
+    public Float getSaleCash() {
         return saleCash;
     }
 
-    public Double getTicketSaleCash() {
+    public Float getTicketSaleCash() {
         return ticketSaleCash;
     }
 
-    public Double getDepositCash() {
+    public Float getDepositCash() {
         return depositCash;
     }
 
-    public Double getCreditWriteOff() {
+    public Float getCreditWriteOff() {
         return creditWriteOff;
     }
 
-    public Double getMontlyCreditWriteOff() {
+    public Float getMontlyCreditWriteOff() {
         return montlyCreditWriteOff;
     }
 
-    public Double getAccCredit() {
+    public Float getAccCredit() {
         return accCredit;
     }
 
-    public Double getAccMonthlyCredit() {
+    public Float getAccMonthlyCredit() {
         return accMonthlyCredit;
     }
 
-    public Double getSurplusCash() {
+    public Float getSurplusCash() {
         return surplusCash;
     }
 
@@ -78,35 +78,35 @@ public class SaleCashRpt implements Serializable
         this.departmentCode = departmentCode;
     }
 
-    public void setSaleCash(Double saleCash) {
+    public void setSaleCash(Float saleCash) {
         this.saleCash = saleCash;
     }
 
-    public void setTicketSaleCash(Double ticketSaleCash) {
+    public void setTicketSaleCash(Float ticketSaleCash) {
         this.ticketSaleCash = ticketSaleCash;
     }
 
-    public void setDepositCash(Double depositCash) {
+    public void setDepositCash(Float depositCash) {
         this.depositCash = depositCash;
     }
 
-    public void setCreditWriteOff(Double creditWriteOff) {
+    public void setCreditWriteOff(Float creditWriteOff) {
         this.creditWriteOff = creditWriteOff;
     }
 
-    public void setMontlyCreditWriteOff(Double montlyCreditWriteOff) {
+    public void setMontlyCreditWriteOff(Float montlyCreditWriteOff) {
         this.montlyCreditWriteOff = montlyCreditWriteOff;
     }
 
-    public void setAccCredit(Double accCredit) {
+    public void setAccCredit(Float accCredit) {
         this.accCredit = accCredit;
     }
 
-    public void setAccMonthlyCredit(Double accMonthlyCredit) {
+    public void setAccMonthlyCredit(Float accMonthlyCredit) {
         this.accMonthlyCredit = accMonthlyCredit;
     }
 
-    public void setSurplusCash(Double surplusCash) {
+    public void setSurplusCash(Float surplusCash) {
         this.surplusCash = surplusCash;
     }
 

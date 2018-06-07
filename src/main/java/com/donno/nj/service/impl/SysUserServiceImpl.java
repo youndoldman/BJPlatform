@@ -2,12 +2,14 @@ package com.donno.nj.service.impl;
 
 
 
+import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.dao.*;
 import com.donno.nj.domain.*;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.service.SysUserService;
 
 import com.donno.nj.service.TableStoreService;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +43,13 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
     @Autowired
     private TableStoreService tableStoreService;
 
+
+    @Override
+    @OperationLog(desc = "根据用户ID查询客户信息")
+    public Optional<SysUser> findByUId(String userId)
+    {
+        return Optional.fromNullable(sysUserDao.findByUId(userId));
+    }
 
     @Override
     public List<SysUser> retrieve(Map params) {
@@ -125,7 +134,7 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
         /*用户校验，参数不能为空，内容不能为空，用户应存在*/
         if (userId != null && userId.trim().length() > 0 )
         {
-            SysUser user = sysUserDao.findByUserId(userId);
+            SysUser user = sysUserDao.findByUId(userId);
             if (user != null)
             {
                 /*位置信息如果存在则更新，如果不存在则添加*/
@@ -249,8 +258,6 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
     @Override
     public List<SysUser> getDepLeaderByUserId(String userId,String groupCode)
     {
-        List<SysUser> sysUsers = new ArrayList<SysUser>() ;
-
          /*用户组信息校验*/
         Group group = groupDao.findByCode(groupCode.trim());
         if (groupCode == null || group == null)//用户组不存在
@@ -259,13 +266,13 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
         }
 
         /*用户信息校验*/
-        SysUser user = sysUserDao.findByUserId(userId);
+        SysUser user = sysUserDao.findByUId(userId);
         if (userId == null || user == null)
         {
             throw new ServerSideBusinessException("用户信息错误，不存在用户" ,HttpStatus.NOT_ACCEPTABLE);
         }
 
-        sysUsers = sysUserDao.getDepLeaderByUserId(userId,groupCode);
+        List<SysUser> sysUsers = sysUserDao.getDepLeaderByUserId(userId,groupCode);
 
         return sysUsers;
     }

@@ -17,7 +17,7 @@ public class SalesRpt implements Serializable
     private String specCode;
     private String specName;
     private Integer count;  //数量
-    private Double  sum;    //金额
+    private Float  sum;    //金额
 
     public SalesRpt()
     {
@@ -44,7 +44,7 @@ public class SalesRpt implements Serializable
         return  count;
     }
 
-    public Double getSum()
+    public Float getSum()
     {
         return  sum;
     }
@@ -69,7 +69,7 @@ public class SalesRpt implements Serializable
     {
         this.count = count;
     }
-    public void  setSum(Double sum)
+    public void  setSum(Float sum)
     {
         this.sum = sum;
     }

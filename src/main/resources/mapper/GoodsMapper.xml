@@ -56,6 +56,8 @@
         <if test="status != null">status = #{status},</if>
         <if test="note != null">note = #{note},</if>
 
+        <if test="area != null">area_idx = #{area.id},</if>
+
         <if test="goodsType != null">
           <if test="goodsType.id != null">type_idx = #{goodsType.id},</if>
         </if>
@@ -92,7 +94,7 @@
             </if>
 
             <if test="code != null">AND  code = #{code}</if>
-            <if test="name != name">
+            <if test="name != null">
                 AND  name like CONCAT(CONCAT('%', #{name}), '%')
             </if>
             <if test="specifications != null">AND  specifications = #{specifications}</if>

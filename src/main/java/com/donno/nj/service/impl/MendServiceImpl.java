@@ -171,7 +171,7 @@ public class MendServiceImpl implements MendService
         }
         else
         {
-            SysUser sysUser = sysUserDao.findByUserId(newMend.getDealedUser().getUserId());
+            SysUser sysUser = sysUserDao.findByUId(newMend.getDealedUser().getUserId());
             if ( sysUser == null)
             {
                 throw new ServerSideBusinessException("报修处理用户信息不正确，没有该用户信息！", HttpStatus.NOT_ACCEPTABLE);

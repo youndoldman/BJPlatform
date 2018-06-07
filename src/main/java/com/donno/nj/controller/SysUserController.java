@@ -34,6 +34,9 @@ public class SysUserController
     @Autowired
     private SysUserService sysUserService;
 
+//    @Autowired
+//    private UserService userService;
+
     private static Timer timer;
 
     public  SysUserController()
@@ -74,19 +77,17 @@ public class SysUserController
             Map params = new HashMap<String,String>();
             params.putAll(ImmutableMap.of("userId", userId));
 
-            List<SysUser> sysUserList = sysUserService.retrieve(params);
-            if (sysUserList.size() == 1)
+            Optional<SysUser>  sysUser = sysUserService.findByUId(validUser.get().getUserId());
+            if (sysUser.isPresent())
             {
                 AppUtil.setCurrentLoginUser(validUser.get());
-                responseEntity = ResponseEntity.ok(sysUserList.get(0));
+                responseEntity = ResponseEntity.ok(sysUser.get());
 
                 /*设置用户在线*/
-                SysUser sysUser = new SysUser();
-                sysUser.setId(sysUserList.get(0).getId());
-                sysUser.setAliveStatus(AliveStatus.ASOnline);
-                sysUser.setUpdateTime(new Date());
-                sysUser.setAliveUpdateTime(new Date());
-                sysUserService.update(sysUser.getId(),sysUser);
+                sysUser.get().setAliveStatus(AliveStatus.ASOnline);
+                sysUser.get().setUpdateTime(new Date());
+                sysUser.get().setAliveUpdateTime(new Date());
+                sysUserService.update(sysUser.get().getId(),sysUser.get());
             }
             else
             {
