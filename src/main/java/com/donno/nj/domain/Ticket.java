@@ -16,7 +16,7 @@ public class Ticket implements Serializable
 
     private String specCode;
     private String specName;
-    private Double price;
+    private Float price;
     private User operator;  //操作员
     private TicketStatus  ticketStatus;
     private Date startDate;  //有效期
@@ -66,7 +66,7 @@ public class Ticket implements Serializable
     }
 
 
-    public Double getPrice()
+    public Float getPrice()
     {
         return  price;
     }
@@ -138,7 +138,7 @@ public class Ticket implements Serializable
         this.ticketStatus = ticketStatus;
     }
 
-    public void setPrice(Double price)
+    public void setPrice(Float price)
     {
         this.price = price;
     }

@@ -81,7 +81,7 @@ public class SaleCashRptController
         }
 
         /*现金销售款*/
-        Double saleCash = 0.0;
+        Float saleCash = 0f;
         Map saleCashParams = new HashMap<String,String>();
         saleCashParams.putAll(params);
         saleCashParams.putAll(ImmutableMap.of("payType", PayType.PTCash.getIndex()));
@@ -94,7 +94,7 @@ public class SaleCashRptController
 
 
         /*气票销售款(含电子、支票、现金)*/
-        Double ticketSale = 0.0;
+        Float ticketSale = 0f;
         Map ticketSaleParams = new HashMap<String,String>();
         ticketSaleParams.putAll(params);
         if (startTime.trim().length() > 0)
@@ -115,7 +115,7 @@ public class SaleCashRptController
 
 
         /*今日存银行款*/
-        Double depositCash = 0.0;
+        Float depositCash = 0f;
         List<DepositDetail>  depositDetails = depositDetailService.retrieve(params);
         for (DepositDetail depositDetail :depositDetails )
         {
@@ -124,7 +124,7 @@ public class SaleCashRptController
         saleCashRpt.setDepositCash(depositCash);
 
         /*往日赊销*/
-        Double accCredit = 0.0;
+        Float accCredit = 0f;
         Map accCreditParams = new HashMap<String,String>();
         accCreditParams.putAll(params);
         accCreditParams.remove("startTime");
@@ -138,7 +138,7 @@ public class SaleCashRptController
         saleCashRpt.setAccCredit(accCredit);
 
         /*往日月结*/
-        Double accMonthlyCredit = 0.0;
+        Float accMonthlyCredit = 0f;
         Map accMonthlyCreditParams = new HashMap<String,String>();
         accMonthlyCreditParams.putAll(params);
         accMonthlyCreditParams.remove("startTime");
@@ -152,7 +152,7 @@ public class SaleCashRptController
         saleCashRpt.setAccMonthlyCredit(accMonthlyCredit);
 
         /*今日赊销回款*/
-        Double creditWriteOff = 0.0;
+        Float creditWriteOff = 0f;
         Map creditOffParams = new HashMap<String,String>();
         creditOffParams.putAll(params);
         creditOffParams.putAll(ImmutableMap.of("cretitType", CreditType.CTCommonCredit.getIndex()));
@@ -165,7 +165,7 @@ public class SaleCashRptController
 
 
         /*今日月结回款*/
-        Double monthlyCreditWriteOff = 0.0;
+        Float monthlyCreditWriteOff = 0f;
         Map monthlyCreditWriteOffParams = new HashMap<String,String>();
         monthlyCreditWriteOffParams.putAll(params);
         monthlyCreditWriteOffParams.putAll(ImmutableMap.of("cretitType", CreditType.CTMonthlyCredit.getIndex()));
@@ -178,7 +178,7 @@ public class SaleCashRptController
         saleCashRpt.setMontlyCreditWriteOff(monthlyCreditWriteOff);
 
         /*今日结存现金=现金销售+回款+气票现金款-银行存款  */
-        Double surplusCash = 0.0;
+        Float surplusCash = 0f;
         surplusCash = saleCashRpt.getSaleCash() +  saleCashRpt.getCreditWriteOff() +
                 saleCashRpt.getMontlyCreditWriteOff() + saleCashRpt.getTicketSaleCash() - saleCashRpt.getDepositCash();
         saleCashRpt.setSurplusCash(surplusCash);

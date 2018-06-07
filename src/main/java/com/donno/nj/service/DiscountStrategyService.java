@@ -25,4 +25,7 @@ public interface DiscountStrategyService
 
     void deleteById(Integer id);
 
+
+    void discountTrigger();
+
 }

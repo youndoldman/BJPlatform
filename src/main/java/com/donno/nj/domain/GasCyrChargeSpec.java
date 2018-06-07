@@ -13,7 +13,7 @@ public class GasCyrChargeSpec implements Serializable
     private String gasCyrSpecName;
     private GasCyrChargeType gasCyrChargeType;//收费类型
 
-    private Double price;
+    private Float price;
 
 
     protected String  note;
@@ -42,7 +42,7 @@ public class GasCyrChargeSpec implements Serializable
         return gasCyrChargeType;
     }
 
-    public Double getPrice() {
+    public Float getPrice() {
         return price;
     }
 
@@ -78,7 +78,7 @@ public class GasCyrChargeSpec implements Serializable
         this.gasCyrChargeType = gasCyrChargeType;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 

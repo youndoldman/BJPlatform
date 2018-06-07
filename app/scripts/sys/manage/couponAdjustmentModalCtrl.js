@@ -6,6 +6,7 @@
 manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsService', 'title', 'initVal','udcModal','$timeout',function ($scope, close, GoodsService, title, initVal, udcModal,$timeout) {
     $scope.modalTitle = title;
 
+    var currentTime = new Date();
     $timeout(function() {
         $(function () {
             $('#datetimepickerStartCoupon').datetimepicker({
@@ -14,6 +15,7 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
                 //sideBySide:true,
                 showTodayButton:true,
                 toolbarPlacement:'top',
+                minDate:new Date(),
             });
             $('#datetimepickerEndCoupon').datetimepicker({
                 format: 'YYYY-MM-DD HH:mm',
@@ -21,6 +23,7 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
                 //sideBySide:true,
                 showTodayButton:true,
                 toolbarPlacement:'top',
+                minDate:new Date(),
             });
         });
 
@@ -29,6 +32,16 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
             $('#datetimepickerStartCoupon').datetimepicker()
                 .on('dp.change', function (ev) {
                     var date = ev.date._d;
+                    //var dateNum = date.getTime();
+                    //var currentTime = new Date();
+                    //var currentTimeNum = currentTime.getTime();
+                    //
+                    //if(dateNum < currentTimeNum)
+                    //{
+                    //    udcModal.info({"title": "提醒", "message": "优惠策略开始时间不能早于当前时间"});
+                    //    var date = new Date();
+                    //}
+
                     var month = date.getMonth()+1;
                     $scope.q.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
                         +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
@@ -43,6 +56,12 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         });
     },300);
 
+    $scope.config = {
+        provinces: [],
+        citys: [],
+        countys: [],
+    };
+
     $scope.vm = {
         discountType:["直减","百分比折扣"],
         discountConditionType:["按用户级别","按用户类型"],
@@ -53,7 +72,15 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
             name:null,
             effectTime:null,
             adjustPriceDetailList:[],
-        }
+        },
+
+        goods: {
+            area:{
+                "province":"",
+                "city":"",
+                "county":"",
+            }
+        },
     };
 
     $scope.q={
@@ -80,6 +107,7 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         $scope.type = null,
         $scope.value = null,
 
+
         $scope.useTypeSelectChange = function(){
             if($scope.useType == "排他型")
             {
@@ -91,12 +119,12 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
             }
             console.info($scope.q.useType);
         }
+
     $scope.discountTypeChange = function(){
         console.info($scope.discountType);
         if($scope.discountType == "直减")
         {
             $scope.q.discountType = 0;
-
             $scope.vm.discountText = "优惠直减金额"
         }
         else if($scope.discountType == "百分比折扣")
@@ -105,7 +133,6 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
             $scope.vm.discountText = "优惠百分比(%)"
         }
     }
-
 
     $scope.selectChange = function () {
         console.info($scope.type);
@@ -146,11 +173,6 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         //console.info($scope.q.discountConditionValue);
         //}
         //}
-
-
-
-
-
     }
 
     $scope.isModify = false;
@@ -192,6 +214,109 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         }
     };
 
+    $scope.provincesChange = function () {
+        //获取市
+        getCitysConfig($scope.vm.goods.area.province);
+        $scope.config.countys = [];
+        //$scope.goodsTypeChange();
+
+        //var queryParams = {
+        //    typeName: $scope.temp.selectedGoodsType.name,
+        //    province:$scope.vm.goods.area.province,
+        //    city:$scope.vm.goods.area.city,
+        //    county:$scope.vm.goods.area.county,
+        //};
+        //GoodsService.retrieveGoods(queryParams).then(function (goods) {
+        //    $scope.temp.goodsList = goods.items;
+        //    $scope.temp.selectedGoods = $scope.temp.goodsList[0];
+        //});
+    }
+
+    $scope.citysChange = function () {
+        //获取区
+        if ($scope.vm.goods.area.city==null) {
+            return;
+        };
+        getCountysConfig($scope.vm.goods.area.city);
+       //$scope.goodsTypeChange();
+       //
+       // var queryParams = {
+       //     typeName: $scope.temp.selectedGoodsType.name,
+       //     province:$scope.vm.goods.area.province,
+       //     city:$scope.vm.goods.area.city,
+       //     county:$scope.vm.goods.area.county,
+       // };
+       // GoodsService.retrieveGoods(queryParams).then(function (goods) {
+       //     $scope.temp.goodsList = goods.items;
+       //     $scope.temp.selectedGoods = $scope.temp.goodsList[0];
+       // });
+    }
+
+    $scope.county = null;
+    $scope.countysChange = function () {
+        //获取区
+        $scope.vm.goods.area.county = $scope.county;
+        //$scope.goodsTypeChange();
+
+        //var queryParams = {
+        //    typeName: $scope.temp.selectedGoodsType.name,
+        //    province:$scope.vm.goods.area.province,
+        //    city:$scope.vm.goods.area.city,
+        //    county:$scope.vm.goods.area.county,
+        //};
+        //GoodsService.retrieveGoods(queryParams).then(function (goods) {
+        //    $scope.temp.goodsList = goods.items;
+        //    $scope.temp.selectedGoods = $scope.temp.goodsList[0];
+        //});
+
+    }
+
+    var getProvincesConfig = function(param){
+        GoodsService.retrieveSubdistrict(param).then(function (params) {
+            var originalProvinces = params.districts[0].districts;
+            var provinces = [];
+            for (var i=0; i<originalProvinces.length; i++){
+                var province = originalProvinces[i].name;
+                provinces.push(province);
+            }
+            $scope.config.provinces = provinces;
+
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": "请求高德地图服务失败 "+value.message});
+        })
+    }
+
+    var getCitysConfig = function(param){
+        GoodsService.retrieveSubdistrict(param).then(function (params) {
+            var originalCitys = params.districts[0].districts;
+            var citys = [];
+            for (var i=0; i<originalCitys.length; i++){
+                var city = originalCitys[i].name;
+                citys.push(city);
+            }
+            $scope.config.citys = citys;
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": "请求高德地图服务失败 "+value.message});
+        })
+    }
+
+    var getCountysConfig = function(param){
+        $scope.config.countys[0] = "全部区";
+        GoodsService.retrieveSubdistrict(param).then(function (params) {
+            var originalCountys = params.districts[0].districts;
+            var countys = [];
+            for (var i=0; i<originalCountys.length; i++){
+                var county = originalCountys[i].name;
+                $scope.config.countys.push(county);
+                //countys.push(county);
+            }
+            //$scope.config.countys = countys;
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": "请求高德地图服务失败 "+value.message});
+        })
+    }
+
+
     var init = function () {
         $scope.q.discountType = 0;
         $scope.discountType = $scope.vm.discountType[0];
@@ -210,16 +335,32 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
             console.info($scope.value);
         });
 
+        getProvincesConfig("中国");
+
         if(title == "修改优惠策略") {
             $scope.q = _.clone(initVal);
-
             $scope.isModify = true;
+
+            $scope.county =  $scope.vm.goods.area.county;
+            if($scope.vm.goods.area.county.length==0){
+                $scope.county = "全部区";
+            }
         }
         else {
             $scope.isModify = false;
+
+            $scope.vm.goods.area.province = "云南省";
+            getCitysConfig($scope.vm.goods.area.province);
+            $scope.vm.goods.area.city = "昆明市";
+            getCountysConfig($scope.vm.goods.area.city);
+
+            $scope.county = "全部区";
+            $scope.vm.goods.area.county = "全部区";
+
         }
         $scope.vm.currentPriceAdjustment.adjustPriceDetailList =  $scope.q.discountDetails;
         var queryParams = {};
+        //$scope.timeChange();
         GoodsService.retrieveGoodsTypes(queryParams).then(function (goodsTypes) {
             $scope.temp.goodsTypesList = goodsTypes.items;
             $scope.temp.selectedGoodsType = $scope.temp.goodsTypesList[0];
@@ -232,6 +373,8 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         $scope.temp.adjustGoodsPrice = null;
     };
 
+
+
     //商品类型改变
     $scope.goodsTypeChange = function () {
         //获取区
@@ -240,6 +383,9 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         };
         var queryParams = {
             typeName: $scope.temp.selectedGoodsType.name,
+            //province:$scope.vm.goods.area.province,
+            //city:$scope.vm.goods.area.city,
+            //county:$scope.vm.goods.area.county,
         };
         GoodsService.retrieveGoods(queryParams).then(function (goods) {
             $scope.temp.goodsList = goods.items;
@@ -286,4 +432,7 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
     };
 
     init();
+
+
+
 }]);

@@ -122,7 +122,13 @@ public class GoodsServiceImpl implements GoodsService
         }
 
         /*商品是否存在*/
-        Goods goods = findByCode(code).get();
+        Optional<Goods> goodsOptional = findByCode(code);
+        if(!goodsOptional.isPresent())
+        {
+            throw new ServerSideBusinessException("商品信息不存在！", HttpStatus.NOT_FOUND);
+        }
+
+        Goods goods = goodsOptional.get();
         if(goods == null)
         {
             throw new ServerSideBusinessException("商品信息不存在！", HttpStatus.NOT_FOUND);
@@ -169,6 +175,22 @@ public class GoodsServiceImpl implements GoodsService
         else
         {
             newGoods.setGoodsType(null);
+        }
+
+        /*区域*/
+        Area area = newGoods.getArea();
+        if (area !=null)
+        {
+            Area targetArea = areaDao.findByArea(area.getProvince(),area.getCity(),area.getCounty());
+            if (targetArea == null)
+            {
+                areaDao.insert(area);
+                newGoods.setArea(area);
+            }
+            else
+            {
+                newGoods.setArea(targetArea);
+            }
         }
 
         /*更新数据*/

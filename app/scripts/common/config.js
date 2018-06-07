@@ -257,57 +257,39 @@ commonModule.constant('NavItem', {
             target: "_blank",
             href: "./customService.htm#/CustomService/customerManage",
             icon: "fa-plane"
-        }, {
+        },  {
             index: 4,
-            name: "报修处理",
-            target: "_blank",
-            href: "./customService.htm#/CustomService/Mend",
-            icon: "fa-plane"
-        }, {
-            index: 5,
-            name: "安检处理",
-            target: "_blank",
-            href: "./customService.htm#/CustomService/Security",
-            icon: "fa-plane"
-        }, {
-            index: 6,
-            name: "投诉处理",
-            target: "_blank",
-            href: "./customService.htm#/CustomService/Complaint",
-            icon: "fa-plane"
-        }, {
-            index: 7,
-            name: "坐席报表1",
+            name: "电话统计",
             target: "_blank",
             href: "./customService.htm#/CustomService/report1",
             icon: "fa-table"
         }, {
-            index: 8,
-            name: "坐席报表2",
+            index: 5,
+            name: "操作状态统计",
             target: "_blank",
             href: "./customService.htm#/CustomService/report2",
             icon: "fa-table"
         }, {
-            index: 9,
-            name: "工作组报表3",
+            index: 6,
+            name: "等待时长统计",
             target: "_blank",
             href: "./customService.htm#/CustomService/report3",
             icon: "fa-table"
         }, {
-            index: 10,
-            name: "工作组报表4",
+            index: 7,
+            name: "处理时长统计",
             target: "_blank",
             href: "./customService.htm#/CustomService/report4",
             icon: "fa-table"
         }, {
-            index: 11,
-            name: "工作组报表5",
+            index: 8,
+            name: "等待时长分析",
             target: "_blank",
             href: "./customService.htm#/CustomService/report5",
             icon: "fa-table"
         }, {
-            index: 12,
-            name: "工作组报表6",
+            index: 9,
+            name: "来话分析",
             target: "_blank",
             href: "./customService.htm#/CustomService/report6",
             icon: "fa-table"

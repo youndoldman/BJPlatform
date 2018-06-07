@@ -13,7 +13,7 @@ public class Coupon implements Serializable
 
     private String specCode;
     private String specName;
-    private Double price;
+    private Float price;
     private User operator;  //操作员
     private TicketStatus  couponStatus;
     private Date startDate;  //有效期
@@ -54,7 +54,7 @@ public class Coupon implements Serializable
     }
 
 
-    public Double getPrice()
+    public Float getPrice()
     {
         return  price;
     }
@@ -116,7 +116,7 @@ public class Coupon implements Serializable
         this.couponStatus = couponStatus;
     }
 
-    public void setPrice(Double price)
+    public void setPrice(Float price)
     {
         this.price = price;
     }
