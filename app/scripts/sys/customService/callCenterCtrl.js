@@ -144,7 +144,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         $scope.qCallReport = {};
 
         $scope.vm = {
-            callInPhone:null,//呼入电话
+            callInPhone:"00000000",//呼入电话
             callOutPhone:null,//呼出电话
             currentCustomer:null,
             CustomerList: [],
@@ -822,4 +822,5 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             });
 
         };
+
     }]);

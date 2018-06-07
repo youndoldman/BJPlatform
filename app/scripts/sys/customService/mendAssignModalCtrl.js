@@ -8,10 +8,11 @@ customServiceApp.controller('MendAssignModalCtrl', ['$scope', 'close', 'MendSecu
             'exportFilename': 'SportsChart',
             'parentNodeSymbol': 'fa-th-large',
             'nodeContent': 'title',
-            'direction': 'l2r',
-            'visibleLevel':'3',
-            'pan':true
-            //'toggleSiblingsResp':true
+            'direction': 'l2r'
+            //'visibleLevel':'4',
+            //'toggleSiblingsResp':true,
+            //'pan':true
+            //'pan':true
         });
         $scope.chart.$chartContainer.on('click', '.node', function() {
             var $this = $(this);
