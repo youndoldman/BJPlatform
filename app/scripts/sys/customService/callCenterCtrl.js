@@ -542,7 +542,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
         var init = function () {
             $scope.currentKTYUser = sessionStorage.getKTYCurUser();
-
+            console.info($scope.currentKTYUser);
             $scope.pagerCallReport.pageSize = 10;
             $scope.pagerCallReport.update($scope.qCallReport, 0, 1);
 

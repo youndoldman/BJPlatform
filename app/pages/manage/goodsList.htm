@@ -51,7 +51,7 @@
             </tr>
             </tbody>
         </table>
-        <div ng-if="vm.userList.length == 0" nj-table-no-data></div>
+        <div ng-if="vm.goodsTypesList.length == 0" nj-table-no-data></div>
         <div nj-pager pager="pagerGoodsTypes"></div>
 
 
@@ -70,8 +70,8 @@
         <div class="toolbar">
             <form role="form">
                 <div class="inline-group">
-                    <label class="input"><input type="text" class="form-control input-sm" placeholder="输入商品类型" ng-model="q.goodsType" ng-change="search()"> </label>
-                    <button type="submit" class="btn btn-sm btn-primary" ng-click="search()"><i class="fa fa-user"></i>搜索商品类型</button>
+                    <label class="input"><input type="text" class="form-control input-sm" placeholder="输入商品名称" ng-model="q.goodsName" ng-change="search()"> </label>
+                    <button type="submit" class="btn btn-sm btn-primary" ng-click="search()"><i class="fa fa-user"></i>搜索商品名称</button>
                     <button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUpGoods()"><i class="fa fa-plus"></i> 新增商品 </button>
                 </div>
             </form>
@@ -82,18 +82,18 @@
             <tr>
                 <th width="1%"></th>
                 <td width="4%">序号</td>
-                <td width="8%">商品号</td>
-                <td width="8%">商品名称</td>
-                <td width="8%">商品类型</td>
-                <td width="8%">商品规格</td>
-                <td width="8%">单位</td>
+                <td width="9%">商品号</td>
+                <td width="9%">商品名称</td>
+                <td width="7%">商品类型</td>
+                <td width="7%">商品规格</td>
+                <td width="5%">单位</td>
                 <td width="8%">重量(公斤)</td>
-                <td width="8%">价格(元)</td>
+                <td width="7%">价格(元)</td>
                 <td width="8%">有效期(天)</td>
                 <td width="8%">状态</td>
-                <td width="7%">所属区域</td>
-                <td width="8%">说明</td>
-                <td width="8%">操 作</td>
+                <td width="10%">所属区域</td>
+                <td width="10%">说明</td>
+                <td width="7%">操 作</td>
             </tr>
             </thead>
             <tbody>
@@ -123,7 +123,7 @@
 
             </tbody>
         </table>
-        <div ng-if="vm.userList.length == 0" nj-table-no-data></div>
+        <div ng-if="vm.goodsList.length == 0" nj-table-no-data></div>
         <div nj-pager pager="pagerGoods"></div>
 
 
@@ -172,7 +172,7 @@
             <tbody>
             <tr ng-repeat="goodsPriceAdjustment in vm.goodsPriceAdjustmentList">
                 <td></td>
-                <td class="message">{{$index+1+pagerGoods.pageSize*(pagerGoods.getCurPageNo()-1)}}</td>
+                <td class="message">{{$index+1+pagerGoodsPriceAdjustment.pageSize*(pagerGoodsPriceAdjustment.getCurPageNo()-1)}}</td>
                 <td class="message">{{goodsPriceAdjustment.name}}</td>
                 <td class="message">{{goodsPriceAdjustment.effectTime}}</td>
                 <td class="message">{{goodsPriceAdjustment.createTime}}</td>
@@ -188,7 +188,7 @@
             </tr>
             </tbody>
         </table>
-        <div ng-if="vm.userList.length == 0" nj-table-no-data></div>
+        <div ng-if="vm.goodsPriceAdjustmentList.length == 0" nj-table-no-data></div>
         <div nj-pager pager="pagerGoodsPriceAdjustment"></div>
     </div>
 </div>
@@ -205,7 +205,7 @@
         <div class="toolbar">
             <form role="form">
                 <div class="inline-group">
-                    <label class="input"><input type="text" class="form-control input-sm" placeholder="输入优惠名称" ng-model="q.couponName" > </label>
+                    <label class="input"><input type="text" class="form-control input-sm" placeholder="输入优惠名称" ng-model="q.couponName" ng-change="searchCouponAdjustment()"> </label>
                     <label class="input">时间：</label>
                     <label class="input"><input type="text"  id="couponPickerStart"  class="form-control" ng-model="q.couponStartTime" ></label>
                     <label class="input">-</label>
@@ -242,7 +242,7 @@
             <tbody>
             <tr ng-repeat="couponAdjustment in vm.couponAdjustmentList">
                 <td></td>
-                <td class="message">{{$index+1+pagerGoods.pageSize*(pagerGoods.getCurPageNo()-1)}}</td>
+                <td class="message">{{$index+1+pagerCouponAdjustment.pageSize*(pagerCouponAdjustment.getCurPageNo()-1)}}</td>
                 <td class="message">{{couponAdjustment.name}}</td>
                 <td class="message">{{couponAdjustment.startTime}}</td>
                 <td class="message">{{couponAdjustment.endTime}}</td>
@@ -261,7 +261,7 @@
             </tr>
             </tbody>
         </table>
-        <div ng-if="vm.userList.length == 0" nj-table-no-data></div>
+        <div ng-if="vm.couponAdjustmentList.length == 0" nj-table-no-data></div>
         <div nj-pager pager="pagerCouponAdjustment"></div>
 
     </div>

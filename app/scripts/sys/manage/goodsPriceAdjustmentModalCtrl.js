@@ -11,6 +11,7 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
                 //sideBySide:true,
                 showTodayButton: true,
                 toolbarPlacement: 'top',
+                minDate:new Date(),
             });
 
         });
@@ -30,7 +31,14 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
             name:null,
             effectTime:null,
             adjustPriceDetailList:[]
-        }
+        },
+        goods: {
+            area:{
+                "province":"",
+                "city":"",
+                "county":"",
+            }
+        },
     };
 
     $scope.temp = {
@@ -42,6 +50,11 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
 
     };
 
+    $scope.config = {
+        provinces: [],
+        citys: [],
+        countys: [],
+    };
 
     $scope.isModify = false;
 
@@ -70,13 +83,143 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
         }
     };
 
+    $scope.provincesChange = function () {
+        //获取市
+        getCitysConfig($scope.vm.goods.area.province);
+        $scope.config.countys = [];
+        //$scope.goodsTypeChange();
+
+        //var queryParams = {
+        //    typeName: $scope.temp.selectedGoodsType.name,
+        //    province:$scope.vm.goods.area.province,
+        //    city:$scope.vm.goods.area.city,
+        //    county:$scope.vm.goods.area.county,
+        //};
+        //console.info("区域选择")
+        //console.info(queryParams);
+        //GoodsService.retrieveGoods(queryParams).then(function (goods) {
+        //    $scope.temp.goodsList = goods.items;
+        //    console.info($scope.temp.goodsList);
+        //    $scope.temp.selectedGoods = $scope.temp.goodsList[0];
+        //});
+    }
+
+    $scope.citysChange = function () {
+        //获取区
+        if ($scope.vm.goods.area.city==null) {
+            return;
+        };
+        getCountysConfig($scope.vm.goods.area.city);
+        //$scope.goodsTypeChange();
+        //
+        // var queryParams = {
+        //     typeName: $scope.temp.selectedGoodsType.name,
+        //     province:$scope.vm.goods.area.province,
+        //     city:$scope.vm.goods.area.city,
+        //     county:$scope.vm.goods.area.county,
+        // };
+        //console.info("区域选择")
+        //console.info(queryParams);
+        // GoodsService.retrieveGoods(queryParams).then(function (goods) {
+        //     $scope.temp.goodsList = goods.items;
+        //     console.info($scope.temp.goodsList);
+        //     $scope.temp.selectedGoods = $scope.temp.goodsList[0];
+        // });
+    }
+
+    $scope.county = null;
+    $scope.countysChange = function () {
+        //获取区
+        $scope.vm.goods.area.county = $scope.county;
+        //$scope.goodsTypeChange();
+
+        //var queryParams = {
+        //    typeName: $scope.temp.selectedGoodsType.name,
+        //    province:$scope.vm.goods.area.province,
+        //    city:$scope.vm.goods.area.city,
+        //    county:$scope.vm.goods.area.county,
+        //};
+        //console.info("区域选择")
+        //console.info(queryParams);
+        //GoodsService.retrieveGoods(queryParams).then(function (goods) {
+        //    $scope.temp.goodsList = goods.items;
+        //    console.info($scope.temp.goodsList);
+        //    $scope.temp.selectedGoods = $scope.temp.goodsList[0];
+        //});
+
+    }
+
+    var getProvincesConfig = function(param){
+        GoodsService.retrieveSubdistrict(param).then(function (params) {
+            var originalProvinces = params.districts[0].districts;
+            var provinces = [];
+            for (var i=0; i<originalProvinces.length; i++){
+                var province = originalProvinces[i].name;
+                provinces.push(province);
+            }
+            $scope.config.provinces = provinces;
+
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": "请求高德地图服务失败 "+value.message});
+        })
+    }
+
+    var getCitysConfig = function(param){
+        GoodsService.retrieveSubdistrict(param).then(function (params) {
+            var originalCitys = params.districts[0].districts;
+            var citys = [];
+            for (var i=0; i<originalCitys.length; i++){
+                var city = originalCitys[i].name;
+                citys.push(city);
+            }
+            $scope.config.citys = citys;
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": "请求高德地图服务失败 "+value.message});
+        })
+    }
+
+    var getCountysConfig = function(param){
+        $scope.config.countys[0] = "全部区";
+        GoodsService.retrieveSubdistrict(param).then(function (params) {
+            var originalCountys = params.districts[0].districts;
+            var countys = [];
+            for (var i=0; i<originalCountys.length; i++){
+                var county = originalCountys[i].name;
+                $scope.config.countys.push(county);
+                //countys.push(county);
+            }
+            //$scope.config.countys = countys;
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": "请求高德地图服务失败 "+value.message});
+        })
+    }
+
+
     var init = function () {
+        getProvincesConfig("中国");
+
         if(title == "修改调价策略") {
             $scope.vm.currentPriceAjustment = _.clone(initVal);
             $scope.isModify = true;
+
+            $scope.county =  $scope.vm.goods.area.county;
+            if($scope.vm.goods.area.county.length==0){
+                $scope.county = "全部区";
+            }
+
         }
         else {
             $scope.isModify = false;
+
+            $scope.vm.goods.area.province = "云南省";
+            getCitysConfig($scope.vm.goods.area.province);
+            $scope.vm.goods.area.city = "昆明市";
+            getCountysConfig($scope.vm.goods.area.city);
+
+            $scope.county = "全部区";
+            $scope.vm.goods.area.county = "全部区";
+
+
         }
         //查询商品类型
         var queryParams = {};
@@ -99,9 +242,15 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
         };
         var queryParams = {
             typeName: $scope.temp.selectedGoodsType.name,
+            //province:$scope.vm.goods.area.province,
+            //city:$scope.vm.goods.area.city,
+            //county:$scope.vm.goods.area.county,
         };
+        console.info("搜索区域商品");
+        console.info(queryParams);
         GoodsService.retrieveGoods(queryParams).then(function (goods) {
             $scope.temp.goodsList = goods.items;
+            console.info($scope.temp.goodsList );
             $scope.temp.selectedGoods = $scope.temp.goodsList[0];
         });
     };

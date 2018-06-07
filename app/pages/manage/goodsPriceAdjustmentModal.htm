@@ -28,14 +28,37 @@
                                     <div class="col-md-3 input-width-sm">
                                         <select name="goodsType" ng-model="temp.selectedGoodsType" ng-options="goodsType.name for goodsType in temp.goodsTypesList" class="form-control" ng-selected="" ng-change="goodsTypeChange()"></select>
                                     </div>
-
                                     <label class="col-md-2 control-label input-label">商品：</label>
                                     <div class="col-md-3 input-width-sm">
-                                        <select name="goods" ng-model="temp.selectedGoods" ng-options="goods.name for goods in temp.goodsList" class="form-control" ng-selected="" ng-change="goodsChange()"></select>
+                                    <select name="goods" ng-model="temp.selectedGoods" ng-options="goods.name for goods in temp.goodsList" class="form-control" ng-selected="" ng-change="goodsChange()"></select>
                                     </div>
-
                                     <button type="button" class="btn btn-sm btn-success pull-right" ng-click="addToCart()"><i class="fa fa-plus"></i> 添加调价列表 </button>
                                 </div>
+
+                                <!--<div class="row" style="margin-top: 15px">-->
+
+                                    <!--<label class="col-md-2 control-label input-label">所属区域：</label>-->
+                                    <!--<div class="col-md-3 ">-->
+                                        <!--<select name="province" ng-model="vm.goods.area.province" ng-options="province for province in config.provinces" class="form-control" ng-selected="" ng-change="provincesChange()"></select>-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-3 ">-->
+                                        <!--<select name="city" ng-model="vm.goods.area.city" ng-options="city for city in config.citys" class="form-control" ng-selected="" ng-change="citysChange()"></select>-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-4 ">-->
+                                        <!--<select name="county" ng-model="county" ng-options="county for county in config.countys" class="form-control" ng-selected="countysChange()"></select>-->
+                                    <!--</div>-->
+
+                                <!--</div>-->
+
+                                <!--<div class="row" style="margin-top: 15px">-->
+
+                                    <!--<label class="col-md-2 control-label input-label">商品：</label>-->
+                                    <!--<div class="col-md-3 input-width-sm">-->
+                                        <!--<select name="goods" ng-model="temp.selectedGoods" ng-options="goods.name for goods in temp.goodsList" class="form-control" ng-selected="" ng-change="goodsChange()"></select>-->
+                                    <!--</div>-->
+
+                                    <!--<button type="button" class="btn btn-sm btn-success pull-right" ng-click="addToCart()"><i class="fa fa-plus"></i> 添加调价列表 </button>-->
+                                <!--</div>-->
 
                                 <div class="row" style="margin-top: 15px">
                                     <label class="col-md-2 control-label input-label">现价(元)：</label>

@@ -16,7 +16,7 @@
                         <div class="col-sm-8 input-width">
                             <input type="text" name="code" class="form-control" ng-model="vm.goods.code" required>
                         </div>
-                        <label class="input-tips" ng-show="isCreate">&nbsp;*&nbsp;必填项</label>
+                        <label class="input-tips" ng-show="goodsForm.code.$error.required || goodsForm.code.$invalid">&nbsp;*&nbsp;必填项</label>
                     </div>
 
                     <div class="input-group pdb15">
@@ -24,14 +24,16 @@
                         <div class="col-sm-8 input-width">
                             <input type="text" name="name" class="form-control" ng-model="vm.goods.name"  required>
                         </div>
-                        <label class="input-tips" ng-show="isCreate">&nbsp;*&nbsp;必填项</label>
+                        <label class="input-tips" ng-show="goodsForm.name.$error.required || goodsForm.name.$invalid">&nbsp;*&nbsp;必填项</label>
                     </div>
 
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label">商品类型:</label>
                         <div class="col-sm-8 input-width">
-                            <select name="goodsType" ng-model="vm.goods.goodsType" ng-options="goodsType.name for goodsType in vm.goodsTypesList" class="form-control" ng-selected=""></select>
+                            <select name="goodsType" ng-model="vm.goods.goodsType" ng-options="goodsType.name for goodsType in vm.goodsTypesList" class="form-control" ng-selected="" required></select>
                         </div>
+
+                        <!--<label class="input-tips" ng-show="goodsForm.goodsType.$error.required || goodsForm.goodsType.$invalid">&nbsp;*&nbsp;必填项</label>-->
                         <label class="input-tips" ng-show="isCreate">&nbsp;*&nbsp;必填项</label>
                     </div>
 
@@ -40,15 +42,18 @@
                         <div class="col-sm-8 input-width">
                             <input type="text" name="specifications" class="form-control" ng-model="vm.goods.specifications"  required>
                         </div>
-                        <label class="input-tips" ng-show="isCreate">&nbsp;*&nbsp;必填项</label>
+                        <label class="input-tips" ng-show="goodsForm.specifications.$error.required || goodsForm.specifications.$invalid">&nbsp;*&nbsp;必填项</label>
                     </div>
 
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label">单位:</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="unit" class="form-control" ng-model="vm.goods.unit"  required>
+                            <!--<input type="text" name="unit" class="form-control" ng-model="vm.goods.unit"  required>-->
+                            <select name="unit" ng-model="unit" ng-options="unit for unit in  config.unitList" class="form-control" ng-selected="" ng-change="unitChange()" required></select>
+                            <!--<select name="unit" ng-model="vm.goods.unit" ng-options="unit.value as unit.name  for unit in config.unitList" class="form-control" ng-selected="unitChange()" required></select>-->
                         </div>
                         <label class="input-tips" ng-show="isCreate">&nbsp;*&nbsp;必填项</label>
+                        <!--<label class="input-tips" ng-show="goodsForm.unit.$error.required || goodsForm.unit.$invalid">&nbsp;*&nbsp;必填项</label>-->
                     </div>
 
                     <div class="input-group pdb15">
@@ -56,7 +61,8 @@
                         <div class="col-sm-8 input-width">
                             <input type="number" name="weight" class="form-control" ng-model="vm.goods.weight"  min="0" onkeyup="this.value=this.value.replace(/\-/g,'');" required>
                         </div>
-                        <label class="input-tips" ng-show="isCreate">&nbsp;*&nbsp;必填项</label>
+
+                        <label class="input-tips" ng-show="goodsForm.weight.$error.required || goodsForm.weight.$invalid">&nbsp;*&nbsp;必填项</label>
                     </div>
 
                     <div class="input-group pdb15">
@@ -64,7 +70,7 @@
                         <div class="col-sm-8 input-width">
                             <input type="number" name="price" class="form-control" ng-model="vm.goods.price"   min="0" onkeyup="this.value=this.value.replace(/\-/g,'');" required>
                         </div>
-                        <label class="input-tips" ng-show="isCreate">&nbsp;*&nbsp;必填项</label>
+                        <label class="input-tips" ng-show="goodsForm.price.$error.required || goodsForm.price.$invalid">&nbsp;*&nbsp;必填项</label>
                     </div>
 
                     <div class="input-group pdb15">
@@ -72,15 +78,16 @@
                         <div class="col-sm-8 input-width">
                             <input type="number" name="lifeExpectancy" class="form-control" ng-model="vm.goods.lifeExpectancy"   min="0" onkeyup="this.value=this.value.replace(/\-/g,'');" required>
                         </div>
-                        <label class="input-tips" ng-show="isCreate">&nbsp;*&nbsp;必填项</label>
+                        <label class="input-tips" ng-show="goodsForm.lifeExpectancy.$error.required || goodsForm.lifeExpectancy.$invalid">&nbsp;*&nbsp;必填项</label>
                     </div>
 
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label">状态:</label>
                         <div class="col-sm-8 input-width">
-                            <select name="status" ng-model="vm.goods.status" ng-options="status.value as status.name  for status in config.goodsStatusList" class="form-control" ng-selected=""></select>
+                            <select name="status" ng-model="vm.goods.status" ng-options="status.value as status.name  for status in config.goodsStatusList" class="form-control" ng-selected="" required></select>
                         </div>
                         <label class="input-tips" ng-show="isCreate">&nbsp;*&nbsp;必填项</label>
+                        <!--<label class="input-tips" ng-show="goodsForm.status.$error.required || goodsForm.status.$invalid">&nbsp;*&nbsp;必填项</label>-->
                     </div>
 
                     <div class="input-group pdb15">
@@ -88,7 +95,6 @@
                         <div class="col-sm-8 input-width">
                             <input type="text" name="note" class="form-control" ng-model="vm.goods.note"  required>
                         </div>
-                        <label class="input-tips" ng-show="isCreate">&nbsp;*&nbsp;必填项</label>
                     </div>
 
 
@@ -96,27 +102,28 @@
                         <div style="margin-left: 25px;" class="col-xs-2 text-left">
                             <label>所属区域:</label>
                         </div>
-                        <div style="margin-left: 8px;" class="col-xs-3">
+                        <div style="margin-left: 8px;" class="col-xs-4">
                             <select name="province" ng-model="vm.goods.area.province" ng-options="province for province in config.provinces" class="form-control" ng-selected="" ng-change="provincesChange()"></select>
                         </div>
-                        <div style="margin-left: 0px;" class="col-xs-3">
+                        <div style="margin-left: 0px;" class="col-xs-5">
                             <select name="city" ng-model="vm.goods.area.city" ng-options="city for city in config.citys" class="form-control" ng-selected="" ng-change="citysChange()"></select>
                         </div>
-                        <div style="margin-left: 0px;" class="col-xs-3">
-                            <select name="county" ng-model="vm.goods.area.county" ng-options="county for county in config.countys" class="form-control" ng-selected=""></select>
+                        <div style="margin-left: 135px;margin-top: 5px;" class="col-xs-5">
+                            <select name="county" ng-model="county" ng-options="county for county in config.countys" class="form-control" ng-selected="countysChange()"></select>
                         </div>
+                        <label class="input-tips" ng-show="isCreate">&nbsp;*&nbsp;必填项</label>
                     </div>
 
-                    <div class="row">
-                        <div style="margin-left: 25px;" class="col-xs-2 text-left">
-                        </div>
-                        <div style="margin-left: 8px;" class="col-xs-3">
-                        </div>
-                        <div style="margin-left: 0px;" class="col-xs-3"></div>
-                        <div style="margin-left: -2px;margin-top: -8px;" class="col-xs-3 ">
-                            <label class="input-tips" ng-show="isCreate">&nbsp;*&nbsp;必填项</label>
-                        </div>
-                    </div>
+                    <!--<div class="row">-->
+                        <!--<div style="margin-left: 25px;" class="col-xs-2 text-left">-->
+                        <!--</div>-->
+                        <!--<div style="margin-left: 8px;" class="col-xs-3">-->
+                        <!--</div>-->
+                        <!--<div style="margin-left: 0px;" class="col-xs-3"></div>-->
+                        <!--<div style="margin-left: -2px;margin-top: -8px;" class="col-xs-3 ">-->
+                            <!--<label class="input-tips" ng-show="isCreate">&nbsp;*&nbsp;必填项</label>-->
+                        <!--</div>-->
+                    <!--</div>-->
 
 
                 </div>
@@ -124,8 +131,8 @@
 
                 <div class="modal-footer">
                     <button type="submit" ng-click="submit(vm.goods)" class="btn btn-primary" data-dismiss="modal"
-                            ng-disabled="goodsForm.code.$error.required || goodsForm.name.$error.required||
-                            goodsForm.specifications.$error.required || goodsForm.price.$error.required|| goodsForm.unit.$error.required">确认</button>
+                            ng-disabled="goodsForm.code.$error.required || goodsForm.name.$error.required||goodsForm.specifications.$error.required
+                            || goodsForm.price.$error.required|| goodsForm.weight.$error.required || goodsForm.lifeExpectancy.$error.required">确认</button>
                     <button type="button" ng-click="close(true)" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </form>
