@@ -63,7 +63,7 @@ public class SysUserController
         ResponseEntity responseEntity;
 
         Optional<User> validUser = sysUserService.findByUserId(userId);
-
+        Optional<SysUser>  sysUser = sysUserService.findByUId(userId);
         if (!validUser.isPresent())
         {
             responseEntity =  ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -74,20 +74,18 @@ public class SysUserController
         }
         else
         {
-            Map params = new HashMap<String,String>();
-            params.putAll(ImmutableMap.of("userId", userId));
-
-            Optional<SysUser>  sysUser = sysUserService.findByUId(validUser.get().getUserId());
             if (sysUser.isPresent())
             {
                 AppUtil.setCurrentLoginUser(validUser.get());
                 responseEntity = ResponseEntity.ok(sysUser.get());
 
                 /*设置用户在线*/
-                sysUser.get().setAliveStatus(AliveStatus.ASOnline);
-                sysUser.get().setUpdateTime(new Date());
-                sysUser.get().setAliveUpdateTime(new Date());
-                sysUserService.update(sysUser.get().getId(),sysUser.get());
+                SysUser sysUserOnLine = new SysUser();
+                sysUserOnLine.setId(sysUser.get().getId());
+                sysUserOnLine.setAliveStatus(AliveStatus.ASOnline);
+                sysUserOnLine.setUpdateTime(new Date());
+                sysUserOnLine.setAliveUpdateTime(new Date());
+                sysUserService.update(sysUserOnLine.getId(),sysUserOnLine);
             }
             else
             {
