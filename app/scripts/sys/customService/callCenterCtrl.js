@@ -143,6 +143,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         $scope.qHistory = {};
         $scope.qCallReport = {};
 
+        $scope.currentUser = {};
         $scope.vm = {
             callInPhone:"00000000",//呼入电话
             callOutPhone:null,//呼出电话
@@ -281,6 +282,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         $scope.search = function () {
             $scope.pagerCustomer.setCurPageNo(1);
             searchCustomer();
+
+
         };
 
         $scope.initPopUp = function () {
@@ -445,9 +448,29 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
                 if ($scope.vm.CustomerList.length > 0) {
                     $scope.vm.currentCustomer = $scope.vm.CustomerList[0];
+
                     $scope.showDetail($scope.vm.currentCustomer);
                 }
+
+                console.info($scope.vm.currentCustomer);
+
+                var queryParams1 = {
+                    typeName: $scope.temp.selectedGoodsType.name,
+                    status:0,//0 正常上市,
+                    province:$scope.vm.currentCustomer.address.province,
+                    city:$scope.vm.currentCustomer.address.city,
+                    county:$scope.vm.currentCustomer.address.county,
+                };
+                console.info(queryParams1);
+                CustomerManageService.retrieveGoods(queryParams1).then(function (goods) {
+                    $scope.temp.goodsList = goods.items;
+                    $scope.temp.selectedGoods = $scope.temp.goodsList[0];
+                    console.info($scope.temp.selectedGoods)
+                });
             });
+
+
+
         };
 
         var searchCustomerByParams = function (Params) {
@@ -507,10 +530,15 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 return;
             };
             if($scope.vm.currentCustomer == null){
-                var queryParams = {
-                    typeName: $scope.temp.selectedGoodsType.name,
-                    status:0,//0 正常上市,
-                };
+                //var queryParams = {
+                //    typeName: $scope.temp.selectedGoodsType.name,
+                //    status:0,//0 正常上市,
+                //};
+                //CustomerManageService.retrieveGoods(queryParams).then(function (goods) {
+                //    $scope.temp.goodsList = goods.items;
+                //    $scope.temp.selectedGoods = $scope.temp.goodsList[0];
+                //});
+                return;
             }
             else {
                 var queryParams = {
@@ -520,12 +548,21 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                     city:$scope.vm.currentCustomer.address.city,
                     county:$scope.vm.currentCustomer.address.county,
                 };
+               //console.info(queryParams);
+                CustomerManageService.retrieveGoods(queryParams).then(function (goods) {
+                    if(goods.items.length  != 0){
+                        $scope.temp.goodsList = goods.items;
+                        $scope.temp.selectedGoods = $scope.temp.goodsList[0];
+                        //console.info("商品种类触发");
+                        //console.info(goods.items);
+                    }
+                    else {
+                        $scope.temp.selectedGoods = null;
+                        udcModal.info({"title": "提醒信息", "message": "该地区不售卖此类型的商品"});
+                    }
+                });
             }
-//console.info(queryParams);
-            CustomerManageService.retrieveGoods(queryParams).then(function (goods) {
-                $scope.temp.goodsList = goods.items;
-                $scope.temp.selectedGoods = $scope.temp.goodsList[0];
-            });
+
         };
 
         var searchCustomerTest = function () {
