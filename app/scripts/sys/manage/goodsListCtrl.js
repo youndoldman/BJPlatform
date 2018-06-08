@@ -251,7 +251,7 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
                 templateUrl: "./manage/goodsModal.html",
                 controller:  "GoodsModalCtrl",
                 inputs: {
-                    title: '新增商品',
+                    title: '修改商品',
                     initVal: goods
                 }
             }).then(function (result) {
