@@ -455,7 +455,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 console.info($scope.vm.currentCustomer);
 
                 var queryParams1 = {
-                    typeName: $scope.temp.selectedGoodsType.name,
+                    typeCode: $scope.temp.selectedGoodsType.code,
                     status:0,//0 正常上市,
                     province:$scope.vm.currentCustomer.address.province,
                     city:$scope.vm.currentCustomer.address.city,
@@ -464,6 +464,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 console.info(queryParams1);
                 CustomerManageService.retrieveGoods(queryParams1).then(function (goods) {
                     $scope.temp.goodsList = goods.items;
+                    console.info(goods.items)
                     $scope.temp.selectedGoods = $scope.temp.goodsList[0];
                     console.info($scope.temp.selectedGoods)
                 });
@@ -542,7 +543,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             }
             else {
                 var queryParams = {
-                    typeName: $scope.temp.selectedGoodsType.name,
+                    typeCode: $scope.temp.selectedGoodsType.code,
                     status:0,//0 正常上市,
                     province:$scope.vm.currentCustomer.address.province,
                     city:$scope.vm.currentCustomer.address.city,
@@ -557,6 +558,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                         //console.info(goods.items);
                     }
                     else {
+                        $scope.temp.goodsList = null;
                         $scope.temp.selectedGoods = null;
                         udcModal.info({"title": "提醒信息", "message": "该地区不售卖此类型的商品"});
                     }
@@ -589,6 +591,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             $scope.pagerHistory.update($scope.qHistory, 0, 1);
             //查询商品类型
             var queryParams = {
+
             };
             CustomerManageService.retrieveGoodsTypes(queryParams).then(function (goodsTypes) {
                 $scope.temp.goodsTypesList = goodsTypes.items;

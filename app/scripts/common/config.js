@@ -156,7 +156,7 @@ commonModule.constant('NavItem', {
             icon: "fa-gears"
         }, {
             index: 2,
-            name: "商城管理",
+            name: "商品管理",
             target: "_blank",
             href: "./manageCenter.htm#/manage/goods",
             icon: "fa-plane"
@@ -178,38 +178,44 @@ commonModule.constant('NavItem', {
             href: "./shopCenter.htm#/ShopManage/orderCheck",
             icon: "fa-group"
         }, {
+            index: 2,
+            name: "订单管理",
+            target: "_blank",
+            href: "./shopCenter.htm#/ShopManage/orderList",
+            icon: "fa-plane"
+        }, {
             index: 1,
             name: "库存管理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/stockControl",
             icon: "fa-plane"
-        }, {
-            index: 2,
+        },{
+            index: 3,
             name: "报修处理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/Mend",
             icon: "fa-plane"
         }, {
-            index: 3,
+            index: 4,
             name: "安检处理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/Security",
             icon: "fa-plane"
         }, {
-            index: 4,
+            index: 5,
             name: "投诉处理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/Complaint",
             icon: "fa-plane"
         }, {
-            index: 5,
+            index: 6,
             name: "回款操作",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/MoneyReturn",
             icon: "fa-edit"
         }, {
-            index: 5,
-            name: "钢检瓶",
+            index: 7,
+            name: "钢检瓶操作",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/checkBottle",
             icon: "fa-edit"
@@ -244,36 +250,54 @@ commonModule.constant('NavItem', {
             icon: "fa-plane"
         }, {
             index: 4,
+            name: "报修处理",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/mendList",
+            icon: "fa-table"
+        }, {
+            index: 5,
+            name: "安检处理",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/securityList",
+            icon: "fa-table"
+        }, {
+            index: 6,
+            name: "投诉处理",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/complaintList",
+            icon: "fa-table"
+        },{
+            index: 7,
             name: "电话统计",
             target: "_blank",
             href: "./customService.htm#/CustomService/report1",
             icon: "fa-table"
         }, {
-            index: 5,
+            index: 8,
             name: "操作状态统计",
             target: "_blank",
             href: "./customService.htm#/CustomService/report2",
             icon: "fa-table"
         }, {
-            index: 6,
+            index: 9,
             name: "等待时长统计",
             target: "_blank",
             href: "./customService.htm#/CustomService/report3",
             icon: "fa-table"
         }, {
-            index: 7,
+            index: 10,
             name: "处理时长统计",
             target: "_blank",
             href: "./customService.htm#/CustomService/report4",
             icon: "fa-table"
         }, {
-            index: 8,
+            index: 11,
             name: "等待时长分析",
             target: "_blank",
             href: "./customService.htm#/CustomService/report5",
             icon: "fa-table"
         }, {
-            index: 9,
+            index: 12,
             name: "来话分析",
             target: "_blank",
             href: "./customService.htm#/CustomService/report6",
@@ -281,47 +305,7 @@ commonModule.constant('NavItem', {
         }
         ]
     },
-    //'RoutineCenter': {
-    //    roles:[1],
-    //    name: "日常事务",
-    //    href: "./routineCenter.htm",
-    //    menuItems: [{
-    //        index: 0,
-    //        name: "请假流程",
-    //        href: "./routineCenter.htm#/routine/holiday",
-    //        icon: "fa-group"
-    //    }, {
-    //        index: 1,
-    //        name: "报销流程",
-    //        target: "_blank",
-    //        href: "./routineCenter.htm#/routine/expence",
-    //        icon: "fa-gears"
-    //    }, {
-    //        index: 2,
-    //        name: "采购流程",
-    //        target: "_blank",
-    //        href: "",
-    //        icon: "fa-github"
-    //    }, {
-    //        index: 3,
-    //        name: "出差流程",
-    //        target: "_blank",
-    //        href: "",
-    //        icon: "fa-cloud"
-    //    }, {
-    //        index: 4,
-    //        name: "建言献策",
-    //        target: "_blank",
-    //        href: "",
-    //        icon: "fa-reorder"
-    //    }, {
-    //        index: 5,
-    //        name: "我的任务",
-    //        target: "_blank",
-    //        href: "./routineCenter.htm#/routine/mytask",
-    //        icon: "fa-reorder"
-    //    }]
-    //},
+
     'FinanceCenter': {
         roles:[1],
         name: "财务管理",

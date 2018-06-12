@@ -13,47 +13,55 @@
                         <div class="row">
                             <div class="input-group pdb15">
                                 <div class="row" style="margin-top: 15px">
-                                    <label class="col-md-2 control-label input-label">优惠名称：</label>
+                                    <label class="col-md-2 control-label input-label">优惠名称：
+                                        <span ng-show="userForm.name.$error.required || userForm.name.$invalid" style="color:red">*</span></label>
                                     <div class="col-md-3 input-width-sm">
-                                        <input type="text"  class="form-control" ng-model="q.name">
+                                        <input type="text"  name="name" class="form-control" ng-model="q.name" required>
                                     </div>
 
-                                    <label class="col-md-2 control-label input-label">优惠类型：</label>
+                                    <label class="col-md-2 control-label input-label">优惠类型：
+                                        <span ng-show="isCreate" style="color:red">*</span></label>
                                     <div class="col-md-3 input-width-sm">
                                         <select name="discountType" ng-model="discountType" ng-options="discountType for discountType in vm.discountType" class="form-control" ng-selected="" ng-change="discountTypeChange()"></select>
                                     </div>
                                 </div>
 
                                 <div class="row" style="margin-top: 15px">
-                                    <label class="col-md-2 control-label input-label">开始时间：</label>
+                                    <label class="col-md-2 control-label input-label">开始时间：
+                                        <span ng-show="userForm.startCoupon.$error.required || userForm.startCoupon.$invalid" style="color:red">*</span></label>
                                     <div class="col-md-3 input-width-sm">
-                                        <input type="text"  id="datetimepickerStartCoupon"  class="form-control" ng-model="q.startTime">
+                                        <input type="text"  name="startCoupon" id="datetimepickerStartCoupon"  class="form-control" ng-model="q.startTime" required>
                                     </div>
 
-                                    <label class="col-md-2 control-label input-label">结束时间：</label>
+                                    <label class="col-md-2 control-label input-label">结束时间：
+                                        <span ng-show="userForm.endCoupon.$error.required || userForm.endCoupon.$invalid" style="color:red">*</span></label>
                                     <div class="col-md-3 input-width-sm">
-                                        <input type="text"  id="datetimepickerEndCoupon"  class="form-control" ng-model="q.endTime">
+                                        <input type="text" name="endCoupon" id="datetimepickerEndCoupon"  class="form-control" ng-model="q.endTime" required>
                                     </div>
                                 </div>
 
                                 <div class="row" style="margin-top: 15px">
-                                        <label class="col-md-2 control-label input-label">条件类型：</label>
+                                        <label class="col-md-2 control-label input-label">条件类型：
+                                            <span ng-show="isCreate" style="color:red">*</span></label>
                                         <div class="col-md-3 input-width-sm">
                                             <select name="discountConditionType" ng-model="type" ng-options="discountConditionType for discountConditionType in vm.discountConditionType" class="form-control" ng-selected=""ng-change="selectChange()" ></select>
                                         </div>
 
-                                        <label class="col-md-2 control-label input-label">条件取值：</label>
+                                        <label class="col-md-2 control-label input-label">条件取值：
+                                            <span ng-show="isCreate" style="color:red">*</span></label>
                                         <div class="col-md-3 input-width-sm">
                                             <select name="discountConditionValue" ng-model="value" ng-options="x.code as x.name for x in temp.customersList" class="form-control" ng-selected="" ng-change="customersLevelTypeChange()"></select>
                                         </div>
                                     </div>
 
                                 <div class="row" style="margin-top: 15px">
-                                    <label class="col-md-2 control-label input-label">使用方式：</label>
+                                    <label class="col-md-2 control-label input-label">使用方式：
+                                        <span ng-show="isCreate" style="color:red">*</span></label>
                                     <div class="col-md-3 input-width-sm">
                                         <select name="useType" ng-model="useType" ng-options="useType for useType in vm.useType" class="form-control" ng-selected=""ng-change="useTypeSelectChange()" ></select>
                                     </div>
-                                    <label class="col-md-2 control-label input-label">商品类型：</label>
+                                    <label class="col-md-2 control-label input-label">商品类型：
+                                        <span ng-show="isCreate" style="color:red">*</span></label>
                                     <div class="col-md-3 input-width-sm">
                                         <select name="goodsType" ng-model="temp.selectedGoodsType" ng-options="goodsType.name for goodsType in temp.goodsTypesList" class="form-control" ng-selected="" ng-change="goodsTypeChange()"></select>
                                     </div>
@@ -76,26 +84,33 @@
 
                                 <div class="row" style="margin-top: 15px">
 
-                                    <label class="col-md-2 control-label input-label">商品规格：</label>
+                                    <label class="col-md-2 control-label input-label">商品规格：
+                                        <span ng-show="isCreate" style="color:red">*</span></label>
                                     <div class="col-md-3 input-width-sm">
                                         <select name="goods" ng-model="temp.selectedGoods" ng-options="goods.name for goods in temp.goodsList" class="form-control" ng-selected="" ng-change="goodsChange()"></select>
                                     </div>
-                                    <div class="col-md-2 input-width-sm">
-                                        <button type="button" class=" btn btn-sm btn-success pull-right" ng-click="addToCart()"><i class="fa fa-plus"></i>添加调价列表 </button>
+
+                                    <label class="col-md-2 control-label input-label">现价：</label>
+                                    <div class="col-md-3 input-width-sm">
+                                        <input type="number"  class="form-control" ng-model="temp.selectedGoods.price" disabled>
                                     </div>
 
                                 </div>
 
                                 <div class="row" style="margin-top: 15px">
-                                    <label class="col-md-2 control-label input-label">现价：</label>
-                                    <div class="col-md-3 input-width-sm">
-                                        <input type="number"  class="form-control" ng-model="temp.selectedGoods.price" disabled>
-                                    </div>
-                                    <label class="col-md-2 control-label input-label">{{vm.discountText}}</label>
+                                    <label class="col-md-2 control-label input-label">{{vm.discountText}}
+                                        <span ng-show="isCreate" style="color:red">*</span></label>
                                     <div class="col-md-3 input-width-sm">
                                         <input type="number"  class="form-control" ng-model="temp.adjustGoodsPrice" >
                                     </div>
+                                    <div class="col-md-2 input-width-sm">
+                                        <button type="button" class=" btn btn-sm btn-success pull-right" ng-click="addToCart()"><i class="fa fa-plus"></i>添加调价列表 </button>
+                                    </div>
+                                </div>
 
+                                <div class="row" style="margin-top: 15px">
+                                    <label style="margin-left:22px;" class="control-label input-label">添加调价列表:
+                                        <span ng-show="isCreate" style="color:red">*</span></label>
                                 </div>
 
                             </div>
@@ -133,8 +148,13 @@
 
                                 </tbody>
                             </table>
+
+                            <div class="row" style="margin-top: 15px">
+                                <label style="margin-left:22px;color:red" class="control-label input-label" ng-show="isCreate">带*为必填项</label>
+                            </div>
                         </div>
-                    </div>
+                        </div>
+
                 </div>
 
 

@@ -62,9 +62,12 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         countys: [],
     };
 
+    $scope.isCreate = true;
+
     $scope.vm = {
         discountType:["直减","百分比折扣"],
-        discountConditionType:["按用户级别","按用户类型"],
+        discountConditionType:["用户等级优惠","用户类别优惠"],
+        //discountConditionType:["按用户级别","按用户类型"],
         useType:["排他型","叠加型"],
 
         discountText:"优惠：",
@@ -139,24 +142,26 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         $scope.q.discountConditionType.code = $scope.type;
 
         //查询客户类型或者级别
-        var queryParams = {};
-        if($scope.type == "按用户级别")
+
+        if($scope.type == "用户等级优惠")
         {
             $scope.q.discountConditionType.code = "00001";
+            var queryParams = {};
             GoodsService.retrieveCustomerLevel(queryParams).then(function (customerLevel){
                 //console.info(customerLevel.items);
                 $scope.temp.customersList = customerLevel.items;
-                $scope.value = $scope.temp.customersList[0].name;
+                $scope.value = $scope.temp.customersList[0].code;
                 console.info($scope.value);
             });
         }
-        else if($scope.type == "按用户类型")
+        else if($scope.type == "用户类别优惠")
         {
             $scope.q.discountConditionType.code = "00002";
+            var queryParams = {};
             GoodsService.retrieveCustomerTypes(queryParams).then(function (customerType){
                 //console.info(customerType.items)
                 $scope.temp.customersList = customerType.items;
-                $scope.value = $scope.temp.customersList[0].name;
+                $scope.value = $scope.temp.customersList[0].code;
                 console.info($scope.value);
                 //$scope.customersLevelTypeChange();
             });
@@ -190,7 +195,7 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
             adjustCoupon.name = adjustDiscountStrategies.name;
             adjustCoupon.startTime = adjustDiscountStrategies.startTime;
             adjustCoupon.endTime = adjustDiscountStrategies.endTime;
-            adjustCoupon.discountType = adjustDiscountStrategies.discountType;
+            adjustCoupon.discountType = adjustDiscountStrategies.discountType.index;
             adjustCoupon.discountConditionValue = adjustDiscountStrategies.discountConditionValue;
             adjustCoupon.discountConditionType = adjustDiscountStrategies.discountConditionType;
             adjustCoupon.useType = adjustDiscountStrategies.useType.index;
@@ -323,23 +328,52 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         $scope.q.discountConditionType.code = $scope.type;
         $scope.useType = $scope.vm.useType[0];
         $scope.q.useType = 0;
-        $scope.type = $scope.vm.discountConditionType[0];
+        //$scope.type = $scope.vm.discountConditionType[0];
 
-        //按照用户级别先做一次条件取值请求
-        $scope.q.discountConditionType.code = "00001";
-        GoodsService.retrieveCustomerLevel(queryParams).then(function (customerLevel){
-            //console.info(customerLevel.items);
-            $scope.temp.customersList = customerLevel.items;
-            $scope.value = $scope.temp.customersList[0].code;
-            $scope.q.discountConditionValue =  $scope.value;
-            console.info($scope.value);
-        });
 
         getProvincesConfig("中国");
 
         if(title == "修改优惠策略") {
             $scope.q = _.clone(initVal);
             $scope.isModify = true;
+            $scope.isCreate = false;
+
+            $scope.type = $scope.q.discountConditionType.name;
+            console.info($scope.type);
+
+            if($scope.q.discountConditionType.code == "00001")
+            {
+                //按照用户级别请求
+                var queryParams = {};
+                GoodsService.retrieveCustomerLevel(queryParams).then(function (customerLevel){
+                    $scope.temp.customersList = customerLevel.items;
+
+                    for(var i = 0; i < customerLevel.items.length; i++)
+                    {
+                        if($scope.q.discountConditionValue == customerLevel.items[i].code)
+                        {
+                            $scope.value = customerLevel.items[i].code;
+                            console.info($scope.value)
+                        }
+                    }
+                });
+            }
+            else{
+                //按照用户类别请求
+                var queryParams = {};
+                GoodsService.retrieveCustomerTypes(queryParams).then(function (customerType){
+
+                    $scope.temp.customersList = customerType.items;
+                    for(var i = 0; i < customerType.items.length; i++)
+                    {
+                        if($scope.q.discountConditionValue == customerType.items[i].code)
+                        {
+                            $scope.value = customerType.items[i].code;
+                            console.info($scope.value)
+                        }
+                    }
+                });
+            }
 
             $scope.county =  $scope.vm.goods.area.county;
             if($scope.vm.goods.area.county.length==0){
@@ -348,6 +382,21 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         }
         else {
             $scope.isModify = false;
+            $scope.isCreate = true;
+            //按照用户级别先做一次条件取值请求
+            $scope.q.discountConditionType.code = "00001";
+            var queryParams = {};
+            GoodsService.retrieveCustomerLevel(queryParams).then(function (customerLevel){
+
+                $scope.temp.customersList = customerLevel.items;
+                console.info(customerLevel.items);
+                $scope.value = $scope.temp.customersList[0].code;
+                $scope.q.discountConditionValue =  $scope.value;
+                //console.info($scope.value);
+            });
+
+
+            $scope.type = $scope.vm.discountConditionType[0];
 
             $scope.vm.goods.area.province = "云南省";
             getCitysConfig($scope.vm.goods.area.province);
@@ -382,7 +431,7 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
             return;
         };
         var queryParams = {
-            typeName: $scope.temp.selectedGoodsType.name,
+            typeCode: $scope.temp.selectedGoodsType.code,
             //province:$scope.vm.goods.area.province,
             //city:$scope.vm.goods.area.city,
             //county:$scope.vm.goods.area.county,

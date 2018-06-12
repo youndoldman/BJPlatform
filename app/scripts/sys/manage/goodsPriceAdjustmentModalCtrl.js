@@ -26,6 +26,8 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
         });
     },300);
 
+    $scope.isCreate = true;
+
     $scope.vm = {
         currentPriceAjustment: {
             name:null,
@@ -71,6 +73,7 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
                 $scope.close(true);
             }, function(value) {
                 udcModal.info({"title": "处理结果", "message": "修改调价策略失败 "+value.message});
+
             })
         }else{
             GoodsService.createAdjustPriceSchedules(adjustPriceSchedules).then(function () {
@@ -89,19 +92,19 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
         $scope.config.countys = [];
         //$scope.goodsTypeChange();
 
-        //var queryParams = {
-        //    typeName: $scope.temp.selectedGoodsType.name,
-        //    province:$scope.vm.goods.area.province,
-        //    city:$scope.vm.goods.area.city,
-        //    county:$scope.vm.goods.area.county,
-        //};
-        //console.info("区域选择")
-        //console.info(queryParams);
-        //GoodsService.retrieveGoods(queryParams).then(function (goods) {
-        //    $scope.temp.goodsList = goods.items;
-        //    console.info($scope.temp.goodsList);
-        //    $scope.temp.selectedGoods = $scope.temp.goodsList[0];
-        //});
+        var queryParams = {
+            typeCode: $scope.temp.selectedGoodsType.code,
+            province:$scope.vm.goods.area.province,
+            city:$scope.vm.goods.area.city,
+            county:$scope.vm.goods.area.county,
+        };
+        console.info("省选择")
+        console.info(queryParams);
+        GoodsService.retrieveGoods(queryParams).then(function (goods) {
+            $scope.temp.goodsList = goods.items;
+            console.info($scope.temp.goodsList);
+            $scope.temp.selectedGoods = $scope.temp.goodsList[0];
+        });
     }
 
     $scope.citysChange = function () {
@@ -112,35 +115,35 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
         getCountysConfig($scope.vm.goods.area.city);
         //$scope.goodsTypeChange();
         //
-        // var queryParams = {
-        //     typeName: $scope.temp.selectedGoodsType.name,
-        //     province:$scope.vm.goods.area.province,
-        //     city:$scope.vm.goods.area.city,
-        //     county:$scope.vm.goods.area.county,
-        // };
-        //console.info("区域选择")
-        //console.info(queryParams);
-        // GoodsService.retrieveGoods(queryParams).then(function (goods) {
-        //     $scope.temp.goodsList = goods.items;
-        //     console.info($scope.temp.goodsList);
-        //     $scope.temp.selectedGoods = $scope.temp.goodsList[0];
-        // });
+         var queryParams = {
+             typeCode: $scope.temp.selectedGoodsType.code,
+             province:$scope.vm.goods.area.province,
+             city:$scope.vm.goods.area.city,
+             county:$scope.vm.goods.area.county,
+         };
+        console.info("城市选择")
+        console.info(queryParams);
+         GoodsService.retrieveGoods(queryParams).then(function (goods) {
+             $scope.temp.goodsList = goods.items;
+             console.info($scope.temp.goodsList);
+             $scope.temp.selectedGoods = $scope.temp.goodsList[0];
+         });
     }
 
     $scope.county = null;
     $scope.countysChange = function () {
         //获取区
-        $scope.vm.goods.area.county = $scope.county;
+      $scope.vm.goods.area.county = $scope.county;
         //$scope.goodsTypeChange();
 
-        //var queryParams = {
-        //    typeName: $scope.temp.selectedGoodsType.name,
-        //    province:$scope.vm.goods.area.province,
-        //    city:$scope.vm.goods.area.city,
-        //    county:$scope.vm.goods.area.county,
-        //};
-        //console.info("区域选择")
-        //console.info(queryParams);
+        var queryParams = {
+            typeCode: $scope.temp.selectedGoodsType.code,
+            province:$scope.vm.goods.area.province,
+            city:$scope.vm.goods.area.city,
+            county:$scope.vm.goods.area.county,
+        };
+        console.info("区县选择");
+        console.info(queryParams);
         //GoodsService.retrieveGoods(queryParams).then(function (goods) {
         //    $scope.temp.goodsList = goods.items;
         //    console.info($scope.temp.goodsList);
@@ -201,7 +204,7 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
         if(title == "修改调价策略") {
             $scope.vm.currentPriceAjustment = _.clone(initVal);
             $scope.isModify = true;
-
+            $scope.isCreate = false;
             $scope.county =  $scope.vm.goods.area.county;
             if($scope.vm.goods.area.county.length==0){
                 $scope.county = "全部区";
@@ -210,7 +213,7 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
         }
         else {
             $scope.isModify = false;
-
+            $scope.isCreate = true;
             $scope.vm.goods.area.province = "云南省";
             getCitysConfig($scope.vm.goods.area.province);
             $scope.vm.goods.area.city = "昆明市";
@@ -237,17 +240,23 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
     //商品类型改变
     $scope.goodsTypeChange = function () {
         //获取区
+        //console.info($scope.vm.goods);
         if ($scope.temp.selectedGoodsType==null) {
             return;
         };
+        if($scope.vm.goods == null)
+        {
+            return;
+        }
+
         var queryParams = {
-            typeName: $scope.temp.selectedGoodsType.name,
+            typeCode: $scope.temp.selectedGoodsType.code,
             //province:$scope.vm.goods.area.province,
             //city:$scope.vm.goods.area.city,
             //county:$scope.vm.goods.area.county,
         };
-        console.info("搜索区域商品");
-        console.info(queryParams);
+        //console.info("搜索区域商品");
+        //console.info(queryParams);
         GoodsService.retrieveGoods(queryParams).then(function (goods) {
             $scope.temp.goodsList = goods.items;
             console.info($scope.temp.goodsList );
