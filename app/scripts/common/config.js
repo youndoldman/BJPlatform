@@ -252,21 +252,21 @@ commonModule.constant('NavItem', {
             index: 4,
             name: "报修处理",
             target: "_blank",
-            href: "./customService.htm#/CustomService/mendList",
-            icon: "fa-table"
+            href: "./customService.htm#/CustomService/Mend",
+            icon: "fa-plane"
         }, {
             index: 5,
             name: "安检处理",
             target: "_blank",
-            href: "./customService.htm#/CustomService/securityList",
-            icon: "fa-table"
+            href: "./customService.htm#/CustomService/Security",
+            icon: "fa-plane"
         }, {
             index: 6,
             name: "投诉处理",
             target: "_blank",
-            href: "./customService.htm#/CustomService/complaintList",
-            icon: "fa-table"
-        },{
+            href: "./customService.htm#/CustomService/Complaint",
+            icon: "fa-plane"
+        }, {
             index: 7,
             name: "电话统计",
             target: "_blank",
