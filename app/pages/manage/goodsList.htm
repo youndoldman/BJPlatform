@@ -178,10 +178,12 @@
                 <td class="message">{{goodsPriceAdjustment.createTime}}</td>
                 <td class="message">{{goodsPriceAdjustment.status.name}}</td>
                 <td class="operate">
-                    <button title="修改" ng-click="modifyGoodsPriceAdjustment(goodsPriceAdjustment)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <button title="修改" ng-disabled="goodsPriceAdjustment.status.index == 1 ? true : false"
+                            ng-click="modifyGoodsPriceAdjustment(goodsPriceAdjustment)" type="button" class="btn btn-primary btn-outline btn-xs">
                         <i class="fa fa-edit"></i>
                     </button>
-                    <button title="删除" ng-click="deleteGoodsPriceAdjustment(goodsPriceAdjustment)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <button title="删除" ng-disabled="goodsPriceAdjustment.status.index == 1 ? true : false"
+                            ng-click="deleteGoodsPriceAdjustment(goodsPriceAdjustment)" type="button" class="btn btn-primary btn-outline btn-xs">
                         <i class="fa fa-trash-o"></i>
                     </button>
                 </td>
@@ -252,10 +254,12 @@
                 <td class="message">{{couponAdjustment.useType.name}}</td>
                 <td class="message">{{couponAdjustment.discountStrategyStatus.name}}</td>
                 <td class="operate">
-                    <button title="修改" ng-click="modifyCouponAdjustment(couponAdjustment)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <button title="修改" ng-disabled="couponAdjustment.discountStrategyStatus.index == 1 ? true : false"
+                            ng-click="modifyCouponAdjustment(couponAdjustment)" type="button" class="btn btn-primary btn-outline btn-xs">
                         <i class="fa fa-edit"></i>
                     </button>
-                    <button title="删除" ng-click="deleteCouponAdjustment(couponAdjustment)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <button title="删除" ng-disabled="couponAdjustment.discountStrategyStatus.index == 1 ? true : false"
+                            ng-click="deleteCouponAdjustment(couponAdjustment)" type="button" class="btn btn-primary btn-outline btn-xs">
                         <i class="fa fa-trash-o"></i>
                     </button>
                 </td>

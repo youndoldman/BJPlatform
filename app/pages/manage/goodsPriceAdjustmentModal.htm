@@ -13,28 +13,41 @@
                         <div class="row">
                             <div class="input-group pdb15">
                                 <div class="row" style="margin-top: 15px">
-                                    <label class="col-md-2 control-label input-label">计划名称：</label>
+                                    <label class="col-md-2 control-label input-label">计划名称:
+                                        <span ng-show="userForm.name.$error.required || userForm.name.$invalid" style="color:red">*</span>
+                                    </label>
+
                                     <div class="col-md-3 input-width-sm">
-                                        <input type="text"  class="form-control" ng-model="vm.currentPriceAjustment.name" >
+                                        <input type="text"  name="name" class="form-control" ng-model="vm.currentPriceAjustment.name" required>
                                     </div>
-                                    <label class="col-md-2 control-label input-label">执行时间：</label>
+                                    <label class="col-md-2 control-label input-label">执行时间:
+                                        <span ng-show="userForm.effectTime.$error.required || userForm.effectTime.$invalid" style="color:red">*</span></label>
                                     <div class="col-md-3 input-width-sm">
-                                        <input type="text"  id="datetimepickerStartExcute"  class="form-control" ng-model="vm.currentPriceAjustment.effectTime">
+                                        <input type="text"  name="effectTime" id="datetimepickerStartExcute"  class="form-control" ng-model="vm.currentPriceAjustment.effectTime" required>
                                     </div>
                                 </div>
 
                                 <div class="row" style="margin-top: 15px">
-                                    <label class="col-md-2 control-label input-label">类型：</label>
+                                    <label class="col-md-2 control-label input-label">类型:
+                                        <span ng-show="isCreate" style="color:red">*</span></label>
                                     <div class="col-md-3 input-width-sm">
                                         <select name="goodsType" ng-model="temp.selectedGoodsType" ng-options="goodsType.name for goodsType in temp.goodsTypesList" class="form-control" ng-selected="" ng-change="goodsTypeChange()"></select>
                                     </div>
-                                    <label class="col-md-2 control-label input-label">商品：</label>
+                                    <label class="col-md-2 control-label input-label">商品:
+                                        <span ng-show="isCreate" style="color:red">*</span></label>
                                     <div class="col-md-3 input-width-sm">
                                     <select name="goods" ng-model="temp.selectedGoods" ng-options="goods.name for goods in temp.goodsList" class="form-control" ng-selected="" ng-change="goodsChange()"></select>
                                     </div>
-                                    <button type="button" class="btn btn-sm btn-success pull-right" ng-click="addToCart()"><i class="fa fa-plus"></i> 添加调价列表 </button>
+
                                 </div>
 
+                                <!--<div class="row" style="margin-top: 15px">-->
+                                    <!--<label class="col-md-2 control-label input-label">类型：</label>-->
+                                    <!--<div class="col-md-3 input-width-sm">-->
+                                        <!--<select name="goodsType" ng-model="temp.selectedGoodsType" ng-options="goodsType.name for goodsType in temp.goodsTypesList" class="form-control" ng-selected="" ng-change="goodsTypeChange()"></select>-->
+                                    <!--</div>-->
+                            <!---->
+                                <!--</div>-->
                                 <!--<div class="row" style="margin-top: 15px">-->
 
                                     <!--<label class="col-md-2 control-label input-label">所属区域：</label>-->
@@ -61,16 +74,28 @@
                                 <!--</div>-->
 
                                 <div class="row" style="margin-top: 15px">
-                                    <label class="col-md-2 control-label input-label">现价(元)：</label>
+                                    <label class="col-md-2 control-label input-label">现价(元):</label>
                                     <div class="col-md-3 input-width-sm">
                                         <input type="number"  class="form-control" ng-model="temp.selectedGoods.price" disabled>
                                     </div>
-                                    <label class="col-md-2 control-label input-label">调价(元)：</label>
+                                    <label class="col-md-2 control-label input-label">调价(元):
+                                        <!--<span ng-show="userForm.number.$error.required || userForm.number.$invalid" style="color:red">*</span></label>-->
+                                        <span ng-show="isCreate" style="color:red">*</span></label>
+
                                     <div class="col-md-3 input-width-sm">
-                                        <input type="number"  class="form-control" ng-model="temp.adjustGoodsPrice" min="0" onkeyup="this.value=this.value.replace(/\-/g,'');" >
+                                        <input type="number"  name="number" class="form-control" ng-model="temp.adjustGoodsPrice" min="0" onkeyup="this.value=this.value.replace(/\-/g,'');" required>
                                     </div>
+
+                                    <button type="button" class="btn btn-sm btn-success pull-right" ng-click="addToCart()"><i class="fa fa-plus"></i> 添加调价列表
+
+                                        </button>
+
                                 </div>
 
+                                <div class="row" style="margin-top: 15px">
+                                    <label style="margin-left:22px;" class="control-label input-label">添加调价列表:
+                                        <span ng-show="isCreate" style="color:red">*</span></label>
+                                </div>
                             </div>
 
 
@@ -109,13 +134,17 @@
 
                                 </tbody>
                             </table>
+                            <div class="row" style="margin-top: 15px">
+                                <label style="margin-left:22px;color:red" class="control-label input-label" ng-show="isCreate">带*为必填项</label>
+                            </div>
                         </div>
                     </div>
                 </div>
 
 
                 <div class="modal-footer">
-                    <button type="submit" ng-click="submit(vm.currentPriceAjustment);" class="btn btn-primary" data-dismiss="modal">保存</button>
+                    <button type="submit"  ng-click="submit(vm.currentPriceAjustment);" class="btn btn-primary" data-dismiss="modal">保存</button>
+                    <!--ng-disabled="userForm.name.$error.required || userForm.effectTime.$error.required|| userForm.number.$error.required"-->
                     <button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </form>

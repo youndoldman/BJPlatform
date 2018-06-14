@@ -251,7 +251,7 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
                 templateUrl: "./manage/goodsModal.html",
                 controller:  "GoodsModalCtrl",
                 inputs: {
-                    title: '新增商品',
+                    title: '修改商品',
                     initVal: goods
                 }
             }).then(function (result) {
@@ -365,6 +365,7 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
             GoodsService.retrieveAdjustPriceSchedules(queryParams).then(function (goodsPriceAdjustmentList) {
                 $scope.pagerGoodsPriceAdjustment.update($scope.q, goodsPriceAdjustmentList.total, queryParams.pageNo);
                 $scope.vm.goodsPriceAdjustmentList = goodsPriceAdjustmentList.items;
+
             });
         };
 //搜索优惠类型
@@ -430,6 +431,7 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
                 //console.info(couponAdjustmentList);
                 $scope.pagerCouponAdjustment.update($scope.q, couponAdjustmentList.total, queryParams.pageNo);
                 $scope.vm.couponAdjustmentList = couponAdjustmentList.items;
+                console.info($scope.vm.couponAdjustmentList);
             });
         };
 

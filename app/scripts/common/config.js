@@ -7,8 +7,6 @@ commonModule.constant('MISC', {
     }
 });
 
-
-
 commonModule.constant('URI', {
     'resources': {
         'loginPage': '../pages/login.htm',//登录页
@@ -74,9 +72,6 @@ commonModule.constant('URI', {
         'complaint': '../../../api/Complaint',//投诉单接口
 
         'customerCredit': '../../../api/CustomerCredit',//欠款
-
-
-
         'writeOff':'../../../api/WriteOff',//回款
         'writeOffDetail':'../../../api/WriteOffDetail',//回款明细信息查询
         'depositDetail':'../../../api/DepositDetail',//增加存银行款信息记录
@@ -88,8 +83,6 @@ commonModule.constant('URI', {
 
         'gasCylinderPosition':'../../../api/GasCylinderPosition',//钢瓶轨迹查询
         'gasCylinderTakeOverHistory':'../../../api/GasCylinder/TakeOver/History',//钢瓶交接记录查询
-
-        
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
         'ktyReport1': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/agent/call',//科天云获取坐席-工作组及直拨电话统计报表
         'ktyReport2': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/agent/operation',//科天云获取坐席-操作状态统计报表
@@ -97,6 +90,8 @@ commonModule.constant('URI', {
         'ktyReport4': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/workset/incall/operatetime',//科天云获取工作组-来话处理时长统计报表
         'ktyReport5': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/workset/incall/interval',//科天云获取工作组-来话等待时长分析报表
         'ktyReport6': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/workset/incall/analysis',//科天云获取工作组-来话应答/放弃/溢出分析报表
+
+        'ktyCallreport': 'https://cc.ketianyun.com/thirdparty/api/v1/callreports',//科天云获得指定时间段呼叫的记录
 
     }
 });
@@ -164,7 +159,7 @@ commonModule.constant('NavItem', {
             icon: "fa-gears"
         }, {
             index: 2,
-            name: "商城管理",
+            name: "商品管理",
             target: "_blank",
             href: "./manageCenter.htm#/manage/goods",
             icon: "fa-plane"
@@ -186,18 +181,18 @@ commonModule.constant('NavItem', {
             href: "./shopCenter.htm#/ShopManage/orderCheck",
             icon: "fa-group"
         }, {
-            index: 1,
-            name: "订单查询",
+            index: 2,
+            name: "订单管理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/orderList",
             icon: "fa-plane"
         }, {
-            index: 2,
+            index: 1,
             name: "库存管理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/stockControl",
             icon: "fa-plane"
-        }, {
+        },{
             index: 3,
             name: "报修处理",
             target: "_blank",
@@ -223,7 +218,7 @@ commonModule.constant('NavItem', {
             icon: "fa-edit"
         }, {
             index: 7,
-            name: "钢检瓶",
+            name: "钢检瓶操作",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/checkBottle",
             icon: "fa-edit"
@@ -256,38 +251,56 @@ commonModule.constant('NavItem', {
             target: "_blank",
             href: "./customService.htm#/CustomService/customerManage",
             icon: "fa-plane"
-        },  {
+        }, {
             index: 4,
+            name: "报修处理",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/Mend",
+            icon: "fa-plane"
+        }, {
+            index: 5,
+            name: "安检处理",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/Security",
+            icon: "fa-plane"
+        }, {
+            index: 6,
+            name: "投诉处理",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/Complaint",
+            icon: "fa-plane"
+        }, {
+            index: 7,
             name: "电话统计",
             target: "_blank",
             href: "./customService.htm#/CustomService/report1",
             icon: "fa-table"
         }, {
-            index: 5,
+            index: 8,
             name: "操作状态统计",
             target: "_blank",
             href: "./customService.htm#/CustomService/report2",
             icon: "fa-table"
         }, {
-            index: 6,
+            index: 9,
             name: "等待时长统计",
             target: "_blank",
             href: "./customService.htm#/CustomService/report3",
             icon: "fa-table"
         }, {
-            index: 7,
+            index: 10,
             name: "处理时长统计",
             target: "_blank",
             href: "./customService.htm#/CustomService/report4",
             icon: "fa-table"
         }, {
-            index: 8,
+            index: 11,
             name: "等待时长分析",
             target: "_blank",
             href: "./customService.htm#/CustomService/report5",
             icon: "fa-table"
         }, {
-            index: 9,
+            index: 12,
             name: "来话分析",
             target: "_blank",
             href: "./customService.htm#/CustomService/report6",
@@ -295,49 +308,9 @@ commonModule.constant('NavItem', {
         }
         ]
     },
-    //'RoutineCenter': {
-    //    roles:[1],
-    //    name: "日常事务",
-    //    href: "./routineCenter.htm",
-    //    menuItems: [{
-    //        index: 0,
-    //        name: "请假流程",
-    //        href: "./routineCenter.htm#/routine/holiday",
-    //        icon: "fa-group"
-    //    }, {
-    //        index: 1,
-    //        name: "报销流程",
-    //        target: "_blank",
-    //        href: "./routineCenter.htm#/routine/expence",
-    //        icon: "fa-gears"
-    //    }, {
-    //        index: 2,
-    //        name: "采购流程",
-    //        target: "_blank",
-    //        href: "",
-    //        icon: "fa-github"
-    //    }, {
-    //        index: 3,
-    //        name: "出差流程",
-    //        target: "_blank",
-    //        href: "",
-    //        icon: "fa-cloud"
-    //    }, {
-    //        index: 4,
-    //        name: "建言献策",
-    //        target: "_blank",
-    //        href: "",
-    //        icon: "fa-reorder"
-    //    }, {
-    //        index: 5,
-    //        name: "我的任务",
-    //        target: "_blank",
-    //        href: "./routineCenter.htm#/routine/mytask",
-    //        icon: "fa-reorder"
-    //    }]
-    //},
+
     'FinanceCenter': {
-        roles:[1,5,8],
+        roles:[1],
         name: "财务管理",
         href: "./financeCenter.htm",
         menuItems: [
@@ -366,18 +339,18 @@ commonModule.constant('NavItem', {
                 href: "./financeCenter.htm#/finance/checkStock",
                 icon: "fa-table"
             }, {
-                //    index: 4,
-                //    name: "LPG销售往来",
-                //    target: "_blank",
-                //    href: "./financeCenter.htm#/finance/LPGSalesBalance",
-                //    icon: "fa-table"
-                //}, {
-                //    index: 5,
-                //    name: "LPG销售现金",
-                //    target: "_blank",
-                //    href: "./financeCenter.htm#/finance/LPGSalesCash",
-                //    icon: "fa-table"
-                //},{
+            //    index: 4,
+            //    name: "LPG销售往来",
+            //    target: "_blank",
+            //    href: "./financeCenter.htm#/finance/LPGSalesBalance",
+            //    icon: "fa-table"
+            //}, {
+            //    index: 5,
+            //    name: "LPG销售现金",
+            //    target: "_blank",
+            //    href: "./financeCenter.htm#/finance/LPGSalesCash",
+            //    icon: "fa-table"
+            //},{
                 index: 4,
                 name: "银行款信息",
                 target: "_blank",
