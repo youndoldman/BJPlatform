@@ -435,6 +435,11 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
 
 
         var init = function () {
+            $scope.pagerGoodsTypes.setCurPageNo(0);
+            $scope.pagerGoods.setCurPageNo(0);
+            $scope.pagerGoodsPriceAdjustment.setCurPageNo(0);
+            $scope.pagerCouponAdjustment.setCurPageNo(0);
+
             $scope.q.discountType = "所有类型";
             $scope.q.useType = "所有类型";
             $scope.q.status = "所有状态";
@@ -447,6 +452,7 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
             searchGoods();
             $scope.searchGoodsPriceAdjustment();
             $scope.searchCouponAdjustment();
+
         };
 
         init();

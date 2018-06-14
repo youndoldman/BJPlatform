@@ -9,7 +9,6 @@ commonModule.constant('MISC', {
 
 
 
-
 commonModule.constant('URI', {
     'resources': {
         'loginPage': '../pages/login.htm',//登录页
