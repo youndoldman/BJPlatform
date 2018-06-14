@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.donno.nj.dao.GasCylinderSvcStatusOpHisDao">
-
     <resultMap id="DetailResultMap" type="com.donno.nj.domain.GasCylinderSvcStatusOpHis">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <id column="gas_cyr_svc_status" property="serviceStatus"  typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
@@ -74,6 +73,14 @@
         SELECT COUNT(id)
         FROM <include refid="TblGasCylinderSvcOpHis"/>
         <include refid="getListCondition"/>
+    </select>
+
+
+    <select id="findById" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblGasCylinderSvcOpHis"/>
+        WHERE
+        id =  #{id}
     </select>
 
 </mapper>
