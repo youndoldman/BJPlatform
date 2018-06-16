@@ -87,11 +87,12 @@
                 area_idx in (select id from t_area where province = #{province}
                 <if test="city != null">and city = #{city}
                     <if test="county != null">
-                        and county = #{county}
+                        and (county = #{county} or county = "全部区")
                     </if>
                 </if>
                 )
             </if>
+
 
             <if test="code != null">AND  code = #{code}</if>
             <if test="name != null">

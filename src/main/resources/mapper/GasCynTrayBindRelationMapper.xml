@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--钢瓶与定位终端关系-->
+
+<mapper namespace="com.donno.nj.dao.GasCynTrayBindRelationDao">
+
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.GasCynTrayBindRelation">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <association property="gas_tray_idx" column="gasCynTray" select="com.donno.nj.dao.GasCynTrayDao.findById">
+        </association>
+        <association property="user_idx" column="customer" select="com.donno.nj.dao.CustomerDao.findById">
+        </association>
+    </resultMap>
+
+    <sql id="TblGasCynTray">
+        t_user_gas_cyn_tray
+    </sql>
+
+
+    <!--绑定托盘与客户-->
+    <insert id="bind">
+        INSERT  INTO t_user_gas_cyn_tray(user_idx,gas_tray_idx,note)
+        VALUES( #{customerIdx},#{gasCynTrayIdx}, '')
+    </insert>
+
+    <!--解绑定托盘与客户-->
+    <delete id="unBind">
+        DELETE  from t_user_gas_cyn_tray
+        WHERE  gas_tray_idx = #{gasCynTrayIdx} and   user_idx = #{customerIdx}
+    </delete>
+
+    <delete id="deleteByIdx" parameterType="java.lang.Integer">
+    DELETE FROM t_user_gas_cyn_tray WHERE id= #{id}
+    </delete>
+
+
+    <sql id="getListCondition">
+        WHERE
+        <if test="userId != null">
+            AND user_idx in (SELECT  id from t_user WHERE  user_id=#{userId})
+        </if>
+        <if test="number != null">
+            AND gas_tray_idx = (SELECT  id from t_tray_device WHERE  number=#{number})
+        </if>
+    </sql>
+
+    <select id="getList" resultMap="DetailResultMap">
+        SELECT *
+        FROM t_user_gas_cyn_tray
+        <include refid="getListCondition"/>
+
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+
+    <select id="count" resultType="Integer">
+        SELECT count(*)
+        FROM t_user_gas_cyn_tray
+        <include refid="getListCondition"/>
+    </select>
+
+    <delete id="delete" parameterType="Integer">
+    DELETE FROM t_user_gas_cyn_tray
+    WHERE
+    id = #{id}
+</delete>
+
+    <!--根据托盘编号查找绑定关系-->
+    <select id="findRelationByNumber" resultMap="DetailResultMap">
+        SELECT  *
+        FROM t_user_gas_cyn_tray
+        where
+        (
+        gas_tray_idx = (SELECT  id from t_tray_device WHERE  number = #{number})
+        )
+    </select>
+
+
+   <!--查找客户名下的托盘-->
+    <select id="findGasCynTrayByUserId" resultMap="com.donno.nj.dao.GasCynTrayDao.DetailResultMap">
+        SELECT t_tray_device.*
+        FROM t_tray_device,t_user_gas_cyn_tray,t_user
+        where
+        (
+            t_user_gas_cyn_tray.gas_tray_idx = t_tray_device.id
+            AND
+            t_user_gas_cyn_tray.user_idx = t_user.id
+            AND t_user.user_id = #{userId}
+        )
+    </select>
+
+
+
+
+</mapper>

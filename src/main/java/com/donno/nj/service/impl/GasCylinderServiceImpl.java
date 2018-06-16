@@ -37,6 +37,9 @@ public class GasCylinderServiceImpl implements GasCylinderService
     private UserDao userDao;
 
     @Autowired
+    private GasCynForceTakeOverWarnDao gasCynForceTakeOverWarnDao;
+
+    @Autowired
     private GasCynUserRelDao gasCynUserRelDao;
 
     @Autowired
@@ -280,7 +283,7 @@ public class GasCylinderServiceImpl implements GasCylinderService
 
     @Override
     @OperationLog(desc = "修改钢瓶业务状态信息")
-    public void updateSvcStatus(String number,Integer serviceStatus,String srcUserId,String targetUserId,String note)
+    public void updateSvcStatus(String number,Integer serviceStatus,String srcUserId,String targetUserId,Boolean enableForce ,String note)
     {
        /*参数校验*/
         if (number == null || number.trim().length() == 0 )
@@ -312,8 +315,12 @@ public class GasCylinderServiceImpl implements GasCylinderService
                 throw new ServerSideBusinessException("原用户不存在！", HttpStatus.NOT_FOUND);
             }
 
-            /*钢瓶当前责任人校验*/
-            CheckGasCynUser(gasCylinderOptional.get(),serviceStatus,srcUser);
+            /*强制交接时，不需要校验原责任人*/
+            if (!enableForce)
+            {
+                 /*钢瓶当前责任人校验*/
+                CheckGasCynUser(gasCylinderOptional.get(),serviceStatus,srcUser);
+            }
         }
 
         User targetUser = userDao.findByUserId(targetUserId);
@@ -335,14 +342,14 @@ public class GasCylinderServiceImpl implements GasCylinderService
 
         if (gasCylinderOptional.get().getServiceStatus().getIndex() != GasCynServiceStatus.UnUsed.getIndex())
         {
-            /*操作历史*/
-            SvcStatusOpHis(srcUser,targetUser,serviceStatus,gasCylinderOptional.get(),note);
-
             /* 出入库*/
             GasCylinderInOut(gasCylinderOptional.get(),serviceStatus,srcUser,targetUser);
 
             /*空重瓶状态更改*/
             UpdGasCynLoadStatus(gasCylinderOptional.get(),serviceStatus);
+
+             /*操作历史*/
+            SvcStatusOpHis(srcUser,targetUser,serviceStatus,gasCylinderOptional.get(),enableForce,note);
         }
     }
 
@@ -429,7 +436,7 @@ public class GasCylinderServiceImpl implements GasCylinderService
         }
     }
 
-    public void SvcStatusOpHis(User srcUser,User targetUser,Integer serviceStatus,GasCylinder gasCylinder,String note)
+    public void SvcStatusOpHis(User srcUser,User targetUser,Integer serviceStatus,GasCylinder gasCylinder,Boolean enableForce,String note)
     {
         GasCylinderSvcStatusOpHis gasCylinderSvcStatusOpHis = new GasCylinderSvcStatusOpHis();
         gasCylinderSvcStatusOpHis.setGasCylinder(gasCylinder);
@@ -460,6 +467,17 @@ public class GasCylinderServiceImpl implements GasCylinderService
 
         gasCylinderSvcStatusOpHis.setNote(note);
         gasCylinderSvcStatusOpHisDao.insert(gasCylinderSvcStatusOpHis);
+
+        /*强制交接时，记录强制交接告警记录*/
+        if (enableForce)
+        {
+            GasCynForceTakeOverWarn gasCynForceTakeOverWarn = new GasCynForceTakeOverWarn();
+            gasCynForceTakeOverWarn.setGasCylinder(gasCylinder);
+            gasCynForceTakeOverWarn.setSrcUser(srcUser);
+            gasCynForceTakeOverWarn.setGasCylinderSvcStatusOpHis(gasCylinderSvcStatusOpHis);
+            gasCynForceTakeOverWarn.setGasCynWarnStatus(GasCynWarnStatus.Created);
+            gasCynForceTakeOverWarnDao.insert(gasCynForceTakeOverWarn);
+        }
     }
 
     @Override

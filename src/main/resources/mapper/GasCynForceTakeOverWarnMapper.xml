@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.GasCynForceTakeOverWarnDao">
+
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.GasCynForceTakeOverWarn">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+
+        <result column="status" property="gasCynWarnStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+
+
+        <association property="gasCylinder" column="gas_cyn_idx" select="com.donno.nj.dao.GasCylinderDao.findById">
+        </association>
+
+        <association property="srcUser" column="src_user_idx" select="com.donno.nj.dao.UserDao.findById">
+        </association>
+
+        <association property="gasCylinderSvcStatusOpHis" column="take_over_idx" select="com.donno.nj.dao.GasCylinderSvcStatusOpHisDao.findById">
+        </association>
+
+    </resultMap>
+
+    <sql id="TblGasCynForceTakeover">
+        t_gas_cyn_warn
+    </sql>
+
+    <sql id="InsertColumnList">
+        gas_cyn_idx,src_user_idx,take_over_idx,status,note
+    </sql>
+
+    <insert id="insert"  keyProperty="id" useGeneratedKeys="true">
+        INSERT IGNORE INTO <include refid="TblGasCynForceTakeover"/>(<include refid="InsertColumnList"/>)
+        VALUES( #{gasCylinder.id},#{srcUser.id}, #{gasCylinderSvcStatusOpHis.id} ,#{gasCynWarnStatus.index},#{note})
+    </insert>
+
+    <sql id = "getListCondition">
+    <where>
+    <if test="gasCynNumber != null">  gas_cyr_idx = ( select id from t_gas_cylinder where number = #{gasCynNumber}) </if>
+    <if test="userId != null">  src_user_idx = ( select id from t_user where user_id = #{userId}) </if>
+    <if test="gasCynWarnStatus != null">  status = #{gasCynWarnStatus}</if>
+    </where>
+    </sql>
+
+
+    <select id="getList" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblGasCynForceTakeover"/>
+        <include refid="getListCondition"/>
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+
+    <select id="count" resultType="Integer">
+        SELECT COUNT(id)
+        FROM <include refid="TblGasCynForceTakeover"/>
+        <include refid="getListCondition"/>
+    </select>
+
+
+    <update id="update">
+        UPDATE <include refid="TblGasCynForceTakeover"/>
+        <set>
+            <if test="gasCynWarnStatus != null">status = #{gasCynWarnStatus.index},</if>
+            <if test="note != null">note = #{note},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="findById" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblGasCynForceTakeover"/>
+        WHERE
+        id =  #{id}
+    </select>
+
+</mapper>
