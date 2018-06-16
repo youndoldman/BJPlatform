@@ -12,7 +12,9 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
                 "city":"",
                 "county":"",
             }
-        }
+        },
+        currentPalletNumber:null,
+        palletList:[]
     };
 
 
@@ -218,6 +220,41 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
                 }
             }
         });
+        //托盘查询
+        $scope.retrievePallets();
+    };
+
+
+    //解除绑定
+    $scope.unBind = function (palletNumber) {
+        CustomerManageService.unBindPallet($scope.vm.currentCustomer.userId, palletNumber).then(function () {
+            udcModal.info({"title": "处理结果", "message": "解除绑定成功 "});
+            $scope.retrievePallets();
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": "解除绑定失败:  "+value.message});
+        })
+    };
+    //绑定
+    $scope.bind = function (palletNumber) {
+        if(palletNumber==null){
+            udcModal.info({"title": "错误信息", "message": "请输入托盘号"});
+            return;
+        }
+        CustomerManageService.bindPallet($scope.vm.currentCustomer.userId, palletNumber).then(function () {
+            udcModal.info({"title": "处理结果", "message": "绑定成功 "});
+            $scope.retrievePallets();
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": "绑定失败:  "+value.message});
+        })
+    };
+
+    //托盘查询
+    $scope.retrievePallets = function () {
+        CustomerManageService.retrievePallets($scope.vm.currentCustomer.userId).then(function (pallets) {
+            $scope.vm.palletList = pallets.items;
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": "查询托盘信息失败:  "+value.message});
+        })
     };
     init();
 }]);

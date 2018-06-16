@@ -23,7 +23,9 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
 
     var customerCreditUri = URI.resources.customerCredit;//查询欠款
 
-
+    var gasCynTrayBindUri = URI.resources.GasCynTrayBind;//托盘绑定
+    var gasCynTrayUri = URI.resources.GasCynTray;//托盘查询
+    var gasCynTrayUnBindUri = URI.resources.GasCynTrayunBind;//托盘解绑定
 
     this.retrieveGoods = function (params) {
         return promise.wrap($http.get(goodsUri, {params: params}));
@@ -188,5 +190,18 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
         return promise.wrap($http.get(customerCreditUri, {params: params}));
     };
 
+
+    //绑定托盘至客户
+    this.bindPallet = function (customerId, palletNumber) {
+        return promise.wrap($http.put(gasCynTrayBindUri + "/" + palletNumber+"?userId="+customerId));
+    };
+    //解除绑定托盘
+    this.unBindPallet = function (customerId, palletNumber) {
+        return promise.wrap($http.put(gasCynTrayUnBindUri + "/" + palletNumber+"?userId="+customerId));
+    };
+    //托盘查询
+    this.retrievePallets = function (customerId) {
+        return promise.wrap($http.get(gasCynTrayUri+"?userId="+customerId));
+    };
 }]);
 

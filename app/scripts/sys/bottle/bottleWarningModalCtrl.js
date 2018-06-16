@@ -15,9 +15,10 @@ bottleApp.controller('BottleWarningModalCtrl', ['$scope', 'close', 'BottleServic
     };
 
     $scope.submit = function (warning) {
-    if (warning.note != null && title == "告警处理") {
+        var warningDealed = {id:warning.id, note:warning.note, gasCynWarnStatus:2};
+    if (warningDealed.note != null && title == "告警处理") {
 
-            BottleService.modifyGasCylinderWarn(warning).then(function () {
+            BottleService.modifyGasCylinderWarn(warningDealed).then(function () {
                 udcModal.info({"title": "处理结果", "message": "告警处理成功 "});
                 $scope.close(true);
             }, function(value) {
@@ -34,6 +35,7 @@ bottleApp.controller('BottleWarningModalCtrl', ['$scope', 'close', 'BottleServic
         } else {
             $scope.isModify = false;
         }
+        $scope.getBottleTakeOverHistoryByCode($scope.vm.warning.gasCylinder.number,null,null);
 
     };
 
@@ -120,7 +122,7 @@ bottleApp.controller('BottleWarningModalCtrl', ['$scope', 'close', 'BottleServic
             });
 
             marker.setLabel({
-                offset: new AMap.Pixel(0, 30*(i%2)),
+                offset: new AMap.Pixel(0, 20*(i%10)),
                 content: contents
             });
         }
@@ -296,6 +298,8 @@ bottleApp.controller('BottleWarningModalCtrl', ['$scope', 'close', 'BottleServic
             }
             //显示记录
             markHistory();
+            var takeOverHistoryCount = $scope.vm.historyList.length;
+            $scope.getBottlePathByCode($scope.vm.warning.gasCylinder.number,$scope.vm.historyList[0].createTime,$scope.vm.historyList[takeOverHistoryCount-1].createTime);
         });
     };
     init();

@@ -84,7 +84,11 @@ commonModule.constant('URI', {
         'gasCylinderPosition':'../../../api/GasCylinderPosition',//钢瓶轨迹查询
         'gasCylinderTakeOverHistory':'../../../api/GasCylinder/TakeOver/History',//钢瓶交接记录查询
 
-        'GasCylinderWarn':'../../../api/GasCylinderWarn',//钢瓶交接告警接口
+        'GasCylinderWarn':'../../../api/GasCylinderWarn',//告警查询
+
+        'GasCynTrayBind':'../../../api/GasCynTray/Bind',//托盘绑定
+        'GasCynTray':'../../../api/GasCynTray',//托盘查询
+        'GasCynTrayunBind':'../../../api/GasCynTray/unBind',//托盘解绑定
 
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
         'ktyReport1': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/agent/call',//科天云获取坐席-工作组及直拨电话统计报表

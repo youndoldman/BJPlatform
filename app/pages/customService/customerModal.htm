@@ -141,7 +141,23 @@
 
                     </div>
                 </div>
+                <div class="input-group pdb15" ng-if="isModify">
+                    <label class="col-sm-4 control-label input-label-large">托盘编码：</label>
+                    <div class="col-sm-8 input-width">
+                        <input type="text" name="palletNumber" class="form-control" ng-model="vm.currentPalletNumber"  required>
+                    </div>
+                    <!--<button ng-if="isBinded" type="button" class="btn btn-sm btn-danger" ng-click="unBind()"><i class="fa fa-plus"></i> 解绑 </button>-->
+                    <button type="button" class="btn btn-sm btn-success" ng-click="bind(vm.currentPalletNumber)"><i class="fa fa-plus"></i> 绑定 </button>
+                </div>
 
+                <div class="input-group pdb15" ng-repeat="pallet in vm.palletList">
+                    <label class="col-sm-4 control-label input-label-large">托盘编码：</label>
+                    <div class="col-sm-8 input-width">
+                        <input type="text" name="palletNumber" class="form-control" ng-model="pallet.number"  required>
+                    </div>
+                    <!--<button ng-if="isBinded" type="button" class="btn btn-sm btn-danger" ng-click="unBind()"><i class="fa fa-plus"></i> 解绑 </button>-->
+                    <button type="button" class="btn btn-sm btn-danger" ng-click="unBind(pallet.number)"><i class="fa fa-minus"></i> 解绑 </button>
+                </div>
 
                 <div class="modal-footer">
                     <button type="submit" ng-click="submit(vm.currentCustomer)" class="btn btn-primary">保存</button>
