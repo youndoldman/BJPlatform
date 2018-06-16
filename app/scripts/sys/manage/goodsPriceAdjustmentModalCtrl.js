@@ -24,7 +24,7 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
                         + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
                 });
         });
-    },300);
+    },500);
 
     $scope.isCreate = true;
 
@@ -70,7 +70,7 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
             adjustPriceSchedules.status = null;
             GoodsService.modifyAdjustPriceSchedules(adjustPriceSchedules).then(function () {
                 udcModal.info({"title": "处理结果", "message": "修改调价策略成功 "});
-                $scope.close(true);
+                //$scope.close(true);
             }, function(value) {
                 udcModal.info({"title": "处理结果", "message": "修改调价策略失败 "+value.message});
 
@@ -78,7 +78,7 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
         }else{
             GoodsService.createAdjustPriceSchedules(adjustPriceSchedules).then(function () {
                 udcModal.info({"title": "处理结果", "message": "增加调价策略成功 "});
-                $scope.close(true);
+                //$scope.close(true);
             }, function(value) {
                 udcModal.info({"title": "处理结果", "message": "增加调价策略失败 "+value.message});
             })

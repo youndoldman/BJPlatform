@@ -26,7 +26,7 @@ bottleApp.controller('DepartmentSelectModalCtrl', ['$scope', 'close', 'BottleSer
     $timeout(function(){
         chartInitial();
         retrieveRootDepartment();
-    },300);
+    },500);
 
     var departmentConvertToDataSoure = function (department) {
         var chartColors = ["middle-level","product-dept","rd-dept","pipeline1","frontend1"];

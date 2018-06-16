@@ -17,7 +17,7 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
         destNationInitial();
         //查找在线的配送工
         searchWorkers();
-    },300);
+    },500);
     //地图初始化
     var mapInitial = function() {
         $scope.map = new AMap.Map('mapContainer', {

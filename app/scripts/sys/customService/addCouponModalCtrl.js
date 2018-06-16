@@ -44,7 +44,7 @@ customServiceApp.controller('AddCouponModalCtrl', ['$scope', 'close', 'CustomerM
                         +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
                 });
         });
-    },300);
+    },500);
     $scope.q = {
         customer:{userId:null},
         operator:{userId:null},

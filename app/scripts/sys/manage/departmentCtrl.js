@@ -66,7 +66,7 @@ manageApp.controller('DepartmentCtrl', ['$scope', '$rootScope', '$filter', '$loc
         $timeout(function(){
             chartInitial();
             retrieveRootDepartment();
-        },300);
+        },500);
 
         var init = function () {
 

@@ -218,8 +218,6 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
                 }
             }
         });
-
-
     };
     init();
 }]);

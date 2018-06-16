@@ -12,6 +12,9 @@ bottleApp.service('BottleService', ['$http', 'URI', 'promiseWrapper', function (
     var gasCylinderPositionUri = URI.resources.gasCylinderPosition;//钢瓶轨迹查询
     var gasCylinderTakeOverHistoryUri = URI.resources.gasCylinderTakeOverHistory;//钢瓶交接记录查询
 
+    var gasCylinderWarnUri = URI.resources.GasCylinderWarn;//钢瓶告警信息
+
+
 
     this.toViewModel = function (bottleFromApi) {
         return {
@@ -64,5 +67,17 @@ bottleApp.service('BottleService', ['$http', 'URI', 'promiseWrapper', function (
     this.retrieveGasCylinderTakeOverHistory = function (number, params) {
         return promise.wrap($http.get(gasCylinderTakeOverHistoryUri+"/"+number,{params: params}));
     };
+
+    //查询钢瓶告警信息
+    this.retrieveGasCylinderWarn = function (params) {
+        return promise.wrap($http.get(gasCylinderWarnUri,{params: params}));
+    };
+
+    //处理钢瓶告警信息
+    this.modifyGasCylinderWarn = function (warn) {
+        return promise.wrap($http.put(gasCylinderWarnUri + "/" + warn.id, warn));
+    };
+
+
 }]);
 

@@ -6,6 +6,7 @@ import com.donno.nj.domain.AliveStatus;
 import com.donno.nj.domain.UserPosition;
 import com.donno.nj.domain.SysUser;
 import com.donno.nj.domain.User;
+import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.*;
 import com.donno.nj.util.AppUtil;
@@ -66,11 +67,11 @@ public class SysUserController
         Optional<SysUser>  sysUser = sysUserService.findByUId(userId);
         if (!validUser.isPresent())
         {
-            responseEntity =  ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            throw new ServerSideBusinessException("用户不存在！",HttpStatus.UNAUTHORIZED);
         }
         else if (!password.equals(validUser.get().getPassword()))
         {
-            responseEntity =  ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            throw new ServerSideBusinessException("用户密码错误！",HttpStatus.UNAUTHORIZED);
         }
         else
         {
@@ -89,7 +90,7 @@ public class SysUserController
             }
             else
             {
-                responseEntity =  ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                throw new ServerSideBusinessException("非系统用户！",HttpStatus.UNAUTHORIZED);
             }
         }
 

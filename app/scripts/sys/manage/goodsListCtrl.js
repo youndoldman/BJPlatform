@@ -162,9 +162,9 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
                     initVal: {}
                 }
             }).then(function (result) {
-                if (result) {
+                //if (result) {
                     $scope.searchGoodsPriceAdjustment();
-                }
+                //}
             })
         };
 
@@ -193,9 +193,9 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
                     initVal: goodsPriceAdjustment
                 }
             }).then(function (result) {
-                if (result) {
+                //if (result) {
                     $scope.searchGoodsPriceAdjustment();
-                }
+                //}
             })
         };
 

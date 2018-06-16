@@ -187,7 +187,7 @@ bottleApp.controller('BottleModalCtrl', ['$scope', 'close', 'BottleService', 'ti
                         +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
                 });
         });
-    },300);
+    },500);
 
 
 

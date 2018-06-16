@@ -26,6 +26,9 @@ commonModule.factory('HttpInterceptor', ["$q", "$rootScope", '$window', 'URI', f
                 case 500:
                     //alert("对不起，访问出错了。");
                     break;
+                case 504:
+                    alert("服务器访问超时。");
+                    break;
                 default :
                     break;
                     //$rootScope.$broadcast("ResponseError");

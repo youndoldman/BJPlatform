@@ -83,6 +83,9 @@ commonModule.constant('URI', {
 
         'gasCylinderPosition':'../../../api/GasCylinderPosition',//钢瓶轨迹查询
         'gasCylinderTakeOverHistory':'../../../api/GasCylinder/TakeOver/History',//钢瓶交接记录查询
+
+        'GasCylinderWarn':'../../../api/GasCylinderWarn',//钢瓶交接告警接口
+
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
         'ktyReport1': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/agent/call',//科天云获取坐席-工作组及直拨电话统计报表
         'ktyReport2': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/agent/operation',//科天云获取坐席-操作状态统计报表
@@ -224,6 +227,7 @@ commonModule.constant('NavItem', {
             icon: "fa-edit"
         }]
     },
+
     'CustomService': {
         roles:[1,2],
         name: "客服业务",
@@ -422,8 +426,13 @@ commonModule.constant('NavItem', {
             name: "钢瓶档案",
             href: "./gasCenter.htm#/bottles/list",
             icon: "fa-building"
+        }, {
+            index: 2,
+            name: "流转异常",
+            href: "./gasCenter.htm#/bottles/warning",
+            icon: "fa-exclamation-triangle"
         },{
-            index: 1,
+            index: 3,
             name: "库存管理",
             href: "./gasCenter.htm#/bottles/stock",
             icon: "fa-magnet"

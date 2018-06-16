@@ -38,7 +38,7 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
         };
         $timeout(function(){
             init();
-        },300);
+        },500);
 
         $scope.$watch('vm.callOutPhone',function(newValue,oldValue){
             $rootScope.$broadcast("Event_CallOutPhoneChanged", newValue);

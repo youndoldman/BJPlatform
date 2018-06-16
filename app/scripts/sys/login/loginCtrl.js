@@ -27,8 +27,10 @@ loginApp.controller('LoginCtrl', ['$scope', '$rootScope', '$http', 'URI', 'promi
             sessionStorage.setCurUser(value);
         }, function(value) {
             // failure
-            console.log(value);
-            alert("用户名密码错误");
+            if(value.message != null){
+                alert(value.message);
+            }
+
         });
     };
 

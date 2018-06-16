@@ -54,7 +54,7 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
                         +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
                 });
         });
-    },300);
+    },500);
 
     $scope.config = {
         provinces: [],
@@ -429,7 +429,7 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         //获取区
         if ($scope.temp.selectedGoodsType==null) {
             return;
-        };
+        }
         var queryParams = {
             typeCode: $scope.temp.selectedGoodsType.code,
             //province:$scope.vm.goods.area.province,
@@ -468,12 +468,12 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         //}
     };
 
+
     //删除购物车
     $scope.deleteGoodsFromCart = function (adjustmentDetail) {
         for(var i=0; i<$scope.vm.currentPriceAdjustment.adjustPriceDetailList.length; i++){
             if ($scope.vm.currentPriceAdjustment.adjustPriceDetailList[i] == adjustmentDetail) {
                 $scope.vm.currentPriceAdjustment.adjustPriceDetailList.splice(i, 1);
-
                 //$scope.q.discountDetails.splice(i, 1);
                 break;
             }
@@ -481,7 +481,4 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
     };
 
     init();
-
-
-
 }]);

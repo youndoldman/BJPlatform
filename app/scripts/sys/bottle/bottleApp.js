@@ -40,6 +40,19 @@ var bottleApp = angular.module('BottleApp', ['ui.router', 'CommonModule', 'angul
                     rootService.updateActiveNavL2(NavItem.GasCenter.menuItems[1]);
                 }
             })
+            .state('bottles.warning',{
+                url:'/warning',
+                views: {
+                    "content@bottles": {
+                        templateUrl: '../pages/bottle/bottleWarning.htm',
+                        controller: 'BottleWarningCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.GasCenter.menuItems[2]);
+                }
+            })
 
             .state('bottles.stock',{
                 url:'/stock',
@@ -51,7 +64,7 @@ var bottleApp = angular.module('BottleApp', ['ui.router', 'CommonModule', 'angul
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.GasCenter.menuItems[2]);
+                    rootService.updateActiveNavL2(NavItem.GasCenter.menuItems[3]);
                 }
             });
         $httpProvider.interceptors.push('HttpInterceptor');
