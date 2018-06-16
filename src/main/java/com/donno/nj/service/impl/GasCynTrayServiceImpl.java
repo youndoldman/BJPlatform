@@ -149,7 +149,10 @@ public class GasCynTrayServiceImpl implements GasCynTrayService
         GasCynTray gasCynTray = gasCynTrayDao.findByNumber(trayNumber);
         if ( gasCynTray == null)
         {
-            throw new ServerSideBusinessException("托盘信息不存在！", HttpStatus.NOT_FOUND);
+            gasCynTray = new GasCynTray();
+            gasCynTray.setNumber(trayNumber);
+            gasCynTray.setDeviceStatus(DeviceStatus.DevEnabled);
+            gasCynTrayDao.insert(gasCynTray);
         }
 
         /*如果托盘已经被绑定了，提示应先解绑定*/

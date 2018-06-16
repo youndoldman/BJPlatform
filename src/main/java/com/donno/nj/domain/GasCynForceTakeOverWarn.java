@@ -11,7 +11,7 @@ public class GasCynForceTakeOverWarn implements Serializable
     private Integer id;
     private GasCylinder gasCylinder;//钢瓶
     private User srcUser; //原责任人
-    private GasCylinderSvcStatusOpHis gasCylinderSvcStatusOpHis;//交接记录
+    private GasCylinderSvcStatusOpHis gasCylinderSvcStatusOpHis;//发生强制交接的交接记录
 
     private GasCynWarnStatus  gasCynWarnStatus;
 
