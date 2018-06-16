@@ -123,10 +123,11 @@ public class GasCylinderController
                                              @RequestParam(value = "srcUserId", defaultValue = "",required = true) String srcUserId,
                                              @RequestParam(value = "targetUserId", defaultValue = "",required = true) String targetUserId,
                                              @RequestParam(value = "serviceStatus", required = true) Integer serviceStatus,
+                                             @RequestParam(value = "enableForce", required = true) Boolean enableForce,
                                              @RequestParam(value = "note", defaultValue = "")  String note)
     {
         ResponseEntity responseEntity;
-        gasCylinderService.updateSvcStatus(number,serviceStatus,srcUserId,targetUserId,note);
+        gasCylinderService.updateSvcStatus(number,serviceStatus,srcUserId,targetUserId,enableForce,note);
         responseEntity = ResponseEntity.ok().build();
 
         return responseEntity;
@@ -167,9 +168,7 @@ public class GasCylinderController
         Integer count = gasCylinderSvcOpHisService.count(params);
 
         return ResponseEntity.ok(ListRep.assemble(gasCylinderSvcStatusOpHises, count));
-
     }
-
 
     @OperationLog(desc = "删除钢瓶信息")
     @RequestMapping(value = "/api/GasCylinder/{number}", method = RequestMethod.DELETE)

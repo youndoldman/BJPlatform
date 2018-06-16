@@ -194,7 +194,8 @@
         WHERE
           id in (
                  select user_idx from t_sysuser where
-                department_idx = (select department_idx from t_sysuser where  user_idx = ( select id from t_user where user_id =  #{userId}))
+                department_idx = (select department_idx from t_sysuser
+                where  user_idx = ( select id from t_user where user_id =  #{userId}))
                )
           and
              (
@@ -202,7 +203,6 @@
               (
                 select id from t_group where code = #{groupCode}
               )
-
             )
     </select>
 

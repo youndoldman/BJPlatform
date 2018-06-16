@@ -71,6 +71,11 @@ public class AdjustPriceScheduleServiceImpl implements AdjustPriceScheduleServic
             throw new ServerSideBusinessException("缺少调价计划明细信息，请补充！", HttpStatus.NOT_ACCEPTABLE);
         }
 
+        if (adjustPriceSchedule.getName() == null ||  adjustPriceSchedule.getName().trim().length() == 0)
+        {
+            throw new ServerSideBusinessException("缺少调价计划名称信息，请补充！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
         /*默认为0*/
         if (adjustPriceSchedule.getStatus() == null)
         {
@@ -160,7 +165,10 @@ public class AdjustPriceScheduleServiceImpl implements AdjustPriceScheduleServic
                 adjustPriceScheduleDetailDao.insert(adjustPriceDetail);
             }
         }
-
+        else
+        {
+            throw new ServerSideBusinessException("缺少待调价商品信息！", HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 
 
