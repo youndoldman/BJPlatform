@@ -37,8 +37,8 @@
 
     <sql id = "getListCondition">
     <where>
-    <if test="gasCynNumber != null">  gas_cyr_idx = ( select id from t_gas_cylinder where number = #{gasCynNumber}) </if>
-    <if test="userId != null">  src_user_idx = ( select id from t_user where user_id = #{userId}) </if>
+    <if test="gasNumber != null">  gas_cyn_idx = ( select id from t_gas_cylinder where number = #{gasNumber}) </if>
+    <if test="srcUserId != null">  src_user_idx = ( select id from t_user where user_id = #{srcUserId}) </if>
     <if test="gasCynWarnStatus != null">  status = #{gasCynWarnStatus}</if>
     </where>
     </sql>
