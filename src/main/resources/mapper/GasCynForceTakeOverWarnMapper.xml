@@ -6,10 +6,10 @@
     <resultMap id="DetailResultMap" type="com.donno.nj.domain.GasCynForceTakeOverWarn">
         <id column="id" property="id" jdbcType="INTEGER"/>
 
-        <result column="note" property="note" jdbcType="VARCHAR"/>
-
         <result column="status" property="gasCynWarnStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
-
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
 
         <association property="gasCylinder" column="gas_cyn_idx" select="com.donno.nj.dao.GasCylinderDao.findById">
         </association>
