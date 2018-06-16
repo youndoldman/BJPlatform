@@ -39,7 +39,7 @@
     <where>
     <if test="gasCynNumber != null">  gas_cyr_idx = ( select id from t_gas_cylinder where number = #{gasCynNumber}) </if>
     <if test="userId != null">  src_user_idx = ( select id from t_user where user_id = #{userId}) </if>
-
+    <if test="gasCynWarnStatus != null">  status = #{gasCynWarnStatus}</if>
     </where>
     </sql>
 
@@ -72,6 +72,7 @@
         UPDATE <include refid="TblGasCynForceTakeover"/>
         <set>
             <if test="gasCynWarnStatus != null">status = #{gasCynWarnStatus.index},</if>
+            <if test="note != null">note = #{note},</if>
         </set>
         WHERE id = #{id}
     </update>

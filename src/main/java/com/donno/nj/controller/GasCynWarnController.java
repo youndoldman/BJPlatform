@@ -33,9 +33,10 @@ public class GasCynWarnController
 
 
     @RequestMapping(value = "/api/GasCylinderWarn", method = RequestMethod.GET, produces = "application/json")
-    @OperationLog(desc = "获取钢瓶列表")
+    @OperationLog(desc = "获取钢瓶告警信息列表")
     public ResponseEntity retrieve(@RequestParam(value = "gasNumber", defaultValue = "") String gasNumber,
                                    @RequestParam(value = "srcUserId", defaultValue = "") String srcUserId,
+                                   @RequestParam(value = "gasCynWarnStatus", required = false) Integer gasCynWarnStatus,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
@@ -50,6 +51,11 @@ public class GasCynWarnController
         if (srcUserId.trim().length() != 0)
         {
             params.putAll(ImmutableMap.of("srcUserId", srcUserId));
+        }
+
+        if (gasCynWarnStatus != null)
+        {
+            params.putAll(ImmutableMap.of("gasCynWarnStatus", gasCynWarnStatus));
         }
 
 
