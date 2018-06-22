@@ -11,8 +11,10 @@
     <div class="toolbar">
         <form role="form">
             <div class="inline-group">
-                <label class="input"><input type="text" class="form-control input-sm" ng-model="q.number" ng-change="search()" placeholder="钢瓶编码"> </label>
-                <label class="input"><input type="text" class="form-control input-sm" ng-model="q.liableUserId" ng-change="search()" placeholder="责任人"> </label>
+                <label class="input"><input type="text" class="form-control input-sm" ng-model="q.bottleNumber" ng-change="search()" placeholder="钢瓶编码"> </label>
+                <label class="input"><input type="text" class="form-control input-sm" ng-model="q.srcUserId" ng-change="search()" placeholder="责任人"> </label>
+                <label class="input">状态：</label>
+                <label class="input"><select  ng-model="q.gasCynWarnStatus" ng-options="gasCynWarnStatus.value for gasCynWarnStatus in vm.gasCynWarnStatusList" class="form-control" ng-selected="" ng-change="search()"></select></label>
                 <!--<label class="input"><input type="text" class="form-control input-sm" ng-model="q.liableDepartmentCode" ng-change="search()" placeholder="责任部门"> </label>-->
                 <!--<span class="glyphicon glyphicon-calendar" ng-click="initDepartmentSelect()"></span>-->
                 <button type="submit" class="btn btn-sm btn-primary" ng-click="search()"><i class="fa fa-search"></i> 搜索 </button>

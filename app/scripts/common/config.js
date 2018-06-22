@@ -84,7 +84,11 @@ commonModule.constant('URI', {
         'gasCylinderPosition':'../../../api/GasCylinderPosition',//钢瓶轨迹查询
         'gasCylinderTakeOverHistory':'../../../api/GasCylinder/TakeOver/History',//钢瓶交接记录查询
 
-        'GasCylinderWarn':'../../../api/GasCylinderWarn',//钢瓶交接告警接口
+        'GasCylinderWarn':'../../../api/GasCylinderWarn',//告警查询
+
+        'GasCynTrayBind':'../../../api/GasCynTray/Bind',//托盘绑定
+        'GasCynTray':'../../../api/GasCynTray',//托盘查询
+        'GasCynTrayunBind':'../../../api/GasCynTray/unBind',//托盘解绑定
 
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
         'ktyReport1': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/agent/call',//科天云获取坐席-工作组及直拨电话统计报表
@@ -95,6 +99,7 @@ commonModule.constant('URI', {
         'ktyReport6': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/workset/incall/analysis',//科天云获取工作组-来话应答/放弃/溢出分析报表
 
         'ktyCallreport': 'https://cc.ketianyun.com/thirdparty/api/v1/callreports',//科天云获得指定时间段呼叫的记录
+        'ktyCallreportSearch': 'https://cc.ketianyun.com/thirdparty/api/v1/callreports/search',//科天云获得获取指定搜索条件的呼叫记录
 
     }
 });

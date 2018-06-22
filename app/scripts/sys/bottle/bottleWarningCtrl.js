@@ -15,11 +15,13 @@ bottleApp.controller('BottleWarningCtrl', ['$scope', '$rootScope', '$filter', '$
         $scope.q = {
             id:null,
             bottleNumber: null,
-            srcUserId: null
+            srcUserId: null,
+            gasCynWarnStatus:null
         };
 
         $scope.vm = {
-            warningList: []
+            warningList: [],
+            gasCynWarnStatusList:[{key:null,value:"全部告警"},{key:0,value:"待处理"},{key:1,value:"处理中"},{key:2,value:"已处理"}],
         };
 
         $scope.search = function () {
@@ -49,6 +51,7 @@ bottleApp.controller('BottleWarningCtrl', ['$scope', '$rootScope', '$filter', '$
                 id: $scope.q.id,
                 gasNumber: $scope.q.bottleNumber,
                 srcUserId: $scope.q.srcUserId,
+                gasCynWarnStatus:$scope.q.gasCynWarnStatus.key,
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize
             };
@@ -66,8 +69,9 @@ bottleApp.controller('BottleWarningCtrl', ['$scope', '$rootScope', '$filter', '$
 
         var init = function () {
             //查询告警
-            $scope.vm.warningList = [{id:1,gasCynWarnStatus:{name:"新告警待处理"}}];
+            $scope.q.gasCynWarnStatus = $scope.vm.gasCynWarnStatusList[0];
             searchWarnings();
+
         };
 
         init();

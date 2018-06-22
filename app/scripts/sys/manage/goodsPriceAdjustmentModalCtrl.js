@@ -8,10 +8,9 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
             $('#datetimepickerStartExcute').datetimepicker({
                 format: 'YYYY-MM-DD HH:mm',
                 locale: moment.locale('zh-cn'),
-                //sideBySide:true,
                 showTodayButton: true,
                 toolbarPlacement: 'top',
-                minDate:new Date(),
+                //minDate:new Date(),
             });
 
         });
@@ -20,16 +19,18 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
                 .on('dp.change', function (ev) {
                     var date = ev.date._d;
                     var month = date.getMonth() + 1;
-                    $scope.vm.currentPriceAjustment.effectTime = date.getFullYear() + "-" + month + "-" + date.getDate() + " "
+                    $scope.vm.currentPriceAdjustment.effectTime = date.getFullYear() + "-" + month + "-" + date.getDate() + " "
                         + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
                 });
         });
     },500);
 
+    $scope.inputHidden_effectTime = true;
+
     $scope.isCreate = true;
 
     $scope.vm = {
-        currentPriceAjustment: {
+        currentPriceAdjustment: {
             name:null,
             effectTime:null,
             adjustPriceDetailList:[]
@@ -64,33 +65,56 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
         close(result, 500);
     };
 
-    $scope.submit = function (adjustPriceSchedules) {
+    $scope.submit = function (currentPriceAdjustment) {
+        console.info(currentPriceAdjustment);
 
-        if ($scope.isModify) {
-            adjustPriceSchedules.status = null;
-            GoodsService.modifyAdjustPriceSchedules(adjustPriceSchedules).then(function () {
-                udcModal.info({"title": "处理结果", "message": "修改调价策略成功 "});
-                //$scope.close(true);
-            }, function(value) {
-                udcModal.info({"title": "处理结果", "message": "修改调价策略失败 "+value.message});
+        var effectTime = new Date(currentPriceAdjustment.effectTime);
+        var effectTimeNum = effectTime.getTime();
 
-            })
-        }else{
-            GoodsService.createAdjustPriceSchedules(adjustPriceSchedules).then(function () {
-                udcModal.info({"title": "处理结果", "message": "增加调价策略成功 "});
-                //$scope.close(true);
-            }, function(value) {
-                udcModal.info({"title": "处理结果", "message": "增加调价策略失败 "+value.message});
-            })
+        var currentTime = new Date();
+        var currentTimeNum = currentTime.getTime();
 
+        if(effectTimeNum < currentTimeNum)
+        {
+            udcModal.info({"title": "提醒", "message": "调价策略的执行时间不能早于当前时间！"});
         }
+        else
+        {
+            if ($scope.isModify)
+            {
+                currentPriceAdjustment.status = null;
+                GoodsService.modifyAdjustPriceSchedules(currentPriceAdjustment).then(function () {
+                    udcModal.info({"title": "处理结果", "message": "修改调价策略成功 "});
+                    $scope.close(true);
+                }, function(value) {
+                    udcModal.info({"title": "处理结果", "message": "修改调价策略失败 "+value.message});
+                })
+            }
+            else
+            {
+                if(currentPriceAdjustment.adjustPriceDetailList.length != 0)
+                {
+                    GoodsService.createAdjustPriceSchedules(currentPriceAdjustment).then(function () {
+                        udcModal.info({"title": "处理结果", "message": "增加调价策略成功 "});
+                        $scope.close(true);
+                    }, function(value) {
+                        udcModal.info({"title": "处理结果", "message": "增加调价策略失败 "+value.message});
+                    })
+                }
+                else
+                {
+                    udcModal.info({"title": "错误信息", "message": "请先添加调价列表再提交保存"});
+                    return;
+                }
+            }
+        }
+
     };
 
     $scope.provincesChange = function () {
         //获取市
         getCitysConfig($scope.vm.goods.area.province);
         $scope.config.countys = [];
-        //$scope.goodsTypeChange();
 
         var queryParams = {
             typeCode: $scope.temp.selectedGoodsType.code,
@@ -113,8 +137,7 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
             return;
         };
         getCountysConfig($scope.vm.goods.area.city);
-        //$scope.goodsTypeChange();
-        //
+
          var queryParams = {
              typeCode: $scope.temp.selectedGoodsType.code,
              province:$scope.vm.goods.area.province,
@@ -132,10 +155,9 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
 
     $scope.county = null;
     $scope.countysChange = function () {
+        console.info("countysChange");
         //获取区
       $scope.vm.goods.area.county = $scope.county;
-        //$scope.goodsTypeChange();
-
         var queryParams = {
             typeCode: $scope.temp.selectedGoodsType.code,
             province:$scope.vm.goods.area.province,
@@ -150,7 +172,7 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
         //    $scope.temp.selectedGoods = $scope.temp.goodsList[0];
         //});
 
-    }
+    };
 
     var getProvincesConfig = function(param){
         GoodsService.retrieveSubdistrict(param).then(function (params) {
@@ -165,7 +187,7 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
         }, function(value) {
             udcModal.info({"title": "错误信息", "message": "请求高德地图服务失败 "+value.message});
         })
-    }
+    };
 
     var getCitysConfig = function(param){
         GoodsService.retrieveSubdistrict(param).then(function (params) {
@@ -202,9 +224,11 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
         getProvincesConfig("中国");
 
         if(title == "修改调价策略") {
-            $scope.vm.currentPriceAjustment = _.clone(initVal);
+            $scope.vm.currentPriceAdjustment = _.clone(initVal);
             $scope.isModify = true;
             $scope.isCreate = false;
+
+            $scope.inputHidden_effectTime = false;
             $scope.county =  $scope.vm.goods.area.county;
             if($scope.vm.goods.area.county.length==0){
                 $scope.county = "全部区";
@@ -214,6 +238,9 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
         else {
             $scope.isModify = false;
             $scope.isCreate = true;
+
+            $scope.inputHidden_effectTime = true;
+
             $scope.vm.goods.area.province = "云南省";
             getCitysConfig($scope.vm.goods.area.province);
             $scope.vm.goods.area.city = "昆明市";
@@ -251,9 +278,9 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
 
         var queryParams = {
             typeCode: $scope.temp.selectedGoodsType.code,
-            //province:$scope.vm.goods.area.province,
-            //city:$scope.vm.goods.area.city,
-            //county:$scope.vm.goods.area.county,
+            province:$scope.vm.goods.area.province,
+            city:$scope.vm.goods.area.city,
+            county:$scope.vm.goods.area.county,
         };
         //console.info("搜索区域商品");
         //console.info(queryParams);
@@ -270,18 +297,45 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
             udcModal.info({"title": "错误信息", "message": "请输入调整后的价格 "});
             return;
         }
-        var ajustmentDetail = {};
-        ajustmentDetail.goods = $scope.temp.selectedGoods;
-        ajustmentDetail.price = $scope.temp.adjustGoodsPrice;
-        $scope.vm.currentPriceAjustment.adjustPriceDetailList.push(ajustmentDetail);
+        var adjustmentDetail = {};
+        adjustmentDetail.goods = $scope.temp.selectedGoods;
+        adjustmentDetail.price = $scope.temp.adjustGoodsPrice;
+       // $scope.vm.currentPriceAdjustment.adjustPriceDetailList.push(adjustmentDetail)
+       // console.info($scope.vm.currentPriceAdjustment.adjustPriceDetailList.length);
+
+        if($scope.vm.currentPriceAdjustment.adjustPriceDetailList.length == 0)
+        {
+            $scope.vm.currentPriceAdjustment.adjustPriceDetailList.push(adjustmentDetail)
+
+            //console.info($scope.vm.currentPriceAdjustment.adjustPriceDetailList);
+        }
+        else
+        {
+            var findFlag = false;
+            for(var i=0; i< $scope.vm.currentPriceAdjustment.adjustPriceDetailList.length; i++) {
+                if(adjustmentDetail.goods.code == $scope.vm.currentPriceAdjustment.adjustPriceDetailList[i].goods.code)
+                {
+                    findFlag = true;
+                    break;
+                }
+            }
+            if(!findFlag){
+                $scope.vm.currentPriceAdjustment.adjustPriceDetailList.push(adjustmentDetail);
+            }
+
+            //console.info($scope.vm.currentPriceAdjustment.adjustPriceDetailList);
+        }
+
+
+
     };
 
 
     //删除购物车
-    $scope.deleteGoodsFromCart = function (ajustmentDetail) {
-        for(var i=0; i<$scope.vm.currentPriceAjustment.adjustPriceDetailList.length; i++){
-            if ($scope.vm.currentPriceAjustment.adjustPriceDetailList[i] == ajustmentDetail) {
-                $scope.vm.currentPriceAjustment.adjustPriceDetailList.splice(i, 1);
+    $scope.deleteGoodsFromCart = function (adjustmentDetail) {
+        for(var i=0; i<$scope.vm.currentPriceAdjustment.adjustPriceDetailList.length; i++){
+            if ($scope.vm.currentPriceAdjustment.adjustPriceDetailList[i] == adjustmentDetail) {
+                $scope.vm.currentPriceAdjustment.adjustPriceDetailList.splice(i, 1);
                 break;
             }
         }
