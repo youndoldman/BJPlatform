@@ -13,6 +13,14 @@ shopManageApp.controller('MendBillCtrl', ['$scope', 'close', 'MendSecurityCompla
 
     $scope.close = function (result) {
         close(result, 500);
+
+        udcModal.show({
+            templateUrl: "./shopManage/mendList.htm",
+            controller: "MendCtrl",
+            inputs: {}
+        }).then(function (result) {
+
+        })
     };
 
     $scope.doPrint = function () {

@@ -10,6 +10,8 @@ customServiceApp.service('KtyService', ['$http', 'URI', 'promiseWrapper','MISC',
     var ktyReport6Uri = URI.resources.ktyReport6;
     var ktyCallreportUri = URI.resources.ktyCallreport;
 
+    var ktyCallreportSearchUri = URI.resources.ktyCallreportSearch;
+
     //云客户认证
     this.authenticate = function (username, password) {
         return promise.wrap($http.post(ktyAuthenticateUri+'?username='+username+'&password='+password));
@@ -49,6 +51,12 @@ customServiceApp.service('KtyService', ['$http', 'URI', 'promiseWrapper','MISC',
     //获得指定时间段呼叫的记录
     this.retrieveCallreport = function (params,token) {
         return promise.wrap($http.get(ktyCallreportUri,{
+            params: params,headers : {'token':token}}));
+    }
+
+    //获取指定搜素条件的呼叫记录
+    this.retrieveCallreportSearch = function (params,token) {
+        return promise.wrap($http.get(ktyCallreportSearchUri,{
             params: params,headers : {'token':token}}));
     }
 }]);

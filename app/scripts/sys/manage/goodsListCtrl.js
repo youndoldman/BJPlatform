@@ -428,7 +428,7 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
             }
             //console.info(queryParams);
             GoodsService.retrieveDiscountStrategies(queryParams).then(function (couponAdjustmentList) {
-                //console.info(couponAdjustmentList);
+                console.info(couponAdjustmentList);
                 $scope.pagerCouponAdjustment.update($scope.q, couponAdjustmentList.total, queryParams.pageNo);
                 $scope.vm.couponAdjustmentList = couponAdjustmentList.items;
                 console.info($scope.vm.couponAdjustmentList);
