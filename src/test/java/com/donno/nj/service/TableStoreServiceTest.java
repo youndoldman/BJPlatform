@@ -26,7 +26,6 @@ public class TableStoreServiceTest {
     @Test
     public void createTable() throws Exception {
         tableStoreService.createTable();
-
     }
 
     //删除表

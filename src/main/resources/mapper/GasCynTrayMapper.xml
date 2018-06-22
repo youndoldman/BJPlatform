@@ -5,8 +5,13 @@
 
     <resultMap id="DetailResultMap" type="com.donno.nj.domain.GasCynTray">
         <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="number" property="number" jdbcType="VARCHAR"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
         <result column="status" property="deviceStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+        <result column="weight" property="weight" jdbcType="FLOAT"/>
+        <result column="time_stamp" property="timestamp" jdbcType="VARCHAR"/>
+        <result column="longitude" property="longitude" jdbcType="DOUBLE"/>
+        <result column="latitude" property="latitude" jdbcType="DOUBLE"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -64,6 +69,11 @@
         <set>
             <if test="deviceStatus != null">status = #{deviceStatus.index},</if>
             <if test="number != null">number = #{number},</if>
+
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="timestamp != null">time_stamp = #{timestamp},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
             <if test="note != null">note = #{note},</if>
         </set>
         WHERE id = #{id}

@@ -1,17 +1,30 @@
 package com.donno.nj.net;
 
-import io.netty.buffer.Unpooled;
+import com.donno.nj.dao.GasCynTrayDao;
+import com.donno.nj.domain.GasCynTray;
+import com.donno.nj.service.GasCynTrayService;
+import com.donno.nj.service.GasCynTrayTSService;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.util.CharsetUtil;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.concurrent.ThreadLocalRandom;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+@Component
 public class UdpServerHandler
         extends SimpleChannelInboundHandler<DatagramPacket>
 {
+
+    @Autowired
+    private GasCynTrayDao  gasCynTrayDao;
+
+
+    @Autowired
+    private GasCynTrayTSService trayService;
 
     @Override
     public void messageReceived(ChannelHandlerContext channelHandlerContext,
@@ -22,9 +35,28 @@ public class UdpServerHandler
         JSONObject json = new JSONObject(revMessage);
 
         /*接收数据解析*/
-        Integer openid = json.getInt("id");
-        System.out.println(openid);
+        GasCynTray gasCynTray = new GasCynTray();
+        gasCynTray.setNumber(json.getString("code"));
+        gasCynTray.setWeight((float)json.getDouble("weight"));
+        gasCynTray.setLongitude( json.getDouble("lon"));
+        gasCynTray.setLatitude( json.getDouble("lat"));
+        gasCynTray.setTimestamp( json.getString("timestamp"));
 
+
+        GasCynTray target =  gasCynTrayDao.findByNumber(gasCynTray.getNumber());
+        if ( target == null)
+        {
+            //to do ...
+        }
+        else
+        {
+            gasCynTray.setId(target.getId());
+            gasCynTrayDao.update(gasCynTray);
+
+            trayService.putRow(gasCynTray);
+
+
+        }
     }
 
     @Override

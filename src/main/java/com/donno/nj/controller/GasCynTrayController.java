@@ -6,11 +6,14 @@ import com.donno.nj.dao.GasCynTrayDao;
 import com.donno.nj.domain.AdjustPriceHistory;
 import com.donno.nj.domain.GasCynTray;
 import com.donno.nj.domain.Goods;
+import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.GasCynTrayService;
+import com.donno.nj.service.GasCynTrayTSService;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -27,6 +30,9 @@ public class GasCynTrayController
 {
     @Autowired
     private GasCynTrayService gasCynTrayService;
+
+    @Autowired
+    private GasCynTrayTSService gasCynTrayTSService;
 
     @RequestMapping(value = "/api/GasCynTray", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取托盘列表")
@@ -54,6 +60,36 @@ public class GasCynTrayController
         List<GasCynTray> gasCynTrays = gasCynTrayService.retrieve(params);
         Integer count = gasCynTrayService.count(params);
         return ResponseEntity.ok(ListRep.assemble(gasCynTrays, count));
+    }
+
+    @RequestMapping(value = "/api/GasCynTray/History", method = RequestMethod.GET, produces = "application/json")
+    @OperationLog(desc = "获取托盘历史数据列表")
+    public ResponseEntity retrieveHis(
+            @RequestParam(value = "number", defaultValue = "") String number,
+            @RequestParam(value = "startTime", defaultValue = "") String startTime,
+            @RequestParam(value = "endTime", defaultValue = "") String endTime,
+            @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
+            @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
+            @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
+    {
+
+        if (number.trim().length() == 0)
+        {
+            throw new ServerSideBusinessException("缺少托盘编码信息！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (startTime.trim().length() == 0)
+        {
+            throw new ServerSideBusinessException("缺少查询起始时间！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (endTime.trim().length() == 0)
+        {
+            throw new ServerSideBusinessException("缺少查询结束时间！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        List<GasCynTray> gasCynTrays = gasCynTrayTSService.getRange(number,startTime,endTime);
+        return ResponseEntity.ok(ListRep.assemble(gasCynTrays, gasCynTrays.size()));
     }
 
     @OperationLog(desc = "创建托盘")

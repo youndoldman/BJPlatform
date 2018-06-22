@@ -23,6 +23,7 @@ public interface GasCynTrayService
 
     Optional<GasCynTray> findById(Integer id);
 
+
     void bind(String trayNumber,String userId);
 
     void unBind(String trayNumber,String userId);

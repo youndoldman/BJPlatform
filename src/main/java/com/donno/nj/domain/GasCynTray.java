@@ -1,6 +1,7 @@
 package com.donno.nj.domain;
 
 import com.google.common.base.MoreObjects;
+import org.apache.xmlgraphics.xmp.schemas.DublinCoreAdapter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,6 +12,10 @@ public class GasCynTray implements Serializable
     private String number;
 
     DeviceStatus deviceStatus;
+    Float weight;
+    String timestamp;
+    Double longitude;
+    Double latitude;
 
     private String  note;
     private Date createTime;
@@ -19,8 +24,6 @@ public class GasCynTray implements Serializable
     public GasCynTray()
     {
     }
-
-
 
 
     /*
@@ -39,6 +42,22 @@ public class GasCynTray implements Serializable
 
     public DeviceStatus getDeviceStatus() {
         return deviceStatus;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public Float getWeight() {
+        return weight;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
     }
 
     public  String getNote()
@@ -72,6 +91,22 @@ public class GasCynTray implements Serializable
 
     public void setDeviceStatus(DeviceStatus deviceStatus) {
         this.deviceStatus = deviceStatus;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setWeight(Float weight) {
+        this.weight = weight;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
     public void setNote(String note)

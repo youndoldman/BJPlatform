@@ -1,5 +1,7 @@
 package com.donno.nj.service.impl;
 
+import com.donno.nj.dao.GasCynTrayDao;
+import com.donno.nj.domain.GasCynTray;
 import com.donno.nj.net.UdpServerHandler;
 import com.donno.nj.service.UdpServerService;
 import com.donno.nj.util.ConfigUtil;
@@ -17,12 +19,19 @@ public class UdpServerServiceImpl implements UdpServerService
     @Autowired
     private ConfigUtil configUtil;
 
+    @Autowired
+    private GasCynTrayDao gasCynTrayDao;
+
+    @Autowired
+    private UdpServerHandler udpServerHandler;
+
+
     @Override
     public void run()
     {
         try
         {
-            while (configUtil == null)
+            while (configUtil == null || gasCynTrayDao == null || udpServerHandler == null)
             {
                 Thread.sleep(10000);
             }
@@ -46,7 +55,7 @@ public class UdpServerServiceImpl implements UdpServerService
             Bootstrap b = new Bootstrap();
             b.group(group).channel(NioDatagramChannel.class)
                     .option(ChannelOption.SO_BROADCAST,true)
-                    .handler(new UdpServerHandler());
+                    .handler(udpServerHandler);
 
             b.bind(port).sync().channel().closeFuture().await();
         }
