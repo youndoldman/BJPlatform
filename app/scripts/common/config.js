@@ -11,74 +11,84 @@ commonModule.constant('URI', {
     'resources': {
         'loginPage': '../pages/login.htm',//登录页
         'mainPage': '../pages/mainCenter.htm',//首页
-        'users': 'http://47.106.71.160/api/sysusers',//系统用户接口
-        'department': 'http://47.106.71.160/api/Department',//部门接口
-        'groups': 'http://47.106.71.160/api/groups',//组接口
-        'customers': 'http://47.106.71.160/api/customers',//客户接口
-        'customerSource': 'http://47.106.71.160/api/CustomerSource',//客户来源查询接口
+        'users': '../../../api/sysusers',//系统用户接口
+        'department': '../../../api/Department',//部门接口
+        'groups': '../../../api/groups',//组接口
+        'customers': '../../../api/customers',//客户接口
+        'customerSource': '../../../api/CustomerSource',//客户来源查询接口
         //实际使用地址
         //'customerLevel': '../../../api/CustomerLevel',//客户等级查询接口
         //'customerType': '../../../api/CustomerType',//客户类型查询接口
-        'customerLevel': 'http://47.106.71.160/api/CustomerLevel',//客户等级查询接口
-        'customerType': 'http://47.106.71.160/api/CustomerType',//客户类型查询接口
+        'customerLevel': '../../../api/CustomerLevel',//客户等级查询接口
+        'customerType': '../../../api/CustomerType',//客户类型查询接口
 
-        'settlementType': 'http://47.106.71.160/api/SettlementType',//结算类型信息查询接口
+        'settlementType': '../../../api/SettlementType',//结算类型信息查询接口
 
-        'discountStrategies':'http://47.106.71.160/api/DiscountStrategies',//优惠策略接口
+        'discountStrategies':'../../../api/DiscountStrategies',//优惠策略接口
 
-        'customerCallin':'http://47.106.71.160/api/CustomerCallIn',//电话关联的客户资料查询接口
-        'login':'http://47.106.71.160/api/sysusers/login',//系统用户登录接口
-        'logout':'http://47.106.71.160/api/sysusers/logout',//系统用户登出接口
-        'orders':'http://47.106.71.160/api/Orders',　　　　　//订气订单接口
+        'customerCallin':'../../../api/CustomerCallIn',//电话关联的客户资料查询接口
+        'login':'../../../api/sysusers/login',//系统用户登录接口
+        'logout':'../../../api/sysusers/logout',//系统用户登出接口
+        'orders':'../../../api/Orders',　　　　　//订气订单接口
         'orderCancel':'../../../api/CancelOrder',　　　　　//订气作废接口
 
         'taskOrders':'../../../api/TaskOrders',//任务订单接口
         'taskOrdersDeal':'../../../api/TaskOrders/Process',//任务订单办理接口
         //'goods': '../../../api/Goods',//商品
         //'goodsTypes': '../../../api/GoodsTypes',//商品类型
-        'goods': 'http://47.106.71.160/api/Goods',//商品
-        'goodsTypes': 'http://47.106.71.160/api/GoodsTypes',//商品类型
+        'goods': '../../../api/Goods',//商品
+        'goodsTypes': '../../../api/GoodsTypes',//商品类型
 
-        'goodsPriceHistory': 'http://47.106.71.160/api/Goods/PriceHistory',//商品价格历史
-        'subdistrict':'http://restapi.amap.com/v3/config/district',//高德地图行政区域接口
-        'geocode':'http://restapi.amap.com/v3/geocode/geo',//高德地图逆地址解码接口
-        'bottle': 'http://47.106.71.160/api/GasCylinder',//钢瓶接口
+        'goodsPriceHistory': '../../../api/Goods/PriceHistory',//商品价格历史
+        'subdistrict':'https://restapi.amap.com/v3/config/district',//高德地图行政区域接口
+        'geocode':'https://restapi.amap.com/v3/geocode/geo',//高德地图逆地址解码接口
+        'bottle': '../../../api/GasCylinder',//钢瓶接口
         'bottleHandOver': '../../../api/GasCylinder/TakeOver',//钢瓶责任交接
         'gpsBind': '../../../api/GasCylinder/Bind',//定位终端绑定接口
         'gpsUnBind': '../../../api/GasCylinder/UnBind',//定位终端解除绑定接口
-        'bottleSpecQuery': 'http://47.106.71.160/api/GasCylinderSpec',//钢瓶规格查询
-        'cloudUser': 'http://47.106.71.160/api/CloudUser',//云客服用户接口
-        'cloudUserBind': 'http://47.106.71.160/api/CloudUser/Bind',//云客服用户绑定接口
-        'cloudUserUnBind': 'http://47.106.71.160/api/CloudUser/UnBind',//云客服用户解除绑定接口
+        'bottleSpecQuery': '../../../api/GasCylinderSpec',//钢瓶规格查询
+        'cloudUser': '../../../api/CloudUser',//云客服用户接口
+        'cloudUserBind': '../../../api/CloudUser/Bind',//云客服用户绑定接口
+        'cloudUserUnBind': '../../../api/CloudUser/UnBind',//云客服用户解除绑定接口
         //'adjustPriceSchedules': '../../../api/AdjustPriceSchedules',//调价接口
-        'adjustPriceSchedules': 'http://47.106.71.160/api/AdjustPriceSchedules',//调价接口
+        'adjustPriceSchedules': '../../../api/AdjustPriceSchedules',//调价接口
 
-        'ticket': 'http://47.106.71.160/api/Ticket',//气票信息增加
-        'coupon': 'http://47.106.71.160/api/Coupon',//优惠券信息增加
+        'ticket': '../../../api/Ticket',//气票信息增加
+        'coupon': '../../../api/Coupon',//优惠券信息增加
 
-        'salesByBayType': 'http://47.106.71.160/api/Report/Sales/ByPayType',//查询销售日报表(按支付类型查询)
-        'salesByCustomerType': 'http://47.106.71.160/api/Report/Sales/ByCustomerType',//查询销售日报表(按支付类型查询)
-        'saleContacts':'http://47.106.71.160/api/Report/SaleContacts',//销售往来日报表查询
-        'stock':'http://47.106.71.160/api/Report/Stock',//查询库存
-        'stockInOut':'http://47.106.71.160/api/Report/StockInOut',//查询出入库数量
-        'salesCash':'http://47.106.71.160/api/Report/SaleCash',//销售现金报表
+        'salesByBayType': '../../../api/Report/Sales/ByPayType',//查询销售日报表(按支付类型查询)
+        'salesByCustomerType': '../../../api/Report/Sales/ByCustomerType',//查询销售日报表(按支付类型查询)
+        'saleContacts':'../../../api/Report/SaleContacts',//销售往来日报表查询
+        'stock':'../../../api/Report/Stock',//查询库存
+        'stockInOut':'../../../api/Report/StockInOut',//查询出入库数量
+        'salesCash':'../../../api/Report/SaleCash',//销售现金报表
 
-        'mendType': 'http://47.106.71.160/api/MendTypes',//报修类型接口
-        'mend': 'http://47.106.71.160/api/Mend',//报修单接口
-        'securityType': 'http://47.106.71.160/api/SecurityTypes',//安检类型接口
-        'security': 'http://47.106.71.160/api/Security',//安检单接口
-        'complaintType': 'http://47.106.71.160/api/ComplaintTypes',//投诉类型接口
-        'complaint': 'http://47.106.71.160/api/Complaint',//投诉单接口
 
-        'customerCredit': 'http://47.106.71.160/api/CustomerCredit',//欠款
-        'writeOff':'http://47.106.71.160/api/WriteOff',//回款
-        'writeOffDetail':'http://47.106.71.160/api/WriteOffDetail',//回款明细信息查询
-        'depositDetail':'http://47.106.71.160/api/DepositDetail',//增加存银行款信息记录
+        'mendType': '../../../api/MendTypes',//报修类型接口
+        'mend': '../../../api/Mend',//报修单接口
+        'securityType': '../../../api/SecurityTypes',//安检类型接口
+        'security': '../../../api/Security',//安检单接口
+        'complaintType': '../../../api/ComplaintTypes',//投诉类型接口
+        'complaint': '../../../api/Complaint',//投诉单接口
 
-        'gasCylinderSpec':'http://47.106.71.160/api/GasCylinderSpec',//查询钢瓶规格
-        'addGasCylinderSpec':'http://47.106.71.160/api/GasCyrDynDetail',//钢检瓶动态增加
-        'reportGasCyrDyn':'http://47.106.71.160/api/Report/GasCyrDyn',//钢检瓶报表查询
-        'gasCyrChargeSpec':'http://47.106.71.160/api/GasCyrChargeSpec',//钢瓶收费标准查询
+        'customerCredit': '../../../api/CustomerCredit',//欠款
+        'writeOff':'../../../api/WriteOff',//回款
+        'writeOffDetail':'../../../api/WriteOffDetail',//回款明细信息查询
+        'depositDetail':'../../../api/DepositDetail',//增加存银行款信息记录
+
+        'gasCylinderSpec':'../../../api/GasCylinderSpec',//查询钢瓶规格
+        'addGasCylinderSpec':'../../../api/GasCyrDynDetail',//钢检瓶动态增加
+        'reportGasCyrDyn':'../../../api/Report/GasCyrDyn',//钢检瓶报表查询
+        'gasCyrChargeSpec':'../../../api/GasCyrChargeSpec',//钢瓶收费标准查询
+
+        'gasCylinderPosition':'../../../api/GasCylinderPosition',//钢瓶轨迹查询
+        'gasCylinderTakeOverHistory':'../../../api/GasCylinder/TakeOver/History',//钢瓶交接记录查询
+
+        'GasCylinderWarn':'../../../api/GasCylinderWarn',//告警查询
+
+        'GasCynTrayBind':'../../../api/GasCynTray/Bind',//托盘绑定
+        'GasCynTray':'../../../api/GasCynTray',//托盘查询
+        'GasCynTrayunBind':'../../../api/GasCynTray/unBind',//托盘解绑定
 
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
         'ktyReport1': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/agent/call',//科天云获取坐席-工作组及直拨电话统计报表
@@ -90,7 +100,6 @@ commonModule.constant('URI', {
 
         'ktyCallreport': 'https://cc.ketianyun.com/thirdparty/api/v1/callreports',//科天云获得指定时间段呼叫的记录
         'ktyCallreportSearch': 'https://cc.ketianyun.com/thirdparty/api/v1/callreports/search',//科天云获得获取指定搜索条件的呼叫记录
-
 
     }
 });
@@ -223,6 +232,7 @@ commonModule.constant('NavItem', {
             icon: "fa-edit"
         }]
     },
+
     'CustomService': {
         roles:[1,2],
         name: "客服业务",
@@ -421,8 +431,13 @@ commonModule.constant('NavItem', {
             name: "钢瓶档案",
             href: "./gasCenter.htm#/bottles/list",
             icon: "fa-building"
+        }, {
+            index: 2,
+            name: "流转异常",
+            href: "./gasCenter.htm#/bottles/warning",
+            icon: "fa-exclamation-triangle"
         },{
-            index: 1,
+            index: 3,
             name: "库存管理",
             href: "./gasCenter.htm#/bottles/stock",
             icon: "fa-magnet"
