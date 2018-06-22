@@ -251,12 +251,6 @@
             <div class="tab-pane active" id="tab_1">
               <div class="row">
                 <div class="col-xs-6">
-
-                  <!--<div class="input-group date">-->
-                    <!--<div class="input-group-addon">-->
-                      <!--<i class="fa fa-calendar"></i>-->
-                    <!--</div>-->
-                    <!--<input type="text" class="form-control pull-right input-sm" placeholder="2017-07-30">-->
                   <label class="text">时间：</label>
                   <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>
                   <!--</div>-->
@@ -264,28 +258,36 @@
                 <div class="col-xs-6">
                   <label class="text">至</label>
                   <label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control" ng-model="q.endTime"></label>
-                  <!--<select class="form-control input-sm" >-->
-                  <!--<option>525</option>-->
-                  <!--<option>535</option>-->
-                  <!--<option>545</option>-->
-                  <!--<option>555</option>-->
-                  <!--</select>-->
                 </div>
               </div>
               <br>
-              <div>
-                <label>来电号码：</label>
-              </div>
-              <br>
+
               <div class="row">
                 <div class="col-xs-6">
-                  <div class="box-tools">
-                    <div class="input-group input-group-sm">
-                      <input type="text" name="table_search" class="form-control " placeholder="12345678911">
-
-                    </div>
-                  </div>
+                  <label class="text">客户号码：</label>
+                  <label class="input">
+                    <input type="text" name="ani" class="form-control " placeholder="输入客户号码" ng-minlength="11" ng-model="q.ani" ng-change="searchCustomerCallReport()" >
+                  </label>
+                  <!--</div>-->
                 </div>
+                <div class="col-xs-6">
+                  <label class="text">客服号码：</label>
+                  <label class="input">
+                    <input type="text" name="dnis" class="form-control " placeholder="输入客服号码" ng-minlength="6" ng-model="q.dnis" ng-change="searchCustomerCallReport()" >
+                  </label>
+                </div>
+              </div>
+
+              <br>
+              <div class="row">
+                <!--<div class="col-xs-6">-->
+                  <!--<div class="box-tools">-->
+                    <!--<div class="input-group input-group-sm">-->
+                      <!--<input type="text" name="ani" class="form-control " placeholder="输入客户号码" ng-model="q.ani" ng-change="searchCustomerCallReport()" >-->
+
+                    <!--</div>-->
+                  <!--</div>-->
+                <!--</div>-->
 
                 <div class="col-xs-6">
                   <div class="input-group-btn ">
@@ -293,94 +295,96 @@
                   </div>
                 </div>
               </div>
-              <br><br>
+              <br>
               <table class="table table-bordered table-hover .table-condensed table-striped" style="table-layout:fixed;">
                 <thead>
                   <tr>
-                    <td style="background: lightblue;text-align: center" width="15%">序号</td>
-                    <td style="background: lightblue;text-align: center" width="28%">电话号码</td>
-                    <td style="background: lightblue;text-align: center" width="28%">来电时间</td>
-                    <td style="background: lightblue;text-align: center" width="28%">接线员</td>
+                    <td style="background: lightblue;text-align: center" width="12%">序号</td>
+                    <td style="background: lightblue;text-align: center" width="28%">客户号码</td>
+                    <td style="background: lightblue;text-align: center" width="20%">客服号码</td>
+                    <td style="background: lightblue;text-align: center" width="20%">通话方向</td>
+                    <td style="background: lightblue;text-align: center" width="20%">来电时间</td>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr ng-repeat="item in vm.callReportList">
+                  <tr ng-repeat="item in vm.callReportList.data">
                     <td class="message">{{$index+1+pagerCallReport.pageSize*(pagerCallReport.getCurPageNo()-1)}}</td>
                     <td class="message">{{item.ani}}</td>
+                    <td class="message">{{item.dnis}}</td>
+                    <!--<td class="message">{{item.direction}}</td>-->
+                    <td class="message">{{item.direction == ob ? callIn : callOut}}</td>
                     <td class="message">{{item.createTime}}</td>
-                    <td class="message">{{item.agentUserName"}}</td>
                   </tr>
                 </tbody>
               </table>
               <div ng-if="vm.callReportList.data.length == 0" nj-table-no-data></div>
-              <div nj-pager pager="pagerCallReport"  hidepagesizeoptions=true></div>
+              <div nj-pager pager="pagerCallReport"  ></div>
             </div>
-
-
 
 
             <!-- /.tab-pane -->
             <div class="tab-pane" id="tab_2">
               <div class="row">
-                <div class="col-xs-7">
-
-                  <div class="input-group date">
-                    <div class="input-group-addon">
-                      <i class="fa fa-calendar"></i>
-                    </div>
-                    <input type="text" class="form-control pull-right input-sm" placeholder="2017-07-30">
-                  </div>
+                <div class="col-xs-6">
+                  <label class="text">时间：</label>
+                  <label class="input"><input type="text"  id="datetimepickerStart1"  class="form-control" ng-model="q.startTime1"></label>
+                  <!--</div>-->
                 </div>
-                <div class="col-xs-5">
-
-                  <select class="form-control input-sm" >
-                    <option>525</option>
-                    <option>535</option>
-                    <option>545</option>
-                    <option>555</option>
-                  </select>
+                <div class="col-xs-6">
+                  <label class="text">至</label>
+                  <label class="input"><input type="text"  id="datetimepickerEnd1"  class="form-control" ng-model="q.endTime1"></label>
                 </div>
               </div>
               <br>
-              <div>
-                <label>来电号码：</label>
+
+              <div class="row">
+                <div class="col-xs-6">
+                  <label class="text">客户号码：</label>
+                  <label class="input">
+                    <input type="text" name="ani" class="form-control " placeholder="输入客户号码" ng-minlength="11" ng-model="q.ani1" ng-change="searchMissedCallReport()" >
+                  </label>
+                  <!--</div>-->
+                </div>
+                <div class="col-xs-6">
+                  <label class="text">客服号码：</label>
+                  <label class="input">
+                    <input type="text" name="dnis" class="form-control " placeholder="输入客服号码" ng-minlength="6" ng-model="q.dnis1" ng-change="searchMissedCallReport()" >
+                  </label>
+                </div>
               </div>
+
               <br>
               <div class="row">
-                <div class="col-xs-7">
-                  <div class="box-tools">
-                    <div class="input-group input-group-sm">
-                      <input type="text" name="table_search" class="form-control " placeholder="12345678911">
-
-                      <div class="input-group-btn">
-                        <button type="search" class="btn btn-flat"><i class="fa fa-search"></i></button>
-                      </div>
-                    </div>
+                <div class="col-xs-6">
+                  <div class="input-group-btn ">
+                    <button type="search" class="btn btn-flat" ng-click="searchMissedCallReport()"><i class="fa fa-search"></i></button>
                   </div>
                 </div>
-
-                <div class="col-xs-5">
-                  <select class="form-control input-sm">
-                    <option>100条</option>
-                    <option>200条</option>
-                    <option>300条</option>
-                  </select>
-                </div>
               </div>
-              <br><br>
-              <table class="table table-bordered">
+              <br>
+              <table class="table table-bordered table-hover .table-condensed table-striped" style="table-layout:fixed;">
+                <thead>
                 <tr>
-                  <th style="background: lightblue">电话号码</th>
-                  <th style="background: lightblue">来电时间</th>
-                  <th style="background: lightblue">接线员</th>
+                  <td style="background: lightblue;text-align: center" width="12%">序号</td>
+                  <td style="background: lightblue;text-align: center" width="28%">未接客户号码</td>
+                  <td style="background: lightblue;text-align: center" width="20%">客服号码</td>
+                  <td style="background: lightblue;text-align: center" width="20%">通话方向</td>
+                  <td style="background: lightblue;text-align: center" width="20%">来电时间</td>
                 </tr>
-                <tr><td>12345678901</td><td>2017-07-30</td><td>555</td></tr>
-                <tr><td>12345678902</td><td>2017-07-30</td><td>535</td></tr>
-                <tr><td>12345678903</td><td>2017-07-30</td><td>525</td></tr>
-                <tr><td>12345678904</td><td>2017-07-30</td><td>545</td></tr>
-                <tr><td>12345678905</td><td>2017-07-30</td><td>555</td></tr>
-                <tr><td>12345678906</td><td>2017-07-30</td><td>555</td></tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in vm.missedCallReportList.data">
+                  <td class="message">{{$index+1+pagerMissedCallReport.pageSize*(pagerMissedCallReport.getCurPageNo()-1)}}</td>
+                  <td class="message">{{item.ani}}</td>
+                  <td class="message">{{item.dnis}}</td>
+                  <!--<td class="message">{{item.direction}}</td>-->
+                  <td class="message">{{item.direction == ob ? callIn : callOut}}</td>
+                  <td class="message">{{item.createTime}}</td>
+                </tr>
+                </tbody>
               </table>
+              <div ng-if="vm.missedCallReportList.data.length == 0" nj-table-no-data></div>
+              <div nj-pager pager="pagerMissedCallReport"  ></div>
             </div>
 
             <div class="tab-pane" id="tab_3">
@@ -464,7 +468,7 @@
           </div>
           <div class="col-md-1 col-md-offset-2" style="margin-top: 5px">
             <div class="input-group">
-              <button class="btn btn-sm btn-primary pull-right"  ng-click="createOrder()"><i class="fa fa-plus"></i> 生成i订单 </button>
+              <button class="btn btn-sm btn-primary pull-right"  ng-click="createOrder()"><i class="fa fa-plus"></i> 生成订单 </button>
             </div>
 
           </div>
