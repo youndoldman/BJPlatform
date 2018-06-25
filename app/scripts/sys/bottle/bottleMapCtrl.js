@@ -125,7 +125,7 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
                 });
 
                 marker.setLabel({
-                    offset: new AMap.Pixel(0, 30*(i%2)),
+                    offset: new AMap.Pixel(0, 30*(i%10)),
                     content: contents
                 });
             }
@@ -286,6 +286,7 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
         $scope.vm = {
             bottleList: [],
             historyList:[],//钢瓶交接记录
+            historyListSplitByPage:[],//分页显示的交接记录
             selectedBottlePath:{"name":null, "path":[]}//钢瓶轨迹
         };
 
@@ -354,16 +355,34 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
 
         //查询钢瓶的生命历程
         var searchOpsLog = function () {
+            $scope.vm.historyListSplitByPage = [];
             var queryParams = {
-                number: $scope.q.selectBottleCode,
+                startTime: $scope.q.startTime,
+                endTime: $scope.q.endTime,
                 pageNo: $scope.pagerOpsLog.getCurPageNo(),
                 pageSize: $scope.pagerOpsLog.pageSize
             };
-            //
-            //BottleService.retrieveBottles(queryParams).then(function (bottles) {
-            //    $scope.pager.update($scope.q, bottles.total, queryParams.pageNo);
-            //    $scope.vm.bottleList = bottles.items;
-            //});
+
+            BottleService.retrieveGasCylinderTakeOverHistory($scope.q.selectBottleCode, queryParams).then(function (historys) {
+                for (var i = 0; i < historys.items.length; i++) {
+                    var tempHistory = {
+                        srcUser: "",
+                        destUser: "",
+                        detail: "",
+                        createTime: "",
+                        longititude: "",
+                        latitude: ""
+                    };
+                    tempHistory.srcUser = historys.items[i].srcUser.userId + "(" + historys.items[i].srcUser.name + ")";
+                    tempHistory.destUser = historys.items[i].targetUser.userId + "(" + historys.items[i].targetUser.name + ")";
+                    tempHistory.detail = historys.items[i].note;
+                    tempHistory.createTime = historys.items[i].optime;
+
+                    tempHistory.longititude = historys.items[i].longitude;
+                    tempHistory.latitude = historys.items[i].latitude;
+                    $scope.vm.historyListSplitByPage.push(tempHistory);
+                }
+            });
         };
 
         //钢瓶定位
@@ -396,6 +415,7 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
             getPath(number);
             //查询变更历史，绘制变更历史
             $scope.getBottleTakeOverHistoryByCode(number, $scope.q.startTime, $scope.q.endTime);
+            searchOpsLog();//分页显示交接记录
         };
 
 
@@ -404,6 +424,14 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
         var init = function () {
             $scope.pagerBottle.pageSize=5;
             $scope.pagerOpsLog.pageSize=5;
+            //初始化时间段
+            var curDate = new Date();
+            curDate.toDateString;
+            var month = curDate.getMonth()+1;
+            $scope.q.endTime = curDate.getFullYear()+"-"+month+"-"+curDate.getDate()+" "
+                +curDate.getHours()+":"+curDate.getMinutes()+":"+curDate.getSeconds();
+            $scope.q.startTime = curDate.getFullYear()+"-"+month+"-"+curDate.getDate()+" "
+                +"00"+":"+"00"+":"+"00";
             searchBottles();
 
         };
@@ -412,6 +440,7 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
             $scope.vm.selectedBottlePath = {"name":null, "path":[]}//钢瓶轨迹
             $scope.vm.selectedBottlePath.name = "钢瓶号： "+bottleCode;
             $scope.getBottlePathByCode(bottleCode, $scope.q.startTime, $scope.q.endTime);
+
         };
 
 
@@ -425,6 +454,9 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
             };
             console.log("getBottlePathByCode:  "+number+"   "+startTime+"   "+endTime);
             BottleService.retrieveGasCylinderPosition(queryParams).then(function (paths) {
+                if(paths.total==0){
+                    udcModal.info({"title": "提示信息", "message": "无轨迹数据"});
+                }
 
                 $scope.vm.selectedBottlePath.total+=paths.total;
 
@@ -449,10 +481,13 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
             $scope.vm.historyList = [];
             var queryParams = {
                 startTime: startTime,
-                endTime: endTime
+                endTime: endTime,
             };
 
             BottleService.retrieveGasCylinderTakeOverHistory(number, queryParams).then(function (historys) {
+                if(historys.total==0){
+                    udcModal.info({"title": "提示信息", "message": "无交接记录"});
+                }
                 for(var i=0; i<historys.items.length; i++){
                     var tempHistory = {srcUser:"", destUser:"", detail:"", createTime:"", longititude:"", latitude:""};
                     tempHistory.srcUser = historys.items[i].srcUser.userId+"("+historys.items[i].srcUser.name+")";

@@ -6,6 +6,7 @@ bottleApp.controller('BottleWarningModalCtrl', ['$scope', 'close', 'BottleServic
     $scope.vm = {
         warning: {},
         historyList:[],//钢瓶交接记录
+        historyListSplitByPage:[],//分页显示的交接记录
         selectedBottlePath:{"name":null, "path":[]}//钢瓶轨迹
     };
 
@@ -29,6 +30,7 @@ bottleApp.controller('BottleWarningModalCtrl', ['$scope', 'close', 'BottleServic
 
 
     var init = function () {
+        $scope.pagerOpsLog.pageSize=5;
         $scope.vm.warning = _.clone(initVal);
         if (title == "告警处理"){
             $scope.isModify = true;
@@ -36,6 +38,7 @@ bottleApp.controller('BottleWarningModalCtrl', ['$scope', 'close', 'BottleServic
             $scope.isModify = false;
         }
         $scope.getBottleTakeOverHistoryByCode($scope.vm.warning.gasCylinder.number,null,null);
+        searchOpsLog();
 
     };
 
@@ -178,41 +181,15 @@ bottleApp.controller('BottleWarningModalCtrl', ['$scope', 'close', 'BottleServic
             });
 
     };
-    //关键地标标注初始化
-    var importantMarksInitial = function() {
-    };
 
-    var markerDestClick = function (e) {
-        infoWindow.setContent(e.target.content);
-        infoWindow.open($scope.map, e.target.getPosition());
-    };
 
-    var markerWorkersClick = function (e) {
-        //var displayInfo = e.target.content.name+"   "+e.target.content.mobilePhone;
-        //infoWindow.setContent(displayInfo);
-        //infoWindow.open($scope.map, e.target.getPosition());
-        ////将这个配送员信息更新至表单
-        //for (var i=0;i<$scope.vm.onLineWorkersList.length;i++) {
-        //    if(e.target.content.userId == $scope.vm.onLineWorkersList[i].userId){
-        //        $scope.vm.selectedWorker =  _.clone($scope.vm.onLineWorkersList[i]);
-        //        break;
-        //    }
-        //}
-        //console.log($scope.vm.selectedWorker);
-
-    };
     //========================
 
     $scope.location = function(lon,lan)
     {
         BottleService.location(lon, lan);
     };
-    var gotoPageBottles = function (pageNo) {
-        $scope.pagerBottle.setCurPageNo(pageNo);
-        searchBottles();
-    };
 
-    $scope.pagerBottle = pager.init('BottleListCtrl', gotoPageBottles);
 
     var gotoPageOpsLog = function (pageNo) {
         $scope.pagerOpsLog.setCurPageNo(pageNo);
@@ -232,20 +209,11 @@ bottleApp.controller('BottleWarningModalCtrl', ['$scope', 'close', 'BottleServic
     //钢瓶历史轨迹
     $scope.displayHistory = function (number) {
         $scope.q.selectBottleCode = number;
-        //绘制轨迹
 
-        getPath(number);
         //查询变更历史，绘制变更历史
         $scope.getBottleTakeOverHistoryByCode(number, $scope.q.startTime, $scope.q.endTime);
+        searchOpsLog();//分页显示交接记录
     };
-
-
-    var getPath = function (bottleCode) {
-        $scope.vm.selectedBottlePath = {"name":null, "path":[]}//钢瓶轨迹
-        $scope.vm.selectedBottlePath.name = "钢瓶号： "+bottleCode;
-        $scope.getBottlePathByCode(bottleCode, $scope.q.startTime, $scope.q.endTime);
-    };
-
 
 
     //查询钢瓶轨迹
@@ -281,7 +249,10 @@ bottleApp.controller('BottleWarningModalCtrl', ['$scope', 'close', 'BottleServic
         $scope.vm.historyList = [];
         var queryParams = {
             startTime: startTime,
-            endTime: endTime
+            endTime: endTime,
+            pageNo: 1,
+            pageSize: 10,
+            orderBy:"id desc"
         };
 
         BottleService.retrieveGasCylinderTakeOverHistory(number, queryParams).then(function (historys) {
@@ -299,9 +270,43 @@ bottleApp.controller('BottleWarningModalCtrl', ['$scope', 'close', 'BottleServic
             //显示记录
             markHistory();
             var takeOverHistoryCount = $scope.vm.historyList.length;
-            $scope.getBottlePathByCode($scope.vm.warning.gasCylinder.number,$scope.vm.historyList[0].createTime,$scope.vm.historyList[takeOverHistoryCount-1].createTime);
+            $scope.vm.selectedBottlePath = {"name":null, "path":[]}//钢瓶轨迹
+            $scope.vm.selectedBottlePath.name = "钢瓶号： "+$scope.vm.warning.gasCylinder.number;
+            $scope.getBottlePathByCode($scope.vm.warning.gasCylinder.number,$scope.vm.historyList[takeOverHistoryCount-1].createTime,$scope.vm.historyList[0].createTime);
         });
     };
+        //查询钢瓶的生命历程
+        var searchOpsLog = function () {
+            $scope.vm.historyListSplitByPage = [];
+            var queryParams = {
+                startTime: $scope.q.startTime,
+                endTime: $scope.q.endTime,
+                pageNo: $scope.pagerOpsLog.getCurPageNo(),
+                pageSize: $scope.pagerOpsLog.pageSize,
+                orderBy:"id desc"
+            };
+
+            BottleService.retrieveGasCylinderTakeOverHistory($scope.vm.warning.gasCylinder.number, queryParams).then(function (historys) {
+                for (var i = 0; i < historys.items.length; i++) {
+                    var tempHistory = {
+                        srcUser: "",
+                        destUser: "",
+                        detail: "",
+                        createTime: "",
+                        longititude: "",
+                        latitude: ""
+                    };
+                    tempHistory.srcUser = historys.items[i].srcUser.userId + "(" + historys.items[i].srcUser.name + ")";
+                    tempHistory.destUser = historys.items[i].targetUser.userId + "(" + historys.items[i].targetUser.name + ")";
+                    tempHistory.detail = historys.items[i].note;
+                    tempHistory.createTime = historys.items[i].optime;
+
+                    tempHistory.longititude = historys.items[i].longitude;
+                    tempHistory.latitude = historys.items[i].latitude;
+                    $scope.vm.historyListSplitByPage.push(tempHistory);
+                }
+            });
+        };
     init();
 
 }]);

@@ -28,30 +28,44 @@ var decisionApp = angular.module('DecisionApp', ['ui.router', 'CommonModule', 'a
                     rootService.updateActiveNavL2(NavItem.DecisionCenter.menuItems[0]);
                 }
             })
-            .state('decision.sales', {
-                url: '/sales',
+            .state('decision.gasUsage', {
+                url: '/gasUsage',
                 views: {
                     "content@decision": {
-                        templateUrl: '../pages/decision/sales.htm',
+                        controller: 'GasUsageCtrl',
+                        templateUrl: '../pages/decision/gasUsage.htm',
                         resolve: {}
                     }
                 },
                 onEnter: function (rootService, NavItem) {
                     rootService.updateActiveNavL2(NavItem.DecisionCenter.menuItems[1]);
                 }
-            })
-            .state('decision.market', {
-                url: '/market',
-                views: {
-                    "content@decision": {
-                        templateUrl: '../pages/decision/market.htm',
-                        resolve: {}
-                    }
-                },
-                onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.DecisionCenter.menuItems[2]);
-                }
             });
+
+            //.state('decision.sales', {
+            //    url: '/sales',
+            //    views: {
+            //        "content@decision": {
+            //            templateUrl: '../pages/decision/sales.htm',
+            //            resolve: {}
+            //        }
+            //    },
+            //    onEnter: function (rootService, NavItem) {
+            //        rootService.updateActiveNavL2(NavItem.DecisionCenter.menuItems[1]);
+            //    }
+            //})
+            //.state('decision.market', {
+            //    url: '/market',
+            //    views: {
+            //        "content@decision": {
+            //            templateUrl: '../pages/decision/market.htm',
+            //            resolve: {}
+            //        }
+            //    },
+            //    onEnter: function (rootService, NavItem) {
+            //        rootService.updateActiveNavL2(NavItem.DecisionCenter.menuItems[2]);
+            //    }
+            //});
         $httpProvider.interceptors.push('HttpInterceptor');
     }]).run(['$rootScope', 'rootService', 'NavItem', function ($rootScope, rootService, NavItem) {
         rootService.updateActiveNavLv1(NavItem.DecisionCenter);

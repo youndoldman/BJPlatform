@@ -60,7 +60,7 @@
     <div class="ribbon">
         <a href=""><span class="home fa fa-home"></span></a>
         <ol class="breadcrumb">
-            <li>生命历程</li>
+            <li>交接记录</li>
         </ol>
     </div>
 
@@ -69,15 +69,17 @@
             <thead>
             <tr>
                 <th width="1%"></th>
-                <th width="18%">持瓶者</th>
-                <th width="18%">移交人</th>
-                <th width="30%">事件</th>
-                <th width="40%">时间</th>
+                <th width="19%">序号</th>
+                <th width="20%">持瓶者</th>
+                <th width="20%">移交人</th>
+                <th width="20%">事件</th>
+                <th width="20%">时间</th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="history in vm.historyList">
+            <tr ng-repeat="history in vm.historyListSplitByPage">
                 <td></td>
+                <td class="message">{{$index+1+pagerOpsLog.pageSize*(pagerOpsLog.getCurPageNo()-1)}}</td>
                 <td class="message">{{history.srcUser}}</td>
                 <td class="message">{{history.destUser}}</td>
                 <td class="message">{{history.detail}}</td>

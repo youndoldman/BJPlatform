@@ -89,6 +89,8 @@ commonModule.constant('URI', {
         'GasCynTrayBind':'../../../api/GasCynTray/Bind',//托盘绑定
         'GasCynTray':'../../../api/GasCynTray',//托盘查询
         'GasCynTrayunBind':'../../../api/GasCynTray/unBind',//托盘解绑定
+        'GasCynTrayHistory':'../../../api/GasCynTray/History',//托盘历史数据查询
+
 
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
         'ktyReport1': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/agent/call',//科天云获取坐席-工作组及直拨电话统计报表
@@ -100,6 +102,8 @@ commonModule.constant('URI', {
 
         'ktyCallreport': 'https://cc.ketianyun.com/thirdparty/api/v1/callreports',//科天云获得指定时间段呼叫的记录
         'ktyCallreportSearch': 'https://cc.ketianyun.com/thirdparty/api/v1/callreports/search',//科天云获得获取指定搜索条件的呼叫记录
+
+
 
     }
 });
@@ -403,18 +407,25 @@ commonModule.constant('NavItem', {
             href: "./decisionCenter.htm#/decision/cost",
             icon: "fa-group"
         }, {
-            index: 1,
-            name: "销售分析",
-            target: "_blank",
-            href: "./decisionCenter.htm#/decision/sales",
-            icon: "fa-plane"
-        }, {
-            index: 2,
-            name: "市场分析",
-            target: "_blank",
-            href: "./decisionCenter.htm#/decision/market",
-            icon: "fa-magnet"
-        }]
+                index: 1,
+                name: "用气统计",
+                href: "./decisionCenter.htm#/decision/gasUsage",
+                icon: "fa-plane"
+        }
+            //{
+        //    index: 1,
+        //    name: "销售分析",
+        //    target: "_blank",
+        //    href: "./decisionCenter.htm#/decision/sales",
+        //    icon: "fa-plane"
+        //}, {
+        //    index: 2,
+        //    name: "市场分析",
+        //    target: "_blank",
+        //    href: "./decisionCenter.htm#/decision/market",
+        //    icon: "fa-magnet"
+        //}
+        ]
     },
 
     'GasCenter': {
