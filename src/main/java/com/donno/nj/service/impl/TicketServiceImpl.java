@@ -6,13 +6,12 @@ import com.donno.nj.domain.*;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.service.TicketService;
 import com.donno.nj.util.Clock;
+import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Date;
+import java.util.*;
 
 @Service
 public class TicketServiceImpl implements TicketService
@@ -30,16 +29,85 @@ public class TicketServiceImpl implements TicketService
     @Autowired
     private GoodsDao goodsDao;
 
+    @Autowired
+    private DepartmentDao departmentDao;
+
     @Override
     @OperationLog(desc = "查询气票信息")
     public List<Ticket> retrieve(Map params)
     {
-        List<Ticket> tickets = ticketDao.getList(params);
+        List<Ticket> tickets = new ArrayList<Ticket>();
+
+        if (params.containsKey("departmentCode"))
+        {
+            recurseRetreve(params,tickets);
+        }
+        else
+        {
+            tickets = ticketDao.getList(params);
+        }
+
         return tickets;
     }
 
+    /*子公司递归统计*/
+    public void recurseRetreve(Map params, List<Ticket> ticketList)
+    {
+        String departmentCode = params.get("departmentCode").toString();
+        Department department = departmentDao.findByCode(departmentCode);
+        if(department == null)
+        {
+            throw new ServerSideBusinessException("部门信息不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
+        department.setLstSubDepartment(departmentDao.findSubDep(department.getId()));
+        if ( department.getLstSubDepartment() != null && department.getLstSubDepartment().size() > 0 )
+        {
+            for (Department childDep : department.getLstSubDepartment())
+            {
+                Map subParam = new HashMap<String,String>();
+                subParam.putAll(params);
+                subParam.remove("departmentCode");
+                subParam.putAll(ImmutableMap.of("departmentCode", childDep.getCode()));
+
+                List<Ticket> subTicket  = new ArrayList<Ticket>();
+                recurseRetreve(subParam,subTicket);
+
+                mergeTicket(subTicket,ticketList);
+            }
+        }
+        else
+        {
+            ticketList.addAll(ticketDao.getList(params));
+        }
+    }
+
+
+    public void mergeTicket(List<Ticket> tickets,List<Ticket> targets)
+    {
+        boolean finded = false;
+        for (Ticket ticket :tickets)
+        {
+            finded = false;
+            for (Ticket target :targets)
+            {
+                if (ticket.getSpecCode().equals(target.getSpecCode()))
+                {
+                    finded = true;
+                    target.setPrice(target.getPrice() + ticket.getPrice() );
+                    break;
+                }
+            }
+
+            if (!finded)
+            {
+                targets.add(ticket);
+            }
+        }
+    }
+
+
     @Override
-    @OperationLog(desc = "查询气票熟量")
+    @OperationLog(desc = "查询气票数量")
     public Integer count(Map params) {
         return ticketDao.count(params);
     }

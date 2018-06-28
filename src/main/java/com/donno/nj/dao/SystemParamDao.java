@@ -7,4 +7,7 @@ import com.donno.nj.domain.SystemParam;
 public interface SystemParamDao extends BaseDao<SystemParam>
 {
     Integer getDispatchRange();
+
+    Integer getTrayWarningWeight();
+
 }

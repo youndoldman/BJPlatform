@@ -126,6 +126,12 @@ public class OrderServiceImpl implements OrderService
             order.setOrderStatus(OrderStatus.OSUnprocessed.getIndex());
         }
 
+        /*默认为0*/
+        if (order.getOrderTriggerType() == null)
+        {
+            order.setOrderTriggerType(OrderTriggerType.OTTNormal);
+        }
+
         /*默认为待支付*/
         order.setPayStatus(PayStatus.PSUnpaid);
 //        if (order.getPayStatus() == null)
@@ -170,6 +176,8 @@ public class OrderServiceImpl implements OrderService
             order.setCustomer(customer);
         }
 
+        OrderTriggerType orderTriggerType = order.getOrderTriggerType();
+
         //生成定单编号
         Date curDate = new Date();
         String dateFmt =  new SimpleDateFormat("yyyyMMddHHmmssSSS").format(curDate);
@@ -186,6 +194,7 @@ public class OrderServiceImpl implements OrderService
 
         Float dealAmount = 0f; //订单实际成交总金额
         Float originalAmount = 0f;//订单原始价格总金额
+
         /*插入详单表*/
         for(OrderDetail orderDetail : order.getOrderDetailList())
         {
@@ -215,6 +224,12 @@ public class OrderServiceImpl implements OrderService
                 String message = String.format("商品%s已经暂停销售!",orderDetail.getGoods().getName());
                 throw new ServerSideBusinessException(message, HttpStatus.NOT_ACCEPTABLE);
             }
+
+//            /*不间断供气订单，商品只能选择为液化气*/
+//            if(orderTriggerType != null && orderTriggerType == OrderTriggerType.OTTTrayWarning )
+//            {
+//
+//            }
 
             /*查询优惠,计算满足条件的每件商品优惠后价格，及订单总金额*/
             if (customer.getSettlementType().getCode().equals(ServerConstantValue.SETTLEMENT_TYPE_COMMON_USER) ||
@@ -246,7 +261,18 @@ public class OrderServiceImpl implements OrderService
         Order orderUpdateAmount = new Order();
         orderUpdateAmount.setId(order.getId());
         orderUpdateAmount.setOriginalAmount(originalAmount);
-        orderUpdateAmount.setOrderAmount(dealAmount);
+
+
+        if(orderTriggerType != null && orderTriggerType == OrderTriggerType.OTTTrayWarning )
+        {
+            orderUpdateAmount.setOrderAmount(0f);//托盘告警生成的订单，总金额为0，不付费
+            orderUpdateAmount.setNote("托盘告警生成的订单");
+        }
+        else
+        {
+            orderUpdateAmount.setOrderAmount(dealAmount);
+        }
+
         orderDao.update(orderUpdateAmount);
 
         /*启动流程*/

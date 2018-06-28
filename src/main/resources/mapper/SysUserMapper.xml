@@ -164,6 +164,14 @@
         t_user.user_id = #{userId}
     </select>
 
+    <select id="findByUIdx" resultMap="DetailResultMap">
+        SELECT <include refid="JoinSelectColumn"/>
+        FROM <include refid="JoinTableList"/>
+        WHERE
+        (<include refid="JoinWhereCondition"/>)
+        and
+        t_user.id = #{id}
+    </select>
 
     <select id="findByOrderIdx" resultMap="DetailResultMap">
         SELECT <include refid="JoinSelectColumn"/>

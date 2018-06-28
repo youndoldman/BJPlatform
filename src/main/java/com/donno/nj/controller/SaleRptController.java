@@ -3,6 +3,7 @@ package com.donno.nj.controller;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.dao.UserDao;
+import com.donno.nj.domain.EByType;
 import com.donno.nj.domain.PayType;
 import com.donno.nj.domain.SalesRpt;
 import com.donno.nj.domain.User;
@@ -95,9 +96,8 @@ public class SaleRptController
 
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
-        List<SalesRpt> salesRptList = salesRptService.retrieveSaleRptByPayType(params);
-        Integer count = salesRptService.countSaleRptByPayType(params);
-        return ResponseEntity.ok(ListRep.assemble(salesRptList, count));
+        List<SalesRpt> salesRptList = salesRptService.retrieveSaleRpt(params, EByType.EByPayType);
+        return ResponseEntity.ok(ListRep.assemble(salesRptList, salesRptList.size()));
     }
 
 
@@ -137,8 +137,7 @@ public class SaleRptController
 
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
-        List<SalesRpt> salesRptList = salesRptService.retrieveSaleRptByCstType(params);
-        Integer count = salesRptService.countSaleRptByCstType(params);
-        return ResponseEntity.ok(ListRep.assemble(salesRptList, count));
+        List<SalesRpt> salesRptList = salesRptService.retrieveSaleRpt(params, EByType.EByCstType);
+        return ResponseEntity.ok(ListRep.assemble(salesRptList, salesRptList.size()));
     }
 }

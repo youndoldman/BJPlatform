@@ -36,17 +36,6 @@ public class GasCynTrayServiceImpl implements GasCynTrayService
     @OperationLog(desc = "查询托盘信息")
     public List<GasCynTray> retrieve(Map params)
     {
-//        List<GasCynTray> gasCynTrays ;
-//        /*客户名下所有钢瓶*/
-//        if (params.containsKey("userId"))
-//        {
-//            gasCynTrays = gasCynTrayBindRelationDao.findGasCynTrayByUserId(params.get("userId").toString());
-//        }
-//        else
-//        {
-//            gasCynTrays = gasCynTrayDao.getList(params);
-//        }
-
         return gasCynTrayDao.getList(params);
     }
 
@@ -54,15 +43,6 @@ public class GasCynTrayServiceImpl implements GasCynTrayService
     @OperationLog(desc = "查询托盘数量")
     public Integer count(Map params)
     {
-//        Integer count ;
-//        if (params.containsKey("userId"))
-//        {
-//            count = gasCynTrayBindRelationDao.count(params);
-//        }
-//        else
-//        {
-//            count = gasCynTrayDao.count(params);
-//        }
         return  gasCynTrayDao.count(params);
     }
 
@@ -235,9 +215,6 @@ public class GasCynTrayServiceImpl implements GasCynTrayService
     {
         return Optional.fromNullable(gasCynTrayDao.findById(id));
     }
-
-
-
 
 
 }

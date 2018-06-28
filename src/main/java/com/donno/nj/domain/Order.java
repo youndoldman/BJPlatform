@@ -28,6 +28,8 @@ public class Order implements Serializable
 
     private AccessType accessType;//订单接入类型
 
+    private OrderTriggerType orderTriggerType;//触发生成订单类型
+
     private CustomerAddress recvAddr; //收货地址
     private Double recvLongitude;
     private Double recvLatitude;
@@ -108,6 +110,10 @@ public class Order implements Serializable
         return invoiceStatus;
     }
 
+    public OrderTriggerType getOrderTriggerType() {
+        return orderTriggerType;
+    }
+
     public Boolean getUrgent()
     {
         return  urgent;
@@ -121,6 +127,11 @@ public class Order implements Serializable
     public AccessType getAccessType()
     {
         return accessType;
+    }
+
+    public void setOrderTriggerType(OrderTriggerType orderTriggerType)
+    {
+        this.orderTriggerType = orderTriggerType;
     }
 
     public CustomerAddress getRecvAddr()

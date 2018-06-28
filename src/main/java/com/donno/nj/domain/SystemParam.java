@@ -11,6 +11,7 @@ public class SystemParam implements Serializable
     protected Integer aliveExpireTime;
     protected Integer aliveCheckTime;
     protected Integer pushOrderRange;
+    protected Integer trayWarningWeight;
     protected String  note;
     protected Date createTime;
     protected Date updateTime;
@@ -43,6 +44,10 @@ public class SystemParam implements Serializable
     public Integer getPushOrderRange()
     {
         return pushOrderRange;
+    }
+
+    public Integer getTrayWarningWeight() {
+        return trayWarningWeight;
     }
 
     public String getNote()
@@ -78,6 +83,10 @@ public class SystemParam implements Serializable
     public void  setPushOrderRange(Integer pushOrderRange)
     {
         this.pushOrderRange = pushOrderRange;
+    }
+
+    public void setTrayWarningWeight(Integer trayWarningWeight) {
+        this.trayWarningWeight = trayWarningWeight;
     }
 
     public void setNote(String Note)

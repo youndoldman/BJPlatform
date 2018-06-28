@@ -39,6 +39,7 @@ public class GasCynTrayController
     public ResponseEntity retrieve(
                                    @RequestParam(value = "number", defaultValue = "") String number,
                                    @RequestParam(value = "userId", defaultValue = "") String userId,
+                                   @RequestParam(value = "warningStatus", required = true) Integer warningStatus,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
@@ -54,6 +55,8 @@ public class GasCynTrayController
         {
             params.putAll(ImmutableMap.of("userId", userId));
         }
+
+        params.putAll(ImmutableMap.of("warningStatus", warningStatus));
 
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 

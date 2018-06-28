@@ -4,6 +4,7 @@ import com.donno.nj.dao.DepartmentDao;
 import com.donno.nj.dao.SalesByCstTypeRptDao;
 import com.donno.nj.dao.SalesByPayTypeRptDao;
 import com.donno.nj.domain.Department;
+import com.donno.nj.domain.EByType;
 import com.donno.nj.domain.PayType;
 import com.donno.nj.domain.SalesRpt;
 
@@ -20,6 +21,7 @@ import java.util.*;
 @Service
 public class SalesRptServiceImpl implements SalesRptService
 {
+
     @Autowired
     private SalesByPayTypeRptDao salesByPayTypeRptDao;
 
@@ -30,22 +32,35 @@ public class SalesRptServiceImpl implements SalesRptService
     private DepartmentDao departmentDao;
 
     @Override
-    public List<SalesRpt> retrieveSaleRptByPayType(Map params)
+    public List<SalesRpt> retrieveSaleRpt(Map params,EByType eByType)
     {
         List<SalesRpt> salesRptList = new ArrayList<SalesRpt>();
         if (params.containsKey("departmentCode"))
         {
-            recurseCalSaleRptByPayType(params,salesRptList);
+            recurseCalSaleRpt(params,salesRptList,eByType);
         }
         else
         {
-            CalSaleRptByPayType(params,salesRptList);
+            if (eByType == EByType.EByPayType)
+            {
+                CalSaleRptByPayType(params,salesRptList);
+            }
+            else if (eByType == EByType.EByCstType)
+            {
+                salesByCstTypeRptDao.getSaleRptByCstType(params);
+            }
+            else
+            {
+                //to do nothing
+            }
         }
 
         return salesRptList;
     }
 
-    public void recurseCalSaleRptByPayType(Map params, List<SalesRpt> salesRptList)
+
+    /*子公司递归统计*/
+    public void recurseCalSaleRpt(Map params, List<SalesRpt> salesRptList,EByType eByType)
     {
         String departmentCode = params.get("departmentCode").toString();
         Department department = departmentDao.findByCode(departmentCode);
@@ -64,14 +79,25 @@ public class SalesRptServiceImpl implements SalesRptService
                 subParam.putAll(ImmutableMap.of("departmentCode", childDep.getCode()));
 
                 List<SalesRpt> subSaleRpt  = new ArrayList<SalesRpt>();
-                recurseCalSaleRptByPayType(subParam,subSaleRpt);
+                recurseCalSaleRpt(subParam,subSaleRpt,eByType);
 
                 mergeSaleRpt(subSaleRpt,salesRptList);
             }
         }
         else
         {
-            CalSaleRptByPayType(params,salesRptList);
+            if (eByType == EByType.EByPayType)
+            {
+                CalSaleRptByPayType(params,salesRptList);
+            }
+            else if (eByType == EByType.EByCstType)
+            {
+                salesRptList.addAll(salesByCstTypeRptDao.getSaleRptByCstType(params));
+            }
+            else
+            {
+                //to do nothing
+            }
         }
     }
 
@@ -131,21 +157,21 @@ public class SalesRptServiceImpl implements SalesRptService
     }
 
 
-    @Override
-    public Integer countSaleRptByPayType(Map params) {
-        return salesByPayTypeRptDao.countSaleRptByPayType(params);
-    }
+//    @Override
+//    public Integer countSaleRptByPayType(Map params) {
+//        return salesByPayTypeRptDao.countSaleRptByPayType(params);
+//    }
 
 
-    @Override
-    public List<SalesRpt> retrieveSaleRptByCstType(Map params) {
-        return salesByCstTypeRptDao.getSaleRptByCstType(params);
-    }
+//    @Override
+//    public List<SalesRpt> retrieveSaleRptByCstType(Map params) {
+//        return salesByCstTypeRptDao.getSaleRptByCstType(params);
+//    }
 
-    @Override
-    public Integer countSaleRptByCstType(Map params) {
-        return salesByCstTypeRptDao.countSaleRptByCstType(params);
-    }
+//    @Override
+//    public Integer countSaleRptByCstType(Map params) {
+//        return salesByCstTypeRptDao.countSaleRptByCstType(params);
+//    }
 
 
     public void mergeSaleRpt(List<SalesRpt> salesRpts,List<SalesRpt> targets)

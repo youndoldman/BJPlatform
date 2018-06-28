@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.UninterruptGasOrderDao">
+
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.UninterruptedGasOrder">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="order_sn" property="orderSn" jdbcType="VARCHAR"/>
+
+        <result column="full_weight" property="fullWeight" jdbcType="FLOAT"/>
+        <result column="empty_weight" property="emptyWeight" jdbcType="FLOAT"/>
+
+        <result column="original_price" property="originalPrice" jdbcType="FLOAT"/>
+        <result column="deal_price" property="dealPrice" jdbcType="FLOAT"/>
+        <result column="origal_amount" property="originalAmount" jdbcType="FLOAT"/>
+        <result column="deal_amount" property="dealAmount" jdbcType="FLOAT"/>
+
+        <result column="pay_type" property="payType"  typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+        <result column="pay_status" property="payStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+        <result column="pay_time" property="payTime" jdbcType="TIMESTAMP"/>
+
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+
+        <association property="customer" column="user_idx" select="com.donno.nj.dao.CustomerDao.selectById">
+        </association>
+
+        <association property="dispatchOrder" column="dispatch_order_idx" select="com.donno.nj.dao.OrderDao.findId">
+        </association>
+
+        <association property="dispatcher" column="dispatcher_idx" select="com.donno.nj.dao.SysUserDao.findByUIdx">
+        </association>
+
+        <association property="gasCylinder" column="gas_cyn_idx" select="com.donno.nj.dao.GasCylinderDao.findById">
+        </association>
+
+        <association property="goods" column="goods_idx" select="com.donno.nj.dao.GoodsDao.findById">
+        </association>
+
+    </resultMap>
+
+    <sql id="TblInterruptOrde">
+        t_uninterrupt_gas_order
+    </sql>
+
+    <sql id="InsertColumnList">
+        order_sn,dispatch_order_idx,dispatcher_idx ,user_idx,gas_cyn_idx,
+        full_weight,goods_idx,note
+    </sql>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO <include refid="TblInterruptOrde"/>(<include refid="InsertColumnList"/>)
+        VALUES( #{orderSn},#{dispatchOrder.id},#{dispatcher.id},#{customer.id},#{gasCylinder.id},
+        #{fullWeitht},  #{goods.id},#{note} )
+    </insert>
+
+
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM <include refid="TblInterruptOrde"/> WHERE id= #{id}
+    </delete>
+
+    <select id="findBySn" resultMap="DetailResultMap">
+    SELECT *
+    FROM <include refid="TblInterruptOrde"/>
+    WHERE
+    order_sn =  #{orderSn}
+    </select>
+
+    <sql id = "getListCondition">
+        <where>
+            <if test="orderSn != null">
+                AND  order_sn  like CONCAT( #{orderSn}, '%')
+            </if>
+
+            <if test="userId != null">
+                AND  user_idx = (select id from t_user where user_id = #{userId})
+            </if>
+
+            <if test="payStatus != null">
+                AND  pay_status = #{payStatus}
+            </if>
+
+            <if test="payType != null">
+                AND  pay_type = #{payType}
+            </if>
+
+            <if test="dispatcherId != null">
+                AND  dispatcher_idx = (select id from t_user where user_id = #{dispatcherId})
+            </if>
+
+            <if test="gasCynNumber != null">
+                AND  gas_cyn_idx = (select id from t_gas_cylinder where number = #{gasCynNumber})
+            </if>
+
+            <if test="startTime != null"  >
+                <if test="endTime != null">
+                    AND  (create_time  BETWEEN #{startTime}  and #{endTime} )
+                </if>
+            </if>
+
+            <if test="departmentCode != null">
+                AND  (  dispatcher_idx in (  SELECT user_idx FROM t_sysuser WHERE department_idx = (select id from t_department where code = #{departmentCode})))
+            </if>
+
+        </where>
+    </sql>
+
+    <select id="getList" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblInterruptOrde"/>
+        <include refid="getListCondition"/>
+
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+    <select id="count" resultType="Integer">
+        SELECT count(*)
+        FROM <include refid="TblInterruptOrde"/>
+        <include refid="getListCondition"/>
+    </select>
+
+    <update id="update">
+    UPDATE <include refid="TblInterruptOrde"/>
+    <set>
+        <if test="fullWeight != null"> full_weight= #{fullWeight},</if>
+        <if test="emptyWeight != null"> empty_weight = #{emptyWeight},</if>
+
+
+        <if test="originalPrice != null">original_price = #{originalPrice},</if>
+        <if test="dealPrice != null">deal_price = #{dealPrice},</if>
+        <if test="originalAmount != null">origal_amount = #{originalAmount},</if>
+        <if test="dealAmount != null">deal_amount = #{dealAmount},</if>
+
+        <if test="payType != null">pay_type = #{payType.index},</if>
+        <if test="payTime != null">pay_time = #{payTime},</if>
+        <if test="payStatus != null">pay_status = #{payStatus.index},</if>
+
+        <if test="note != null">note = #{note}</if>
+    </set>
+    WHERE id = #{id}
+    </update>
+
+
+
+    <!--订单与微信订单号关联-->
+    <insert id="bindWeixinOrderSn" >
+        INSERT INTO  t_order_weixin(order_idx,weixin_order_sn,amount)
+        VALUES
+        (
+        #{orderIdx},#{weixinOrderSn},#{amount}
+        )
+    </insert>
+</mapper>

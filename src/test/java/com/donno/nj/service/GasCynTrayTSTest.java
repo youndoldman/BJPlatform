@@ -31,22 +31,43 @@ public class GasCynTrayTSTest
 
     }
 
-
-
     //插入数据
     @Test
     public void putRow() throws Exception
     {
         GasCynTray gasCynTray = new GasCynTray();
-        for (int i = 0;i < 10;i++)
-        {
-            gasCynTray.setNumber( String.valueOf(i));
-            gasCynTray.setWeight(10.0f);
-            gasCynTray.setTimestamp("2");
-            gasCynTray.setLongitude(1.0);
-            gasCynTray.setLatitude(1.0);
 
-            gasCynTrayTSService.putRow(gasCynTray);
+
+        for (int i = 1;i < 101;i++)
+        {
+            for (int k = 1;k<31;k++)
+            {
+                for(int j = 1 ; j < 4 ;j++)
+                {
+                    gasCynTray.setNumber( String.valueOf(i));
+                    gasCynTray.setWeight( (4 - j)*1.0f );
+
+                    String strTime;
+                    if (j == 1)
+                    {
+                        strTime = String.format("2018-06-%d 06:00:00",k);
+                    }
+                    else if (j == 2)
+                    {
+                        strTime = String.format("2018-06-%d 12:00:00",k);
+                    }
+                    else
+                    {
+                        strTime = String.format("2018-06-%d 18:00:00",k);
+                    }
+
+                    gasCynTray.setTimestamp(strTime);
+                    gasCynTray.setLongitude(160.0);
+                    gasCynTray.setLatitude(23.0);
+
+                    gasCynTrayTSService.putRow(gasCynTray);
+                }
+            }
         }
 
     }
@@ -56,7 +77,7 @@ public class GasCynTrayTSTest
     //批量查询数据
     @Test
     public void getRange() throws Exception {
-        List<GasCynTray> gasCynTrays = gasCynTrayTSService.getRange("1", "1", "4");
+        List<GasCynTray> gasCynTrays = gasCynTrayTSService.getRange("1", "2018-06-3 00:00:00", "2018-06-4 00:00:00");
         System.out.println(gasCynTrays.toString());
     }
 

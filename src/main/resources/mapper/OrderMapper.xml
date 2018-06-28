@@ -73,6 +73,13 @@
     order_sn =  #{orderSn}
     </select>
 
+    <select id="findId" resultMap="DetailResultMap">
+        SELECT *,TIMESTAMPDIFF(MINUTE,t_order.create_time, now()) as time_span
+        FROM <include refid="TblOrder"/>
+        WHERE
+        id =  #{id}
+    </select>
+
     <sql id = "getListCondition">
         <where>
             <if test="orderSn != null">

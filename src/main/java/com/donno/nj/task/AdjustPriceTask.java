@@ -25,7 +25,6 @@ public class AdjustPriceTask
     public void run()
     {
         adjustPriceScheduleService.adjustPrice();
-
         discountStrategyService.discountTrigger();
     }
 

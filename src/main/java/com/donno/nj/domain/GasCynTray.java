@@ -12,6 +12,7 @@ public class GasCynTray implements Serializable
     private String number;
 
     DeviceStatus deviceStatus;
+    WarnningStatus warnningStatus;
     Float weight;
     String timestamp;
     Double longitude;
@@ -40,8 +41,14 @@ public class GasCynTray implements Serializable
         return number;
     }
 
-    public DeviceStatus getDeviceStatus() {
+    public DeviceStatus getDeviceStatus()
+    {
         return deviceStatus;
+    }
+
+    public WarnningStatus getWarnningStatus()
+    {
+        return warnningStatus;
     }
 
     public Double getLatitude() {
@@ -91,6 +98,11 @@ public class GasCynTray implements Serializable
 
     public void setDeviceStatus(DeviceStatus deviceStatus) {
         this.deviceStatus = deviceStatus;
+    }
+
+    public void setWarnningStatus(WarnningStatus warnningStatus)
+    {
+        this.warnningStatus = warnningStatus;
     }
 
     public void setLongitude(Double longitude) {

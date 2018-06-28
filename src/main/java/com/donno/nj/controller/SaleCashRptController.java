@@ -26,12 +26,13 @@ import java.util.Map;
 
 import static com.donno.nj.util.ParamMapBuilder.paginationParams;
 
+/*销售现金日报表*/
+
 @RestController
 public class SaleCashRptController
 {
     @Autowired
     private DepartmentService departmentService;
-
 
     @Autowired
     private TicketService ticketService;
@@ -85,7 +86,7 @@ public class SaleCashRptController
         Map saleCashParams = new HashMap<String,String>();
         saleCashParams.putAll(params);
         saleCashParams.putAll(ImmutableMap.of("payType", PayType.PTCash.getIndex()));
-        List<SalesRpt> salesRptList = salesRptService.retrieveSaleRptByPayType(saleCashParams);
+        List<SalesRpt> salesRptList = salesRptService.retrieveSaleRpt(saleCashParams,EByType.EByPayType);
         for (SalesRpt salesRpt :salesRptList )
         {
             saleCash = saleCash + salesRpt.getSum();
@@ -130,7 +131,7 @@ public class SaleCashRptController
         accCreditParams.remove("startTime");
         accCreditParams.putAll(ImmutableMap.of("payType", PayType.PTDebtCredit.getIndex()));
         salesRptList.clear();
-        salesRptList  = salesRptService.retrieveSaleRptByPayType(accCreditParams);
+        salesRptList  = salesRptService.retrieveSaleRpt(accCreditParams,EByType.EByPayType);
         for (SalesRpt salesRpt :salesRptList )
         {
             accCredit = accCredit + salesRpt.getSum();
@@ -144,7 +145,7 @@ public class SaleCashRptController
         accMonthlyCreditParams.remove("startTime");
         accMonthlyCreditParams.putAll(ImmutableMap.of("payType", PayType.PTMonthlyCredit.getIndex()));
         salesRptList.clear();
-        salesRptList  = salesRptService.retrieveSaleRptByPayType(accMonthlyCreditParams);
+        salesRptList  = salesRptService.retrieveSaleRpt(accMonthlyCreditParams,EByType.EByPayType);
         for (SalesRpt salesRpt :salesRptList )
         {
             accMonthlyCredit = accMonthlyCredit + salesRpt.getSum();
@@ -182,7 +183,6 @@ public class SaleCashRptController
         surplusCash = saleCashRpt.getSaleCash() +  saleCashRpt.getCreditWriteOff() +
                 saleCashRpt.getMontlyCreditWriteOff() + saleCashRpt.getTicketSaleCash() - saleCashRpt.getDepositCash();
         saleCashRpt.setSurplusCash(surplusCash);
-
 
         return ResponseEntity.ok(saleCashRpt);
     }

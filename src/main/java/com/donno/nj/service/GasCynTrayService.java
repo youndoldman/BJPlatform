@@ -28,4 +28,5 @@ public interface GasCynTrayService
 
     void unBind(String trayNumber,String userId);
 
+
 }

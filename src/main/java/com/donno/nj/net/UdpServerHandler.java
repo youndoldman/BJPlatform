@@ -1,7 +1,9 @@
 package com.donno.nj.net;
 
 import com.donno.nj.dao.GasCynTrayDao;
+import com.donno.nj.dao.SystemParamDao;
 import com.donno.nj.domain.GasCynTray;
+import com.donno.nj.domain.WarnningStatus;
 import com.donno.nj.service.GasCynTrayService;
 import com.donno.nj.service.GasCynTrayTSService;
 import io.netty.channel.ChannelHandlerContext;
@@ -25,6 +27,9 @@ public class UdpServerHandler
 
     @Autowired
     private GasCynTrayTSService trayService;
+
+    @Autowired
+    private SystemParamDao systemParamDao;
 
     @Override
     public void messageReceived(ChannelHandlerContext channelHandlerContext,
@@ -51,11 +56,18 @@ public class UdpServerHandler
         else
         {
             gasCynTray.setId(target.getId());
+            Integer warningWeight = systemParamDao.getTrayWarningWeight();
+            if (gasCynTray.getWeight() >= warningWeight)
+            {
+                gasCynTray.setWarnningStatus(WarnningStatus.WSWarnning1);
+            }
+            else
+            {
+                gasCynTray.setWarnningStatus(WarnningStatus.WSNormal);
+            }
+
             gasCynTrayDao.update(gasCynTray);
-
             trayService.putRow(gasCynTray);
-
-
         }
     }
 
