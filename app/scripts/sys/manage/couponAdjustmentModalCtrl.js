@@ -165,14 +165,7 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
 
     //客户类型或者级别选择改变discountConditionValue赋值
     $scope.customersLevelTypeChange = function () {
-        //for (var i = 0; i < $scope.temp.customersList.length; i++)
-        //{
-        //if($scope.value == $scope.temp.customersList[i].code)
-        //{
         $scope.q.discountConditionValue = $scope.value ;
-        //console.info($scope.q.discountConditionValue);
-        //}
-        //}
     }
 
     $scope.isModify = false;
@@ -243,18 +236,17 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         //获取市
         getCitysConfig($scope.vm.goods.area.province);
         $scope.config.countys = [];
-        //$scope.goodsTypeChange();
 
-        //var queryParams = {
-        //    typeName: $scope.temp.selectedGoodsType.name,
-        //    province:$scope.vm.goods.area.province,
-        //    city:$scope.vm.goods.area.city,
-        //    county:$scope.vm.goods.area.county,
-        //};
-        //GoodsService.retrieveGoods(queryParams).then(function (goods) {
-        //    $scope.temp.goodsList = goods.items;
-        //    $scope.temp.selectedGoods = $scope.temp.goodsList[0];
-        //});
+        var queryParams = {
+            typeCode: $scope.temp.selectedGoodsType.code,
+            province:$scope.vm.goods.area.province,
+            city:$scope.vm.goods.area.city,
+            county:$scope.vm.goods.area.county,
+        };
+        GoodsService.retrieveGoods(queryParams).then(function (goods) {
+            $scope.temp.goodsList = goods.items;
+            $scope.temp.selectedGoods = $scope.temp.goodsList[0];
+        });
     }
 
     $scope.citysChange = function () {
@@ -263,36 +255,34 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
             return;
         };
         getCountysConfig($scope.vm.goods.area.city);
-       //$scope.goodsTypeChange();
-       //
-       // var queryParams = {
-       //     typeName: $scope.temp.selectedGoodsType.name,
-       //     province:$scope.vm.goods.area.province,
-       //     city:$scope.vm.goods.area.city,
-       //     county:$scope.vm.goods.area.county,
-       // };
-       // GoodsService.retrieveGoods(queryParams).then(function (goods) {
-       //     $scope.temp.goodsList = goods.items;
-       //     $scope.temp.selectedGoods = $scope.temp.goodsList[0];
-       // });
+
+        var queryParams = {
+            typeCode: $scope.temp.selectedGoodsType.code,
+            province:$scope.vm.goods.area.province,
+            city:$scope.vm.goods.area.city,
+            county:$scope.vm.goods.area.county,
+        };
+        GoodsService.retrieveGoods(queryParams).then(function (goods) {
+            $scope.temp.goodsList = goods.items;
+            $scope.temp.selectedGoods = $scope.temp.goodsList[0];
+        });
     }
 
     $scope.county = null;
     $scope.countysChange = function () {
         //获取区
         $scope.vm.goods.area.county = $scope.county;
-        //$scope.goodsTypeChange();
 
-        //var queryParams = {
-        //    typeName: $scope.temp.selectedGoodsType.name,
-        //    province:$scope.vm.goods.area.province,
-        //    city:$scope.vm.goods.area.city,
-        //    county:$scope.vm.goods.area.county,
-        //};
-        //GoodsService.retrieveGoods(queryParams).then(function (goods) {
-        //    $scope.temp.goodsList = goods.items;
-        //    $scope.temp.selectedGoods = $scope.temp.goodsList[0];
-        //});
+        var queryParams = {
+            typeCode: $scope.temp.selectedGoodsType.code,
+            province:$scope.vm.goods.area.province,
+            city:$scope.vm.goods.area.city,
+            county:$scope.vm.goods.area.county,
+        };
+        GoodsService.retrieveGoods(queryParams).then(function (goods) {
+            $scope.temp.goodsList = goods.items;
+            $scope.temp.selectedGoods = $scope.temp.goodsList[0];
+        });
 
     }
 
@@ -355,20 +345,6 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
 
         if(title == "修改优惠策略") {
             $scope.q = _.clone(initVal);
-
-            //var startTime = new Date($scope.q.startTime);
-            //console.info(startTime);
-            //var startTimeNum = startTime.getTime();
-            //console.info(startTimeNum);
-            //
-            //var endTime = new Date($scope.q.endTime);
-            //console.info(endTime);
-            //var endTimeNum = endTime.getTime();
-            //console.info(endTimeNum);
-            //
-            //var currentTime = new Date();
-            //var currentTimeNum = currentTime.getTime();
-            //console.info(currentTimeNum);
 
             $scope.inputHidden_startTime = false;
             $scope.inputHidden_endTime = false;
@@ -475,9 +451,9 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         }
         var queryParams = {
             typeCode: $scope.temp.selectedGoodsType.code,
-            //province:$scope.vm.goods.area.province,
-            //city:$scope.vm.goods.area.city,
-            //county:$scope.vm.goods.area.county,
+            province:$scope.vm.goods.area.province,
+            city:$scope.vm.goods.area.city,
+            county:$scope.vm.goods.area.county,
         };
         GoodsService.retrieveGoods(queryParams).then(function (goods) {
             $scope.temp.goodsList = goods.items;
@@ -494,14 +470,10 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         var adjustmentDetail = {};
         adjustmentDetail.goods = $scope.temp.selectedGoods;
         adjustmentDetail.discount = $scope.temp.adjustGoodsPrice;
-        //$scope.vm.currentPriceAdjustment.adjustPriceDetailList.push(adjustmentDetail);
-        //
-        //console.info($scope.vm.currentPriceAdjustment.adjustPriceDetailList);
 
         if($scope.vm.currentPriceAdjustment.adjustPriceDetailList.length == 0)
         {
             $scope.vm.currentPriceAdjustment.adjustPriceDetailList.push(adjustmentDetail)
-
         }
         else
         {
@@ -516,7 +488,6 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
             if(!findFlag){
                 $scope.vm.currentPriceAdjustment.adjustPriceDetailList.push(adjustmentDetail);
             }
-
             console.info($scope.vm.currentPriceAdjustment.adjustPriceDetailList);
         }
     };

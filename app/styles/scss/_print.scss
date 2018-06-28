@@ -1,0 +1,55 @@
+
+.print-brand{
+  h1{font-size: 20px;}
+  h3{font-size: 16px;}
+  .left{
+    float: left;
+  }
+  .right{
+    float:right;
+  }
+  .clearfix{
+    clear: both;
+  }
+  ul{list-style: none;}
+  li{list-style: none;display:inline-block}
+
+
+
+  tr td{
+    border: 1px solid;
+  }
+  @media print {
+    ul{list-style: none;}
+    li{list-style: none;display: inline-block}
+    .modal-body {height: auto;}
+    .noprint {display: none }
+  }
+}
+
+.print-brand.print_container{
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 380px;
+}
+
+.print-brand.section1{
+}
+.print-brand.section2 label{
+  display: block;
+}
+.print-brand.section3 label{
+  display: block;
+}
+.print-brand.section4{
+}
+.print-brand.section4 .total label{
+  display: block;
+}
+.print-brand.section4 .other_fee{
+  border-bottom: 1px solid ;
+}
+.print-brand.section5 label{
+  display: block;
+}
+

@@ -122,8 +122,7 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
             city:$scope.vm.goods.area.city,
             county:$scope.vm.goods.area.county,
         };
-        console.info("省选择")
-        console.info(queryParams);
+
         GoodsService.retrieveGoods(queryParams).then(function (goods) {
             $scope.temp.goodsList = goods.items;
             console.info($scope.temp.goodsList);
@@ -144,8 +143,6 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
              city:$scope.vm.goods.area.city,
              county:$scope.vm.goods.area.county,
          };
-        console.info("城市选择")
-        console.info(queryParams);
          GoodsService.retrieveGoods(queryParams).then(function (goods) {
              $scope.temp.goodsList = goods.items;
              console.info($scope.temp.goodsList);
@@ -155,7 +152,6 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
 
     $scope.county = null;
     $scope.countysChange = function () {
-        console.info("countysChange");
         //获取区
       $scope.vm.goods.area.county = $scope.county;
         var queryParams = {
@@ -164,13 +160,11 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
             city:$scope.vm.goods.area.city,
             county:$scope.vm.goods.area.county,
         };
-        console.info("区县选择");
-        console.info(queryParams);
-        //GoodsService.retrieveGoods(queryParams).then(function (goods) {
-        //    $scope.temp.goodsList = goods.items;
-        //    console.info($scope.temp.goodsList);
-        //    $scope.temp.selectedGoods = $scope.temp.goodsList[0];
-        //});
+        GoodsService.retrieveGoods(queryParams).then(function (goods) {
+            $scope.temp.goodsList = goods.items;
+            console.info($scope.temp.goodsList);
+            $scope.temp.selectedGoods = $scope.temp.goodsList[0];
+        });
 
     };
 
@@ -282,8 +276,7 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
             city:$scope.vm.goods.area.city,
             county:$scope.vm.goods.area.county,
         };
-        //console.info("搜索区域商品");
-        //console.info(queryParams);
+
         GoodsService.retrieveGoods(queryParams).then(function (goods) {
             $scope.temp.goodsList = goods.items;
             console.info($scope.temp.goodsList );
