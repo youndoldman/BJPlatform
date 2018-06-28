@@ -89,6 +89,8 @@ commonModule.constant('URI', {
         'GasCynTrayBind':'../../../api/GasCynTray/Bind',//托盘绑定
         'GasCynTray':'../../../api/GasCynTray',//托盘查询
         'GasCynTrayunBind':'../../../api/GasCynTray/unBind',//托盘解绑定
+        'GasCynTrayHistory':'../../../api/GasCynTray/History',//托盘历史数据查询
+
 
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
         'ktyReport1': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/agent/call',//科天云获取坐席-工作组及直拨电话统计报表
@@ -100,6 +102,8 @@ commonModule.constant('URI', {
 
         'ktyCallreport': 'https://cc.ketianyun.com/thirdparty/api/v1/callreports',//科天云获得指定时间段呼叫的记录
         'ktyCallreportSearch': 'https://cc.ketianyun.com/thirdparty/api/v1/callreports/search',//科天云获得获取指定搜索条件的呼叫记录
+
+
 
     }
 });
@@ -164,13 +168,13 @@ commonModule.constant('NavItem', {
             name: "组织架构",
             target: "_blank",
             href: "./manageCenter.htm#/manage/department",
-            icon: "fa-gears"
+            icon: "fa-bars"
         }, {
             index: 2,
             name: "商品管理",
             target: "_blank",
             href: "./manageCenter.htm#/manage/goods",
-            icon: "fa-plane"
+            icon: "fa-gears"
         }, {
             index: 3,
             name: "云客服账号",
@@ -193,31 +197,31 @@ commonModule.constant('NavItem', {
             name: "订单管理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/orderList",
-            icon: "fa-plane"
+            icon: "fa-gears"
         }, {
             index: 1,
             name: "库存管理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/stockControl",
-            icon: "fa-plane"
+            icon: "fa-gears"
         },{
             index: 3,
             name: "报修处理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/Mend",
-            icon: "fa-plane"
+            icon: "fa-gears"
         }, {
             index: 4,
             name: "安检处理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/Security",
-            icon: "fa-plane"
+            icon: "fa-gears"
         }, {
             index: 5,
             name: "投诉处理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/Complaint",
-            icon: "fa-plane"
+            icon: "fa-gears"
         }, {
             index: 6,
             name: "回款操作",
@@ -253,31 +257,31 @@ commonModule.constant('NavItem', {
             name: "订单查询",
             target: "_blank",
             href: "./customService.htm#/CustomService/orderManage",
-            icon: "fa-gears"
+            icon: "fa-search"
         }, {
             index: 3,
             name: "客户管理",
             target: "_blank",
             href: "./customService.htm#/CustomService/customerManage",
-            icon: "fa-plane"
+            icon: "fa-gears"
         }, {
             index: 4,
             name: "报修处理",
             target: "_blank",
             href: "./customService.htm#/CustomService/Mend",
-            icon: "fa-plane"
+            icon: "fa-gears"
         }, {
             index: 5,
             name: "安检处理",
             target: "_blank",
             href: "./customService.htm#/CustomService/Security",
-            icon: "fa-plane"
+            icon: "fa-gears"
         }, {
             index: 6,
             name: "投诉处理",
             target: "_blank",
             href: "./customService.htm#/CustomService/Complaint",
-            icon: "fa-plane"
+            icon: "fa-gears"
         }, {
             index: 7,
             name: "电话统计",
@@ -403,18 +407,25 @@ commonModule.constant('NavItem', {
             href: "./decisionCenter.htm#/decision/cost",
             icon: "fa-group"
         }, {
-            index: 1,
-            name: "销售分析",
-            target: "_blank",
-            href: "./decisionCenter.htm#/decision/sales",
-            icon: "fa-plane"
-        }, {
-            index: 2,
-            name: "市场分析",
-            target: "_blank",
-            href: "./decisionCenter.htm#/decision/market",
-            icon: "fa-magnet"
-        }]
+                index: 1,
+                name: "用气统计",
+                href: "./decisionCenter.htm#/decision/gasUsage",
+                icon: "fa-gears"
+        }
+            //{
+        //    index: 1,
+        //    name: "销售分析",
+        //    target: "_blank",
+        //    href: "./decisionCenter.htm#/decision/sales",
+        //    icon: "fa-plane"
+        //}, {
+        //    index: 2,
+        //    name: "市场分析",
+        //    target: "_blank",
+        //    href: "./decisionCenter.htm#/decision/market",
+        //    icon: "fa-magnet"
+        //}
+        ]
     },
 
     'GasCenter': {

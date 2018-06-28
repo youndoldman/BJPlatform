@@ -8,13 +8,12 @@
                 </select>
             </div>
         </div>
-
         <div class="col-sm-6　col-xs-6 col-md-6　text-right">
             <ul class="pagination paginator-pager">
-                <li ng-if="pageCount > 1 && pager.curPageNo > 1" ng-click="gotoPage(1)" title="第一页">
+                <li ng-if="pageCount > 0 && pager.curPageNo > 0" ng-click="gotoPage(1)" title="第一页">
                     <a href=""><i class="fa fa-angle-double-left"></i></a>
                 </li>
-                <li ng-if="pageCount > 1" ng-repeat="pageNo in pageRange" ng-click="gotoPage(pageNo)"
+                <li ng-if="pageCount > 0" ng-repeat="pageNo in pageRange" ng-click="gotoPage(pageNo)"
                     ng-class="{active: pageNo === pager.curPageNo}">
                     <a href="">{{pageNo}}</a>
                 </li>

@@ -253,7 +253,28 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             orderDetail.dealPrice = $scope.temp.selectedGoods.price;
             orderDetail.quantity = $scope.temp.selectedQuantity;
             orderDetail.subtotal = $scope.temp.selectedQuantity * orderDetail.dealPrice;
-            $scope.currentOrder.orderDetailList.push(orderDetail);
+           // $scope.currentOrder.orderDetailList.push(orderDetail);
+
+            if($scope.currentOrder.orderDetailList.length == 0)
+            {
+                $scope.currentOrder.orderDetailList.push(orderDetail);
+            }
+            else
+            {
+                var findFlag = false;
+                for(var i=0; i< $scope.currentOrder.orderDetailList.length; i++) {
+                    if(orderDetail.goods.code == $scope.currentOrder.orderDetailList[i].goods.code)
+                    {
+                        findFlag = true;
+                        break;
+                    }
+                }
+                if(!findFlag){
+                     $scope.currentOrder.orderDetailList.push(orderDetail);
+                }
+                console.info($scope.currentOrder.orderDetailList);
+            }
+
             //刷新订单
             refleshOrder();
         };
@@ -800,7 +821,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                     else {
                         $scope.temp.goodsList = null;
                         $scope.temp.selectedGoods = null;
-                        udcModal.info({"title": "提醒信息", "message": "该地区不售卖此类型的商品"});
+                        //udcModal.info({"title": "提醒信息", "message": "该地区不售卖此类型的商品"});
                     }
                 });
             }
