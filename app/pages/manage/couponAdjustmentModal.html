@@ -18,7 +18,6 @@
                                     <div class="col-md-3 input-width-sm">
                                         <input type="text"  name="name" class="form-control" ng-model="q.name" required>
                                     </div>
-
                                     <label class="col-md-2 control-label input-label">优惠类型：
                                         <span ng-show="isCreate" style="color:red">*</span></label>
                                     <div class="col-md-3 input-width-sm">
@@ -31,14 +30,11 @@
                                         <span ng-show="userForm.startCoupon.$error.required || userForm.startCoupon.$invalid" style="color:red">*</span></label>
                                     <div class="col-md-3 input-width-sm">
                                         <input type="text"  name="startCoupon" id="datetimepickerStartCoupon"  class="form-control" ng-model="q.startTime" required>
-                                        <!--<input type="text"  ng-hide="inputHidden_endTime"  class="form-control" ng-model="q.startTime">-->
                                     </div>
-
                                     <label class="col-md-2 control-label input-label">结束时间：
                                         <span ng-show="userForm.endCoupon.$error.required || userForm.endCoupon.$invalid" style="color:red">*</span></label>
                                     <div class="col-md-3 input-width-sm">
                                         <input type="text"  name="endCoupon" id="datetimepickerEndCoupon"  class="form-control" ng-model="q.endTime" required>
-                                        <!--<input type="text"  ng-hide="inputHidden_endTime" class="form-control" ng-model="q.endTime" >-->
                                     </div>
                                 </div>
 
@@ -48,7 +44,6 @@
                                         <div class="col-md-3 input-width-sm">
                                             <select name="discountConditionType" ng-model="type" ng-options="discountConditionType for discountConditionType in vm.discountConditionType" class="form-control" ng-selected=""ng-change="selectChange()" ></select>
                                         </div>
-
                                         <label class="col-md-2 control-label input-label">客户规格：
                                             <span ng-show="isCreate" style="color:red">*</span></label>
                                         <div class="col-md-3 input-width-sm">
@@ -62,7 +57,6 @@
                                     <div class="col-md-3 input-width-sm">
                                         <select name="goodsType" ng-model="temp.selectedGoodsType" ng-options="goodsType.name for goodsType in temp.goodsTypesList" class="form-control" ng-selected="" ng-change="goodsTypeChange()"></select>
                                     </div>
-
                                     <label class="col-md-2 control-label input-label">商品规格：
                                         <span ng-show="isCreate" style="color:red">*</span></label>
                                     <div class="col-md-3 input-width-sm">
@@ -71,28 +65,26 @@
 
                                 </div>
 
-                                <!--<div class="row" style="margin-top: 15px">-->
-
-                                    <!--<label class="col-md-2 control-label input-label">所属区域：</label>-->
-                                    <!--<div class="col-md-3 ">-->
-                                        <!--<select name="province" ng-model="vm.goods.area.province" ng-options="province for province in config.provinces" class="form-control" ng-selected="" ng-change="provincesChange()"></select>-->
-                                    <!--</div>-->
-                                    <!--<div class="col-md-3 ">-->
-                                        <!--<select name="city" ng-model="vm.goods.area.city" ng-options="city for city in config.citys" class="form-control" ng-selected="" ng-change="citysChange()"></select>-->
-                                    <!--</div>-->
-                                    <!--<div class="col-md-4 ">-->
-                                        <!--<select name="county" ng-model="county" ng-options="county for county in config.countys" class="form-control" ng-selected="countysChange()"></select>-->
-                                    <!--</div>-->
-
-                                <!--</div>-->
 
                                 <div class="row" style="margin-top: 15px">
+                                    <label class="col-md-2 control-label input-label">所属区域：</label>
+                                    <div class="col-md-3" input-width-sm>
+                                        <select name="province" ng-model="vm.goods.area.province" ng-options="province for province in config.provinces" class="form-control" ng-selected="" ng-change="provincesChange()"></select>
+                                    </div>
+                                    <div class="col-md-3" input-width-sm>
+                                        <select name="city" ng-model="vm.goods.area.city" ng-options="city for city in config.citys" class="form-control" ng-selected="" ng-change="citysChange()"></select>
+                                    </div>
+                                    <div class="col-md-4" input-width-sm>
+                                        <select name="county" ng-model="county" ng-options="county for county in config.countys" class="form-control" ng-selected="" ng-change="countysChange()"></select>
+                                    </div>
+                                </div>
 
+
+                                <div class="row" style="margin-top: 15px">
                                     <label class="col-md-2 control-label input-label">现价：</label>
                                     <div class="col-md-3 input-width-sm">
                                         <input type="number"  class="form-control" ng-model="temp.selectedGoods.price" disabled>
                                     </div>
-
                                     <label class="col-md-2 control-label input-label">{{vm.discountText}}
                                         <span ng-show="isCreate" style="color:red">*</span></label>
                                     <div class="col-md-3 input-width-sm">
@@ -102,14 +94,11 @@
                                 </div>
 
                                 <div class="row" style="margin-top: 15px">
-
-
                                     <label class="col-md-2 control-label input-label">使用方式：
                                         <span ng-show="isCreate" style="color:red">*</span></label>
                                     <div class="col-md-3 input-width-sm">
                                         <select name="useType" ng-model="useType" ng-options="useType for useType in vm.useType" class="form-control" ng-selected=""ng-change="useTypeSelectChange()" ></select>
                                     </div>
-
                                     <div class="col-md-2 input-width-sm">
                                         <button type="button" class=" btn btn-sm btn-success pull-right" ng-click="addToCart()"><i class="fa fa-plus"></i>添加调价列表 </button>
                                     </div>
@@ -126,7 +115,7 @@
                         <div class="row">
                             <table class="table table-bordered table-hover .table-condensed">
                                 <thead>
-                                <tr>
+                                    <tr>
                                     <td style="background: lightblue;text-align: center" width="8%">序号</td>
                                     <td style="background: lightblue;text-align: center" width="8%">商品号</td>
                                     <td style="background: lightblue;text-align: center" width="12%">商品名称</td>
@@ -138,7 +127,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="adjustPriceDetail in vm.currentPriceAdjustment.adjustPriceDetailList">
+                                    <tr ng-repeat="adjustPriceDetail in vm.currentPriceAdjustment.adjustPriceDetailList">
                                     <td class="message">{{$index+1}}</td>
                                     <td class="message">{{adjustPriceDetail.goods.code}}</td>
                                     <td class="message">{{adjustPriceDetail.goods.name}}</td>
@@ -152,7 +141,6 @@
                                         </button>
                                     </td>
                                 </tr>
-
                                 </tbody>
                             </table>
 
@@ -161,9 +149,7 @@
                             </div>
                         </div>
                         </div>
-
                 </div>
-
 
                 <div class="modal-footer">
                     <button type="submit"  ng-hide="q.discountStrategyStatus.index == 1 ? true : false"

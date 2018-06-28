@@ -49,12 +49,8 @@ customServiceApp.controller('SecurityCtrl', ['$scope', '$rootScope', '$filter', 
             $scope.q.endTime = null;
         };
 
-
-
         $scope.pager = pager.init('securityCtrl', gotoPage);
         var historyQ = $scope.pager.getQ();
-
-
 
         $scope.vm = {
             securityList: [],
@@ -65,7 +61,6 @@ customServiceApp.controller('SecurityCtrl', ['$scope', '$rootScope', '$filter', 
             endTime:null,
             securitySn:null,
             processStatus:{}
-
         };
 
         $scope.search = function () {
@@ -74,7 +69,6 @@ customServiceApp.controller('SecurityCtrl', ['$scope', '$rootScope', '$filter', 
         };
 
         $scope.initPopUp = function () {
-
         };
 
         $scope.viewDetails = function (security) {
@@ -121,8 +115,6 @@ customServiceApp.controller('SecurityCtrl', ['$scope', '$rootScope', '$filter', 
         };
 
         var searchSecurity = function () {
-
-
             var queryParams = {
                 startTime:$scope.q.startTime,
                 endTime:$scope.q.endTime,
@@ -135,7 +127,6 @@ customServiceApp.controller('SecurityCtrl', ['$scope', '$rootScope', '$filter', 
             if($scope.q.processStatus.index==-1){
                 queryParams.processStatus = null;
             }
-
             MendSecurityComplaintService.retrieveSecurity(queryParams).then(function (securitys) {
                 $scope.pager.update($scope.q, securitys.total, queryParams.pageNo);
                 $scope.vm.securityList = securitys.items;

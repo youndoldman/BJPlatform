@@ -69,7 +69,6 @@ customServiceApp.controller('SecurityAssignModalCtrl', ['$scope', 'close', 'Mend
                 udcModal.info({"title": "处理结果", "message": "投诉单指派失败 "+value.message});
             })
         }
-
     };
 
     var init = function () {
