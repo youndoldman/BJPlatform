@@ -15,6 +15,10 @@
         <result column="latitude" property="latitude" jdbcType="DOUBLE"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+
+        <association property="user" column="number" select="com.donno.nj.dao.GasCynTrayBindRelationDao.findUserByGasNumber">
+        </association>
+
     </resultMap>
 
     <sql id="TblGasCynTray">

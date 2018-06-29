@@ -28,7 +28,7 @@
         VALUES( #{cloudUserIdx},#{panvaUserIdx})
     </insert>
 
-    <!--钢瓶与定位终端解绑定-->
+    <!--解绑定-->
     <delete id="unBindCloudPannaUser">
         DELETE  from t_cloud_panva_user_rel
         WHERE  cloud_user_idx = #{cloudUserIdx} and   panva_user_idx = #{panvaUserIdx}

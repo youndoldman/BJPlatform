@@ -18,6 +18,8 @@ public class GasCynTray implements Serializable
     Double longitude;
     Double latitude;
 
+    User user;
+
     private String  note;
     private Date createTime;
     private Date updateTime;
@@ -49,6 +51,10 @@ public class GasCynTray implements Serializable
     public WarnningStatus getWarnningStatus()
     {
         return warnningStatus;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     public Double getLatitude() {
@@ -103,6 +109,10 @@ public class GasCynTray implements Serializable
     public void setWarnningStatus(WarnningStatus warnningStatus)
     {
         this.warnningStatus = warnningStatus;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setLongitude(Double longitude) {

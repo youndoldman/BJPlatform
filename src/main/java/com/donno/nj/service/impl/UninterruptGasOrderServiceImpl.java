@@ -153,6 +153,17 @@ public class UninterruptGasOrderServiceImpl implements UninterruptGasOrderServic
             throw new ServerSideBusinessException(message, HttpStatus.NOT_ACCEPTABLE);
         }
 
+        /*根据钢瓶号和订单号，判断是否已经存在该订单*/
+        Map params = new HashMap<String,String>();
+        params.putAll(ImmutableMap.of("payStatus", PayStatus.PSUnpaid.getIndex()));
+        params.putAll(ImmutableMap.of("gasCynNumber", uninterruptedGasOrder.getGasCylinder().getNumber()));
+        params.putAll(ImmutableMap.of("dispatchOrderSn", uninterruptedGasOrder.getDispatchOrder().getOrderSn()));
+        List<UninterruptedGasOrder> uninterruptedGasOrderList = uninterruptGasOrderDao.getList(params);
+        if (uninterruptedGasOrderList.size() >0 )
+        {
+            throw new ServerSideBusinessException("该钢瓶已经创建计费订单！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
         /*默认为待支付*/
         uninterruptedGasOrder.setPayStatus(PayStatus.PSUnpaid);
 

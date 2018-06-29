@@ -10,9 +10,9 @@
         <result column="note" property="note" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
-        <association property="gas_tray_idx" column="gasCynTray" select="com.donno.nj.dao.GasCynTrayDao.findById">
+        <association property="gasCynTray" column="gas_tray_idx" select="com.donno.nj.dao.GasCynTrayDao.findById">
         </association>
-        <association property="user_idx" column="customer" select="com.donno.nj.dao.CustomerDao.findById">
+        <association property="customer" column="user_idx" select="com.donno.nj.dao.CustomerDao.findById">
         </association>
     </resultMap>
 
@@ -100,6 +100,19 @@
             AND
             t_user_gas_cyn_tray.user_idx = t_user.id
             AND t_user.user_id = #{userId}
+        )
+    </select>
+
+    <!--查找托盘所属用户-->
+    <select id="findUserByGasNumber" resultMap="com.donno.nj.dao.UserDao.BaseResultMap">
+        SELECT t_user.*
+        FROM t_tray_device,t_user_gas_cyn_tray,t_user
+        where
+        (
+        t_user_gas_cyn_tray.gas_tray_idx = t_tray_device.id
+        AND
+        t_user_gas_cyn_tray.user_idx = t_user.id
+        AND t_tray_device.number = #{number}
         )
     </select>
 

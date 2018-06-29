@@ -39,6 +39,7 @@ public class UninterruptOrderController
                                    @RequestParam(value = "payStatus", required = false) Integer payStatus,
                                    @RequestParam(value = "payType", required = false) Integer payType,
                                    @RequestParam(value = "gasCynNumber", defaultValue = "") String gasCynNumber,
+                                   @RequestParam(value = "dispatchOrderSn", defaultValue = "") String dispatchOrderSn,
                                    @RequestParam(value = "dispatcherId", defaultValue = "") String dispatcherId,
                                    @RequestParam(value = "startTime", defaultValue = "") String startTime,
                                    @RequestParam(value = "endTime", defaultValue = "") String endTime,
@@ -56,6 +57,11 @@ public class UninterruptOrderController
         if (userId.trim().length() > 0)
         {
             params.putAll(ImmutableMap.of("userId", userId));
+        }
+
+        if (dispatchOrderSn.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("dispatchOrderSn", dispatchOrderSn));
         }
 
         if (payStatus != null)
@@ -118,8 +124,8 @@ public class UninterruptOrderController
     @OperationLog(desc = "支付金额计算")
     @RequestMapping(value = "/api/UninterruptOrders/Caculate/{orderSn}", method = RequestMethod.GET)
     public ResponseEntity GasPayCaculate(@PathVariable("orderSn") String orderSn,
-                                                @RequestParam(value = "emptyWeight", defaultValue = "") Float emptyWeight
-                                                )
+                                         @RequestParam(value = "emptyWeight", defaultValue = "") Float emptyWeight
+                                        )
     {
         return ResponseEntity.ok(uninterruptGasOrderService.GasPayCaculate(orderSn,emptyWeight)) ;
     }
