@@ -143,8 +143,8 @@ public class SysUserController
                                    @RequestParam(value = "userName", defaultValue = "") String userName,
                                    @RequestParam(value = "jobNumber", defaultValue = "") String jobNumber,
                                    @RequestParam(value = "identity", defaultValue = "") String identity,
-                                   @RequestParam(value = "groupCode", defaultValue = "") Integer groupCode,
-                                   @RequestParam(value = "departmentCode", defaultValue = "") Integer departmentCode,
+                                   @RequestParam(value = "groupCode", defaultValue = "") String groupCode,
+                                   @RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
                                    @RequestParam(value = "mobilePhone", defaultValue = "") String mobilePhone,
                                    @RequestParam(value = "officePhone", defaultValue = "") String officePhone,
 //                                   @RequestParam(value = "aliveStatus", required = false) AliveStatus aliveStatus,
@@ -174,12 +174,12 @@ public class SysUserController
             params.putAll(ImmutableMap.of("identity", identity));
         }
 
-        if (departmentCode != null)
+        if (departmentCode.trim().length() > 0)
         {
             params.putAll(ImmutableMap.of("departmentCode", departmentCode));
         }
 
-        if (groupCode != null)
+        if (groupCode.trim().length() > 0)
         {
             params.putAll(ImmutableMap.of("groupCode", groupCode));
         }

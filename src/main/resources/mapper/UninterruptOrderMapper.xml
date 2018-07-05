@@ -52,7 +52,7 @@
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO <include refid="TblInterruptOrde"/>(<include refid="InsertColumnList"/>)
         VALUES( #{orderSn},#{dispatchOrder.id},#{dispatcher.id},#{customer.id},#{gasCylinder.id},
-        #{fullWeitht},  #{goods.id},#{note} )
+        #{fullWeight},  #{goods.id},#{note} )
     </insert>
 
 
