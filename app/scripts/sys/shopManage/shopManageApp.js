@@ -119,6 +119,19 @@ var shopManageApp = angular.module('ShopManageApp', ['ui.router', 'CommonModule'
                 onEnter: function (rootService, NavItem) {
                     rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[7]);
                 }
+            })
+            .state('ShopManage.calculateDelivery',{
+                url:'/calculateDelivery',
+                views: {
+                    "content@ShopManage": {
+                        templateUrl: '../pages/shopManage/calculateDelivery.html',
+                        controller: 'CalculateDeliveryCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[8]);
+                }
             });
         $httpProvider.interceptors.push('HttpInterceptor');
     }]).run(['$rootScope', 'rootService', 'NavItem', function ($rootScope, rootService, NavItem) {
