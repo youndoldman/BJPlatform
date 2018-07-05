@@ -75,7 +75,7 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
 
         var searchUsers = function () {
             var queryParams = {
-                userName: $scope.q.userName,
+                userId: $scope.q.userName,
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize,
                 groupCode:$scope.q.userGroup.code

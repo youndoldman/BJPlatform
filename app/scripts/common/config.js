@@ -235,6 +235,12 @@ commonModule.constant('NavItem', {
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/checkBottle",
             icon: "fa-edit"
+        },{
+            index: 8,
+            name: "配送统计",
+            target: "_blank",
+            href: "./shopCenter.htm#/ShopManage/calculateDelivery",
+            icon: "fa-table"
         }]
     },
 

@@ -74,7 +74,7 @@
         UPDATE <include refid="TblGasCynTray"/>
         <set>
             <if test="deviceStatus != null">status = #{deviceStatus.index},</if>
-            <if test="warningStatus != null">warning_status = #{warningStatus.index},</if>
+            <if test="warnningStatus != null">warning_status = #{warnningStatus.index},</if>
             <if test="number != null">number = #{number},</if>
 
             <if test="weight != null">weight = #{weight},</if>

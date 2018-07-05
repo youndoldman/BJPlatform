@@ -7,6 +7,7 @@
         <id column="alive_expire_time" property="aliveExpireTime" jdbcType="INTEGER"/>
         <id column="alive_check_time" property="aliveCheckTime" jdbcType="INTEGER"/>
         <id column="push_order_range" property="pushOrderRange" jdbcType="INTEGER"/>
+        <id column="tray_warning_weight" property="trayWarningWeight" jdbcType="INTEGER"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
@@ -24,6 +25,13 @@
         SELECT  push_order_range
         FROM <include refid="TableName"/>
     </select>
+
+    <select id="getTrayWarningWeight" resultType="Integer">
+        SELECT  tray_warning_weight
+        FROM <include refid="TableName"/>
+    </select>
+
+
 
 
 

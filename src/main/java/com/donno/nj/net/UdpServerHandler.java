@@ -57,7 +57,7 @@ public class UdpServerHandler
         {
             gasCynTray.setId(target.getId());
             Integer warningWeight = systemParamDao.getTrayWarningWeight();
-            if (gasCynTray.getWeight() >= warningWeight)
+            if (gasCynTray.getWeight() <= warningWeight)
             {
                 gasCynTray.setWarnningStatus(WarnningStatus.WSWarnning1);
             }
