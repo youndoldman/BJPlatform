@@ -250,7 +250,10 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
 
     //托盘查询
     $scope.retrievePallets = function () {
-        CustomerManageService.retrievePallets($scope.vm.currentCustomer.userId).then(function (pallets) {
+        var queryParams = {
+            userId:$scope.vm.currentCustomer.userId
+        };
+        CustomerManageService.retrievePallets(queryParams).then(function (pallets) {
             $scope.vm.palletList = pallets.items;
         }, function(value) {
             udcModal.info({"title": "错误信息", "message": "查询托盘信息失败:  "+value.message});
