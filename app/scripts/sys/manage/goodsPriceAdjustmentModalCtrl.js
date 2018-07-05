@@ -112,6 +112,7 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
     };
 
     $scope.provincesChange = function () {
+        $scope.temp.goodsList = null;
         //获取市
         getCitysConfig($scope.vm.goods.area.province);
         $scope.config.countys = [];
@@ -131,6 +132,7 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
     }
 
     $scope.citysChange = function () {
+        $scope.temp.goodsList = null;
         //获取区
         if ($scope.vm.goods.area.city==null) {
             return;
@@ -152,6 +154,7 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
 
     $scope.county = null;
     $scope.countysChange = function () {
+        $scope.temp.goodsList = null;
         //获取区
       $scope.vm.goods.area.county = $scope.county;
         var queryParams = {
@@ -260,6 +263,7 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
 
     //商品类型改变
     $scope.goodsTypeChange = function () {
+        $scope.temp.goodsList = null;
         //获取区
         //console.info($scope.vm.goods);
         if ($scope.temp.selectedGoodsType==null) {

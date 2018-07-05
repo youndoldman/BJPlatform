@@ -100,53 +100,11 @@ customServiceApp.controller('Report2Ctrl', ['$scope', '$rootScope', '$filter', '
                         $scope.vm.lastDataList = $scope.vm.dataList[$scope.vm.dataList.length-1];
                         $scope.vm.dataList .splice($scope.vm.dataList.length-1, 1);
                     }, function(value) {
-                        if(value.code == "40007")
-                        {
-                            $scope.vm.dataList = null;
-                            udcModal.info({"title": "查询失败", "message": "未找到呼叫记录"});
-                        }
-                        else if(value.code == "40021")
-                        {
-                            $scope.vm.dataList = null;
-                            udcModal.info({"title": "查询失败", "message": "未找到指定部门人员信息"});
-                        }
-                        else if(value.code == "40026")
-                        {
-                            $scope.vm.dataList = null;
-                            udcModal.info({"title": "查询失败", "message": "时间范围长度超出限制（最大三个月间隔）"});
-                        }
-                        else if(value.code == "50000")
-                        {
-                            $scope.vm.dataList = null;
-                            udcModal.info({"title": "查询失败", "message": "系统内部错误"});
-                        }
+                        udcModal.info({"title": "查询失败", "message": value.message});
+
                     });
                 }, function(value) {
-                    if(value.code == "40001")
-                    {
-                        $scope.vm.dataList = null;
-                        udcModal.info({"title": "连接结果", "message": "用户名或密码不正确"});
-                    }
-                    else if(value.code == "40002")
-                    {
-                        $scope.vm.dataList = null;
-                        udcModal.info({"title": "连接结果", "message": "用户名或密码为空"});
-                    }
-                    else if(value.code == "40003")
-                    {
-                        $scope.vm.dataList = null;
-                        udcModal.info({"title": "连接结果", "message": "用户权限不正确"});
-                    }
-                    else if(value.code == "40004")
-                    {
-                        $scope.vm.dataList = null;
-                        udcModal.info({"title": "连接结果", "message": "用户认证不存在或已过期"});
-                    }
-                    else if(value.code == "50000")
-                    {
-                        $scope.vm.dataList = null;
-                        udcModal.info({"title": "连接结果", "message": "系统内部错误"});
-                    }
+                    udcModal.info({"title": "连接结果", "message": value.message});
                 })
             }
             else
