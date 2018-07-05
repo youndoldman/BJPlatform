@@ -41,18 +41,22 @@ financeApp.service('FinanceService', ['$http', 'URI', 'promiseWrapper', function
     this.searchCustomerType = function (params) {
         return promise.wrap($http.get(customerTypeUri, {params: params}));
     };
+    var goodsTypesUri = URI.resources.goodsTypes;//商品规格
     //查询商品
     this.retrieveGoodsTypes = function (params) {
         return promise.wrap($http.get(goodsTypesUri, {params: params}));
     };
+    var goodsUri = URI.resources.goods;
     //查询商品规格
     this.retrieveGoods = function (params) {
         return promise.wrap($http.get(goodsUri, {params: params}));
     };
+
     //查询部门信息(下级递归)
     this.retrieveDepartmentLower = function (code) {
         return promise.wrap($http.get(departmentUri + "/Lower"+"?code=" +code));
     };
+
 
     //查询销售日报表(按支付类型查询)
     this.searchSalesByBayType = function (params) {

@@ -725,7 +725,7 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                 {
                     //$scope.data.goodsTableContext.goodsName = $scope.data.goodsTypesList[i].name
                     var queryParams = {
-                        typeName: $scope.data.goodsTypesList[i].name,
+                        typeCode: $scope.data.goodsTypesList[i].code,
                     };
                     FinanceService.retrieveGoods(queryParams).then(function (goods) {
                         var tempList = {type:null,detail:[]};

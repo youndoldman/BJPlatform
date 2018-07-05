@@ -38,14 +38,9 @@ manageApp.service('UserService', ['$http', 'URI', 'promiseWrapper', function ($h
         }
     };
 
-
-
-
-
     this.retrieveGroups = function () {
         return promise.wrap($http.get(groupsUri));
     };
-
 
     this.retrieveUsers = function (params) {
         return promise.wrap($http.get(usersUri, {params: params}));
