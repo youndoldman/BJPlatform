@@ -417,6 +417,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         $scope.searchReport = function(){
             $scope.vm.callReportList = [];
             $scope.pagerCallReport.setCurPageNo(1);
+            $scope.pagerMissedCallReport.setCurPageNo(1);
+
             searchCallReport();
         }
 
@@ -446,16 +448,18 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                         $scope.pagerCallReport.update($scope.qCallReport, response.data.totalElements, queryParams.page);
 
                     }, function(value) {
-                        if(value.code == "40007")
-                        {
-                            $scope.vm.dataList = null;
-                            udcModal.info({"title": "查询失败", "message": "用户认证不存在或已过期"});
-                        }
-                        else if(value.code == "50000")
-                        {
-                            $scope.vm.dataList = null;
-                            udcModal.info({"title": "查询失败", "message": "系统内部错误"});
-                        }
+                        udcModal.info({"title": "查询失败", "message": value.message});
+                        //console.log(value);
+                        //if(value.code == "40007")
+                        //{
+                        //    $scope.vm.dataList = null;
+                        //    udcModal.info({"title": "查询失败", "message": "用户认证不存在或已过期"});
+                        //}
+                        //else if(value.code == "50000")
+                        //{
+                        //    $scope.vm.dataList = null;
+                        //    udcModal.info({"title": "查询失败", "message": "系统内部错误"});
+                        //}
                     });
                 }
                 else
@@ -464,31 +468,32 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 }
 
             }, function(value) {
-                if(value.code == "40001")
-                {
-                    $scope.vm.dataList = null;
-                    udcModal.info({"title": "连接结果", "message": "用户名或密码不正确"});
-                }
-                else if(value.code == "40002")
-                {
-                    $scope.vm.dataList = null;
-                    udcModal.info({"title": "连接结果", "message": "用户名或密码为空"});
-                }
-                else if(value.code == "40003")
-                {
-                    $scope.vm.dataList = null;
-                    udcModal.info({"title": "连接结果", "message": "用户权限不正确"});
-                }
-                else if(value.code == "40004")
-                {
-                    $scope.vm.dataList = null;
-                    udcModal.info({"title": "连接结果", "message": "用户认证不存在或已过期"});
-                }
-                else if(value.code == "50000")
-                {
-                    $scope.vm.dataList = null;
-                    udcModal.info({"title": "连接结果", "message": "系统内部错误"});
-                }
+                udcModal.info({"title": "连接结果", "message": value.message});
+                //if(value.code == "40001")
+                //{
+                //    $scope.vm.dataList = null;
+                //    udcModal.info({"title": "连接结果", "message": "用户名或密码不正确"});
+                //}
+                //else if(value.code == "40002")
+                //{
+                //    $scope.vm.dataList = null;
+                //    udcModal.info({"title": "连接结果", "message": "用户名或密码为空"});
+                //}
+                //else if(value.code == "40003")
+                //{
+                //    $scope.vm.dataList = null;
+                //    udcModal.info({"title": "连接结果", "message": "用户权限不正确"});
+                //}
+                //else if(value.code == "40004")
+                //{
+                //    $scope.vm.dataList = null;
+                //    udcModal.info({"title": "连接结果", "message": "用户认证不存在或已过期"});
+                //}
+                //else if(value.code == "50000")
+                //{
+                //    $scope.vm.dataList = null;
+                //    udcModal.info({"title": "连接结果", "message": "系统内部错误"});
+                //}
             })
 
         }
@@ -496,6 +501,9 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         $scope.searchCustomerCallReport = function () {
             //if(($scope.q.dnis.length >=6 )|| ($scope.q.ani.length >=6))
             //{
+            $scope.pagerCallReport.setCurPageNo(1);
+            $scope.pagerMissedCallReport.setCurPageNo(1);
+
                 $scope.vm.callReportList = [];
                 var userName = $scope.currentKTYUser.items[0].userId;
                 var password = $scope.currentKTYUser.items[0].password;
@@ -526,58 +534,61 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                         console.log($scope.vm.callReportList.data.length);
                         $scope.pagerCallReport.update($scope.qCallReport, response.data.totalElements, queryParams.page);
                     }, function(value) {
-                        if(value.code == "40007")
-                        {
-                            $scope.vm.dataList = null;
-                            udcModal.info({"title": "查询失败", "message": "未找到呼叫记录"});
-                        }
-                        else if(value.code == "40021")
-                        {
-                            $scope.vm.dataList = null;
-                            udcModal.info({"title": "查询失败", "message": "用户不存在"});
-                        }
-                        else if(value.code == "40025")
-                        {
-                            $scope.vm.dataList = null;
-                            udcModal.info({"title": "查询失败", "message": "参数异常"});
-                        }
-                        else if(value.code == "40026")
-                        {
-                            $scope.vm.dataList = null;
-                            udcModal.info({"title": "查询失败", "message": "时间范围长度超出限制"});
-                        }
-                        else if(value.code == "50000")
-                        {
-                            $scope.vm.dataList = null;
-                            udcModal.info({"title": "查询失败", "message": "系统内部错误"});
-                        }
+                        udcModal.info({"title": "查询失败", "message": value.message});
+                        //if(value.code == "40007")
+                        //{
+                        //    $scope.vm.dataList = null;
+                        //    udcModal.info({"title": "查询失败", "message": "未找到呼叫记录"});
+                        //}
+                        //else if(value.code == "40021")
+                        //{
+                        //    $scope.vm.dataList = null;
+                        //    udcModal.info({"title": "查询失败", "message": "用户不存在"});
+                        //}
+                        //else if(value.code == "40025")
+                        //{
+                        //    $scope.vm.dataList = null;
+                        //    udcModal.info({"title": "查询失败", "message": "参数异常"});
+                        //}
+                        //else if(value.code == "40026")
+                        //{
+                        //    $scope.vm.dataList = null;
+                        //    udcModal.info({"title": "查询失败", "message": "时间范围长度超出限制"});
+                        //}
+                        //else if(value.code == "50000")
+                        //{
+                        //    $scope.vm.dataList = null;
+                        //    udcModal.info({"title": "查询失败", "message": "系统内部错误"});
+                        //}
                     });
                 }, function(value) {
-                    if(value.code == "40001")
-                    {
-                        $scope.vm.dataList = null;
-                        udcModal.info({"title": "连接结果", "message": "用户名或密码不正确"});
-                    }
-                    else if(value.code == "40002")
-                    {
-                        $scope.vm.dataList = null;
-                        udcModal.info({"title": "连接结果", "message": "用户名或密码为空"});
-                    }
-                    else if(value.code == "40003")
-                    {
-                        $scope.vm.dataList = null;
-                        udcModal.info({"title": "连接结果", "message": "用户权限不正确"});
-                    }
-                    else if(value.code == "40004")
-                    {
-                        $scope.vm.dataList = null;
-                        udcModal.info({"title": "连接结果", "message": "用户认证不存在或已过期"});
-                    }
-                    else if(value.code == "50000")
-                    {
-                        $scope.vm.dataList = null;
-                        udcModal.info({"title": "连接结果", "message": "系统内部错误"});
-                    }
+                    udcModal.info({"title": "连接结果", "message": value.message});
+                    //
+                    //if(value.code == "40001")
+                    //{
+                    //    $scope.vm.dataList = null;
+                    //    udcModal.info({"title": "连接结果", "message": "用户名或密码不正确"});
+                    //}
+                    //else if(value.code == "40002")
+                    //{
+                    //    $scope.vm.dataList = null;
+                    //    udcModal.info({"title": "连接结果", "message": "用户名或密码为空"});
+                    //}
+                    //else if(value.code == "40003")
+                    //{
+                    //    $scope.vm.dataList = null;
+                    //    udcModal.info({"title": "连接结果", "message": "用户权限不正确"});
+                    //}
+                    //else if(value.code == "40004")
+                    //{
+                    //    $scope.vm.dataList = null;
+                    //    udcModal.info({"title": "连接结果", "message": "用户认证不存在或已过期"});
+                    //}
+                    //else if(value.code == "50000")
+                    //{
+                    //    $scope.vm.dataList = null;
+                    //    udcModal.info({"title": "连接结果", "message": "系统内部错误"});
+                    //}
                 })
             //}
           //else
@@ -587,7 +598,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         }
 
         $scope.searchMissedCallReport = function(){
-            console.info("searchMissedCallReport");
+            $scope.pagerCallReport.setCurPageNo(1);
+            $scope.pagerMissedCallReport.setCurPageNo(1);
             $scope.vm.missedCallReportList = [];
             var userName = $scope.currentKTYUser.items[0].userId;
             var password = $scope.currentKTYUser.items[0].password;
@@ -619,59 +631,61 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                     console.log($scope.vm.missedCallReportList.data.length);
                     $scope.pagerMissedCallReport.update($scope.qMissedCallReport, response.data.totalElements, queryParams.page);
                 }, function(value) {
-                    if(value.code == "40007")
-                    {
-                        $scope.vm.dataList = null;
-                        udcModal.info({"title": "查询失败", "message": "未找到呼叫记录"});
-                    }
-                    else if(value.code == "40021")
-                    {
-                        $scope.vm.dataList = null;
-                        udcModal.info({"title": "查询失败", "message": "用户不存在"});
-                    }
-                    else if(value.code == "40025")
-                    {
-                        $scope.vm.dataList = null;
-                        udcModal.info({"title": "查询失败", "message": "参数异常"});
-                    }
-                    else if(value.code == "40026")
-                    {
-                        $scope.vm.dataList = null;
-                        udcModal.info({"title": "查询失败", "message": "时间范围长度超出限制"});
-                    }
-                    else if(value.code == "50000")
-                    {
-                        $scope.vm.dataList = null;
-                        udcModal.info({"title": "查询失败", "message": "系统内部错误"});
-                    }
+                    udcModal.info({"title": "查询失败", "message": value.message});
+                    //if(value.code == "40007")
+                    //{
+                    //    $scope.vm.dataList = null;
+                    //    udcModal.info({"title": "查询失败", "message": "未找到呼叫记录"});
+                    //}
+                    //else if(value.code == "40021")
+                    //{
+                    //    $scope.vm.dataList = null;
+                    //    udcModal.info({"title": "查询失败", "message": "用户不存在"});
+                    //}
+                    //else if(value.code == "40025")
+                    //{
+                    //    $scope.vm.dataList = null;
+                    //    udcModal.info({"title": "查询失败", "message": "参数异常"});
+                    //}
+                    //else if(value.code == "40026")
+                    //{
+                    //    $scope.vm.dataList = null;
+                    //    udcModal.info({"title": "查询失败", "message": "时间范围长度超出限制"});
+                    //}
+                    //else if(value.code == "50000")
+                    //{
+                    //    $scope.vm.dataList = null;
+                    //    udcModal.info({"title": "查询失败", "message": "系统内部错误"});
+                    //}
                 });
 
             }, function(value) {
-                if(value.code == "40001")
-                {
-                    $scope.vm.dataList = null;
-                    udcModal.info({"title": "连接结果", "message": "用户名或密码不正确"});
-                }
-                else if(value.code == "40002")
-                {
-                    $scope.vm.dataList = null;
-                    udcModal.info({"title": "连接结果", "message": "用户名或密码为空"});
-                }
-                else if(value.code == "40003")
-                {
-                    $scope.vm.dataList = null;
-                    udcModal.info({"title": "连接结果", "message": "用户权限不正确"});
-                }
-                else if(value.code == "40004")
-                {
-                    $scope.vm.dataList = null;
-                    udcModal.info({"title": "连接结果", "message": "用户认证不存在或已过期"});
-                }
-                else if(value.code == "50000")
-                {
-                    $scope.vm.dataList = null;
-                    udcModal.info({"title": "连接结果", "message": "系统内部错误"});
-                }
+                udcModal.info({"title": "连接结果", "message": value.message});
+                //if(value.code == "40001")
+                //{
+                //    $scope.vm.dataList = null;
+                //    udcModal.info({"title": "连接结果", "message": "用户名或密码不正确"});
+                //}
+                //else if(value.code == "40002")
+                //{
+                //    $scope.vm.dataList = null;
+                //    udcModal.info({"title": "连接结果", "message": "用户名或密码为空"});
+                //}
+                //else if(value.code == "40003")
+                //{
+                //    $scope.vm.dataList = null;
+                //    udcModal.info({"title": "连接结果", "message": "用户权限不正确"});
+                //}
+                //else if(value.code == "40004")
+                //{
+                //    $scope.vm.dataList = null;
+                //    udcModal.info({"title": "连接结果", "message": "用户认证不存在或已过期"});
+                //}
+                //else if(value.code == "50000")
+                //{
+                //    $scope.vm.dataList = null;
+                //    udcModal.info({"title": "连接结果", "message": "系统内部错误"});
+                //}
             })
 
         }
@@ -783,6 +797,9 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             refleshSecurity();
             //刷新投诉订单信息
             refleshComplaint();
+
+            //更新商品
+            $scope.goodsTypeChange();
         };
 
 //商品类型改变
@@ -792,14 +809,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 return;
             };
             if($scope.vm.currentCustomer == null){
-                //var queryParams = {
-                //    typeName: $scope.temp.selectedGoodsType.name,
-                //    status:0,//0 正常上市,
-                //};
-                //CustomerManageService.retrieveGoods(queryParams).then(function (goods) {
-                //    $scope.temp.goodsList = goods.items;
-                //    $scope.temp.selectedGoods = $scope.temp.goodsList[0];
-                //});
+
                 return;
             }
             else {

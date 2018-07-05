@@ -10,16 +10,17 @@
     <link rel="stylesheet" type="text/css" media="screen" href="../lib/font-awesome-4.6.3/css/font-awesome.min.css">
 
     <!-- FAVICONS -->
-    <link rel="shortcut icon" href="../images/favicon/favicon.ico" type="image/x-icon">
     <link rel="icon" href="../images/favicon/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../images/favicon/favicon.ico" type="image/x-icon">
     <!-- Custom styles for this template -->
+    <link href="../lib/other-css/animate.min.css" rel="stylesheet"/>
     <link href="../styles/stylesheets/global.css" rel="stylesheet">
+
     <link href="../lib/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet">
-
     <script src="../scripts/util/browser-checker.js"></script>
-
     <script src="../lib/jquery/jquery-2.0.2.min.js"></script>
     <script src="../lib/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+    <script src="../lib/bootstrap-3.3.5-dist/js/bootstrap-notify.js"></script>
     <script src="../lib/underscore/underscore-min.js"></script>
     <script src="../lib/angular/angular.min.js"></script>
     <script src="../lib/angular/angular-ui-router.min.js"></script>
@@ -36,7 +37,6 @@
     <script src="../scripts/common/njPartials.js"></script>
     <script src="../scripts/common/component.js"></script>
 
-    <script type="text/javascript" src="../lib/org-chart/script/jquery.orgchart.js"></script>
 
     <script src="../scripts/sys/shopManage/shopManageApp.js"></script>
     <script src="../scripts/sys/shopManage/orderCheckCtrl.js"></script>
@@ -63,6 +63,11 @@
     <script src="../scripts/sys/shopManage/complaintCtrl.js"></script>
     <script src="../scripts/sys/shopManage/complaintDealModalCtrl.js"></script>
 
+    <script type="text/javascript" src="../lib/org-chart/script/jquery.orgchart.js"></script>
+    <script src="../scripts/echarts/echarts.min.js"></script>
+    <script src="../scripts/echarts/china.js"></script>
+    <script src="../scripts/echarts/echarts-gl.min.js"></script>
+
     <style>
         .orgchart td.left, .orgchart td.right, .orgchart td.top { border-color: #aaa; }
         .orgchart td>.down { background-color: #aaa; }
@@ -76,7 +81,6 @@
         .orgchart .pipeline1 .content { border-color: #996633; }
         .orgchart .frontend1 .title { background-color: #cc0066; }
         .orgchart .frontend1 .content { border-color: #cc0066; }
-
 
         @media print {
     .noprint { display: none }
