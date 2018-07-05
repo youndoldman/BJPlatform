@@ -36,7 +36,6 @@ public class CloudUserController
 
     }
 
-
     @RequestMapping(value = "/api/CloudUser", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取客户列表")
     public ResponseEntity retrieve(@RequestParam(value = "cloudUserId", defaultValue = "") String cloudUserId,

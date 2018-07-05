@@ -200,8 +200,8 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
         return promise.wrap($http.put(gasCynTrayUnBindUri + "/" + palletNumber+"?userId="+customerId));
     };
     //托盘查询
-    this.retrievePallets = function (customerId) {
-        return promise.wrap($http.get(gasCynTrayUri+"?userId="+customerId));
+    this.retrievePallets = function (params) {
+        return promise.wrap($http.get(gasCynTrayUri, {params: params}));
     };
 }]);
 
