@@ -222,14 +222,25 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
 
         if(title == "修改调价策略") {
             $scope.vm.currentPriceAdjustment = _.clone(initVal);
+            console.info( $scope.vm.currentPriceAdjustment);
             $scope.isModify = true;
             $scope.isCreate = false;
 
-            $scope.inputHidden_effectTime = false;
-            $scope.county =  $scope.vm.goods.area.county;
-            if($scope.vm.goods.area.county.length==0){
-                $scope.county = "全部区";
-            }
+            //$scope.inputHidden_effectTime = false;
+            //$scope.county =  $scope.vm.goods.area.county;
+            //if($scope.vm.goods.area.county.length==0){
+            //    $scope.county = "全部区";
+            //}
+
+            //$scope.temp.selectedGoodsType = $scope.vm.currentPriceAdjustment.adjustPriceDetailList[0].goods.goodsType.name;
+            //console.info($scope.temp.selectedGoodsType);
+            //$scope.temp.selectedGoods = $scope.vm.currentPriceAdjustment.adjustPriceDetailList[0].goods.name;
+            //console.info($scope.temp.selectedGoods);
+            $scope.vm.goods.area.province = $scope.vm.currentPriceAdjustment.adjustPriceDetailList[0].goods.area.province;
+            getCitysConfig($scope.vm.goods.area.province);
+            $scope.vm.goods.area.city = $scope.vm.currentPriceAdjustment.adjustPriceDetailList[0].goods.area.city;
+            getCountysConfig($scope.vm.goods.area.city);
+            $scope.county = $scope.vm.currentPriceAdjustment.adjustPriceDetailList[0].goods.area.county;
 
         }
         else {
@@ -245,9 +256,8 @@ manageApp.controller('GoodsPriceAdjustmentModalCtrl', ['$scope', 'close', 'Goods
 
             $scope.county = "全部区";
             $scope.vm.goods.area.county = "全部区";
-
-
         }
+
         //查询商品类型
         var queryParams = {};
         GoodsService.retrieveGoodsTypes(queryParams).then(function (goodsTypes) {

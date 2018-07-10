@@ -143,7 +143,7 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
             number: null,
             liableUserId: null,
             liableDepartmentCode: null,
-
+            liableDepartmentName:null,
             sumYesterdayKucun:null,
             sumTodayDiaoruShuliang:null,
             sumMonthDiaoru:null,
@@ -708,6 +708,7 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
             }).then(function (result) {
                 if (result!=null) {
                     $scope.q.liableDepartmentCode = result.code;
+                    $scope.q.liableDepartmentName  = result.name;
                     console.info($scope.q.liableDepartmentCode);
                     //searchBottles();
                 }
