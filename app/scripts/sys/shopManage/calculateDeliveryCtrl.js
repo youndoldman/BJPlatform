@@ -10,14 +10,12 @@ shopManageApp.controller('CalculateDeliveryCtrl', ['$scope', '$rootScope', '$fil
             $('#datetimepickerDailyTimeStart').datetimepicker({
                 format: 'YYYY-MM-DD HH:mm:ss',
                 locale: moment.locale('zh-cn'),
-                //sideBySide:true,
                 showTodayButton:true,
                 toolbarPlacement:'top',
             });
             $('#datetimepickerDailyTimeEnd').datetimepicker({
                 format: 'YYYY-MM-DD HH:mm:ss',
                 locale: moment.locale('zh-cn'),
-                //sideBySide:true,
                 showTodayButton:true,
                 toolbarPlacement:'top',
             });
@@ -81,6 +79,7 @@ shopManageApp.controller('CalculateDeliveryCtrl', ['$scope', '$rootScope', '$fil
         $scope.q = {
             deliveryWorkerId:null,
             liableDepartmentCode: null,
+            liableDepartmentName:null,
             sumDailyCount:null,
             sumMonthlyCount:null,
 
@@ -112,6 +111,7 @@ shopManageApp.controller('CalculateDeliveryCtrl', ['$scope', '$rootScope', '$fil
             }).then(function (result) {
                 if (result!=null) {
                     $scope.q.liableDepartmentCode = result.code;
+                    $scope.q.liableDepartmentName = result.name;
                     console.info(result);
                     searchUsers($scope.q.liableDepartmentCode);
                 }
@@ -135,7 +135,6 @@ shopManageApp.controller('CalculateDeliveryCtrl', ['$scope', '$rootScope', '$fil
             searchData();
         };
 
-
         var searchData = function () {
             if(($scope.q.liableDepartmentCode!=null)&&($scope.vm.selectedUser!=null)&&($scope.dailyData.startTime!=null)&& ($scope.dailyData.endTime!=null)
                 &&($scope.monthlyData.startTime!=null)&& ($scope.monthlyData.endTime!=null))
@@ -147,11 +146,9 @@ shopManageApp.controller('CalculateDeliveryCtrl', ['$scope', '$rootScope', '$fil
                     endTime:$scope.dailyData.endTime,
                     dispatchUserId:$scope.vm.selectedUser.userId,
                 };
-                console.info(queryParams1);
+
                 ShopStockService.searchSalesByBayType(queryParams1).then(function (salesByPay) {
-
                     $scope.q.sumDailyCount = null;
-
 
                     var salesByPayList = salesByPay.items;
                     if(salesByPay.items.length>0)
@@ -161,7 +158,6 @@ shopManageApp.controller('CalculateDeliveryCtrl', ['$scope', '$rootScope', '$fil
                                 for (var k = 0; k < salesByPayList.length; k++) {
                                     if ($scope.data.goodsList[i].detail[j].code==salesByPayList[k].specCode) {
                                         $scope.data.goodsList[i].detail[j].salesByPayDaily = salesByPayList[k];
-
                                         //数量
                                         $scope.q.sumDailyCount +=  $scope.data.goodsList[i].detail[j].salesByPayDaily.count;
                                     }
@@ -169,7 +165,7 @@ shopManageApp.controller('CalculateDeliveryCtrl', ['$scope', '$rootScope', '$fil
                             }
                         }
                     }
-                    console.log($scope.data.goodsList);
+                    //console.log($scope.data.goodsList);
                 })
 
                 //查询配送工月累计配送量
@@ -179,10 +175,8 @@ shopManageApp.controller('CalculateDeliveryCtrl', ['$scope', '$rootScope', '$fil
                     endTime:$scope.monthlyData.endTime,
                     dispatchUserId:$scope.vm.selectedUser.userId,
                 };
-                console.info(queryParams2);
+
                 ShopStockService.searchSalesByBayType(queryParams2).then(function (salesByPay) {
-
-
                     $scope.q.sumMonthlyCount = null
 
                     var salesByPayList = salesByPay.items;
@@ -193,7 +187,6 @@ shopManageApp.controller('CalculateDeliveryCtrl', ['$scope', '$rootScope', '$fil
                                 for (var k = 0; k < salesByPayList.length; k++) {
                                     if ($scope.data.goodsList[i].detail[j].code==salesByPayList[k].specCode) {
                                         $scope.data.goodsList[i].detail[j].salesByPayMonthly = salesByPayList[k];
-
                                         //数量
                                         $scope.q.sumMonthlyCount +=  $scope.data.goodsList[i].detail[j].salesByPayMonthly.count;
 
@@ -202,7 +195,7 @@ shopManageApp.controller('CalculateDeliveryCtrl', ['$scope', '$rootScope', '$fil
                             }
                         }
                     }
-                    console.log($scope.data.goodsList);
+                   // console.log($scope.data.goodsList);
                 })
 
             }
@@ -227,8 +220,9 @@ shopManageApp.controller('CalculateDeliveryCtrl', ['$scope', '$rootScope', '$fil
 
         var init = function () {
             $scope.vm.curUser = sessionStorage.getCurUser();
-            //console.info($scope.vm.curUser);
+            console.info($scope.vm.curUser);
             $scope.q.liableDepartmentCode = $scope.vm.curUser.department.code;
+            $scope.q.liableDepartmentName = $scope.vm.curUser.department.name;
 
             var queryParams = {};
             ShopStockService.retrieveGoodsTypes(queryParams).then(function (goodsTypes) {
@@ -248,7 +242,7 @@ shopManageApp.controller('CalculateDeliveryCtrl', ['$scope', '$rootScope', '$fil
                             tempList.type = goods.items[0].goodsType.name;
                         }
                         $scope.data.goodsList.push(tempList);
-                        console.info($scope.data.goodsList)
+                       // console.info($scope.data.goodsList)
                     });
                 }
                 //console.log($scope.data.goodsList);

@@ -346,14 +346,10 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
         if(title == "修改优惠策略") {
             $scope.q = _.clone(initVal);
 
-            $scope.inputHidden_startTime = false;
-            $scope.inputHidden_endTime = false;
-
             $scope.isModify = true;
             $scope.isCreate = false;
 
             $scope.type = $scope.q.discountConditionType.name;
-            console.info($scope.type);
 
             if($scope.q.discountConditionType.code == "00001")
             {
@@ -367,7 +363,7 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
                         if($scope.q.discountConditionValue == customerLevel.items[i].code)
                         {
                             $scope.value = customerLevel.items[i].code;
-                            console.info($scope.value)
+                            //console.info($scope.value)
                         }
                     }
                 });
@@ -384,22 +380,28 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
                         if($scope.q.discountConditionValue == customerType.items[i].code)
                         {
                             $scope.value = customerType.items[i].code;
-                            console.info($scope.value)
+                           // console.info($scope.value)
                         }
                     }
                 });
             }
 
-            $scope.county =  $scope.vm.goods.area.county;
-            if($scope.vm.goods.area.county.length==0){
-                $scope.county = "全部区";
-            }
+            $scope.temp.selectedGoodsType = $scope.q.discountDetails[0].goods.goodsType.name;
+            console.info( $scope.temp.selectedGoodsType);
+            $scope.temp.selectedGoods = $scope.q.discountDetails[0].goods.name;
+
+            $scope.vm.goods.area.province = $scope.q.discountDetails[0].goods.area.province;
+            getCitysConfig($scope.vm.goods.area.province);
+            $scope.vm.goods.area.city = $scope.q.discountDetails[0].goods.area.city;
+            getCountysConfig($scope.vm.goods.area.city);
+            $scope.county = $scope.q.discountDetails[0].goods.area.county;
+
+            //$scope.county =  $scope.vm.goods.area.county;
+            //if($scope.vm.goods.area.county.length==0){
+            //    $scope.county = "全部区";
+            //}
         }
         else {
-
-            $scope.inputHidden_startTime = true;
-            $scope.inputHidden_endTime = true;
-
             $scope.isModify = false;
             $scope.isCreate = true;
             //按照用户级别先做一次条件取值请求

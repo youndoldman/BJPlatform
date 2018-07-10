@@ -42,7 +42,7 @@
             <div class="row">
                 <div class="col-md-2">
                     <span style="color:red">*</span>
-                    <label class="input"><input type="text" class="form-control input-md" ng-model="q.liableDepartmentCode" ng-change="search()" placeholder="编报部门"> </label>
+                    <label class="input"><input type="text" class="form-control input-md" ng-model="q.liableDepartmentName" ng-change="search()" placeholder="编报部门"> </label>
                     <span class="glyphicon glyphicon-calendar" ng-click="initDepartmentSelect()"></span>
                 </div>
                 <div class="col-md-4">
@@ -81,7 +81,7 @@
         <thead>
         <tr>
             <td width="5.5%" class="message tableContentAdjust" >编报部门</td>
-            <td width="94.5%" colspan="21" class="message tableContentAdjust">{{q.liableDepartmentCode}}</td>
+            <td width="94.5%" colspan="21" class="message tableContentAdjust">{{q.liableDepartmentName}}</td>
         </tr>
         <tr>
             <td width="5.5%" class="message tableContentAdjust" >品名项目</td>

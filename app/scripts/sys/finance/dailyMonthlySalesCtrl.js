@@ -83,6 +83,7 @@ financeApp.controller('dailyMonthlySalesCtrl', ['$scope', '$rootScope', '$filter
             number: null,
             liableUserId: null,
             liableDepartmentCode: null,
+            liableDepartmentName:null,
 
             dailyCountZhuzhai:null,
             dailySumZhuzhai:null,
@@ -116,6 +117,7 @@ financeApp.controller('dailyMonthlySalesCtrl', ['$scope', '$rootScope', '$filter
             }).then(function (result) {
                 if (result!=null) {
                     $scope.q.liableDepartmentCode = result.code;
+                    $scope.q.liableDepartmentName = result.name;
                     console.info($scope.q.liableDepartmentCode);
                 }
             })

@@ -81,6 +81,7 @@ financeApp.controller('checkStockCtrl', ['$scope', '$rootScope', '$filter', '$lo
 
         $scope.q = {
             liableDepartmentCode: null,
+            liableDepartmentName:null,
 
             sumCurrentKucun:null,
             sumTodayIn:null,
@@ -102,6 +103,7 @@ financeApp.controller('checkStockCtrl', ['$scope', '$rootScope', '$filter', '$lo
             }).then(function (result) {
                 if (result!=null) {
                     $scope.q.liableDepartmentCode = result.code;
+                    $scope.q.liableDepartmentName = result.name;
                     console.info($scope.q.liableDepartmentCode);
                 }
             })
