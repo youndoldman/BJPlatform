@@ -67,7 +67,7 @@ public class CustomerCallInServiceImpl implements CustomerCallInService
         }
 
         /*检查用户会否存在*/
-        Customer user = customerDao.findByUserId(userId);
+        Customer user = customerDao.findByCstUserId(userId);
         if (user == null)
         {
             throw new ServerSideBusinessException("用户信息错误",HttpStatus.NOT_ACCEPTABLE);

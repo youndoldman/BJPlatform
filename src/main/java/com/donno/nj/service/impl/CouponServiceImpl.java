@@ -55,7 +55,7 @@ public class CouponServiceImpl implements CouponService
         }
 
         /*只有气票用户才能增加气票*/
-        Customer target = customerDao.findByUserId(customer.getUserId());
+        Customer target = customerDao.findByCstUserId(customer.getUserId());
         if (target == null)
         {
             throw new ServerSideBusinessException("客户不存在！", HttpStatus.NOT_ACCEPTABLE);

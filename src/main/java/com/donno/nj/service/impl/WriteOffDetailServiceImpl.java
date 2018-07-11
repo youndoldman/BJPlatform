@@ -51,7 +51,7 @@ public class WriteOffDetailServiceImpl implements WriteOffDetailService
             throw new ServerSideBusinessException("客户信息不全，请补充！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        Customer target = customerDao.findByUserId(userId);
+        Customer target = customerDao.findByCstUserId(userId);
         if (target == null)
         {
             throw new ServerSideBusinessException("客户不存在！", HttpStatus.NOT_ACCEPTABLE);
