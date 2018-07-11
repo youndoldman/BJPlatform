@@ -155,7 +155,7 @@
         <include refid="getListCondition"/>
     </select>
 
-    <select id="findByUId" resultMap="DetailResultMap">
+    <select id="findBySysUserId" resultMap="DetailResultMap">
         SELECT <include refid="JoinSelectColumn"/>
         FROM <include refid="JoinTableList"/>
         WHERE

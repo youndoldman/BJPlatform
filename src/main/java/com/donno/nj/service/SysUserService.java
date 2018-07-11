@@ -29,7 +29,7 @@ public interface SysUserService extends UserService
     List<SysUser> getDepLeaderByUserId(String userId,String groupCode);
 
 
-    Optional<SysUser> findByUId(String userId);
+    Optional<SysUser> findBySysUserId(String userId);
 
 
 }

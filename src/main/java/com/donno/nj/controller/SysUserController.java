@@ -57,6 +57,25 @@ public class SysUserController
     }
 
 
+    @RequestMapping(value = "/api/sysusers/FindByUserId", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity FindByUserId(@RequestParam(value = "userId", defaultValue = "") String userId)
+    {
+        ResponseEntity responseEntity;
+
+        Optional<SysUser>  sysUser = sysUserService.findBySysUserId(userId);
+        if (!sysUser.isPresent())
+        {
+            throw new ServerSideBusinessException("用户不存在！",HttpStatus.NOT_FOUND);
+        }
+        else
+        {
+            responseEntity = ResponseEntity.ok(sysUser.get());
+        }
+
+        return responseEntity;
+    }
+
+
     @RequestMapping(value = "/api/sysusers/login", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity login(@RequestParam(value = "userId", defaultValue = "") String userId,
                                 @RequestParam(value = "password", defaultValue = "") String password)
@@ -64,7 +83,7 @@ public class SysUserController
         ResponseEntity responseEntity;
 
         Optional<User> validUser = sysUserService.findByUserId(userId);
-        Optional<SysUser>  sysUser = sysUserService.findByUId(userId);
+
         if (!validUser.isPresent())
         {
             throw new ServerSideBusinessException("用户不存在！",HttpStatus.UNAUTHORIZED);
@@ -75,6 +94,7 @@ public class SysUserController
         }
         else
         {
+            Optional<SysUser>  sysUser = sysUserService.findBySysUserId(userId);
             if (sysUser.isPresent())
             {
                 AppUtil.setCurrentLoginUser(validUser.get());

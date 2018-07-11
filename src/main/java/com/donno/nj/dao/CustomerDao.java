@@ -6,11 +6,11 @@ import com.donno.nj.domain.Customer;
 
 public interface CustomerDao extends BaseDao<Customer>
 {
-    Customer findByUserId(String userId);
+//    Customer findByUserId(String userId);
 
     void deleteByUserIdx(Integer id);
 
     Customer findByUserPhone(String userPhone);
 
-
+    Customer findByCstUserId(String userId);
 }

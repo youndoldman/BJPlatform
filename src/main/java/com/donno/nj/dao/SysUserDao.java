@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Date;
 public interface SysUserDao extends BaseDao<SysUser>
 {
-    SysUser findByUId(String userId);
+    SysUser findBySysUserId(String userId);
     void deleteByUserIdx(Integer userIdx);
 
     void checkAlive(Date now);

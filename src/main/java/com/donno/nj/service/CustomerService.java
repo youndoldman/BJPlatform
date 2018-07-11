@@ -1,6 +1,7 @@
 package com.donno.nj.service;
 
 import com.donno.nj.domain.Customer;
+import com.google.common.base.Optional;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -18,5 +19,7 @@ public interface CustomerService extends UserService
     void update(Integer id, Customer newUser);
 
     void deleteById(Integer id);
+
+    Optional<Customer> findByCstUserId(String userId);
 
 }

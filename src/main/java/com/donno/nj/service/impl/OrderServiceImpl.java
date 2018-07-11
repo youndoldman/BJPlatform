@@ -166,7 +166,7 @@ public class OrderServiceImpl implements OrderService
             throw new ServerSideBusinessException("订单信息不全，请补充订单客户信息！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        Customer customer = customerDao.findByUserId(order.getCustomer().getUserId());
+        Customer customer = customerDao.findByCstUserId(order.getCustomer().getUserId());
         if ( customer == null)
         {
             throw new ServerSideBusinessException("客户信息不正确，没有客户信息！", HttpStatus.NOT_ACCEPTABLE);
@@ -781,7 +781,7 @@ public class OrderServiceImpl implements OrderService
         {
             String strCandiUser =  (String)variables.get(ServerConstantValue.ACT_FW_STG_2_CANDI_USERS);
 
-            SysUser candiUser = sysUserDao.findByUId(strCandiUser);
+            SysUser candiUser = sysUserDao.findBySysUserId(strCandiUser);
             orderDao.insertDistatcher(newOrder.getId(),candiUser.getId());
         }
 

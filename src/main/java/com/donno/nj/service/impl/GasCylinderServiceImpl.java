@@ -382,12 +382,12 @@ public class GasCylinderServiceImpl implements GasCylinderService
                         && (serviceStatus == GasCynServiceStatus.Transporting.getIndex())) //气站库存-->出库
                 )
         {
-            SysUser gasSysUser = sysUserDao.findByUId(gasCylinder.getUser().getUserId());
+            SysUser gasSysUser = sysUserDao.findBySysUserId(gasCylinder.getUser().getUserId());
             if (gasSysUser == null )
             {
                 throw new ServerSideBusinessException("该钢瓶原责任人校验错误！未查找到钢瓶责任人", HttpStatus.NOT_ACCEPTABLE);
             }
-            SysUser srcSysUser = sysUserDao.findByUId(srcUser.getUserId());
+            SysUser srcSysUser = sysUserDao.findBySysUserId(srcUser.getUserId());
             if (srcSysUser == null )
             {
                 throw new ServerSideBusinessException("原责任人校验错误！未查找到钢瓶责任人", HttpStatus.NOT_ACCEPTABLE);
@@ -446,8 +446,8 @@ public class GasCylinderServiceImpl implements GasCylinderService
         gasCylinderSvcStatusOpHis.setOptime(new Date() );
 
         //取经纬度信息
-        SysUser sysSrcUser = sysUserDao.findByUId(srcUser.getUserId());
-        SysUser sysTargetUser = sysUserDao.findByUId(targetUser.getUserId());
+        SysUser sysSrcUser = sysUserDao.findBySysUserId(srcUser.getUserId());
+        SysUser sysTargetUser = sysUserDao.findBySysUserId(targetUser.getUserId());
         UserPosition srcUserPosition = null;
         UserPosition targetUserPosition = null;
         if(sysSrcUser != null){

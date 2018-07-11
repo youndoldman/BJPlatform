@@ -85,7 +85,7 @@ public class UninterruptGasOrderServiceImpl implements UninterruptGasOrderServic
         {
             throw new ServerSideBusinessException("请补充派送人员信息！", HttpStatus.NOT_ACCEPTABLE);
         }
-        SysUser dispatcher = sysUserDao.findByUId(uninterruptedGasOrder.getDispatcher().getUserId());
+        SysUser dispatcher = sysUserDao.findBySysUserId(uninterruptedGasOrder.getDispatcher().getUserId());
         if (dispatcher == null)
         {
             throw new ServerSideBusinessException("不存在派送人员信息！", HttpStatus.NOT_ACCEPTABLE);
@@ -97,7 +97,7 @@ public class UninterruptGasOrderServiceImpl implements UninterruptGasOrderServic
         {
             throw new ServerSideBusinessException("请补充客户信息！", HttpStatus.NOT_ACCEPTABLE);
         }
-        Customer customer = customerDao.findByUserId(uninterruptedGasOrder.getCustomer().getUserId());
+        Customer customer = customerDao.findByCstUserId(uninterruptedGasOrder.getCustomer().getUserId());
         if (customer == null)
         {
             throw new ServerSideBusinessException("不存在客户信息！", HttpStatus.NOT_ACCEPTABLE);

@@ -41,6 +41,28 @@ public class CustomerController
     @Autowired
     CustomerDistrictService customerDistrictService ;
 
+
+
+    @RequestMapping(value = "/api/customers/findByUserId", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity findByUserId(@RequestParam(value = "userId", defaultValue = "") String userId)
+    {
+        ResponseEntity responseEntity;
+
+        Optional<Customer> customerOptional = customerService.findByCstUserId(userId);
+        if(!customerOptional.isPresent())
+        {
+            responseEntity =  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        else
+        {
+            responseEntity = ResponseEntity.ok(customerOptional.get());
+            AppUtil.setCurrentLoginUser(customerOptional.get());
+        }
+
+        return responseEntity;
+    }
+
+
     @RequestMapping(value = "/api/customers/login", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity login(@RequestParam(value = "userId", defaultValue = "") String userId,
                                 @RequestParam(value = "password", defaultValue = "") String password)
@@ -59,20 +81,30 @@ public class CustomerController
         }
         else
         {
-            Map params = new HashMap<String,String>();
-            params.putAll(ImmutableMap.of("userId", userId));
-            params.putAll(paginationParams(1, 1, ""));
-
-            List<Customer> customerList = customerService.retrieve(params);
-            if (customerList.size() > 0)
-            {
-                responseEntity = ResponseEntity.ok(customerList.get(0));
-                AppUtil.setCurrentLoginUser(customerList.get(0));
-            }
-            else
+            Optional<Customer> customerOptional = customerService.findByCstUserId(userId);
+            if(!customerOptional.isPresent())
             {
                 responseEntity =  ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
+            else
+            {
+                responseEntity = ResponseEntity.ok(customerOptional.get());
+                AppUtil.setCurrentLoginUser(customerOptional.get());
+            }
+//            Map params = new HashMap<String,String>();
+//            params.putAll(ImmutableMap.of("userId", userId));
+//            params.putAll(paginationParams(1, 1, ""));
+//
+//            List<Customer> customerList = customerService.retrieve(params);
+//            if (customerList.size() > 0)
+//            {
+//                responseEntity = ResponseEntity.ok(customerList.get(0));
+//                AppUtil.setCurrentLoginUser(customerList.get(0));
+//            }
+//            else
+//            {
+//                responseEntity =  ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+//            }
         }
 
         return responseEntity;

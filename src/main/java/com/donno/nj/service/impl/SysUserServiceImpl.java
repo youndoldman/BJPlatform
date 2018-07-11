@@ -46,9 +46,9 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
 
     @Override
     @OperationLog(desc = "根据用户ID查询客户信息")
-    public Optional<SysUser> findByUId(String userId)
+    public Optional<SysUser> findBySysUserId(String userId)
     {
-        return Optional.fromNullable(sysUserDao.findByUId(userId));
+        return Optional.fromNullable(sysUserDao.findBySysUserId(userId));
     }
 
     @Override
@@ -134,7 +134,7 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
         /*用户校验，参数不能为空，内容不能为空，用户应存在*/
         if (userId != null && userId.trim().length() > 0 )
         {
-            SysUser user = sysUserDao.findByUId(userId);
+            SysUser user = sysUserDao.findBySysUserId(userId);
             if (user != null)
             {
                 /*位置信息如果存在则更新，如果不存在则添加*/
@@ -266,7 +266,7 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
         }
 
         /*用户信息校验*/
-        SysUser user = sysUserDao.findByUId(userId);
+        SysUser user = sysUserDao.findBySysUserId(userId);
         if (userId == null || user == null)
         {
             throw new ServerSideBusinessException("用户信息错误，不存在用户" ,HttpStatus.NOT_ACCEPTABLE);

@@ -104,7 +104,7 @@ public class MendServiceImpl implements MendService
         }
         else
         {
-            Customer customer = customerDao.findByUserId(mend.getCustomer().getUserId());
+            Customer customer = customerDao.findByCstUserId(mend.getCustomer().getUserId());
             if ( customer == null)
             {
                 throw new ServerSideBusinessException("报修客户信息不正确，没有客户信息！", HttpStatus.NOT_ACCEPTABLE);
@@ -171,7 +171,7 @@ public class MendServiceImpl implements MendService
         }
         else
         {
-            SysUser sysUser = sysUserDao.findByUId(newMend.getDealedUser().getUserId());
+            SysUser sysUser = sysUserDao.findBySysUserId(newMend.getDealedUser().getUserId());
             if ( sysUser == null)
             {
                 throw new ServerSideBusinessException("报修处理用户信息不正确，没有该用户信息！", HttpStatus.NOT_ACCEPTABLE);

@@ -101,6 +101,13 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
     }
 
     @Override
+    @OperationLog(desc = "查找客户信息")
+    public Optional<Customer> findByCstUserId(String userId)
+    {
+        return Optional.fromNullable(customerDao.findByCstUserId(userId));
+    }
+
+    @Override
     @OperationLog(desc = "修改客户信息")
     public void update(Integer id, Customer newCustomer)
     {
@@ -113,7 +120,7 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
             throw new ServerSideBusinessException("用户不存在，不能进行修改操作！",HttpStatus.CONFLICT);
         }
 
-        Customer srcCustomer = customerDao.findByUserId(srcUser.getUserId());
+        Customer srcCustomer = customerDao.findByCstUserId(srcUser.getUserId());
         if ( srcCustomer == null)
         {
             throw new ServerSideBusinessException("用户不存在，不能进行修改操作！",HttpStatus.CONFLICT);

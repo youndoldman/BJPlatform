@@ -98,7 +98,7 @@ public class SecurityServiceImpl implements SecurityService
         }
         else
         {
-            Customer customer = customerDao.findByUserId(security.getCustomer().getUserId());
+            Customer customer = customerDao.findByCstUserId(security.getCustomer().getUserId());
             if ( customer == null)
             {
                 throw new ServerSideBusinessException("安检客户信息不正确，没有客户信息！", HttpStatus.NOT_ACCEPTABLE);
@@ -165,7 +165,7 @@ public class SecurityServiceImpl implements SecurityService
         }
         else
         {
-            SysUser sysUser = sysUserDao.findByUId(newsecurity.getDealedUser().getUserId());
+            SysUser sysUser = sysUserDao.findBySysUserId(newsecurity.getDealedUser().getUserId());
             if ( sysUser == null)
             {
                 throw new ServerSideBusinessException("安检处理用户信息不正确，没有该用户信息！", HttpStatus.NOT_ACCEPTABLE);

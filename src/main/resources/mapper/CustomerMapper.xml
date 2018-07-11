@@ -133,7 +133,7 @@
     </select>
 
 
-    <select id="findByUserId" resultMap="DetailResultMap">
+    <select id="findByCstUserId" resultMap="DetailResultMap">
         SELECT <include refid="JoinSelectColumn"/>
         FROM <include refid="JoinTableList"/>
         WHERE
