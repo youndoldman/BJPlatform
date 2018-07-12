@@ -32,6 +32,8 @@
         <association property="userDepartment" column="id" select="com.donno.nj.dao.GasCynUserRelDao.findUserDepByCylinderId">
         </association>
 
+        <association property="factory" column="factory_idx" select="com.donno.nj.dao.GasCynFactoryDao.findById">
+        </association>
     </resultMap>
 
     <sql id="TblGasCylinder">
@@ -39,7 +41,7 @@
     </sql>
 
     <sql id="InsertColumnList">
-        number,spec_idx,production_date,verify_date,next_verify_date,scrap_date,life_status,load_status,service_status,note
+        number,factory_idx,spec_idx,production_date,verify_date,next_verify_date,scrap_date,life_status,load_status,service_status,note
     </sql>
 
     <!--<insert id="insert"  keyProperty="id" useGeneratedKeys="true" parameterType="com.donno.nj.domain.GasCylinder" >-->
@@ -49,7 +51,7 @@
 
     <insert id="insert"  keyProperty="id" useGeneratedKeys="true">
         INSERT IGNORE INTO <include refid="TblGasCylinder"/>(<include refid="InsertColumnList"/>)
-        VALUES( #{number},#{spec.id}, #{productionDate} , #{verifyDate},#{nextVerifyDate},#{scrapDate},#{lifeStatus.index},#{loadStatus.index},#{serviceStatus.index}, #{note})
+        VALUES( #{number},#{factory.id},#{spec.id}, #{productionDate} , #{verifyDate},#{nextVerifyDate},#{scrapDate},#{lifeStatus.index},#{loadStatus.index},#{serviceStatus.index}, #{note})
     </insert>
 
     <delete id="deleteByIdx" parameterType="java.lang.Integer">
@@ -74,6 +76,10 @@
 
         <if test="spec != null">
           <if test="spec.id != null">spec_idx = #{spec.id},</if>
+        </if>
+
+        <if test="factory != null">
+            <if test="factory.id != null">factory_idx = #{factory.id},</if>
         </if>
     </set>
     WHERE id = #{id}
@@ -107,6 +113,8 @@
             <if test="number != null"> number like CONCAT( #{number}, '%')  </if>
 
             <if test="specCode != null">AND  spec_idx =  ( select id from t_gas_cylinder_spec where code = #{specCode} ) </if>
+
+            <if test="factoryCode != null">AND  factory_idx =  ( select id from t_gas_cyn_factory where code = #{factoryCode} ) </if>
 
             <if test="lifeStatus != null">AND  life_status = #{lifeStatus}</if>
 

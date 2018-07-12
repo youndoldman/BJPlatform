@@ -33,6 +33,8 @@ public class GasCylinder implements Serializable
 
     private Department userDepartment;
 
+    private GasCynFactory factory;
+
     private String  note;
     private Date createTime;
     private Date updateTime;
@@ -114,6 +116,10 @@ public class GasCylinder implements Serializable
     public Department getUserDepartment()
     {
         return userDepartment;
+    }
+
+    public GasCynFactory getFactory() {
+        return factory;
     }
 
     public String getNote()
@@ -205,6 +211,10 @@ public class GasCylinder implements Serializable
     public void setUserDepartment(Department userDepartment)
     {
         this.userDepartment = userDepartment;
+    }
+
+    public void setFactory(GasCynFactory factory) {
+        this.factory = factory;
     }
 
     public void setNote(String note)

@@ -51,7 +51,8 @@ public class GasCylinderServiceImpl implements GasCylinderService
     @Autowired
     SysUserDao sysUserDao;
 
-
+    @Autowired
+    GasCynFactoryDao gasCynFactoryDao;
 
     @Override
     public Optional<GasCylinder> findByNumber(String number)
@@ -87,6 +88,23 @@ public class GasCylinderServiceImpl implements GasCylinderService
             throw new ServerSideBusinessException("钢瓶信息不全，请补充钢瓶信息！", HttpStatus.NOT_ACCEPTABLE);
         }
 
+        /*厂家信息校验*/
+        if (gasCylinder.getFactory()!= null )
+        {
+            GasCynFactory factory = gasCynFactoryDao.findByCode(gasCylinder.getFactory().getCode());
+            if (factory != null)
+            {
+                gasCylinder.setFactory(factory);
+            }
+            else
+            {
+                throw new ServerSideBusinessException("钢瓶厂家信息错误！", HttpStatus.NOT_ACCEPTABLE);
+            }
+        }
+        else
+        {
+            throw new ServerSideBusinessException("钢瓶厂家信息不能为空！", HttpStatus.NOT_ACCEPTABLE);
+        }
 
         /*钢瓶规格信息校验*/
         if (gasCylinder.getSpec() != null )
@@ -275,6 +293,24 @@ public class GasCylinderServiceImpl implements GasCylinderService
         else
         {
             newGasCylinder.setSpec(null);
+        }
+
+        /*钢瓶厂家*/
+        if (newGasCylinder.getFactory() != null && newGasCylinder.getFactory().getCode() != null && newGasCylinder.getFactory().getCode().trim().length() > 0)
+        {
+            GasCynFactory gasCynFactory =  gasCynFactoryDao.findByCode(newGasCylinder.getFactory().getCode());
+            if (gasCynFactory != null)
+            {
+                newGasCylinder.setFactory(gasCynFactory);
+            }
+            else
+            {
+                throw new ServerSideBusinessException("钢瓶厂家信息不存在！", HttpStatus.NOT_ACCEPTABLE);
+            }
+        }
+        else
+        {
+            newGasCylinder.setFactory(null);
         }
 
         /*更新数据*/

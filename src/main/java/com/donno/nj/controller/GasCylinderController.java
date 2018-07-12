@@ -35,6 +35,7 @@ public class GasCylinderController
     @RequestMapping(value = "/api/GasCylinder", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取钢瓶列表")
     public ResponseEntity retrieve(@RequestParam(value = "number", defaultValue = "") String number,
+                                   @RequestParam(value = "factoryCode", defaultValue = "") String factoryCode,
                                    @RequestParam(value = "specCode", defaultValue = "") String specCode,
                                    @RequestParam(value = "lifeStatus", required = false) Integer lifeStatus,
                                    @RequestParam(value = "serviceStatus", required = false) Integer serviceStatus,
@@ -52,6 +53,11 @@ public class GasCylinderController
         if (number.trim().length() > 0)
         {
             params.putAll(ImmutableMap.of("number", number));
+        }
+
+        if (factoryCode.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("factoryCode", factoryCode));
         }
 
         if (specCode.trim().length() > 0)
