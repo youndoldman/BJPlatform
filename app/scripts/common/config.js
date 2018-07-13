@@ -91,6 +91,9 @@ commonModule.constant('URI', {
         'GasCynTrayunBind':'../../../api/GasCynTray/unBind',//托盘解绑定
         'GasCynTrayHistory':'../../../api/GasCynTray/History',//托盘历史数据查询
 
+        'GasCynFactory':'../../../api/GasCynFactory',//6.5.	钢瓶厂家接口
+
+
 
 
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
@@ -182,6 +185,12 @@ commonModule.constant('NavItem', {
             target: "_blank",
             href: "./manageCenter.htm#/manage/cloudUser",
             icon: "fa-github"
+        }, {
+            index: 4,
+            name: "钢瓶厂家",
+            target: "_blank",
+            href: "./manageCenter.htm#/manage/factoryManage",
+            icon: "fa-gears"
         }]
     },
     'ShopCenter': {

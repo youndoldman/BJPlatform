@@ -85,8 +85,19 @@ var manageApp = angular.module('ManageApp', ['ui.router', 'CommonModule', 'angul
             onEnter: function (rootService, NavItem) {
                 rootService.updateActiveNavL2(NavItem.ManageCenter.menuItems[3]);
             }
+        }).state('manage.factoryManage',{
+            url:'/factoryManage',
+            views: {
+                "content@manage": {
+                    templateUrl: '../pages/manage/factoryList.htm',
+                    controller: 'FactoryListCtrl',
+                    resolve: {}
+                }
+            },
+            onEnter: function (rootService, NavItem) {
+                rootService.updateActiveNavL2(NavItem.ManageCenter.menuItems[4]);
+            }
         });
-
         $httpProvider.interceptors.push('HttpInterceptor');
     }]).run(['$rootScope', 'rootService', 'NavItem', function ($rootScope, rootService, NavItem) {
         rootService.updateActiveNavLv1(NavItem.ManageCenter);

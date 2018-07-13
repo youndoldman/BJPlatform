@@ -181,14 +181,14 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
     $scope.submit = function (user) {
         if (user.name != "" && title == "新增用户") {
             UserService.createUser(user).then(function () {
-                udcModal.info({"title": "处理结果", "message": "创建用成功！"});
+                udcModal.info({"title": "处理结果", "message": "创建用户成功！"});
                 //$scope.close(true);
             }, function (value) {
                 udcModal.info({"title": "处理结果", "message": "创建用户失败 " + value.message});
             })
         } else if (user.name != "" && title == "修改用户") {
             UserService.modifyUser(user).then(function () {
-                udcModal.info({"title": "处理结果", "message": "修改用成功！"});
+                udcModal.info({"title": "处理结果", "message": "修改用户成功！"});
                 //$scope.close(true);
             }, function (value) {
                 udcModal.info({"title": "处理结果", "message": "修改用户失败 " + value.message});
@@ -197,8 +197,6 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
     };
 
     var init = function () {
-
-
         $scope.vm.user = _.clone(initVal);
         if ($scope.vm.user.department == null) {
             $scope.vm.user.department = {code: null, name: null};

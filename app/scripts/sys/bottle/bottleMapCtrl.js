@@ -364,6 +364,7 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
             };
 
             BottleService.retrieveGasCylinderTakeOverHistory($scope.q.selectBottleCode, queryParams).then(function (historys) {
+                $scope.pagerOpsLog.update($scope.q, historys.total, queryParams.pageNo);
                 for (var i = 0; i < historys.items.length; i++) {
                     var tempHistory = {
                         srcUser: "",
