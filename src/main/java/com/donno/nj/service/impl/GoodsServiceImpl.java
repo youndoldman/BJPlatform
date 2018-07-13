@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,12 @@ public class GoodsServiceImpl implements GoodsService
     @Autowired
     private AreaDao areaDao;
 
+    @Autowired
+    private CustomerDao  customerDao;
+
+    @Autowired
+    private DiscountStrategyDao   discountStrategyDao;
+
 
     @Override
     public Optional<Goods> findByCode(String code) {
@@ -40,10 +47,92 @@ public class GoodsServiceImpl implements GoodsService
 
     @Override
     @OperationLog(desc = "查询商品信息")
-    public List<Goods> retrieve(Map params)
+    public List<Goods> retrieve(Map params,String cstUserId)
     {
-        List<Goods> goods = goodsDao.getList(params);
-        return goods;
+        List<Goods> goodsList = goodsDao.getList(params);
+
+        /*如果有客户信息，计算商品的优惠价格*/
+        if (cstUserId.trim().length() > 0 )
+        {
+            Customer customer = customerDao.findByCstUserId(cstUserId);
+            if (customer == null)
+            {
+                throw new ServerSideBusinessException("客户信息不存在！", HttpStatus.NOT_ACCEPTABLE);
+            }
+
+            for(Goods goods : goodsList)
+            {
+                if (customer.getSettlementType().getCode().equals(ServerConstantValue.SETTLEMENT_TYPE_COMMON_USER) ||
+                        customer.getSettlementType().getCode().equals(ServerConstantValue.SETTLEMENT_TYPE_MONTHLY_CREDIT   ))//普通用户,月结用户 可以享受优惠
+                {
+                    goods.setRealPrice(discount(goods ,customer)) ;
+                }
+                else
+                {
+                    goods.setRealPrice(goods.getPrice()) ;
+                }
+
+            }
+        }
+        else
+        {
+            for(Goods goods : goodsList)
+            {
+                goods.setRealPrice(goods.getPrice()) ;
+            }
+        }
+
+        return goodsList;
+    }
+
+
+    @OperationLog(desc = "计算优惠后价格")
+    public Float discount(Goods goods,Customer customer)
+    {
+        Float dealPrice = goods.getPrice();
+
+        Map params = new HashMap<String,String>();
+
+        params.putAll(ImmutableMap.of("status", DiscountStrategyStatus.DSSEffecitve.getIndex()));
+        params.putAll(ImmutableMap.of("startTime", new Date()));
+        params.putAll(ImmutableMap.of("endTime", new Date()));
+
+        List<DiscountStrategy>  discountStrategies = discountStrategyDao.getList(params);
+        for (DiscountStrategy discountStrategy : discountStrategies)
+        {
+            if ( (discountStrategy.getDiscountConditionType().getCode().equals(ServerConstantValue.DISCOUNT_CONDITION_TYPE_CUSTOMER_LEVEL)
+                    && customer.getCustomerLevel().getCode().equals(discountStrategy.getDiscountConditionValue()))    /*按用户级别*/
+                    || (discountStrategy.getDiscountConditionType().getCode().equals(ServerConstantValue.DISCOUNT_CONDITION_TYPE_CUSTOMER_TYPE)
+                    && customer.getCustomerType().getCode().equals(discountStrategy.getDiscountConditionValue()))   //按客户类别
+                    )
+            {
+                /*找到该策略中对应的订单商品*/
+                for (DiscountDetail discountDetail : discountStrategy.getDiscountDetails())
+                {
+                    if (goods.getCode().equals(discountDetail.getGoods().getCode()))//订单详单中的商品
+                    {
+                        if (discountStrategy.getDiscountType() == DiscountType.DTCheapX )//直减
+                        {
+                            dealPrice = dealPrice - discountDetail.getDiscount();
+                            break;
+                        }
+                        else if(discountStrategy.getDiscountType() == DiscountType.DTCheapX )//百分比折扣
+                        {
+                            dealPrice = dealPrice - dealPrice * discountDetail.getDiscount() / 100;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            /*优惠是否叠加*/
+            if (discountStrategy.getUseType() == DiscountUseType.DUTExclusive)
+            {
+                break;
+            }
+        }
+
+        return dealPrice;
     }
 
     @Override

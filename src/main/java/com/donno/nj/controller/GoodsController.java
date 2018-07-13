@@ -44,6 +44,7 @@ public class GoodsController
                                    @RequestParam(value = "code", defaultValue = "") String code,
                                    @RequestParam(value = "name", defaultValue = "") String name,
                                    @RequestParam(value = "status", required = false) Integer status,
+                                   @RequestParam(value = "cstUserId", defaultValue = "") String cstUserId,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
@@ -93,7 +94,7 @@ public class GoodsController
 
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
-        List<Goods> goodses = goodsService.retrieve(params);
+        List<Goods> goodses = goodsService.retrieve(params,cstUserId);
         Integer count = goodsService.count(params);
         return ResponseEntity.ok(ListRep.assemble(goodses, count));
     }

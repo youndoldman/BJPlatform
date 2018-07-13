@@ -14,6 +14,8 @@ public class Goods implements Serializable
     private String unit;
     private Float  weight;
     private Float price;
+    private Float realPrice;//优惠后价格，通过优惠方案计算
+
     private Integer status;
     private Integer lifeExpectancy;
 
@@ -87,6 +89,9 @@ public class Goods implements Serializable
         return price;
     }
 
+    public Float getRealPrice() {
+        return realPrice;
+    }
 
     public  String getNote()
     {
@@ -151,6 +156,11 @@ public class Goods implements Serializable
     public void setPrice(Float price)
     {
         this.price = price;
+    }
+
+    public void setRealPrice(Float realPrice)
+    {
+        this.realPrice = realPrice;
     }
 
     public void setGoodsType(GoodsType goodsType)

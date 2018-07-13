@@ -13,7 +13,7 @@ public interface GoodsService
 {
     Optional<Goods> findByCode(String code);
 
-    List<Goods> retrieve(Map params);
+    List<Goods> retrieve(Map params,String cstUserId);
 
     Integer count(Map params);
 
