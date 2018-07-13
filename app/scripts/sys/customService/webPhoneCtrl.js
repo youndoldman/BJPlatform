@@ -3,14 +3,10 @@
 customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
     'rootService', 'pager', 'udcModal', 'CustomerManageService', 'OrderService','sessionStorage','$timeout',function ($scope, $rootScope, $filter, $location, Constants,
                                                                                                                       rootService, pager, udcModal, CustomerManageService,OrderService,sessionStorage,$timeout) {
-
-
-
         $scope.vm = {
             cloudUser:{},
             callOutPhone:null
         };
-
 
         var searchCloudUsers = function () {
             $scope.currentUser = sessionStorage.getCurUser();
@@ -29,8 +25,6 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
                 }
                 console.log($scope.vm.cloudUser);
             });
-
-
         };
 
         var init = function () {
