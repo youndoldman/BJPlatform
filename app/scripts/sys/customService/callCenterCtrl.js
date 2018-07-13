@@ -259,7 +259,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             var orderDetail = {};
             orderDetail.goods = $scope.temp.selectedGoods;
             orderDetail.originalPrice = $scope.temp.selectedGoods.price;
-            orderDetail.dealPrice = $scope.temp.selectedGoods.price;
+            orderDetail.dealPrice = $scope.temp.selectedGoods.realPrice;
             orderDetail.quantity = $scope.temp.selectedQuantity;
             orderDetail.subtotal = $scope.temp.selectedQuantity * orderDetail.dealPrice;
             // $scope.currentOrder.orderDetailList.push(orderDetail);
@@ -274,6 +274,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 for(var i=0; i< $scope.currentOrder.orderDetailList.length; i++) {
                     if(orderDetail.goods.code == $scope.currentOrder.orderDetailList[i].goods.code)
                     {
+                        $scope.currentOrder.orderDetailList[i].quantity++;
                         findFlag = true;
                         break;
                     }
@@ -611,6 +612,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                     province:$scope.vm.currentCustomer.address.province,
                     city:$scope.vm.currentCustomer.address.city,
                     county:$scope.vm.currentCustomer.address.county,
+                    cstUserId:$scope.vm.currentCustomer.userId,
                 };
                 console.info(queryParams1);
                 CustomerManageService.retrieveGoods(queryParams1).then(function (goods) {
@@ -679,8 +681,9 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                     province:$scope.vm.currentCustomer.address.province,
                     city:$scope.vm.currentCustomer.address.city,
                     county:$scope.vm.currentCustomer.address.county,
+                    cstUserId:$scope.vm.currentCustomer.userId,
                 };
-                //console.info(queryParams);
+                console.info(queryParams);
                 CustomerManageService.retrieveGoods(queryParams).then(function (goods) {
                     if(goods.items.length  != 0){
                         $scope.temp.goodsList = goods.items;
