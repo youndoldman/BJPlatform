@@ -488,7 +488,7 @@ commonModule.constant('NavItem', {
         menuItems: [{
             index: 0,
             name: "员工监控",
-            href: "./ComprehensiveSituation.htm#/comprehensiveSituation/map",
+            href: "./comprehensiveSituation.htm#/comprehensiveSituation/map",
             icon: "fa-phone"
         }]
     }

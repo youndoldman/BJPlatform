@@ -9,14 +9,14 @@ var comprehensiveSituationApp = angular.module('ComprehensiveSituationApp', ['ui
                 url: '/comprehensiveSituation',
                 abstract: true,
                 views: {
-                    "": {templateUrl: '../pages/ComprehensiveSituation/comprehensiveSituationLink.htm'}
+                    "": {templateUrl: '../pages/comprehensiveSituation/comprehensiveSituationLink.htm'}
                 }
             })
             .state('comprehensiveSituation.map',{
                 url:'/map',
                 views: {
                     "content@comprehensiveSituation": {
-                        templateUrl: '../pages/ComprehensiveSituation/gisWatch.htm',
+                        templateUrl: '../pages/comprehensiveSituation/gisWatch.htm',
                         controller: 'GisWatchCtrl',
                         resolve: {}
                     }
