@@ -287,6 +287,7 @@ bottleApp.controller('BottleWarningModalCtrl', ['$scope', 'close', 'BottleServic
             };
 
             BottleService.retrieveGasCylinderTakeOverHistory($scope.vm.warning.gasCylinder.number, queryParams).then(function (historys) {
+                $scope.pagerOpsLog.update($scope.q, historys.total, queryParams.pageNo);
                 for (var i = 0; i < historys.items.length; i++) {
                     var tempHistory = {
                         srcUser: "",

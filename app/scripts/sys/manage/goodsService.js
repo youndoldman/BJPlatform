@@ -15,6 +15,8 @@ manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper','MISC', func
     var discountStrategiesUri = URI.resources.discountStrategies;
     var key = MISC.keys.gaodeKey;
     var subdistrictUri = URI.resources.subdistrict;
+
+    var gasCynFactoryUri = URI.resources.GasCynFactory;//6.8.	钢瓶厂家
     //行政区域查询
     this.retrieveSubdistrict = function (keyWords) {
         return promise.wrap($http.get(subdistrictUri+"?key="+key+"&keywords="+keyWords));
@@ -126,5 +128,25 @@ manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper','MISC', func
     this.retrieveDiscountStrategies = function (params) {
         return promise.wrap($http.get(discountStrategiesUri,{params: params}));
     };
+
+    //添加钢瓶厂家
+    this.createFactory = function (factory) {
+        return promise.wrap($http.post(gasCynFactoryUri, factory));
+    };
+    //修改钢瓶厂家
+    this.modifyFactory = function (factory) {
+        return promise.wrap($http.put(gasCynFactoryUri + "/" + factory.code, factory));
+    };
+    //删除钢瓶厂家
+    this.deleteFactory = function (factory) {
+        return promise.wrap($http.delete(gasCynFactoryUri + "/" + factory.id));
+    };
+    //查询钢瓶厂家
+    this.retrieveFactorys = function (params) {
+        return promise.wrap($http.get(gasCynFactoryUri,{params: params}));
+    };
+
+
+
 }]);
 

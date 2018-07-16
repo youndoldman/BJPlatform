@@ -1,5 +1,5 @@
-<div id="mapContainer" class="col-xs-12 col-sm-9 col-md-9 col-lg-9 div-bordered" style="height:930px"></div>
-<div  class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+<div id="mapContainer" class="col-xs-12 col-sm-7 col-md-7 col-lg-7 div-bordered" style="height:930px"></div>
+<div  class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
     <div class="ribbon">
         <a href=""><span class="home fa fa-home"></span></a>
         <ol class="breadcrumb">
@@ -15,8 +15,9 @@
                     <label class="input"><input type="text" class="form-control input-sm" ng-model="q.bottleCode" ng-change="search()" placeholder="钢瓶编码"> </label>
                     <!--<button type="submit" class="btn btn-sm btn-primary" ng-click=""><i class="fa fa-search"></i> 搜索 </button>-->
                     <!--<label class="input">时间：</label>-->
-                </div>
-                <div class="inline-group" style="margin-top: 5px">
+                <!--</div>-->
+                <!--<div class="inline-group" style="margin-top: 5px">-->
+                    &nbsp;&nbsp;&nbsp;
                     <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control input-sm" ng-model="q.startTime"></label>
                     <label class="input">—</label>
                     <label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control input-sm" ng-model="q.endTime"></label>
@@ -27,11 +28,11 @@
             <thead>
             <tr>
                 <th width="1%"></th>
-                <th width="15%">序号</th>
+                <th width="10%">序号</th>
                 <th width="30%">编码</th>
-                <th width="20%">规格</th>
-                <!--<th width="40%">生产日期</th>-->
-                <th width="35%">操作</th>
+                <th width="15%">规格</th>
+                <th width="15%">状态</th>
+                <th width="30%">操作</th>
             </tr>
             </thead>
             <tbody>
@@ -40,7 +41,7 @@
                 <td class="message">{{$index+1+pagerBottle.pageSize*(pagerBottle.getCurPageNo()-1)}}</td>
                 <td class="message">{{bottle.number}}</td>
                 <td class="message">{{bottle.spec.name}}</td>
-                <!--<td class="message">{{bottle.createTime}}</td>-->
+                <td class="message">{{bottle.serviceStatus.name}}</td>
                 <td class="operate">
                     <button title="查看位置" ng-click="location(bottle.longitude, bottle.latitude)" type="button" class="btn btn-primary btn-outline btn-xs">
                         <i class="">定位</i>
@@ -69,11 +70,11 @@
             <thead>
             <tr>
                 <th width="1%"></th>
-                <th width="19%">序号</th>
-                <th width="20%">持瓶者</th>
-                <th width="20%">移交人</th>
-                <th width="20%">事件</th>
-                <th width="20%">时间</th>
+                <th width="10%">序号</th>
+                <th width="15%">持瓶者</th>
+                <th width="15%">移交人</th>
+                <th width="30%">事件</th>
+                <th width="30%">时间</th>
             </tr>
             </thead>
             <tbody>

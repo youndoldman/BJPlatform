@@ -1,0 +1,52 @@
+<div class="ribbon">
+    <a href=""><span class="home fa fa-home"></span></a>
+    <ol class="breadcrumb">
+        <li>钢瓶厂家列表</li>
+    </ol>
+</div>
+
+<div class="table-wrapper">
+
+    <div class="toolbar">
+        <form role="form">
+            <div class="inline-group">
+                <label class="input"><input type="text" class="form-control input-sm" ng-model="q.factoryName" ng-change="search()" placeholder="厂家名称"> </label>
+                <button type="submit" class="btn btn-sm btn-primary" ng-click="search()"><i class="fa fa-search"></i> 搜索 </button>
+                <button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUp()"><i class="fa fa-plus"></i> 新增厂家 </button>
+            </div>
+        </form>
+    </div>
+    <table class="table table-striped table-hover props table-sm">
+        <thead>
+        <tr>
+
+            <th width="1%"></th>
+            <th width="5%">序号</th>
+            <th width="20%">厂家编码</th>
+            <th width="40%">厂家名称</th>
+            <th width="20%">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="factory in vm.factoryList">
+            <td></td>
+            <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
+            <td class="message">{{factory.code}}</td>
+            <td class="message">{{factory.name}}</td>
+            <td class="operate">
+                <!--<button title="详情" ng-click="viewDetails(user)" type="button" class="btn btn-primary btn-outline btn-xs">-->
+                    <!--<i class="fa fa-info-circle"></i>-->
+                <!--</button>-->
+                <button title="修改" ng-click="modify(factory)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <i class="fa fa-edit"></i>
+                </button>
+                <button title="删除" ng-click="delete(factory)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <i class="fa fa-trash-o"></i>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div ng-if="vm.userList.length == 0" nj-table-no-data></div>
+    <div nj-pager pager="pager"></div>
+</div>

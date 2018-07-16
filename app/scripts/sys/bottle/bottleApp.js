@@ -1,5 +1,4 @@
-'use strict';
-
+﻿'use strict';
 var bottleApp = angular.module('BottleApp', ['ui.router', 'CommonModule', 'angularModalService'])
     .config(['$httpProvider', '$stateProvider', '$urlRouterProvider', function($httpProvider, $stateProvider, $urlRouterProvider) {
 
