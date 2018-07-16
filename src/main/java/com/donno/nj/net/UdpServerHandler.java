@@ -37,37 +37,46 @@ public class UdpServerHandler
     {
         String revMessage = datagramPacket.content().toString(CharsetUtil.UTF_8);
 
-        JSONObject json = new JSONObject(revMessage);
+        try
+        {
+
+            JSONObject json = new JSONObject(revMessage);
 
         /*接收数据解析*/
-        GasCynTray gasCynTray = new GasCynTray();
-        gasCynTray.setNumber(json.getString("code"));
-        gasCynTray.setWeight((float)json.getDouble("weight"));
-        gasCynTray.setLongitude( json.getDouble("lon"));
-        gasCynTray.setLatitude( json.getDouble("lat"));
-        gasCynTray.setTimestamp( json.getString("timestamp"));
+            GasCynTray gasCynTray = new GasCynTray();
+            gasCynTray.setNumber(json.getString("code"));
+            gasCynTray.setWeight((float)json.getDouble("weight"));
+            gasCynTray.setLeakStatus(WarnningStatus.values()[(int)json.getDouble("leak")]);
+            gasCynTray.setLongitude( json.getDouble("lon"));
+            gasCynTray.setLatitude( json.getDouble("lat"));
+            gasCynTray.setTimestamp( json.getString("timestamp"));
 
 
-        GasCynTray target =  gasCynTrayDao.findByNumber(gasCynTray.getNumber());
-        if ( target == null)
-        {
-            //to do ...
-        }
-        else
-        {
-            gasCynTray.setId(target.getId());
-            Integer warningWeight = systemParamDao.getTrayWarningWeight();
-            if (gasCynTray.getWeight() <= warningWeight)
+            GasCynTray target =  gasCynTrayDao.findByNumber(gasCynTray.getNumber());
+            if ( target == null)
             {
-                gasCynTray.setWarnningStatus(WarnningStatus.WSWarnning1);
+                //to do ...
             }
             else
             {
-                gasCynTray.setWarnningStatus(WarnningStatus.WSNormal);
-            }
+                gasCynTray.setId(target.getId());
+                Integer warningWeight = systemParamDao.getTrayWarningWeight();
+                if (gasCynTray.getWeight() <= warningWeight)
+                {
+                    gasCynTray.setWarnningStatus(WarnningStatus.WSWarnning1);
+                }
+                else
+                {
+                    gasCynTray.setWarnningStatus(WarnningStatus.WSNormal);
+                }
 
-            gasCynTrayDao.update(gasCynTray);
-            trayService.putRow(gasCynTray);
+                gasCynTrayDao.update(gasCynTray);
+                trayService.putRow(gasCynTray);
+            }
+        }
+        catch (Exception exception)
+        {
+            exception.printStackTrace();
         }
     }
 

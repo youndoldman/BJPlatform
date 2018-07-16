@@ -13,6 +13,7 @@ public class GasCynTray implements Serializable
 
     DeviceStatus deviceStatus;
     WarnningStatus warnningStatus;
+    WarnningStatus leakStatus;
     Float weight;
     String timestamp;
     Double longitude;
@@ -51,6 +52,10 @@ public class GasCynTray implements Serializable
     public WarnningStatus getWarnningStatus()
     {
         return warnningStatus;
+    }
+
+    public WarnningStatus getLeakStatus() {
+        return leakStatus;
     }
 
     public User getUser() {
@@ -109,6 +114,11 @@ public class GasCynTray implements Serializable
     public void setWarnningStatus(WarnningStatus warnningStatus)
     {
         this.warnningStatus = warnningStatus;
+    }
+
+    public void setLeakStatus(WarnningStatus leakStatus)
+    {
+        this.leakStatus = leakStatus;
     }
 
     public void setUser(User user) {

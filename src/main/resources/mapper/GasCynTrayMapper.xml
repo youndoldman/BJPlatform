@@ -9,6 +9,7 @@
         <result column="note" property="note" jdbcType="VARCHAR"/>
         <result column="status" property="deviceStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
         <result column="warning_status" property="warnningStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+        <result column="leak_status" property="leakStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
         <result column="weight" property="weight" jdbcType="FLOAT"/>
         <result column="time_stamp" property="timestamp" jdbcType="VARCHAR"/>
         <result column="longitude" property="longitude" jdbcType="DOUBLE"/>
@@ -39,6 +40,7 @@
     <if test="number != null">   number = #{number}</if>
     <if test="status != null">   and status = #{status} </if>
     <if test="warningStatus != null">   and warning_status = #{warningStatus} </if>
+    <if test="leakStatus != null">   and leak_status = #{leakStatus} </if>
     <if test="userId != null">   and id in (SELECT gas_tray_idx FROM t_user_gas_cyn_tray WHERE user_idx =
         (SELECT id FROM  t_user WHERE user_id=#{userId})) </if>
 
@@ -75,6 +77,7 @@
         <set>
             <if test="deviceStatus != null">status = #{deviceStatus.index},</if>
             <if test="warnningStatus != null">warning_status = #{warnningStatus.index},</if>
+            <if test="leakStatus != null">leak_status = #{leakStatus.index},</if>
             <if test="number != null">number = #{number},</if>
 
             <if test="weight != null">weight = #{weight},</if>

@@ -34,12 +34,23 @@ public class GasCynTrayController
     @Autowired
     private GasCynTrayTSService gasCynTrayTSService;
 
+    @RequestMapping(value = "/api/GasCynTray/Init", method = RequestMethod.GET, produces = "application/json")
+    @OperationLog(desc = "初始化")
+    public ResponseEntity init()
+    {
+        gasCynTrayTSService.deleteTable();
+        gasCynTrayTSService.createTable();
+
+        return ResponseEntity.ok().build();
+    }
+
     @RequestMapping(value = "/api/GasCynTray", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取托盘列表")
     public ResponseEntity retrieve(
                                    @RequestParam(value = "number", defaultValue = "") String number,
                                    @RequestParam(value = "userId", defaultValue = "") String userId,
                                    @RequestParam(value = "warningStatus", required = false) Integer warningStatus,
+                                   @RequestParam(value = "leakStatus", required = false) Integer leakStatus,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
@@ -59,6 +70,11 @@ public class GasCynTrayController
         if (warningStatus != null)
         {
             params.putAll(ImmutableMap.of("warningStatus", warningStatus));
+        }
+
+        if (leakStatus != null)
+        {
+            params.putAll(ImmutableMap.of("leakStatus", leakStatus));
         }
 
         params.putAll(paginationParams(pageNo, pageSize, orderBy));

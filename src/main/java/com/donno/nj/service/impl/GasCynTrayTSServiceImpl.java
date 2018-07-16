@@ -25,6 +25,7 @@ public class GasCynTrayTSServiceImpl implements GasCynTrayTSService
     final String FIELD_ID = "id";
     final String FIELD_NUMBER = "number";
     final String FIELD_WEIGHT = "weight";
+    final String FIELD_LEAK = "leak";
     final String FIELD_TIME = "time_stamp";
     final String FIELD_LON = "longitude";
     final String FIELD_LAT = "latitude";
@@ -78,8 +79,12 @@ public class GasCynTrayTSServiceImpl implements GasCynTrayTSService
 
         //加入其他数据列
         rowPutChange.addColumn(new Column(FIELD_WEIGHT, ColumnValue.fromDouble(gasCynTray.getWeight())));
+        rowPutChange.addColumn(new Column(FIELD_LEAK, ColumnValue.fromLong(gasCynTray.getLeakStatus().getIndex())));
         rowPutChange.addColumn(new Column(FIELD_LON, ColumnValue.fromDouble(gasCynTray.getLongitude())));
         rowPutChange.addColumn(new Column(FIELD_LAT, ColumnValue.fromDouble(gasCynTray.getLatitude())));
+
+
+
         client.putRow(new PutRowRequest(rowPutChange));
     }
 
