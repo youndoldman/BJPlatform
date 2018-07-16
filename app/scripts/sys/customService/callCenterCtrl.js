@@ -1,8 +1,8 @@
 'use strict';
 
 customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
-    'rootService', 'pager', 'udcModal', 'CustomerManageService', 'OrderService','sessionStorage','MendSecurityComplaintService','$document','KtyService',
-    function ($scope, $rootScope, $filter, $location, Constants, rootService, pager, udcModal, CustomerManageService,OrderService,sessionStorage,MendSecurityComplaintService,$document,KtyService) {
+    'rootService', 'pager', 'udcModal', 'CustomerManageService', 'OrderService','sessionStorage','MendSecurityComplaintService','$document','KtyService','$interval',
+    function ($scope, $rootScope, $filter, $location, Constants, rootService, pager, udcModal, CustomerManageService,OrderService,sessionStorage,MendSecurityComplaintService,$document,KtyService,$interval) {
 
         $scope.currentKTYUser = {};
         $scope.callIn = "呼入";
@@ -29,7 +29,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         //托盘报警
         var gotoPageGasCynTrayWarning = function (pageNo) {
             $scope.pagerGasCynTrayWarning.setCurPageNo(pageNo);
-            searchUninterruptCustomers();
+            $scope.searchUninterruptCustomers();
         };
 
         $scope.pagerCallReport = pager.init('CustomerListCtrl', gotoPageCallReport);
@@ -40,7 +40,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
         $scope.pagerHistory = pager.init('CustomerListCtrl', gotoPageHistory);
 
-        $scope.pagerGasCynTrayWarning = pager.init('CustomerListCtrl', gotoPageMissedCallReport);
+        $scope.pagerGasCynTrayWarning = pager.init('CustomerListCtrl', gotoPageGasCynTrayWarning);
 
         $(function () {
             $('#datetimepickerOrder').datetimepicker({
@@ -185,6 +185,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             dnis:null,//客服号码
             ani1:null,//客户号码
             dnis1:null,//客服号码
+            userIdUninterupt:null//不间断供气报警用户名
         };
         $scope.searchParam = {
             customerID:null,
@@ -488,15 +489,15 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             $scope.pagerCallReport.setCurPageNo(1);
             $scope.pagerMissedCallReport.setCurPageNo(1);
 
-                $scope.vm.callReportList = [];
-                var userName = $scope.currentKTYUser.items[0].userId;
-                var password = $scope.currentKTYUser.items[0].password;
-                var jsonData = {
-                    ani:null,
-                    dnis:null,
-                }
-                jsonData.ani = $scope.q.ani;
-                jsonData.dnis = $scope.q.dnis;
+            $scope.vm.callReportList = [];
+            var userName = $scope.currentKTYUser.items[0].userId;
+            var password = $scope.currentKTYUser.items[0].password;
+            var jsonData = {
+                ani:null,
+                dnis:null,
+            }
+            jsonData.ani = $scope.q.ani;
+            jsonData.dnis = $scope.q.dnis;
 
             KtyService.authenticate(userName,password).then(function (response) {
                 $scope.q.token = response.data.token;
@@ -512,17 +513,17 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
                 queryParams.json = jsonData;
 
-                    KtyService.retrieveCallreportSearch(queryParams, $scope.q.token).then(function (response) {
-                        $scope.vm.callReportList = response.data;
-                        console.log($scope.vm.callReportList);
-                        console.log($scope.vm.callReportList.data.length);
-                        $scope.pagerCallReport.update($scope.qCallReport, response.data.totalElements, queryParams.page);
-                    }, function(value) {
-                        udcModal.info({"title": "查询失败", "message": value.message});
-                    });
+                KtyService.retrieveCallreportSearch(queryParams, $scope.q.token).then(function (response) {
+                    $scope.vm.callReportList = response.data;
+                    console.log($scope.vm.callReportList);
+                    console.log($scope.vm.callReportList.data.length);
+                    $scope.pagerCallReport.update($scope.qCallReport, response.data.totalElements, queryParams.page);
                 }, function(value) {
-                    udcModal.info({"title": "连接结果", "message": value.message});
+                    udcModal.info({"title": "查询失败", "message": value.message});
                 });
+            }, function(value) {
+                udcModal.info({"title": "连接结果", "message": value.message});
+            });
         }
 
         $scope.searchMissedCallReport = function(){
@@ -700,10 +701,10 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             }
 
         };
-
-        var searchUninterruptCustomers = function () {
+        $scope.searchUninterruptCustomers = function(){
             //清空表格
             var queryParams = {
+                userId:$scope.q.userIdUninterupt,
                 warningStatus: 1,
                 page: $scope.pagerGasCynTrayWarning.getCurPageNo(),
                 per_page: $scope.pagerGasCynTrayWarning.pageSize
@@ -760,8 +761,14 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 $scope.temp.selectedComplaintType = $scope.temp.complaintTypesList[0];
             });
             //不间断供气报警客户查询
-            searchUninterruptCustomers();
+            $scope.searchUninterruptCustomers();
+
+            //启动托盘漏气报警的检查线程
+            $scope.timer = $interval( function(){
+                checkLeak();
+            }, 4000);
         };
+
         init();
 
 //刷新维修订单的数据
@@ -1004,6 +1011,29 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 }
             });
 
+        };
+
+        //弹消息
+        var showNotification = function (warning) {
+            $.notify("漏气提醒！    客户id:"+warning.user.userId+" ｜ 客户姓名:"
+                +warning.user.name+" ｜ 托盘号:"+warning.number, {
+                type: 'danger',
+                newest_on_top: true,
+            });
+        };
+
+        //漏气报警检查
+        var checkLeak = function () {
+            //清空表格
+            var queryParams = {
+                leakStatus: 1
+            };
+            CustomerManageService.retrievePallets(queryParams).then(function (warnings) {
+                var warningsList = warnings.items;
+                for(var i=0; i<warningsList.length; i++){
+                    showNotification(warningsList[i]);
+                }
+            });
         };
 
     }]);
