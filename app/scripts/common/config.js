@@ -481,22 +481,17 @@ commonModule.constant('NavItem', {
     //        icon: "fa-phone"
     //    }]
     //},
-    //'CustomerCenter': {
-    //    roles:[],
-    //    name: "客户中心",
-    //    href: "./customerCenter.htm",
-    //    menuItems: [{
-    //        index: 0,
-    //        name: "我要订气",
-    //        href: "./customerCenter.htm#/customer/create",
-    //        icon: "fa-phone"
-    //    }, {
-    //        index: 1,
-    //        name: "我的订单",
-    //        href: "./customerCenter.htm#/customer/query",
-    //        icon: "fa-sitemap"
-    //    }]
-    //},
+    'ComprehensiveSituationCenter': {
+        roles:[],
+        name: "综合态势",
+        href: "./ComprehensiveSituation.htm",
+        menuItems: [{
+            index: 0,
+            name: "员工监控",
+            href: "./ComprehensiveSituation.htm#/comprehensiveSituation/map",
+            icon: "fa-phone"
+        }]
+    }
 });
 
 

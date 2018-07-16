@@ -83,7 +83,7 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
 
             UserService.retrieveUsers(queryParams).then(function (users) {
                 $scope.pager.update($scope.q, users.total, queryParams.pageNo);
-                $scope.vm.userList = _.map(users.items, UserService.toViewModel);
+                $scope.vm.userList = users.items;//_.map(users.items, UserService.toViewModel);
                 console.log($scope.vm.userList);
             });
         };

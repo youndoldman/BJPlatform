@@ -266,14 +266,14 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
             searchBottles();
         };
 
-        $scope.pagerBottle = pager.init('BottleListCtrl', gotoPageBottles);
+        $scope.pagerBottle = pager.init('BottleMapCtrl', gotoPageBottles);
 
         var gotoPageOpsLog = function (pageNo) {
             $scope.pagerOpsLog.setCurPageNo(pageNo);
             searchOpsLog();
         };
 
-        $scope.pagerOpsLog = pager.init('BottleListCtrl', gotoPageOpsLog);
+        $scope.pagerOpsLog = pager.init('BottleMapCtrl', gotoPageOpsLog);
 
 
         $scope.q = {
@@ -291,7 +291,7 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
         };
 
         $scope.search = function () {
-            $scope.pager.setCurPageNo(1);
+            $scope.pagerBottle.setCurPageNo(1);
             searchBottles();
         };
 
@@ -364,6 +364,7 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
             };
 
             BottleService.retrieveGasCylinderTakeOverHistory($scope.q.selectBottleCode, queryParams).then(function (historys) {
+
                 $scope.pagerOpsLog.update($scope.q, historys.total, queryParams.pageNo);
                 for (var i = 0; i < historys.items.length; i++) {
                     var tempHistory = {
@@ -383,6 +384,7 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
                     tempHistory.latitude = historys.items[i].latitude;
                     $scope.vm.historyListSplitByPage.push(tempHistory);
                 }
+                console.log($scope.vm.historyListSplitByPage);
             });
         };
 
@@ -424,7 +426,10 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
 
         var init = function () {
             $scope.pagerBottle.pageSize=5;
+            $scope.pagerBottle.setCurPageNo(1);
             $scope.pagerOpsLog.pageSize=5;
+            $scope.pagerOpsLog.setCurPageNo(1);
+            $scope.pagerOpsLog.update($scope.q, 0, 1);
             //初始化时间段
             var curDate = new Date();
             curDate.toDateString;

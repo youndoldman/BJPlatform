@@ -139,7 +139,7 @@ manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper','MISC', func
     };
     //删除钢瓶厂家
     this.deleteFactory = function (factory) {
-        return promise.wrap($http.delete(gasCynFactoryUri + "/" + factory.id));
+        return promise.wrap($http.delete(gasCynFactoryUri + "/" + factory.code));
     };
     //查询钢瓶厂家
     this.retrieveFactorys = function (params) {

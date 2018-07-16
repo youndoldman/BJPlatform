@@ -17,7 +17,7 @@
                 <span class="glyphicon glyphicon-calendar" ng-click="initDepartmentSelect()"></span>
                 <button type="submit" class="btn btn-sm btn-primary" ng-click="search()"><i class="fa fa-search"></i> 搜索 </button>
 
-                <button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUp()"><i class="fa fa-plus"></i> 新增钢瓶 </button>
+                <!--<button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUp()"><i class="fa fa-plus"></i> 新增钢瓶 </button>-->
             </div>
         </form>
     </div>
@@ -28,12 +28,13 @@
             <th width="5%">序号</th>
             <th width="5%">钢瓶编码</th>
             <th width="5%">钢瓶规格</th>
-            <th width="5%">定位终端</th>
+            <th width="10%">生产厂家</th>
+            <!--<th width="5%">定位终端</th>-->
             <th width="5%">空重瓶</th>
-            <th width="10%">生产日期</th>
-            <th width="10%">上次钢检日期</th>
-            <th width="10%">下次钢检日期</th>
-            <th width="10%">报废日期</th>
+            <th width="8%">生产日期</th>
+            <th width="8%">上次钢检日期</th>
+            <th width="8%">下次钢检日期</th>
+            <th width="8%">报废日期</th>
             <th width="5%">启用状态</th>
             <th width="5%">工作状态</th>
             <th width="5%">责任人</th>
@@ -47,7 +48,8 @@
             <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
             <td class="message">{{bottle.number}}</td>
             <td class="message">{{bottle.spec.name}}</td>
-            <td class="message">{{bottle.locationDevice.number}}</td>
+            <td class="message">{{bottle.factory.name}}</td>
+            <!--<td class="message">{{bottle.locationDevice.number}}</td>-->
             <td class="message">{{bottle.loadStatus.name}}</td>
             <td class="message">{{bottle.productionDate}}</td>
             <td class="message">{{bottle.verifyDate}}</td>
@@ -59,9 +61,9 @@
             <td class="message" ng-if="bottle.user.userGroup.code==0004">客户</td>
             <td class="message" ng-if="bottle.user.userGroup.code!=0004">{{bottle.userDepartment.name}}</td>
             <td class="operate">
-                <button title="详情" ng-click="location(bottle.location|lonFilter, bottle.location|lanFilter)" type="button" class="btn btn-primary btn-outline btn-xs">
-                    <i class="fa fa-info-circle"></i>
-                </button>
+                <!--<button title="详情" ng-click="location(bottle.location|lonFilter, bottle.location|lanFilter)" type="button" class="btn btn-primary btn-outline btn-xs">-->
+                    <!--<i class="fa fa-info-circle"></i>-->
+                <!--</button>-->
                 <button title="修改" ng-click="modify(bottle)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="fa fa-edit"></i>
                 </button>
@@ -72,6 +74,7 @@
         </tr>
         </tbody>
     </table>
+
     <div ng-if="vm.bottleList.length == 0" nj-table-no-data></div>
     <div nj-pager pager="pager"></div>
 </div>
