@@ -38,7 +38,7 @@ public class GasCynTrayController
     @OperationLog(desc = "初始化")
     public ResponseEntity init()
     {
-        gasCynTrayTSService.deleteTable();
+       // gasCynTrayTSService.deleteTable();
         gasCynTrayTSService.createTable();
 
         return ResponseEntity.ok().build();

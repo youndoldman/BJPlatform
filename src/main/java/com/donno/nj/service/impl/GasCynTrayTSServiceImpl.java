@@ -6,6 +6,7 @@ import com.alicloud.openservices.tablestore.model.*;
 import com.donno.nj.domain.DeviceStatus;
 import com.donno.nj.domain.GasCylinderPosition;
 import com.donno.nj.domain.GasCynTray;
+import com.donno.nj.domain.WarnningStatus;
 import com.donno.nj.service.GasCynTrayTSService;
 import com.donno.nj.service.TableStoreService;
 import org.springframework.stereotype.Service;
@@ -97,17 +98,24 @@ public class GasCynTrayTSServiceImpl implements GasCynTrayTSService
         // 设置起始主键
         PrimaryKeyBuilder primaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
         primaryKeyBuilder.addPrimaryKeyColumn(FIELD_NUMBER, PrimaryKeyValue.fromString(number));
-        primaryKeyBuilder.addPrimaryKeyColumn(FIELD_TIME, PrimaryKeyValue.fromString(startTime));
+        if (startTime.trim().length() > 0)
+        {
+            primaryKeyBuilder.addPrimaryKeyColumn(FIELD_TIME, PrimaryKeyValue.fromString(startTime));
+        }
         rangeRowQueryCriteria.setInclusiveStartPrimaryKey(primaryKeyBuilder.build());
 
         // 设置结束主键
         primaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
         primaryKeyBuilder.addPrimaryKeyColumn(FIELD_NUMBER, PrimaryKeyValue.fromString(number));
-        primaryKeyBuilder.addPrimaryKeyColumn(FIELD_TIME, PrimaryKeyValue.fromString(endTime));
+        if (endTime.trim().length() > 0)
+        {
+            primaryKeyBuilder.addPrimaryKeyColumn(FIELD_TIME, PrimaryKeyValue.fromString(endTime));
+        }
         rangeRowQueryCriteria.setExclusiveEndPrimaryKey(primaryKeyBuilder.build());
 
         rangeRowQueryCriteria.setMaxVersions(1);
         rangeRowQueryCriteria.addColumnsToGet(FIELD_WEIGHT);
+        rangeRowQueryCriteria.addColumnsToGet(FIELD_LEAK);
         rangeRowQueryCriteria.addColumnsToGet(FIELD_TIME);
         rangeRowQueryCriteria.addColumnsToGet(FIELD_LON);
         rangeRowQueryCriteria.addColumnsToGet(FIELD_LAT);
@@ -121,6 +129,13 @@ public class GasCynTrayTSServiceImpl implements GasCynTrayTSService
             gasCynTray.setNumber(primaryKey.getPrimaryKeyColumn(FIELD_NUMBER).getValue().toString());
             gasCynTray.setTimestamp(primaryKey.getPrimaryKeyColumn(FIELD_TIME).getValue().toString());
             gasCynTray.setWeight((float)row.getColumn(FIELD_WEIGHT).get(0).getValue().asDouble());
+
+            int warningStatus = (int)row.getColumn(FIELD_LEAK).get(0).getValue().asLong();
+            if ( warningStatus >= WarnningStatus.WSNormal.getIndex() && warningStatus <= WarnningStatus.WSWarnning1.getIndex())
+            {
+                gasCynTray.setLeakStatus(WarnningStatus.values()[warningStatus]);
+            }
+
             gasCynTray.setLatitude(row.getColumn(FIELD_LAT).get(0).getValue().asDouble());
             gasCynTray.setLongitude(row.getColumn(FIELD_LAT).get(0).getValue().asDouble());
             gasCynTrays.add(gasCynTray);
