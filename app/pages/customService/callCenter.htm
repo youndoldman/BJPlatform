@@ -266,14 +266,14 @@
                 <div class="col-xs-6">
                   <label class="text">客户号码：</label>
                   <label class="input">
-                    <input type="text" name="ani" class="form-control " placeholder="输入客户号码" ng-minlength="11" ng-model="q.ani" ng-change="searchCustomerCallReport()" >
+                    <input type="text" name="ani" class="form-control " placeholder="输入客户号码" ng-minlength="11" ng-model="q.ani" ng-change="searchReport()" >
                   </label>
                   <!--</div>-->
                 </div>
                 <div class="col-xs-6">
                   <label class="text">客服号码：</label>
                   <label class="input">
-                    <input type="text" name="dnis" class="form-control " placeholder="输入客服号码" ng-minlength="6" ng-model="q.dnis" ng-change="searchCustomerCallReport()" >
+                    <input type="text" name="dnis" class="form-control " placeholder="输入客服号码" ng-minlength="6" ng-model="q.dnis" ng-change="searchReport()" >
                   </label>
                 </div>
               </div>
@@ -302,8 +302,8 @@
                   <td class="message">{{$index+1+pagerCallReport.pageSize*(pagerCallReport.getCurPageNo()-1)}}</td>
                   <td class="message">{{item.ani}}</td>
                   <td class="message">{{item.dnis}}</td>
-                  <!--<td class="message">{{item.direction}}</td>-->
-                  <td class="message">{{item.direction == ob ? callIn : callOut}}</td>
+                  <td class="message">{{item.directionCN}}</td>
+                  <!--<td class="message">{{item.direction == ob ? callIn : callOut}}</td>-->
                   <td class="message">{{item.createTime}}</td>
                 </tr>
                 </tbody>
@@ -368,8 +368,8 @@
                   <td class="message">{{$index+1+pagerMissedCallReport.pageSize*(pagerMissedCallReport.getCurPageNo()-1)}}</td>
                   <td class="message">{{item.ani}}</td>
                   <td class="message">{{item.dnis}}</td>
-                  <!--<td class="message">{{item.direction}}</td>-->
-                  <td class="message">{{item.direction == ob ? callIn : callOut}}</td>
+                  <td class="message">{{item.directionCN}}</td>
+                  <!--<td class="message">{{item.direction == ob ? callIn : callOut}}</td>-->
                   <td class="message">{{item.createTime}}</td>
                 </tr>
                 </tbody>
@@ -386,9 +386,9 @@
               <div class="col-xs-7">
                 <div class="box-tools">
                   <div class="input-group input-group-sm">
-                    <input type="text" name="table_search" class="form-control " placeholder="">
+                    <input type="text" name="table_search" class="form-control " placeholder="" ng-model="q.userIdUninterupt">
                     <div class="input-group-btn">
-                      <button type="search" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                      <button type="search" class="btn btn-flat" ng-click="searchUninterruptCustomers()"><i class="fa fa-search"></i></button>
                     </div>
                   </div>
                 </div>
@@ -405,7 +405,7 @@
                   </tr>
                   <tr ng-repeat="warning in vm.CustomerAutoReportList" ng-click="searchWaringCustomer(warning.user.userId)" ng-class="{danger:true}">
                     <td class="message">{{$index+1+pagerGasCynTrayWarning.pageSize*(pagerGasCynTrayWarning.getCurPageNo()-1)}}</td>
-                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{warning.user.name}}</td>
+                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{warning.user.userId}}</td>
                     <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{warning.number}}</td>
                     <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{warning.weight}}</td>
                   </tr>

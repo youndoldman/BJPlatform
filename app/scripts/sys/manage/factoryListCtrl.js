@@ -56,14 +56,14 @@ manageApp.controller('FactoryListCtrl', ['$scope', '$rootScope', '$filter', '$lo
         };
 
         $scope.delete = function (factory) {
-            udcModal.confirm({"title": "删除厂家", "message": "是否永久删除厂家信息 " + user.name})
+            udcModal.confirm({"title": "删除厂家", "message": "是否永久删除厂家信息 " + factory.name})
                 .then(function (result) {
                     if (result) {
                         GoodsService.deleteFactory(factory).then(function () {
                             udcModal.info({"title": "处理结果", "message": "删除厂家成功 "});
                             searchFactorys();
                         }, function (value) {
-                            udcModal.info({"title": "处理结果", "message": "修改厂家失败 " + value.message});
+                            udcModal.info({"title": "处理结果", "message": "删除厂家失败 " + value.message});
                         })
                     }
                 })

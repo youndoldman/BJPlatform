@@ -83,7 +83,7 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
 
             UserService.retrieveUsers(queryParams).then(function (users) {
                 $scope.pager.update($scope.q, users.total, queryParams.pageNo);
-                $scope.vm.userList = _.map(users.items, UserService.toViewModel);
+                $scope.vm.userList = users.items;//_.map(users.items, UserService.toViewModel);
                 console.log($scope.vm.userList);
             });
         };
@@ -198,6 +198,8 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
 
     var init = function () {
         $scope.vm.user = _.clone(initVal);
+        //删除多余元素
+        deleteUserRedundance();
         if ($scope.vm.user.department == null) {
             $scope.vm.user.department = {code: null, name: null};
         }
@@ -259,7 +261,15 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
                 }
             })
         }
-    }
+    };
+    var deleteUserRedundance = function () {
+        delete $scope.vm.user.createTime;
+        delete $scope.vm.user.updateTime;
+        delete $scope.vm.user.userPosition;
+        delete $scope.vm.user.aliveStatus;
+        delete $scope.vm.user.aliveUpdateTime;
+
+    };
 
     init();
 }]);

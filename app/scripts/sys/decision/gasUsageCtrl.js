@@ -1,16 +1,20 @@
 'use strict';
 
 decisionApp.controller('GasUsageCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
-    'rootService', 'pager', 'udcModal', 'DecisionService','sessionStorage', function ($scope, $rootScope, $filter, $location, Constants,
+    'rootService', 'pager', 'udcModal', 'DecisionService','sessionStorage', '$interval',function ($scope, $rootScope, $filter, $location, Constants,
 
-                                                                      rootService, pager, udcModal, DecisionService, sessionStorage) {
+                                                                      rootService, pager, udcModal, DecisionService, sessionStorage,$interval) {
         $scope.q = {
             code: null,
             startTime:"",
             endTime:""
         };
         $scope.search = function () {
-            retrieveGasCynTrayHistory();
+            //启动绘制托盘重量的定时器
+            $interval.cancel($scope.timer);
+            $scope.timer = $interval( function(){
+                retrieveGasCynTrayHistory();
+            }, 1000);
         };
         $(function () {
             $('#datetimepickerStart').datetimepicker({
@@ -131,7 +135,6 @@ decisionApp.controller('GasUsageCtrl', ['$scope', '$rootScope', '$filter', '$loc
                 endTime: $scope.q.endTime,
                 number: $scope.q.code
             };
-            console.log(queryParams);
             DecisionService.retrieveGasCynTrayHistory(queryParams).then(function (gasCynTrayHistory) {
                 var dataDealed = [];//结果数据
                 //加工数据，按商品号分开
@@ -139,6 +142,7 @@ decisionApp.controller('GasUsageCtrl', ['$scope', '$rootScope', '$filter', '$loc
                 var name = null;
                 var unitData = {legend:null, items:[]};
                 if(gasCynTrayHistoryList.length==0){
+                    $interval.cancel($scope.timer);
                     udcModal.info({"title": "查询结果", "message": "无数据"});
                 }
                 for (var i=0;i<gasCynTrayHistoryList.length;i++){
@@ -156,7 +160,6 @@ decisionApp.controller('GasUsageCtrl', ['$scope', '$rootScope', '$filter', '$loc
                     unitData.legend = name;
                     dataDealed.push(unitData);
                 }
-                console.log(dataDealed);
                 drawChart(dataDealed);
             });
         };

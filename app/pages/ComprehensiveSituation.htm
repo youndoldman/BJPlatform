@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="ComprehensiveSituationApp" xmlns:ng="http://angularjs.org">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Basic Styles -->
+    <link rel="stylesheet" type="text/css" media="screen" href="../lib/bootstrap-3.3.5-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="../lib/font-awesome-4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../lib/org-chart/css/style.css">
+    <link href="../lib/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <!-- FAVICONS -->
+    <link rel="shortcut icon" href="../images/favicon/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../images/favicon/favicon.ico" type="image/x-icon">
+    <!-- Custom styles for this template -->
+    <link href="../styles/stylesheets/global.css" rel="stylesheet">
+
+    <script src="../scripts/util/browser-checker.js"></script>
+
+    <script src="../lib/jquery/jquery-2.0.2.min.js"></script>
+    <script src="../lib/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+    <script src="../lib/underscore/underscore-min.js"></script>
+    <script src="../lib/angular/angular.min.js"></script>
+    <script src="../lib/angular/angular-ui-router.min.js"></script>
+    <script src="../lib/angular-modal-service/dst/angular-modal-service.js"></script>
+
+    <script src="../scripts/common/common.js"></script>
+    <script src="../scripts/common/commonFilter.js"></script>
+    <script src="../scripts/common/config.js"></script>
+    <script src="../scripts/common/constant.js"></script>
+    <script src="../scripts/common/httpInterceptor.js"></script>
+    <script src="../scripts/common/pagerService.js"></script>
+    <script src="../scripts/common/njModal.js"></script>
+    <script src="../scripts/common/njPager.js"></script>
+    <script src="../scripts/common/njPartials.js"></script>
+    <script src="../scripts/common/component.js"></script>
+
+    <script src="../scripts/sys/comprehensiveSituation/ComprehensiveSituationApp.js"></script>
+    <script src="../scripts/sys/comprehensiveSituation/GisWatchService.js"></script>
+    <script src="../scripts/sys/comprehensiveSituation/MapService.js"></script>
+    <script src="../scripts/sys/comprehensiveSituation/GisWatchCtrl.js"></script>
+
+
+    <script src="https://webapi.amap.com/maps?v=1.4.2&key=eb79fa54c36eb2021e515ea789bb4bde&&plugin=AMap.Scale,AMap.OverView,AMap.ToolBar"></script>
+    <!--<script type="text/javascript" src = 'https://a.amap.com/jsapi_demos/static/citys.js'></script>-->
+    <script src="https://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+
+    <script src="../lib/bootstrap-datetimepicker/moment.min.js"></script>
+    <script src="../lib/bootstrap-datetimepicker/moment-with-locales.min.js"></script>
+    <script src="../lib/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+
+</head>
+<body>
+
+<div nj-header></div>
+
+<div class="container main">
+    <div class="row">
+        <div class="col-xs-12 col-xs-12 col-xs-12 col-xs-12 ">
+            <div ui-view></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
