@@ -198,6 +198,8 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
 
     var init = function () {
         $scope.vm.user = _.clone(initVal);
+        //删除多余元素
+        deleteUserRedundance();
         if ($scope.vm.user.department == null) {
             $scope.vm.user.department = {code: null, name: null};
         }
@@ -259,7 +261,15 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
                 }
             })
         }
-    }
+    };
+    var deleteUserRedundance = function () {
+        delete $scope.vm.user.createTime;
+        delete $scope.vm.user.updateTime;
+        delete $scope.vm.user.userPosition;
+        delete $scope.vm.user.aliveStatus;
+        delete $scope.vm.user.aliveUpdateTime;
+
+    };
 
     init();
 }]);

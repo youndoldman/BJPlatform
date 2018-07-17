@@ -5,7 +5,15 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
                                                                                             rootService, pager, udcModal, GisWatchService, MapService, $timeout) {
 
 
-        var infoWindow = new AMap.InfoWindow();
+        //function getLocation(){
+        //    if (navigator.geolocation){
+        //        navigator.geolocation.getCurrentPosition(showPosition,showError);
+        //    }else{
+        //        alert("浏览器不支持地理定位。");
+        //    }
+        //}
+
+            var infoWindow = new AMap.InfoWindow();
         $scope.$watch('$viewContentLoaded',function () {
             mapInitial();
         });

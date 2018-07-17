@@ -32,7 +32,6 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             $scope.pagerGasCynTrayWarning.setCurPageNo(pageNo);
             $scope.searchUninterruptCustomers();
         };
-
         $scope.pagerCallReport = pager.init('CustomerListCtrl', gotoPageCallReport);
 
         $scope.pagerMissedCallReport = pager.init('CustomerListCtrl', gotoPageMissedCallReport);

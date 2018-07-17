@@ -484,7 +484,7 @@ commonModule.constant('NavItem', {
     'ComprehensiveSituationCenter': {
         roles:[],
         name: "综合态势",
-        href: "./ComprehensiveSituation.htm",
+        href: "./comprehensiveSituation.htm",
         menuItems: [{
             index: 0,
             name: "员工监控",

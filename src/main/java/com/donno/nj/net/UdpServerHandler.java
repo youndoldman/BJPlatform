@@ -16,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Component
 public class UdpServerHandler
         extends SimpleChannelInboundHandler<DatagramPacket>
@@ -49,7 +52,11 @@ public class UdpServerHandler
             gasCynTray.setLeakStatus(WarnningStatus.values()[(int)json.getDouble("leak")]);
             gasCynTray.setLongitude( json.getDouble("lon"));
             gasCynTray.setLatitude( json.getDouble("lat"));
-            gasCynTray.setTimestamp( json.getString("timestamp"));
+            //gasCynTray.setTimestamp( json.getString("timestamp"));
+            //忽略托盘时戳，引用本地时戳
+            Date curDate = new Date();
+            String dateFmt =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(curDate);
+            gasCynTray.setTimestamp(dateFmt);
 
 
             GasCynTray target =  gasCynTrayDao.findByNumber(gasCynTray.getNumber());
