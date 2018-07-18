@@ -221,7 +221,10 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
             }
         });
         //托盘查询
-        $scope.retrievePallets();
+        if($scope.isModify){
+            $scope.retrievePallets();
+        }
+
     };
 
 
