@@ -118,7 +118,8 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
     //查找在线的配送工
     var searchWorkers = function () {
         var queryParams = {
-            groupCode: '00003'//配送工组代码
+            groupCode: '00003',//配送工组代码
+            aliveStatus: 1//在线
         };
         OrderService.retrieveDistributionworkers(queryParams).then(function (workers) {
             $scope.vm.onLineWorkersList = workers.items;
@@ -136,9 +137,9 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
             imageSize : new AMap.Size(50,50)
         });
         for (var i=0;i<$scope.vm.onLineWorkersList.length;i++){
-
-            console.log($scope.vm.onLineWorkersList[i].userPosition.longitude);
-            console.log($scope.vm.onLineWorkersList[i].userPosition.latitude);
+            if($scope.vm.onLineWorkersList[i].userPosition==null){
+                continue;
+            }
             var markerDest = new AMap.Marker({
                 icon : iconWorker,//24px*24px
                 position : [$scope.vm.onLineWorkersList[i].userPosition.longitude, $scope.vm.onLineWorkersList[i].userPosition.latitude],

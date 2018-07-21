@@ -79,7 +79,7 @@ public class GasCylinderServiceImpl implements GasCylinderService
     public void create(GasCylinder gasCylinder)
     {
         /*参数校验*/
-        if (gasCylinder == null || gasCylinder.getNumber() == null ||
+        if (gasCylinder == null || gasCylinder.getNumber() == null || gasCylinder.getPublicNumber() == null||
                 gasCylinder.getSpec() == null ||
                 gasCylinder.getProductionDate() == null || gasCylinder.getVerifyDate() == null ||
                 gasCylinder.getNextVerifyDate() == null || gasCylinder.getScrapDate() == null

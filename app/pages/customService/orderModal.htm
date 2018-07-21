@@ -6,6 +6,7 @@
                     <button type="button" class="close" ng-click="close(false)" data-dismiss="modal"
                             aria-hidden="true">&times;</button>
                     <h4 class="modal-title">&nbsp;{{modalTitle}}&nbsp;</h4>
+
                 </div>
 
                 <div class="modal-body">
@@ -65,19 +66,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="input-group pdb15">
-                                <label class="col-sm-2 control-label input-label">备注：</label>
-                                <div class="col-sm-4 input-width">
-                                    <input type="text"  class="form-control" ng-model="vm.currentOrder.comment"  required>
-                                </div>
-                                <label class="col-sm-2 control-label input-label">加急：</label>
-                                <div class="col-sm-4 input-width">
-                                    <input type="checkbox"  ng-model="vm.currentOrder.urgent" style="margin-top:10px">
-                                </div>
 
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="input-group pdb15">
                                 <label class="col-sm-2 control-label input-label">金额：</label>
@@ -89,6 +78,34 @@
                                     <input type="text"  class="form-control" ng-model="vm.currentOrder.callInPhone"  required>
                                 </div>
 
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-group pdb15">
+                                <label class="col-sm-2 control-label input-label">配送瓶号：</label>
+                                <div class="col-sm-4 input-width">
+                                    <input type="text"  class="form-control" ng-model="vm.currentOrder.deliveryGasCylinder"  required>
+                                </div>
+                                <label class="col-sm-2 control-label input-label">回收瓶号：</label>
+                                <div class="col-sm-4 input-width">
+                                    <input type="text"  class="form-control" ng-model="vm.currentOrder.recycleGasCylinder"  required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-group pdb15">
+                                <label class="col-sm-2 control-label input-label">备注：</label>
+                                <div class="col-sm-4 input-width">
+                                    <input type="text"  class="form-control" ng-model="vm.currentOrder.comment"  required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-group pdb15">
+                                <label class="col-sm-2 control-label input-label">加急：</label>
+                                <div class="col-sm-4 input-width">
+                                    <input type="checkbox"  ng-model="vm.currentOrder.urgent" style="margin-top:10px">
+                                </div>
                             </div>
                         </div>
 

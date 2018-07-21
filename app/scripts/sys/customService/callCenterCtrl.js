@@ -277,6 +277,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                     if(orderDetail.goods.code == $scope.currentOrder.orderDetailList[i].goods.code)
                     {
                         $scope.currentOrder.orderDetailList[i].quantity++;
+                        $scope.currentOrder.orderDetailList[i].subtotal = $scope.currentOrder.orderDetailList[i].quantity * orderDetail.dealPrice;
                         findFlag = true;
                         break;
                     }

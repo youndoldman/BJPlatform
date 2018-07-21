@@ -266,7 +266,7 @@ public class OrderServiceImpl implements OrderService
         if(orderTriggerType != null && orderTriggerType == OrderTriggerType.OTTTrayWarning )
         {
             orderUpdateAmount.setOrderAmount(0f);//托盘告警生成的订单，总金额为0，不付费
-            orderUpdateAmount.setNote("托盘告警生成的订单");
+            //orderUpdateAmount.setNote("托盘告警生成的订单");
         }
         else
         {

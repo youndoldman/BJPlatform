@@ -10,6 +10,7 @@ public class GasCylinder implements Serializable
 {
     private Integer id;
     private String number;
+    private String publicNumber;//出厂的公共编码
 
     private GasCylinderSpec spec;
 
@@ -51,6 +52,11 @@ public class GasCylinder implements Serializable
     public String getNumber()
     {
         return number;
+    }
+
+    public String getPublicNumber()
+    {
+        return publicNumber;
     }
 
     public GasCylinderSpec getSpec()
@@ -148,6 +154,11 @@ public class GasCylinder implements Serializable
         this.number = number;
     }
 
+    public void setPublicNumber(String publicNumber)
+    {
+        this.publicNumber = publicNumber;
+    }
+
     public void setSpec(GasCylinderSpec spec)
     {
         this.spec = spec;
@@ -239,6 +250,7 @@ public class GasCylinder implements Serializable
         return MoreObjects.toStringHelper(this)
                 .add("id", id)
                 .add("number", number)
+                .add("publicNumber", publicNumber)
                 .add("spec", spec)
                 .add("note", note)
                 .add("createTime", createTime)

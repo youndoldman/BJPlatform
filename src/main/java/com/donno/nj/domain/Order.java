@@ -42,6 +42,9 @@ public class Order implements Serializable
     private SysUser dispatcher;//订单派送人
 
     private String  note;
+    private String  recycleGasCylinder;//回收的钢瓶号
+    private String  deliveryGasCylinder;//配送的钢瓶号
+
     private Date createTime;
     private Date payTime;//支付时间
     private Date updateTime;
@@ -184,6 +187,16 @@ public class Order implements Serializable
         return note;
     }
 
+    public String getRecycleGasCylinder()
+    {
+        return recycleGasCylinder;
+    }
+
+    public String getDeliveryGasCylinder()
+    {
+        return deliveryGasCylinder;
+    }
+
 
     public  Date getCreateTime()
     {
@@ -316,6 +329,16 @@ public class Order implements Serializable
         this.note = note;
     }
 
+    public void setRecycleGasCylinder(String recycleGasCylinder)
+    {
+        this.recycleGasCylinder = recycleGasCylinder;
+    }
+
+    public void setDeliveryGasCylinder(String deliveryGasCylinder)
+    {
+        this.deliveryGasCylinder = deliveryGasCylinder;
+    }
+
     public void setCreateTime(Date createTime)
     {
         this.createTime = createTime;
@@ -338,6 +361,8 @@ public class Order implements Serializable
                 .add("recvName",recvName)
                 .add("recvPhone",recvPhone)
                 .add("note", note)
+                .add("recycleGasCylinder", recycleGasCylinder)
+                .add("deliveryGasCylinder", deliveryGasCylinder)
                 .add("createTime", createTime)
                 .add("updateTime", updateTime)
                 .toString();

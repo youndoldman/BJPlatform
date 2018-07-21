@@ -5,6 +5,7 @@
     <resultMap id="DetailResultMap" type="com.donno.nj.domain.GasCylinder">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="number" property="number" jdbcType="VARCHAR"/>
+        <result column="public_number" property="publicNumber" jdbcType="VARCHAR"/>
 
         <result column="production_date" property="productionDate" jdbcType="TIMESTAMP"/>
         <result column="verify_date" property="verifyDate" jdbcType="TIMESTAMP"/>
@@ -41,7 +42,7 @@
     </sql>
 
     <sql id="InsertColumnList">
-        number,factory_idx,spec_idx,production_date,verify_date,next_verify_date,scrap_date,life_status,load_status,service_status,note
+        number,public_number,factory_idx,spec_idx,production_date,verify_date,next_verify_date,scrap_date,life_status,load_status,service_status,note
     </sql>
 
     <!--<insert id="insert"  keyProperty="id" useGeneratedKeys="true" parameterType="com.donno.nj.domain.GasCylinder" >-->
@@ -51,7 +52,7 @@
 
     <insert id="insert"  keyProperty="id" useGeneratedKeys="true">
         INSERT IGNORE INTO <include refid="TblGasCylinder"/>(<include refid="InsertColumnList"/>)
-        VALUES( #{number},#{factory.id},#{spec.id}, #{productionDate} , #{verifyDate},#{nextVerifyDate},#{scrapDate},#{lifeStatus.index},#{loadStatus.index},#{serviceStatus.index}, #{note})
+        VALUES( #{number},#{publicNumber},#{factory.id},#{spec.id}, #{productionDate} , #{verifyDate},#{nextVerifyDate},#{scrapDate},#{lifeStatus.index},#{loadStatus.index},#{serviceStatus.index}, #{note})
     </insert>
 
     <delete id="deleteByIdx" parameterType="java.lang.Integer">
@@ -63,6 +64,7 @@
     UPDATE <include refid="TblGasCylinder"/>
     <set>
         <if test="number != null">number = #{number},</if>
+        <if test="number != null">public_number = #{publicNumber},</if>
         <if test="productionDate != null">production_date = #{productionDate},</if>
         <if test="verifyDate != null">verify_date = #{verifyDate},</if>
         <if test="nextVerifyDate != null">next_verify_date = #{nextVerifyDate},</if>
@@ -111,6 +113,8 @@
         <where>
 
             <if test="number != null"> number like CONCAT( #{number}, '%')  </if>
+
+            <if test="publicNumber != null"> number like CONCAT( #{public_number}, '%')  </if>
 
             <if test="specCode != null">AND  spec_idx =  ( select id from t_gas_cylinder_spec where code = #{specCode} ) </if>
 

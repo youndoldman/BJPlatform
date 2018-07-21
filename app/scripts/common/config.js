@@ -92,7 +92,7 @@ commonModule.constant('URI', {
         'GasCynTrayHistory':'../../../api/GasCynTray/History',//托盘历史数据查询
 
         'GasCynFactory':'../../../api/GasCynFactory',//6.5.	钢瓶厂家接口
-
+        'sysUserPosition':'../../../api/sysusers/position',//用户心跳
 
 
 
@@ -339,7 +339,7 @@ commonModule.constant('NavItem', {
     },
 
     'FinanceCenter': {
-        roles:[1],
+        roles:[1,8],
         name: "财务管理",
         href: "./financeCenter.htm",
         menuItems: [

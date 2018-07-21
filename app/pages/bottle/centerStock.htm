@@ -22,6 +22,7 @@
             <th width="1%"></th>
             <th width="5%">序号</th>
             <th width="5%">钢瓶编码</th>
+            <th width="5%">出厂编码</th>
             <th width="5%">钢瓶规格</th>
             <th width="10%">生产厂家</th>
             <!--<th width="5%">定位终端</th>-->
@@ -42,6 +43,7 @@
             <td></td>
             <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
             <td class="message">{{bottle.number}}</td>
+            <td class="message">{{bottle.publicNumber}}</td>
             <td class="message">{{bottle.spec.name}}</td>
             <td class="message">{{bottle.factory.name}}</td>
             <!--<td class="message">{{bottle.locationDevice.number}}</td>-->
