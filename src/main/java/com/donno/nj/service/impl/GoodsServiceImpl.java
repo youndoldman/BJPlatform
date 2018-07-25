@@ -97,8 +97,6 @@ public class GoodsServiceImpl implements GoodsService
         params.putAll(ImmutableMap.of("startTime", new Date()));
         params.putAll(ImmutableMap.of("endTime", new Date()));
 
-        boolean targeted = false;
-
         List<DiscountStrategy>  discountStrategies = discountStrategyDao.getList(params);
         for (DiscountStrategy discountStrategy : discountStrategies)
         {
@@ -116,13 +114,11 @@ public class GoodsServiceImpl implements GoodsService
                         if (discountStrategy.getDiscountType() == DiscountType.DTCheapX )//直减
                         {
                             dealPrice = dealPrice - discountDetail.getDiscount();
-                            targeted = true;
                             break;
                         }
                         else if(discountStrategy.getDiscountType() == DiscountType.DTCheapX )//百分比折扣
                         {
                             dealPrice = dealPrice - dealPrice * discountDetail.getDiscount() / 100;
-                            targeted = true;
                             break;
                         }
                     }
@@ -130,7 +126,7 @@ public class GoodsServiceImpl implements GoodsService
             }
 
             /*优惠是否叠加*/
-            if (targeted &&  (discountStrategy.getUseType() == DiscountUseType.DUTExclusive))
+            if (discountStrategy.getUseType() == DiscountUseType.DUTExclusive)
             {
                 break;
             }
