@@ -167,11 +167,10 @@ commonModule.controller('CommonModuleCtrl', ['$rootScope','$scope', '$interval',
         $scope.currentTime = year + "-" + month + "-" + day + " " + hh + ":" + mm + ":" + ss;
     }
     var init = function () {
-        console.log("aaaaaaaaaaaaaaa");
         $scope.currentUser = sessionStorage.getCurUser();
         $scope.timer = $interval( function(){
             updateHeartBit();//心跳
-        }, 10000);
+        }, 20000);
     };
     $scope.inRoles = function(roles)
     {
@@ -202,10 +201,10 @@ commonModule.controller('CommonModuleCtrl', ['$rootScope','$scope', '$interval',
             alert("连接超时");
         });
     };
-    var sysUserPositionUri = URI.resources.sysUserPosition;
+    var sysUserKeepAliveUri = URI.resources.sysUserKeepAlive;
     var updateHeartBit = function () {
         var user = sessionStorage.getCurUser();
-        promise.wrap($http.post(sysUserPositionUri+"?userId="+user.userId, {longitude:0,latitude:0}));
+        promise.wrap($http.get(sysUserKeepAliveUri+"/"+user.userId));
 
     };
 
