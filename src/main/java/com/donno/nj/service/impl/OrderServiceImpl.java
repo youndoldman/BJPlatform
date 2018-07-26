@@ -228,12 +228,6 @@ public class OrderServiceImpl implements OrderService
                 throw new ServerSideBusinessException(message, HttpStatus.NOT_ACCEPTABLE);
             }
 
-//            /*不间断供气订单，商品只能选择为液化气*/
-//            if(orderTriggerType != null && orderTriggerType == OrderTriggerType.OTTTrayWarning )
-//            {
-//
-//            }
-
             /*查询优惠,计算满足条件的每件商品优惠后价格，及订单总金额*/
             if (customer.getSettlementType().getCode().equals(ServerConstantValue.SETTLEMENT_TYPE_COMMON_USER) ||
             customer.getSettlementType().getCode().equals(ServerConstantValue.SETTLEMENT_TYPE_MONTHLY_CREDIT   ))//普通用户,月结用户 可以享受优惠
@@ -265,11 +259,9 @@ public class OrderServiceImpl implements OrderService
         orderUpdateAmount.setId(order.getId());
         orderUpdateAmount.setOriginalAmount(originalAmount);
 
-
         if(orderTriggerType != null && orderTriggerType == OrderTriggerType.OTTTrayWarning )
         {
             orderUpdateAmount.setOrderAmount(0f);//托盘告警生成的订单，总金额为0，不付费
-            //orderUpdateAmount.setNote("托盘告警生成的订单");
         }
         else
         {
@@ -394,6 +386,18 @@ public class OrderServiceImpl implements OrderService
             throw new ServerSideBusinessException("缺少钢瓶编号", HttpStatus.NOT_ACCEPTABLE);
         }
 
+        /*避免接口重复调用时重复计算，重置订单实际价格*/
+        Float amount = 0f;
+        for(OrderDetail orderDetail : order.getOrderDetailList())
+        {
+            amount = amount + orderDetail.getDealPrice();
+        }
+
+        order.setId(order.getId());
+        order.setRefoundSum(0f);
+        order.setOrderAmount(amount);
+
+
         /*查订单地址对应的燃气价格*/
         CustomerAddress customerAddress = order.getRecvAddr();
         Map params = new HashMap<String,String>();
@@ -446,14 +450,15 @@ public class OrderServiceImpl implements OrderService
 
                 Float refoundSum = gasPrice * ( maxGasWeight -( gasCylinder.getFullWeight() - gasCylinder.getEmptyWeight()));
 
-                Order newOrder = new Order();
-                newOrder.setId(order.getId());
-                newOrder.setRefoundSum(order.getRefoundSum() + refoundSum);
-                newOrder.setOrderAmount(order.getOrderAmount() - refoundSum);
 
-                orderDao.update(newOrder);
+                order.setId(order.getId());
+                order.setRefoundSum(order.getRefoundSum() + refoundSum);
+                order.setOrderAmount(order.getOrderAmount() - refoundSum);
+
+                orderDao.update(order);
 
         }
+
         return  order;
     }
 
