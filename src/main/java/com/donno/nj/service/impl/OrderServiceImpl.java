@@ -259,14 +259,14 @@ public class OrderServiceImpl implements OrderService
         orderUpdateAmount.setId(order.getId());
         orderUpdateAmount.setOriginalAmount(originalAmount);
 
-        if(orderTriggerType != null && orderTriggerType == OrderTriggerType.OTTTrayWarning )
-        {
-            orderUpdateAmount.setOrderAmount(0f);//托盘告警生成的订单，总金额为0，不付费
-        }
-        else
-        {
-            orderUpdateAmount.setOrderAmount(dealAmount);
-        }
+//        if(orderTriggerType != null && orderTriggerType == OrderTriggerType.OTTTrayWarning )
+//        {
+//            orderUpdateAmount.setOrderAmount(0f);//托盘告警生成的订单，总金额为0，不付费
+//        }
+//        else
+//        {
+//            orderUpdateAmount.setOrderAmount(dealAmount);
+//        }
 
         orderDao.update(orderUpdateAmount);
 

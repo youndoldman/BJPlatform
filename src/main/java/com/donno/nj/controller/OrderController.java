@@ -337,6 +337,17 @@ public class OrderController
     }
 
 
+//    @RequestMapping(value = "/api/Orders/Test", method = RequestMethod.PUT)
+//    public ResponseEntity Test(@RequestBody List<Order> orderList)
+//    {
+//        ResponseEntity responseEntity;
+//
+//        responseEntity = ResponseEntity.ok(ListRep.assemble(orderList, orderList.size()));
+//
+//        return responseEntity;
+//    }
+
+
     @OperationLog(desc = "气票用户支付")
     @RequestMapping(value = "/api/TicketOrders/{orderSn}", method = RequestMethod.PUT)
     public ResponseEntity ticketPay(@PathVariable("orderSn") String orderSn,
