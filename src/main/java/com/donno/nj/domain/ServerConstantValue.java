@@ -37,4 +37,8 @@ public interface ServerConstantValue
     public String SETTLEMENT_TYPE_COMMON_USER = "00001";
     public String SETTLEMENT_TYPE_MONTHLY_CREDIT = "00002";
     public String SETTLEMENT_TYPE_TICKET = "00003";
+
+    /*商品类型*/
+    public String GOODS_TYPE_GAS  = "0003";
+    public String GOODS_TYPE_GAS_CYN  = "0001";
 }

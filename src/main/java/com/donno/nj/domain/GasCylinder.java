@@ -36,6 +36,10 @@ public class GasCylinder implements Serializable
 
     private GasCynFactory factory;
 
+    private Float fullWeight; //该钢瓶派送时重量
+    private Float emptyWeight;//该钢瓶回收时重量
+    private Float gasPrice;//该钢瓶派送时对应的气价
+
     private String  note;
     private Date createTime;
     private Date updateTime;
@@ -126,6 +130,18 @@ public class GasCylinder implements Serializable
 
     public GasCynFactory getFactory() {
         return factory;
+    }
+
+    public Float getEmptyWeight() {
+        return emptyWeight;
+    }
+
+    public Float getFullWeight() {
+        return fullWeight;
+    }
+
+    public Float getGasPrice() {
+        return gasPrice;
     }
 
     public String getNote()
@@ -226,6 +242,21 @@ public class GasCylinder implements Serializable
 
     public void setFactory(GasCynFactory factory) {
         this.factory = factory;
+    }
+
+    public void setFullWeight(Float fullWeight)
+    {
+        this.fullWeight = fullWeight;
+    }
+
+    public void setEmptyWeight(Float emptyWeight)
+    {
+        this.emptyWeight = emptyWeight;
+    }
+
+    public void setGasPrice(Float gasPrice)
+    {
+        this.gasPrice = gasPrice;
     }
 
     public void setNote(String note)

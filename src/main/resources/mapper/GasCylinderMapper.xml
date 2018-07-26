@@ -17,6 +17,9 @@
         <result column="service_status" property="serviceStatus"  typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
         <result column="longitude" property="longitude" jdbcType="DOUBLE"/>
         <result column="latitude" property="latitude" jdbcType="DOUBLE"/>
+        <result column="full_weight" property="fullWeight" jdbcType="FLOAT"/>
+        <result column="empty_weight" property="emptyWeight" jdbcType="FLOAT"/>
+        <result column="gas_price" property="gasPrice" jdbcType="FLOAT"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
@@ -74,6 +77,10 @@
         <if test="serviceStatus != null">service_status = #{serviceStatus.index},</if>
         <if test="longitude != null">longitude = #{longitude},</if>
         <if test="latitude != null">latitude = #{latitude},</if>
+
+        <if test="fullWeight != null">full_weight = #{fullWeight},</if>
+        <if test="emptyWeight != null">empty_weight = #{emptyWeight},</if>
+        <if test="gasPrice != null">gas_price = #{gasPrice},</if>
         <if test="note != null">note = #{note},</if>
 
         <if test="spec != null">

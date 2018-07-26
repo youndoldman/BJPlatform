@@ -56,6 +56,9 @@ public class OrderServiceImpl implements OrderService
     private SystemParamDao systemParamDao;
 
     @Autowired
+    private GasCylinderDao gasCylinderDao;
+
+    @Autowired
     private SysUserDao sysUserDao;
 
     @Autowired
@@ -369,6 +372,70 @@ public class OrderServiceImpl implements OrderService
         }
 
         return dealPrice;
+    }
+
+    @Override
+    @OperationLog(desc = "计算订单价格")
+    public Order caculate(String orderSn,String gasCynNumber)
+    {
+        if (orderSn == null || orderSn.trim().length() == 0 )
+        {
+            throw new ServerSideBusinessException("缺少订单号", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (gasCynNumber == null || gasCynNumber.trim().length() == 0 )
+        {
+            throw new ServerSideBusinessException("缺少钢瓶编号", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        Order order = orderDao.findBySn(orderSn);
+        if (order == null)
+        {
+            throw new ServerSideBusinessException("订单不存在", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        GasCylinder gasCylinder = gasCylinderDao.findByNumber(gasCynNumber);
+        if (gasCylinder == null)
+        {
+            throw new ServerSideBusinessException("钢瓶不存在", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        /*查订单地址对应的燃气价格*/
+        CustomerAddress customerAddress = order.getRecvAddr();
+        for(OrderDetail orderDetail : order.getOrderDetailList())
+        {
+            /*瓶装液化气*/
+            if (orderDetail.getGoods().getGoodsType().getCode().equals(ServerConstantValue.GOODS_TYPE_GAS_CYN))
+            {
+                /*查找该客户地址对应的燃气单价*/
+                Map params = new HashMap<String,String>();
+                params.putAll(ImmutableMap.of("province", customerAddress.getProvince()));
+                params.putAll(ImmutableMap.of("city", customerAddress.getCity()));
+                params.putAll(ImmutableMap.of("county", customerAddress.getCounty()));
+                List<Goods> goodsList =  goodsDao.getList(params);
+                if (goodsList.size() > 0)
+                {
+                    Float gasPrice = Float.POSITIVE_INFINITY;
+                    for (Goods goods:goodsList )
+                    {
+                        if (Math.round(goods.getPrice()*100)/100.0  < Math.round(gasPrice*100)/100.0)
+                        {
+                            gasPrice = goods.getPrice();
+                        }
+                    }
+
+                    gasCylinder.setGasPrice(gasPrice);
+                    gasCylinderDao.update(gasCylinder);
+
+                    Float refoundSum = gasPrice * ( orderDetail.getGoods().getWeight() -( gasCylinder.getFullWeight() - gasCylinder.getEmptyWeight()));
+                    orderDetail.setRefoundSum(refoundSum);
+                    orderDetail.setSubtotal(orderDetail.getDealPrice() * orderDetail.getQuantity() - refoundSum);
+                    orderDetailDao.update(orderDetail);
+                }
+            }
+        }
+
+        return  order;
     }
 
 //
@@ -751,12 +818,12 @@ public class OrderServiceImpl implements OrderService
             }
             else
             {
-                throw new ServerSideBusinessException("客户支付方式不允许修改！", HttpStatus.NOT_ACCEPTABLE);
+                throw new ServerSideBusinessException("客户支付方式错误！", HttpStatus.NOT_ACCEPTABLE);
             }
         }
         else
         {
-            throw new ServerSideBusinessException("客户支付方式不允许修改！", HttpStatus.NOT_ACCEPTABLE);
+            throw new ServerSideBusinessException("客户支付方式错误！", HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
@@ -907,6 +974,18 @@ public class OrderServiceImpl implements OrderService
 
         /*订单号与微信订单号关联*/
         orderDao.bindWeixinOrderSn(order.getId(),weixinOrderSn,amount);
+    }
+
+
+    public void orderPay(Order order, PayType payType)
+    {
+        checkPayType(payType,order.getCustomer());
+        updatePayStatus(PayStatus.PSPaied,payType,order.getCustomer(),order);
+
+        order.setId(order.getId());
+        order.setPayType(payType);
+        order.setPayStatus(PayStatus.PSPaied);
+        orderDao.update(order);
     }
 
     public void ticketPay(Order order,String coupuns,String tickets)

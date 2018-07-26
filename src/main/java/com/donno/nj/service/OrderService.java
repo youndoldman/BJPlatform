@@ -1,6 +1,7 @@
 package com.donno.nj.service;
 
 import com.donno.nj.domain.Order;
+import com.donno.nj.domain.PayType;
 import com.donno.nj.domain.Ticket;
 import com.google.common.base.Optional;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,8 @@ public interface OrderService
 
     void update(Order srcOrder, Order newOrder);
 
+
+    void orderPay(Order order, PayType payType);
     void ticketPay(Order order,String coupuns,String tickets);
 
     void update(String taskId,Map<String, Object> variables,Integer id, Order newOrder);//订单任务更新
@@ -32,6 +35,8 @@ public interface OrderService
     void OrderOperHistory(Order order,Integer orderStatus) ;
 
     void weixinPayOk(String orderSn,String weixinSn,Integer amount);
+
+    Order caculate(String orderSn,String gasCynNumber);
 
 
 }

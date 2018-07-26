@@ -321,6 +321,21 @@ public class OrderController
         return responseEntity;
     }
 
+    @OperationLog(desc = "计算订单价格")
+    @RequestMapping(value = "/api/Orders/Caculate", method = RequestMethod.GET)
+    public ResponseEntity caculate(@RequestParam(value = "orderSn", defaultValue = "") String orderSn,
+                                   @RequestParam(value = "gasCynNumber", defaultValue = "") String gasCynNumber
+    )
+    {
+        ResponseEntity responseEntity;
+
+        Order order = orderService.caculate(orderSn,gasCynNumber);
+
+        responseEntity = ResponseEntity.ok(order);
+
+        return responseEntity;
+    }
+
 
     @OperationLog(desc = "气票用户支付")
     @RequestMapping(value = "/api/TicketOrders/{orderSn}", method = RequestMethod.PUT)
@@ -367,6 +382,27 @@ public class OrderController
         return responseEntity;
     }
 
+    @OperationLog(desc = "订单支付(普通用户--扫码，现金，赊销；月结用户)")
+    @RequestMapping(value = "/api/orderPay/{orderSn}", method = RequestMethod.PUT)
+    public ResponseEntity orderPay(@PathVariable("orderSn") String orderSn,
+                                   @RequestParam(value = "payType", required = true) PayType payType
+    )
+    {
+        ResponseEntity responseEntity;
+
+        Optional<Order> orderOptional = orderService.findBySn(orderSn);
+        if (orderOptional.isPresent())
+        {
+            orderService.orderPay(orderOptional.get(),payType);
+            responseEntity = ResponseEntity.ok().build();
+        }
+        else
+        {
+            responseEntity = ResponseEntity.notFound().build();
+        }
+
+        return responseEntity;
+    }
 
 
     @OperationLog(desc = "删除订单信息")
@@ -409,7 +445,4 @@ public class OrderController
 
         return responseEntity;
     }
-
-
-
 }
