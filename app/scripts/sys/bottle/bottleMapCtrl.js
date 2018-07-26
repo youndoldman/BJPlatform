@@ -432,11 +432,18 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
             $scope.pagerOpsLog.update($scope.q, 0, 1);
             //初始化时间段
             var curDate = new Date();
-            curDate.toDateString;
             var month = curDate.getMonth()+1;
-            $scope.q.endTime = curDate.getFullYear()+"-"+month+"-"+curDate.getDate()+" "
+            if(month<10){
+                month = "0"+month;
+            }
+            var day = curDate.getDate();
+            if(day<10){
+                day = "0"+day;
+            }
+
+            $scope.q.endTime = curDate.getFullYear()+"-"+month+"-"+day+" "
                 +curDate.getHours()+":"+curDate.getMinutes()+":"+curDate.getSeconds();
-            $scope.q.startTime = curDate.getFullYear()+"-"+month+"-"+curDate.getDate()+" "
+            $scope.q.startTime = curDate.getFullYear()+"-"+month+"-"+day+" "
                 +"00"+":"+"00"+":"+"00";
             searchBottles();
 
