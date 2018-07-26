@@ -360,8 +360,6 @@ public class OrderController
         return responseEntity;
     }
 
-
-
     @OperationLog(desc = "修改订单信息")
     @RequestMapping(value = "/api/Orders/{orderSn}", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable("orderSn") String orderSn, @RequestBody Order newOrder)
@@ -382,6 +380,7 @@ public class OrderController
         return responseEntity;
     }
 
+<<<<<<< HEAD
     @OperationLog(desc = "订单支付(普通用户--扫码，现金，赊销；月结用户)")
     @RequestMapping(value = "/api/orderPay/{orderSn}", method = RequestMethod.PUT)
     public ResponseEntity orderPay(@PathVariable("orderSn") String orderSn,
@@ -405,6 +404,8 @@ public class OrderController
     }
 
 
+=======
+>>>>>>> 2545f31c4ccd1f8b0db31990ec85fb854a01fb36
     @OperationLog(desc = "删除订单信息")
     @RequestMapping(value = "/api/Orders/{orderSn}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable("orderSn") String orderSn)
