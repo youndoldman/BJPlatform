@@ -9,6 +9,7 @@
         <result column="call_in_phone" property="callInPhone" jdbcType="VARCHAR"/>
         <result column="origal_amount" property="originalAmount" jdbcType="FLOAT"/>
         <result column="amount" property="orderAmount" jdbcType="FLOAT"/>
+        <result column="refound_sum" property="refoundSum" jdbcType="FLOAT"/>
         <result column="pay_type" property="payType"  typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
         <result column="access_type" property="accessType" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
         <result column="order_trigger_type" property="orderTriggerType" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
@@ -213,6 +214,7 @@
 
         <if test="originalAmount != null">origal_amount = #{originalAmount},</if>
         <if test="orderAmount != null">amount = #{orderAmount},</if>
+        <if test="refoundSum != null">refound_sum = #{refoundSum},</if>
         <if test="payTime != null">pay_time = #{payTime},</if>
         <if test="payStatus != null">pay_status = #{payStatus.index},</if>
         <if test="payType != null">pay_type = #{payType.index},</if>

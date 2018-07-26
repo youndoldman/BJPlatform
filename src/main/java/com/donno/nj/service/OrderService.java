@@ -36,7 +36,7 @@ public interface OrderService
 
     void weixinPayOk(String orderSn,String weixinSn,Integer amount);
 
-    Order caculate(String orderSn,String gasCynNumber);
+    Order caculate(String orderSn,String gasCynNumbers);
 
 
 }

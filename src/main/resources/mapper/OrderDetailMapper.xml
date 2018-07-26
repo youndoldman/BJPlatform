@@ -10,7 +10,6 @@
         <result column="original_price" property="originalPrice" jdbcType="FLOAT"/>
         <result column="quantity" property="quantity" jdbcType="INTEGER"/>
         <result column="subtotal" property="subtotal" jdbcType="FLOAT"/>
-        <result column="refound_sum" property="refoundSum" jdbcType="FLOAT"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
@@ -66,14 +65,14 @@
     <!--</delete>-->
 
 
-    <update id="update">
-    UPDATE <include refid="TblOrderDetail"/>
-    <set>
-        <if test="subtotal != null">subtotal = #{subtotal},</if>
-        <if test="refoundSum != null">refound_sum = #{refoundSum},</if>
-    </set>
-    WHERE id = #{id}
-    </update>
+    <!--<update id="update">-->
+    <!--UPDATE <include refid="TblOrderDetail"/>-->
+    <!--<set>-->
+        <!--<if test="subtotal != null">subtotal = #{subtotal},</if>-->
+        <!--<if test="refoundSum != null">refound_sum = #{refoundSum},</if>-->
+    <!--</set>-->
+    <!--WHERE id = #{id}-->
+    <!--</update>-->
 
     <!--<sql id="JoinSelectColumn">-->
         <!--t_goods.id, t_goods.name,t_goods.price,t_goods.info,t_goods.note,t_goods.create_time,t_goods.update_time,-->

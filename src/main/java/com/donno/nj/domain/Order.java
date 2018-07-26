@@ -16,6 +16,7 @@ public class Order implements Serializable
 
     private Float  originalAmount;//订单原始金额
     private Float  orderAmount;//订单金额
+    private Float  refoundSum;//退款金额
     private PayType payType;//支付方式
 
     private Integer orderStatus;//订单状态
@@ -92,6 +93,10 @@ public class Order implements Serializable
 
     public Float getOriginalAmount() {
         return originalAmount;
+    }
+
+    public Float getRefoundSum() {
+        return refoundSum;
     }
 
     public PayType getPayType()
@@ -272,7 +277,9 @@ public class Order implements Serializable
         this.payType = payType;
     }
 
-
+    public void setRefoundSum(Float refoundSum) {
+        this.refoundSum = refoundSum;
+    }
 
     public void setAccessType(AccessType accessType)
     {

@@ -324,12 +324,12 @@ public class OrderController
     @OperationLog(desc = "计算订单价格")
     @RequestMapping(value = "/api/Orders/Caculate", method = RequestMethod.GET)
     public ResponseEntity caculate(@RequestParam(value = "orderSn", defaultValue = "") String orderSn,
-                                   @RequestParam(value = "gasCynNumber", defaultValue = "") String gasCynNumber
+                                   @RequestParam(value = "gasCynNumbers", defaultValue = "") String gasCynNumbers
     )
     {
         ResponseEntity responseEntity;
 
-        Order order = orderService.caculate(orderSn,gasCynNumber);
+        Order order = orderService.caculate(orderSn,gasCynNumbers);
 
         responseEntity = ResponseEntity.ok(order);
 

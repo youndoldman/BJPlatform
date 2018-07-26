@@ -19,7 +19,7 @@ public class OrderDetail implements Serializable
     private Float   dealPrice;//成交单价
     private Integer quantity;//数量
 
-    private Float refoundSum;//退款金额
+//    private Float refoundSum;//退款金额
     private Float subtotal;//金额小计
 
     private Date createTime;
@@ -78,9 +78,9 @@ public class OrderDetail implements Serializable
         return  quantity;
     }
 
-    public Float getRefoundSum() {
-        return refoundSum;
-    }
+//    public Float getRefoundSum() {
+//        return refoundSum;
+//    }
 
     public  Float getSubtotal()
     {
@@ -146,9 +146,9 @@ public class OrderDetail implements Serializable
         this.quantity = quantity;
     }
 
-    public void setRefoundSum(Float refoundSum) {
-        this.refoundSum = refoundSum;
-    }
+//    public void setRefoundSum(Float refoundSum) {
+//        this.refoundSum = refoundSum;
+//    }
 
     public void setSubtotal(Float subtotal)
     {

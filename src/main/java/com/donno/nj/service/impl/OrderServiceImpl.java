@@ -376,16 +376,11 @@ public class OrderServiceImpl implements OrderService
 
     @Override
     @OperationLog(desc = "计算订单价格")
-    public Order caculate(String orderSn,String gasCynNumber)
+    public Order caculate(String orderSn,String gasCynNumbers)
     {
         if (orderSn == null || orderSn.trim().length() == 0 )
         {
             throw new ServerSideBusinessException("缺少订单号", HttpStatus.NOT_ACCEPTABLE);
-        }
-
-        if (gasCynNumber == null || gasCynNumber.trim().length() == 0 )
-        {
-            throw new ServerSideBusinessException("缺少钢瓶编号", HttpStatus.NOT_ACCEPTABLE);
         }
 
         Order order = orderDao.findBySn(orderSn);
@@ -394,47 +389,71 @@ public class OrderServiceImpl implements OrderService
             throw new ServerSideBusinessException("订单不存在", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        GasCylinder gasCylinder = gasCylinderDao.findByNumber(gasCynNumber);
-        if (gasCylinder == null)
+        if (gasCynNumbers == null || gasCynNumbers.trim().length() == 0 )
         {
-            throw new ServerSideBusinessException("钢瓶不存在", HttpStatus.NOT_ACCEPTABLE);
+            throw new ServerSideBusinessException("缺少钢瓶编号", HttpStatus.NOT_ACCEPTABLE);
         }
 
         /*查订单地址对应的燃气价格*/
         CustomerAddress customerAddress = order.getRecvAddr();
-        for(OrderDetail orderDetail : order.getOrderDetailList())
+        Map params = new HashMap<String,String>();
+        params.putAll(ImmutableMap.of("province", customerAddress.getProvince()));
+        params.putAll(ImmutableMap.of("city", customerAddress.getCity()));
+        params.putAll(ImmutableMap.of("county", customerAddress.getCounty()));
+        params.putAll(ImmutableMap.of("typeCode", ServerConstantValue.GOODS_TYPE_GAS));
+        List<Goods> goodsList =  goodsDao.getList(params);
+        Float gasPrice = Float.POSITIVE_INFINITY;
+        if (goodsList.size() > 0)
         {
-            /*瓶装液化气*/
-            if (orderDetail.getGoods().getGoodsType().getCode().equals(ServerConstantValue.GOODS_TYPE_GAS_CYN))
-            {
-                /*查找该客户地址对应的燃气单价*/
-                Map params = new HashMap<String,String>();
-                params.putAll(ImmutableMap.of("province", customerAddress.getProvince()));
-                params.putAll(ImmutableMap.of("city", customerAddress.getCity()));
-                params.putAll(ImmutableMap.of("county", customerAddress.getCounty()));
-                List<Goods> goodsList =  goodsDao.getList(params);
-                if (goodsList.size() > 0)
-                {
-                    Float gasPrice = Float.POSITIVE_INFINITY;
-                    for (Goods goods:goodsList )
-                    {
-                        if (Math.round(goods.getPrice()*100)/100.0  < Math.round(gasPrice*100)/100.0)
-                        {
-                            gasPrice = goods.getPrice();
-                        }
-                    }
-
-                    gasCylinder.setGasPrice(gasPrice);
-                    gasCylinderDao.update(gasCylinder);
-
-                    Float refoundSum = gasPrice * ( orderDetail.getGoods().getWeight() -( gasCylinder.getFullWeight() - gasCylinder.getEmptyWeight()));
-                    orderDetail.setRefoundSum(refoundSum);
-                    orderDetail.setSubtotal(orderDetail.getDealPrice() * orderDetail.getQuantity() - refoundSum);
-                    orderDetailDao.update(orderDetail);
+            for (Goods goods : goodsList) {
+                if (Math.round(goods.getPrice() * 100) / 100.0 < Math.round(gasPrice * 100) / 100.0) {
+                    gasPrice = goods.getPrice();
                 }
             }
         }
+        else
+        {
+            throw new ServerSideBusinessException("缺少本区域燃气价格信息，请系统管理员先进行添加", HttpStatus.NOT_ACCEPTABLE);
+        }
 
+        String[] gasCynNumberArray = gasCynNumbers.split(",");
+        for (String gasCynNumber :gasCynNumberArray)
+        {
+            GasCylinder gasCylinder = gasCylinderDao.findByNumber(gasCynNumber);
+            if (gasCylinder == null)
+            {
+                throw new ServerSideBusinessException("钢瓶不存在", HttpStatus.NOT_ACCEPTABLE);
+            }
+
+                gasCylinder.setGasPrice(gasPrice);
+                gasCylinderDao.update(gasCylinder);
+
+                Float maxGasWeight = 10f;
+
+                /*临时对应规格的气量*/
+                if (gasCylinder.getSpec().getCode().equals("0001") )
+                {
+                    maxGasWeight = 4f;
+                }
+                else if(gasCylinder.getSpec().getCode().equals("0002") )
+                {
+                    maxGasWeight = 12f;
+                }
+                else
+                {
+                    maxGasWeight = 48f;
+                }
+
+                Float refoundSum = gasPrice * ( maxGasWeight -( gasCylinder.getFullWeight() - gasCylinder.getEmptyWeight()));
+
+                Order newOrder = new Order();
+                newOrder.setId(order.getId());
+                newOrder.setRefoundSum(order.getRefoundSum() + refoundSum);
+                newOrder.setOrderAmount(order.getOrderAmount() - refoundSum);
+
+                orderDao.update(newOrder);
+
+        }
         return  order;
     }
 
