@@ -77,6 +77,7 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
             var queryParams = {
                 userId: $scope.q.userName,
                 pageNo: $scope.pager.getCurPageNo(),
+                orderBy:"alive_status desc",
                 pageSize: $scope.pager.pageSize,
                 groupCode:$scope.q.userGroup.code
             };
