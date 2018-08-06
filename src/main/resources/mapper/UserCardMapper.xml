@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.UserCardDao">
+
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.UserCard">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="number" property="number" jdbcType="VARCHAR"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="status" property="deviceStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+
+        <association property="user" column="number" select="com.donno.nj.dao.CardUserRelDao.findUserByNumber">
+        </association>
+
+    </resultMap>
+
+    <sql id="TblUserCard">
+        t_user_card
+    </sql>
+
+    <sql id="InsertColumnList">
+        number,status,note
+    </sql>
+
+    <insert id="insert"  keyProperty="id" useGeneratedKeys="true">
+        INSERT IGNORE INTO <include refid="TblUserCard"/>(<include refid="InsertColumnList"/>)
+        VALUES( #{number},#{deviceStatus.index}, #{note} )
+    </insert>
+
+    <sql id = "getListCondition">
+    <where>
+    <if test="number != null">   number = #{number}</if>
+    <if test="status != null">   and status = #{status} </if>
+
+    <if test="userId != null">   and id in (SELECT card_idx FROM t_user_card_bind_rel WHERE user_idx =
+        (SELECT id FROM  t_user WHERE user_id=#{userId})) </if>
+
+    </where>
+    </sql>
+
+
+    <select id="getList" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblUserCard"/>
+        <include refid="getListCondition"/>
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+
+    <select id="count" resultType="Integer">
+        SELECT COUNT(id)
+        FROM <include refid="TblUserCard"/>
+        <include refid="getListCondition"/>
+    </select>
+
+
+    <update id="update">
+        UPDATE <include refid="TblUserCard"/>
+        <set>
+            <if test="deviceStatus != null">status = #{deviceStatus.index},</if>
+
+            <if test="number != null">number = #{number},</if>
+
+
+            <if test="note != null">note = #{note},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="findById" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblUserCard"/>
+        WHERE
+        id =  #{id}
+    </select>
+
+    <select id="findByNumber" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblUserCard"/>
+        WHERE
+        number =  #{number}
+    </select>
+
+
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM <include refid="TblUserCard"/>
+        WHERE
+        id = #{id}
+    </delete>
+
+</mapper>

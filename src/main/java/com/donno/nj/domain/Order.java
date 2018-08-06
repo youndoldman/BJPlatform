@@ -42,9 +42,12 @@ public class Order implements Serializable
 
     private SysUser dispatcher;//订单派送人
 
+    private OrderServiceQuality orderServiceQuality;//服务质量
+    private String  recycleGasCylinder;//回收的钢瓶号   zy添加
+    private String  deliveryGasCylinder;//配送的钢瓶号  zy添加
+
     private String  note;
-    private String  recycleGasCylinder;//回收的钢瓶号
-    private String  deliveryGasCylinder;//配送的钢瓶号
+
 
     private Date createTime;
     private Date payTime;//支付时间
@@ -137,10 +140,7 @@ public class Order implements Serializable
         return accessType;
     }
 
-    public void setOrderTriggerType(OrderTriggerType orderTriggerType)
-    {
-        this.orderTriggerType = orderTriggerType;
-    }
+
 
     public CustomerAddress getRecvAddr()
     {
@@ -187,9 +187,8 @@ public class Order implements Serializable
         return  payTime;
     }
 
-    public String getNote()
-    {
-        return note;
+    public OrderServiceQuality getOrderServiceQuality() {
+        return orderServiceQuality;
     }
 
     public String getRecycleGasCylinder()
@@ -202,6 +201,10 @@ public class Order implements Serializable
         return deliveryGasCylinder;
     }
 
+    public String getNote()
+    {
+        return note;
+    }
 
     public  Date getCreateTime()
     {
@@ -331,9 +334,18 @@ public class Order implements Serializable
         this.payTime = payTime;
     }
 
+    public void setOrderTriggerType(OrderTriggerType orderTriggerType)
+    {
+        this.orderTriggerType = orderTriggerType;
+    }
+
     public void setNote(String note)
     {
         this.note = note;
+    }
+
+    public void setOrderServiceQuality(OrderServiceQuality orderServiceQuality) {
+        this.orderServiceQuality = orderServiceQuality;
     }
 
     public void setRecycleGasCylinder(String recycleGasCylinder)

@@ -35,6 +35,9 @@
         <result column="recycle_gas_cylinder" property="recycleGasCylinder" jdbcType="VARCHAR"/>
         <result column="delivery_gas_cylinder" property="deliveryGasCylinder" jdbcType="VARCHAR"/>
 
+
+        <result column="service_quality" property="orderServiceQuality" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
 
@@ -55,14 +58,14 @@
 
     <sql id="InsertColumnList">
         order_sn,call_in_phone,customer_idx ,amount,origal_amount,pay_type,access_type,status,pay_status,order_trigger_type,urgent,reserve_time,
-        addr_province,addr_city,addr_county,addr_detail, longitude,latitude,recv_name,recv_phone,comment,note,recycle_gas_cylinder,delivery_gas_cylinder
+        addr_province,addr_city,addr_county,addr_detail, longitude,latitude,recv_name,recv_phone,comment,recycle_gas_cylinder,delivery_gas_cylinder,note
     </sql>
 
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO <include refid="TblOrder"/>(<include refid="InsertColumnList"/>)
         VALUES( #{orderSn},#{callInPhone},#{customer.id},#{orderAmount},#{originalAmount}, #{payType.index},  #{accessType.index},#{orderStatus} ,#{payStatus.index},#{orderTriggerType.index},#{urgent} , #{reserveTime} ,
         #{recvAddr.province}, #{recvAddr.city},#{recvAddr.county},#{recvAddr.detail},#{recvLongitude},#{recvLatitude},
-        #{recvName}, #{recvPhone},#{comment},#{note},#{recycleGasCylinder},#{deliveryGasCylinder} )
+        #{recvName}, #{recvPhone},#{comment},#{recycleGasCylinder},#{deliveryGasCylinder},#{note} )
     </insert>
 
 
@@ -115,8 +118,13 @@
                 AND  pay_type = #{payType.index}
             </if>
 
-            <if test="accessType != null">
-                AND  access_type = #{accessType.index}
+            <if test="payType != null">
+                AND  pay_type = #{payType.index}
+            </if>
+
+
+            <if test="orderServiceQuality != null">
+                AND  service_quality = #{orderServiceQuality.index}
             </if>
 
             <if test="recv_name != null">
@@ -218,6 +226,7 @@
         <if test="payTime != null">pay_time = #{payTime},</if>
         <if test="payStatus != null">pay_status = #{payStatus.index},</if>
         <if test="payType != null">pay_type = #{payType.index},</if>
+        <if test="orderServiceQuality != null">service_quality = #{orderServiceQuality.index},</if>
         <if test="invoiceStatus != null">invoice_status = #{invoiceStatus.index},</if>
         <if test="recvName != null">recv_name = #{recvName},</if>
         <if test="recvPhone != null">recv_phone = #{recvPhone},</if>
