@@ -21,4 +21,5 @@ public class ConfigUtil
     {
         this.recvPositionPort = recvPositionPort;
     }
+
 }

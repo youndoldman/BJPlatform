@@ -27,7 +27,6 @@ import static com.donno.nj.util.ParamMapBuilder.paginationParams;
 @RestController
 public class TicketController
 {
-
     @Autowired
     TicketService ticketService ;
 

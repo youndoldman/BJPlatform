@@ -25,7 +25,6 @@ public class UdpServerServiceImpl implements UdpServerService
     @Autowired
     private UdpServerHandler udpServerHandler;
 
-
     @Override
     public void run()
     {

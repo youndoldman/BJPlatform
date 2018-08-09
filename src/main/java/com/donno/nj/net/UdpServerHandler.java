@@ -42,10 +42,9 @@ public class UdpServerHandler
 
         try
         {
-
             JSONObject json = new JSONObject(revMessage);
 
-        /*接收数据解析*/
+            /*接收数据解析*/
             GasCynTray gasCynTray = new GasCynTray();
             gasCynTray.setNumber(json.getString("code"));
             gasCynTray.setWeight((float)json.getDouble("weight"));

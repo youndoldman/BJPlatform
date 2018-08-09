@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.GasFillingMergeDao">
+    <resultMap id="BaseResultMap" type="com.donno.nj.domain.GasFilling">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="station_number" property="stationNumber" jdbcType="VARCHAR"/>
+        <result column="machine_number" property="machineNumber" jdbcType="INTEGER"/>
+        <result column="cyn_number" property="cyn_number" jdbcType="INTEGER"/>
+        <result column="client_code" property="clientCode" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="filling_start_time" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="use_time" property="useTime" jdbcType="INTEGER"/>
+        <result column="filling_type" property="fillingType" jdbcType="VARCHAR"/>
+        <result column="target_weight" property="targetWeight" jdbcType="FLOAT"/>
+        <result column="tare_weight" property="tareWeight" jdbcType="FLOAT"/>
+        <result column="real_weight" property="realWeight" jdbcType="FLOAT"/>
+        <result column="deviation" property="deviation" jdbcType="FLOAT"/>
+        <result column="result" property="result" jdbcType="VARCHAR"/>
+        <result column="sequence" property="sequence" jdbcType="INTEGER"/>
+        <result column="merge_time" property="mergeTime" jdbcType="TIMESTAMP"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="TblGasFillingMerge">
+        t_gas_filling_merge
+    </sql>
+
+
+    <sql id="InsertColumnList">
+        station_number,machine_number,cyn_idx,client_code,user_idx,filling_start_time,use_time,filling_type,target_weight,tare_weight,real_weight,deviation,result,sequence,merge_time, note
+    </sql>
+    <insert id="insert">
+    INSERT IGNORE INTO <include refid="TblGasFillingMerge"/>
+        (<include refid="InsertColumnList"/>)
+    VALUES( #{stationNumber},#{machineNumber},
+        (select id from t_gas_cylinder where number = #{cynNumber}),
+        #{clientCode},
+        (select id from t_user where user_id = #{userId}),
+        #{startTime}, #{useTime},#{fillingType},#{targetWeight},#{tareWeight},#{realWeight},#{deviation},#{result},#{sequence},#{mergeTime}
+    ,#{note})
+    </insert>
+
+
+
+</mapper>

@@ -10,4 +10,7 @@ public interface SystemParamDao extends BaseDao<SystemParam>
 
     Integer getTrayWarningWeight();
 
+
+    Float getGasTareDfferWeight();
+
 }

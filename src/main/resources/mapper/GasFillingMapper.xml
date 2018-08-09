@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.GasFillingDao">
+    <resultMap id="BaseResultMap" type="com.donno.nj.domain.GasFilling">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="station_number" property="stationNumber" jdbcType="VARCHAR"/>
+        <result column="machine_number" property="machineNumber" jdbcType="INTEGER"/>
+        <result column="client_code" property="clientCode" jdbcType="INTEGER"/>
+        <result column="user_code" property="userId" jdbcType="VARCHAR"/>
+        <result column="filling_start_time" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="use_time" property="useTime" jdbcType="INTEGER"/>
+        <result column="filling_type" property="fillingType" jdbcType="VARCHAR"/>
+        <result column="target_weight" property="targetWeight" jdbcType="FLOAT"/>
+        <result column="tare_weight" property="tareWeight" jdbcType="FLOAT"/>
+        <result column="real_weight" property="realWeight" jdbcType="FLOAT"/>
+        <result column="deviation" property="deviation" jdbcType="FLOAT"/>
+        <result column="result" property="result" jdbcType="VARCHAR"/>
+        <result column="sequence" property="sequence" jdbcType="INTEGER"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="TblGasFilling">
+        t_gas_filling
+    </sql>
+
+
+    <sql id="InsertColumnList">
+        station_number,machine_number,client_code,user_code,filling_start_time,use_time,filling_type,target_weight,tare_weight,real_weight,deviation,result,sequence, note
+    </sql>
+    <insert id="insert">
+    INSERT IGNORE INTO <include refid="TblGasFilling"/>
+        (<include refid="InsertColumnList"/>)
+    VALUES( #{stationNumber},#{machineNumber},#{clientCode},
+        #{userId},
+        #{startTime}, #{useTime},#{fillingType},#{targetWeight},#{tareWeight},#{realWeight},#{deviation},#{result},#{sequence}
+    ,#{note})
+    </insert>
+
+    <select id="find" resultMap="BaseResultMap">
+         select * from <include refid="TblGasFilling"/>
+        WHERE station_number = #{stationNumber} and machine_number = #{machineNumber}
+    </select>
+
+    <update id="update">
+        UPDATE <include refid="TblGasFilling"/>
+        <set>
+            <if test="stationNumber != null">station_number = #{stationNumber},</if>
+            <if test="machineNumber != null">machine_number = #{machineNumber},</if>
+            <if test="clientCode != null">client_code = #{clientCode},</if>
+            <if test="userId != null">user_code = #{userId},</if>
+            <if test="startTime != null">filling_start_time = #{startTime},</if>
+            <if test="useTime != null">use_time = #{useTime},</if>
+            <if test="fillingType != null">filling_type = #{fillingType},</if>
+            <if test="targetWeight != null">target_weight = #{targetWeight},</if>
+            <if test="tareWeight != null">tare_weight = #{tareWeight},</if>
+            <if test="realWeight != null">real_weight = #{realWeight},</if>
+            <if test="deviation != null">deviation = #{deviation},</if>
+            <if test="result != null">result = #{result},</if>
+            <if test="sequence != null">sequence = #{sequence},</if>
+            <if test="note != null">note = #{note}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <delete id="delete">
+        DELETE  FROM  <include refid="TblGasFilling"/> WHERE id = #{id}
+    </delete>
+
+
+</mapper>

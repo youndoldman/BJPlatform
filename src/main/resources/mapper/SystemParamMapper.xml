@@ -31,6 +31,11 @@
         FROM <include refid="TableName"/>
     </select>
 
+    <select id="getGasTareDfferWeight" resultType="Float">
+        SELECT  gas_cyn_tare_differ_weight
+        FROM <include refid="TableName"/>
+    </select>
+
 
 
 
