@@ -265,7 +265,7 @@ public class OrderServiceImpl implements OrderService
 //        }
 //        else
 //        {
-//            orderUpdateAmount.setOrderAmount(dealAmount);
+            orderUpdateAmount.setOrderAmount(dealAmount);
 //        }
 
         orderDao.update(orderUpdateAmount);
