@@ -23,7 +23,10 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <label class="input">支付状态：</label>
                         <label class="input"><select  ng-model="q.payStatus" ng-options="payStatus.value for payStatus in vm.payStatus" class="form-control" ng-selected="" ng-change="payStatusSearchChange()"></select></label>
-                        <h1></h1>
+                        <p></p>
+                        <label class="input">用户评价：</label>
+                        <label class="input"><select  ng-model="q.orderServiceQuality" ng-options="orderServiceQuality.value for orderServiceQuality in vm.orderServiceQuality" class="form-control" ng-selected="" ng-change="orderServiceQualitySearchChange()"></select></label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <label class="input">订单编号：</label>
                         <label class="input"><input type="text"  class="form-control" ng-model="q.orderSn"></label>
                         &nbsp;&nbsp;&nbsp;&nbsp;
@@ -64,22 +67,24 @@
     <table class="table table-striped table-hover props table-sm">
         <thead>
         <tr>
+        <tr>
             <th width="1%"></th>
             <th width="3%">序号</th>
             <th width="8%">订单编号</th>
-            <th width="5%">订单状态</th>
-            <th width="5%">接入方式</th>
-            <th width="5%">支付方式</th>
+            <th width="4%">订单状态</th>
+            <th width="4%">接入方式</th>
+            <th width="4%">支付方式</th>
             <th width="5%">订单客户</th>
 
 
-            <th width="18%">收货地址</th>
+            <th width="15%">收货地址</th>
             <th width="4%">收货人</th>
             <th width="4%">配送员</th>
             <th width="5%">所属门店</th>
+            <th width="4%">金额(元)</th>
+            <th width="4%">支付状态</th>
+            <th width="4%">用户评价</th>
 
-            <th width="5%">支付状态</th>
-            <th width="5%">金额(元)</th>
             <th width="9%">创建时间</th>
             <th width="9%">预约时间</th>
             <th width="15%">操作</th>
@@ -100,9 +105,11 @@
             <td class="message" title="电话：{{order.recvPhone}}">{{order.recvName}}</td>
 
             <td class="message" title="姓名：{{order.dispatcher.name}} 电话：{{order.dispatcher.mobilePhone}} 工号：{{order.dispatcher.jobNumber}}">{{order.dispatcher.userId}}</td>
+
             <td class="message">{{order.dispatcher.department.name}}</td>
-            <td class="message">{{order.payStatus.name}}</td>
             <td class="message">{{order.orderAmount}}</td>
+            <td class="message">{{order.payStatus.name}}</td>
+            <td class="message">{{order.orderServiceQuality.name}}</td>
             <td class="message">{{order.createTime}}</td>
             <td class="message">{{order.reserveTime}}</td>
             <td class="operate">

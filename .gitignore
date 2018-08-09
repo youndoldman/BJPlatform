@@ -3,6 +3,7 @@
 
 node_modules/
 
+libs/
 target/
 log_dir_IS_UNDEFINED/
 .idea/

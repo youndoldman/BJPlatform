@@ -27,6 +27,10 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     var gasCynTrayUri = URI.resources.GasCynTray;//托盘查询
     var gasCynTrayUnBindUri = URI.resources.GasCynTrayunBind;//托盘解绑定
 
+    var userCardBindUri = URI.resources.UserCardBind;//用户卡绑定
+    var userCardUri = URI.resources.UserCard;//用户卡查询
+    var userCardUnBindUri = URI.resources.UserCardunBind;//用户卡解绑定
+
     this.retrieveGoods = function (params) {
         return promise.wrap($http.get(goodsUri, {params: params}));
     };
@@ -203,5 +207,19 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     this.retrievePallets = function (params) {
         return promise.wrap($http.get(gasCynTrayUri, {params: params}));
     };
+
+    //绑定用户卡至客户
+    this.bindUserCard = function (customerId, userCardNumber) {
+        return promise.wrap($http.put(userCardBindUri + "/" + userCardNumber+"?userId="+customerId));
+    };
+    //解除绑定用户卡
+    this.unBindUserCard = function (customerId, userCardNumber) {
+        return promise.wrap($http.put(userCardUnBindUri + "/" + userCardNumber+"?userId="+customerId));
+    };
+    //用户卡查询
+    this.retrieveUserCards = function (params) {
+        return promise.wrap($http.get(userCardUri, {params: params}));
+    };
+
 }]);
 
