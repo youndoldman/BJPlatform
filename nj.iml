@@ -166,5 +166,23 @@
     <orderEntry type="library" name="Maven: com.lmax:disruptor:3.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-configuration-processor:1.5.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: com.vaadin.external.google:android-json:0.0.20131108.vaadin1" level="project" />
+    <orderEntry type="module-library">
+      <library name="Maven: com.aliyun:aliyun-java-sdk-core:3.7.1">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/aliyun-java-sdk-core-3.3.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: com.aliyun:aliyun-java-sdk-dysmsapi:1.1.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/aliyun-java-sdk-dysmsapi-1.0.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

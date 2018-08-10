@@ -32,7 +32,6 @@ public class UdpServerControl
                 if (udpServer != null)
                 {
                     new Thread(udpServer).start();
-
                     /*d定时器终止*/
                     this.cancel();
                 }

@@ -141,6 +141,15 @@
 
                     </div>
                 </div>
+                <div class="input-group pdb15"　ng-if="isModify">
+                    <label class="col-sm-4 control-label input-label-large">用户卡编码：</label>
+                    <div class="col-sm-8 input-width">
+                        <input type="text" name="userCardNumber" class="form-control" ng-model="vm.userCard"  required>
+                    </div>
+                    <button ng-if="vm.isBindedUserCard" type="button" class="btn btn-sm btn-danger" ng-click="userCardunBind(vm.userCard)"><i class="fa fa-minus"></i> 解绑 </button>
+                    <button ng-if="!vm.isBindedUserCard" type="button" class="btn btn-sm btn-success" ng-click="userCardbind(vm.userCard)"><i class="fa fa-plus"></i> 绑定 </button>
+                </div>
+
                 <div class="input-group pdb15" ng-if="isModify">
                     <label class="col-sm-4 control-label input-label-large">托盘编码：</label>
                     <div class="col-sm-8 input-width">

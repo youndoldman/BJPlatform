@@ -94,6 +94,11 @@ commonModule.constant('URI', {
         'GasCynFactory':'../../../api/GasCynFactory',//6.5.	钢瓶厂家接口
         'sysUserPosition':'../../../api/sysusers/position',//用户位置
         'sysUserKeepAlive':'../../../api/sysusers/KeepAlive',//用户心跳
+        'UserCard':'../../../api/UserCard',//用户卡查询
+        'UserCardBind':'../../../api/UserCard/Bind',//用户卡绑定
+        'UserCardunBind':'../../../api/UserCard/unBind',//用户卡解绑定
+
+
 
 
 

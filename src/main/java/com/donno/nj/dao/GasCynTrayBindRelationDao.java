@@ -15,4 +15,5 @@ public interface GasCynTrayBindRelationDao extends BaseDao<GasCynTrayBindRelatio
     GasCynTrayBindRelation findRelationByNumber(String number);
     List<GasCynTray>  findGasCynTrayByUserId(String userId)  ;
 
+
 }

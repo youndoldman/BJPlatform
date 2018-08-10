@@ -47,8 +47,56 @@
             </tbody>
         </table>
         <div ng-if="vm.userList.length == 0" nj-table-no-data></div>
-        <div nj-pager pager="pager"></div>
+        <div nj-pager pager="pager" hidepagesizeoptions=true></div>
+    </div>
+    <div class="ribbon">
+        <a href=""><span class="home fa fa-home"></span></a>
+        <ol class="breadcrumb">
+            <li>漏气报警列表</li>
+        </ol>
     </div>
 
+
+    <div class="table-wrapper">
+        <div class="toolbar">
+            <form role="form">
+                <div class="inline-group">
+                    <label class="input"><input type="text" class="form-control input-sm" ng-model="q.gasTrayId" ng-change="searchGasTrayAction()" placeholder="托盘ID"> </label>
+                    <label class="input col-sm-offset-1">角色：<select  class="input-sm" ng-model="q.gasTrayLeakStatus" ng-options="gasTrayLeakStatus.name for gasTrayLeakStatus in vm.gasTrayLeakStatus" class="form-control" ng-selected="" ng-change="searchGasTrayAction()"></select></label>
+                </div>
+            </form>
+        </div>
+        <table class="table table-striped table-hover props table-sm">
+            <thead>
+            <tr>
+                <th width="1%"></th>
+                <th width="10%">序号</th>
+                <th width="20%">用户名</th>
+                <th width="20%">托盘号</th>
+                <th width="20%">状态</th>
+                <th width="30%">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="gasTray in vm.gasTrayList">
+                <td></td>
+                <td class="message">{{$index+1+pagerGasTray.pageSize*(pagerGasTray.getCurPageNo()-1)}}</td>
+                <td class="message">{{gasTray.user.name}}</td>
+                <td class="message">{{gasTray.number}}</td>
+                <td class="message">{{gasTray.leakStatus.name}}</td>
+                <td class="operate">
+                    <button title="查看位置" ng-click="locationGasTray(gasTray.longitude, gasTray.latitude, gasTray)" type="button" class="btn btn-primary btn-outline btn-xs">
+                        <i class="">定位</i>
+                    </button>
+                    <!--<button title="历史轨迹" ng-click="displayHistory(bottle.number)" type="button" class="btn btn-primary btn-outline btn-xs">-->
+                    <!--<i class="">轨迹</i>-->
+                    <!--</button>-->
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div ng-if="vm.userList.length == 0" nj-table-no-data></div>
+        <div nj-pager pager="pagerGasTray" hidepagesizeoptions=true></div>
+    </div>
     <p/>
 </div>
