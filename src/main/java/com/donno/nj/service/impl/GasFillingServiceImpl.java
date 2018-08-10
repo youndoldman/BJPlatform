@@ -150,7 +150,7 @@ public class GasFillingServiceImpl implements GasFillingService
                     target.setWarnningStatus(WarnningStatus.WSWarnning1);
                 }
 
-                target.setTareDifferWeight(differWeight);
+                target.setTareDifferWeight(-differWeight);
             }
 
             /*添加到融合后的数据表*/
