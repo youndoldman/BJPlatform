@@ -6,7 +6,6 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="station_number" property="stationNumber" jdbcType="VARCHAR"/>
         <result column="machine_number" property="machineNumber" jdbcType="INTEGER"/>
-        <result column="cyn_number" property="cyn_number" jdbcType="INTEGER"/>
         <result column="client_code" property="clientCode" jdbcType="INTEGER"/>
         <result column="user_id" property="userId" jdbcType="VARCHAR"/>
         <result column="filling_start_time" property="startTime" jdbcType="TIMESTAMP"/>
@@ -19,9 +18,14 @@
         <result column="result" property="result" jdbcType="VARCHAR"/>
         <result column="sequence" property="sequence" jdbcType="INTEGER"/>
         <result column="merge_time" property="mergeTime" jdbcType="TIMESTAMP"/>
+        <result column="warning_status" property="warnningStatus"  typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+
+        <association property="cynNumber" column="cyn_idx" select="com.donno.nj.dao.GasCylinderDao.getNumberByIdx">
+        </association>
+
     </resultMap>
 
     <sql id="TblGasFillingMerge">
@@ -30,7 +34,7 @@
 
 
     <sql id="InsertColumnList">
-        station_number,machine_number,cyn_idx,client_code,user_idx,filling_start_time,use_time,filling_type,target_weight,tare_weight,real_weight,deviation,result,sequence,merge_time, note
+        station_number,machine_number,cyn_idx,client_code,user_idx,filling_start_time,use_time,filling_type,target_weight,tare_weight,real_weight,deviation,result,sequence,merge_time,warning_status, note
     </sql>
     <insert id="insert">
     INSERT IGNORE INTO <include refid="TblGasFillingMerge"/>
@@ -39,10 +43,64 @@
         (select id from t_gas_cylinder where number = #{cynNumber}),
         #{clientCode},
         (select id from t_user where user_id = #{userId}),
-        #{startTime}, #{useTime},#{fillingType},#{targetWeight},#{tareWeight},#{realWeight},#{deviation},#{result},#{sequence},#{mergeTime}
-    ,#{note})
+        #{startTime}, #{useTime},#{fillingType},#{targetWeight},#{tareWeight},#{realWeight},#{deviation},#{result},#{sequence},#{mergeTime},
+        #{warnningStatus.index},#{note})
     </insert>
 
+
+    <sql id="getListCondition">
+        <where>
+            <if test="stationNumber != null">
+                and station_number = #{stationNumber}
+            </if>
+
+            <if test="machineNumber != null">
+                and machine_number = #{machineNumber}
+            </if>
+
+            <if test="cynNumber != null">
+                and cyn_idx = (select id FROM  t_gas_cylinder where number = #{cynNumber})
+            </if>
+
+            <if test="warningStatus != null">
+                and warning_status = #{warningStatus.index}
+            </if>
+
+            <if test="startTime != null">
+                and   merge_time >=   #{startTime}
+            </if>
+
+            <if test="endTime != null">
+                and    #{endTime}  >=   merge_time
+            </if>
+
+        </where>
+    </sql>
+
+    <select id="getList" resultMap="BaseResultMap">
+        SELECT *
+        FROM <include refid="TblGasFillingMerge"/>
+        <include refid="getListCondition"/>
+
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+
+    </select>
+
+    <select id="count" resultType="Integer">
+        SELECT COUNT(*)
+        FROM  <include refid="TblGasFillingMerge"/>
+        <include refid="getListCondition"/>
+    </select>
 
 
 </mapper>

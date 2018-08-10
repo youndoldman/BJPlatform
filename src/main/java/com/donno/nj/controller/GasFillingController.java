@@ -4,19 +4,16 @@ import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.GasFilling;
 import com.donno.nj.domain.Ticket;
+import com.donno.nj.domain.WarnningStatus;
 import com.donno.nj.logger.BusinessLogger;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.GasFillingService;
-import com.donno.nj.service.TicketService;
 import com.google.common.collect.ImmutableMap;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,11 +26,12 @@ public class GasFillingController
     @Autowired
     GasFillingService gasFillingService ;
 
-    @RequestMapping(value = "/api/GasFilling", method = RequestMethod.GET, produces = "application/json")
-    @OperationLog(desc = "获取充装信息列表")
+    @RequestMapping(value = "/api/GasFillingMerge", method = RequestMethod.GET, produces = "application/json")
+    @OperationLog(desc = "查询充装信息列表")
     public ResponseEntity retrieve(@RequestParam(value = "stationNumber", defaultValue = "") String stationNumber,
-                                   @RequestParam(value = "balanceNumber", defaultValue = "") String balanceNumber,
+                                   @RequestParam(value = "machineNumber", defaultValue = "") String machineNumber,
                                    @RequestParam(value = "cynNumber", defaultValue = "") String cynNumber,
+                                   @RequestParam(value = "warningStatus", required = false) WarnningStatus warningStatus,
                                    @RequestParam(value = "startTime", defaultValue = "") String startTime,
                                    @RequestParam(value = "endTime", defaultValue = "") String endTime,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
@@ -47,14 +45,19 @@ public class GasFillingController
             params.putAll(ImmutableMap.of("stationNumber", stationNumber));
         }
 
-        if (balanceNumber.trim().length() > 0)
+        if (machineNumber.trim().length() > 0)
         {
-            params.putAll(ImmutableMap.of("balanceNumber", balanceNumber));
+            params.putAll(ImmutableMap.of("machineNumber", machineNumber));
         }
 
         if (cynNumber.trim().length() > 0)
         {
             params.putAll(ImmutableMap.of("cynNumber", cynNumber));
+        }
+
+        if (warningStatus != null)
+        {
+            params.putAll(ImmutableMap.of("warningStatus", warningStatus));
         }
 
         if (startTime.trim().length() > 0)

@@ -31,7 +31,7 @@ public class GasFillingServiceImpl implements GasFillingService
     @OperationLog(desc = "查询充装信息")
     public List<GasFilling> retrieve(Map params)
     {
-        List<GasFilling> fillingList = gasFillingDao.getList(params);
+        List<GasFilling> fillingList = gasFillingMergeDao.getList(params);
 
         return fillingList;
     }
@@ -39,7 +39,7 @@ public class GasFillingServiceImpl implements GasFillingService
     @Override
     @OperationLog(desc = "查询充装数量")
     public Integer count(Map params) {
-        return gasFillingDao.count(params);
+        return gasFillingMergeDao.count(params);
     }
 
 
@@ -94,7 +94,7 @@ public class GasFillingServiceImpl implements GasFillingService
         }
 
         GasCylinder gasCylinder = gasCylinderDao.findByNumber(gasCynNumber);
-        if (gasCynNumber == null)
+        if (gasCylinder == null)
         {
             String message = String.format("钢瓶编号%s不存在",gasCynNumber);
             throw new ServerSideBusinessException(message, HttpStatus.NOT_ACCEPTABLE);
@@ -164,7 +164,6 @@ public class GasFillingServiceImpl implements GasFillingService
 
         return target;
     }
-
 
     @Override
     @OperationLog(desc = "删除充装信息")

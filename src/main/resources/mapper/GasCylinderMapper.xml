@@ -164,4 +164,10 @@
         <include refid="getListCondition"/>
     </select>
 
+    <select id="getNumberByIdx" resultType="String">
+        SELECT number
+        FROM <include refid="TblGasCylinder"/>
+        WHERE id = #{id}
+    </select>
+
 </mapper>
