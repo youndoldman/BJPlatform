@@ -1,4 +1,4 @@
-﻿package com.donno.nj.service.impl;
+package com.donno.nj.service.impl;
 
 import org.springframework.stereotype.Service;
 import com.donno.nj.service.SmsService;
@@ -27,11 +27,9 @@ public class SmsServiceImpl implements SmsService
     static final String product = "Dysmsapi";
     //产品域名,开发者无需替换
     static final String domain = "dysmsapi.aliyuncs.com";
-
     // TODO 此处需要替换成开发者自己的AK(在阿里云访问控制台寻找)
     static final String accessKeyId = "LTAIQCESkaBZRBKo";
     static final String accessKeySecret = "0abALsZaVOyAe7aURqeutOHVaQmjzh";
-
 
     //发送短信
     @Override
@@ -102,18 +100,14 @@ public class SmsServiceImpl implements SmsService
         }else {
             request.setTemplateParam("{\"userName\":\""+userName+"\", \"address1\":\""+address+"\",\"address2\":\""+"\", \"phone\":\""+userPhone+"\"}");
         }
-
         //选填-上行短信扩展码(无特殊需求用户请忽略此字段)
         //request.setSmsUpExtendCode("90997");
 
         //可选:outId为提供给业务方扩展字段,最终在短信回执消息中将此值带回给调用者
         request.setOutId("test");
-
         //hint 此处可能会抛出异常，注意catch
         SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
-
         return sendSmsResponse;
     }
-
 
 }
