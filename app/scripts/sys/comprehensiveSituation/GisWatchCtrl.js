@@ -20,6 +20,7 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
         $scope.$watch('$viewContentLoaded',function () {
             mapInitial();
             pathSimplifierInitial(); //轨迹绘制引擎初始化
+            init();//地图加载成功再执行Init
         });
         //地图初始化
         var mapInitial = function() {
@@ -134,23 +135,38 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
             searchUsers();
         };
 
+        var gotoPageGasTray = function (pageNo) {
+            $scope.pagerGasTray.setCurPageNo(pageNo);
+            searchGasTray();
+        };
+
         $scope.pager = pager.init('GisWatchCtrl', gotoPage);
+        $scope.pagerGasTray = pager.init('GisWatchCtrl', gotoPageGasTray);
 
 
 
         $scope.q = {
             userId: null,
-            userGroup:null
+            userGroup:null,
+            gasTrayId:null,
+            gasTrayLeakStatus:null
         };
 
         $scope.vm = {
             userList: [],
-            userGroups:[{name:"配送员",code:"00003"},{name:"调拨员",code:"00007"}]
+            gasTrayList: [],
+            userGroups:[{name:"配送员",code:"00003"},{name:"调拨员",code:"00007"}],
+            gasTrayLeakStatus:[{name:"漏气报警",code:"1"},{name:"正常运行",code:"0"}]
         };
 
         $scope.search = function () {
             $scope.pager.setCurPageNo(1);
             searchUsers();
+        };
+
+        $scope.searchGasTrayAction = function () {
+            $scope.pagerGasTray.setCurPageNo(1);
+            searchGasTray();
         };
 
 
@@ -169,6 +185,23 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
             });
         };
 
+        var searchGasTray = function () {
+            var queryParams = {
+                number: $scope.q.gasTrayId,
+                leakStatus:$scope.q.gasTrayLeakStatus.code,
+                pageNo: $scope.pagerGasTray.getCurPageNo(),
+                pageSize: $scope.pagerGasTray.pageSize
+            };
+
+            GisWatchService.retrieveGasTray(queryParams).then(function (gasTrays) {
+                $scope.pagerGasTray.update($scope.q, gasTrays.total, queryParams.pageNo);
+                $scope.vm.gasTrayList = gasTrays.items;
+            });
+        };
+
+
+
+
 
         //员工定位
         $scope.location = function (longitude,latitude,aliveStatus) {
@@ -180,25 +213,69 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
 
         };
 
+        //托盘标注
+        var markOneGasTray = function (imagePath, longitude, latitude, gasTray) {
+            var iconGasTray = new AMap.Icon({
+                image : imagePath,//24px*24px
+                //icon可缺省，缺省时为默认的蓝色水滴图标，
+                size : new AMap.Size(50,50),
+                imageSize : new AMap.Size(50,50)
+            });
+            var markerGasTray = new AMap.Marker({
+                icon : iconGasTray,//24px*24px
+                position : [longitude, latitude],
+                offset : new AMap.Pixel(0,0),
+                map : $scope.map
+            });
+            markerGasTray.setAnimation("AMAP_ANIMATION_DROP");
+            markerGasTray.content = gasTray;
+            //给Marker绑定单击事件
+            markerGasTray.on('click', gasTrayInfoMark);
+        };
+
+        //托盘定位
+        $scope.locationGasTray = function (longitude,latitude,gasTray) {
+            //$scope.map.clearMap( );
+            //var imagePath = "";
+            //if(gasTray.leakStatus.index==0){//工作正常
+            //    imagePath = '../images/icon/gasTray.png';
+            //}else {
+            //    imagePath = '../images/icon/gasTrayLeak.png';
+            //}
+            //markOneGasTray(imagePath,longitude,latitude,gasTray);
+            $scope.map.setCenter([longitude, latitude]);
+
+        };
+
 
 
 
 
         var init = function () {
+            $scope.pager.pageSize=5;
+            $scope.pager.setCurPageNo(1);
+            $scope.pagerGasTray.pageSize=5;
+            $scope.pagerGasTray.setCurPageNo(1);
             $scope.q.userGroup = $scope.vm.userGroups[0];
+            $scope.q.gasTrayLeakStatus = $scope.vm.gasTrayLeakStatus[0];
             searchUsers();
+            searchGasTray();
+            reflesh();//标注配送工
+            markAllLeakGasTray();//标注漏气托盘
 
             //启动绘制轨迹的定时器
             $scope.timer = $interval( function(){
                 searchUsers();
-                reflesh();
+                searchGasTray();
+                reflesh();//标注配送工
+                markAllLeakGasTray();//标注漏气托盘
             }, 5000);
 
             //markPeisong();
             //markDiaobo();
         };
 
-        init();
+
 
         var reflesh = function(){
             //请求所有在线配送工的经纬度
@@ -236,6 +313,28 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
                 }
 
             });
+
+
+        };
+
+        //标绘所有的报警托盘--有问题，先注释掉
+        var markAllLeakGasTray = function(){
+
+            //请求所有在线配送工的经纬度
+            var queryParams = {
+                leakStatus:1,
+            };
+
+            GisWatchService.retrieveGasTray(queryParams).then(function (gasTrays) {
+                $scope.map.clearMap();
+                var gasTraysList = gasTrays.items;
+                var imagePath = '../images/icon/gasTrayLeak.png';
+                for (var i = 0; i < gasTraysList.length; i++) {
+                    markOneGasTray(imagePath,gasTraysList[i].longitude,gasTraysList[i].latitude,gasTraysList[i]);
+                }
+
+            });
+
 
         };
         //绘制轨迹
@@ -343,9 +442,7 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
 
         //创建标注
         var  userInfoMark　= function(pathName,location) {
-            console.log(pathName);
             var userInfo = pathName.split('|');
-            console.log(userInfo);
             var groupName = userInfo[0];
             var userId = userInfo[1];
             var userName = userInfo[2];
@@ -360,7 +457,7 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
             };
 
             GisWatchService.retrieveBottles(queryParams).then(function (bottles) {
-               var bottlesCount = bottles.total;
+                var bottlesCount = bottles.total;
                 var info=[];
                 info.push("<div><div><img style=\"flow:left;width: 25px;height: 25px\" src=\"../images/icon/delivery.ico\"/>"+"<b style='font-size: 21px'>"+groupName+"  |  "+userId+"</b></div>");
                 info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>"+"姓名:   "+userName+"</b>");
@@ -373,11 +470,39 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
                 });
                 infoWindow.open($scope.map, location);
             });
+        };
 
+        //创建托盘标注
+        var  gasTrayInfoMark　= function(e) {
+            var gasTray = e.target.content;
+            //查询用户信息
+            var queryParams = {
+                userId: gasTray.user.userId,
+            };
 
+            GisWatchService.retrieveCustomers(queryParams).then(function (customers) {
+                var customersList = customers.items;
+                if(customersList.length==0){
+                    udcModal.info({"title": "错误信息", "message": "用户信息查询失败"});
+                    return;
+                }
+                var customer = customersList[0];
+                var info=[];
+                info.push("<div><img style=\"flow:left;width: 40px;height: 40px\" src=\"../images/icon/workerImage.png\"/>"+"<div style='font-size: 21px'>"+"客户"+"  |  "+customer.userId+"</div>");
+                info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>"+"姓名:   "+customer.name+"</b>");
+                info.push("<b>电话:   "+customer.phone+"</b>")
+                info.push("<b>地址:   "+customer.address.province+customer.address.city+
+                    customer.address.county+customer.address.detail+"</b>")
+                info.push("<b>钢瓶重量:   "+gasTray.weight+"  公斤</b>")
+                info.push("</div></div>");
+                var infoWindow= new AMap.InfoWindow({
+                    content: info.join("<br/>")
+                });
+                infoWindow.open($scope.map, e.target.getPosition());
+            });
         };
 
 
-
+        //init();
 
     }]);

@@ -13,6 +13,7 @@ public class GasCylinder implements Serializable
     private String publicNumber;//出厂的公共编码
 
     private GasCylinderSpec spec;
+    private Double tareWeight;//皮重
 
     private Date productionDate;
     private Date verifyDate;
@@ -61,6 +62,11 @@ public class GasCylinder implements Serializable
     public String getPublicNumber()
     {
         return publicNumber;
+    }
+
+    public Double getTareWeight()
+    {
+        return tareWeight;
     }
 
     public GasCylinderSpec getSpec()
@@ -175,6 +181,11 @@ public class GasCylinder implements Serializable
         this.publicNumber = publicNumber;
     }
 
+    public void setTareWeight(Double tareWeight)
+    {
+        this.tareWeight = tareWeight;
+    }
+
     public void setSpec(GasCylinderSpec spec)
     {
         this.spec = spec;
@@ -283,6 +294,7 @@ public class GasCylinder implements Serializable
                 .add("number", number)
                 .add("publicNumber", publicNumber)
                 .add("spec", spec)
+                .add("tareWeight", tareWeight)
                 .add("note", note)
                 .add("createTime", createTime)
                 .add("updateTime", updateTime)

@@ -2,10 +2,16 @@ package com.donno.nj.net;
 
 import com.donno.nj.dao.GasCynTrayDao;
 import com.donno.nj.dao.SystemParamDao;
+
+import com.donno.nj.domain.Customer;
 import com.donno.nj.domain.GasCynTray;
 import com.donno.nj.domain.WarnningStatus;
+
+import com.donno.nj.service.CustomerService;
 import com.donno.nj.service.GasCynTrayService;
+import com.donno.nj.service.SmsService;
 import com.donno.nj.service.GasCynTrayTSService;
+import com.google.common.base.Optional;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.DatagramPacket;
@@ -18,6 +24,9 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import com.donno.nj.domain.User;
 
 @Component
 public class UdpServerHandler
@@ -30,6 +39,13 @@ public class UdpServerHandler
 
     @Autowired
     private GasCynTrayTSService trayService;
+
+    @Autowired
+    private SmsService smsService;
+
+    @Autowired
+    private CustomerService customerService;
+
 
     @Autowired
     private SystemParamDao systemParamDao;
@@ -78,6 +94,22 @@ public class UdpServerHandler
 
                 gasCynTrayDao.update(gasCynTray);
                 trayService.putRow(gasCynTray);
+            }
+            //如果发现漏气，立刻短信提醒用户
+            if(target!=null&&gasCynTray.getLeakStatus()==WarnningStatus.WSWarnning1){
+
+                User validUser = target.getUser();
+                if(validUser!=null){
+                    Optional<Customer> customerOptional = customerService.findByCstUserId(validUser.getUserId());
+                    if(customerOptional.isPresent()){
+                        String address = customerOptional.get().getAddress().getProvince()+customerOptional.get().getAddress().getCity()+customerOptional.get().getAddress().getCounty()
+                                +customerOptional.get().getAddress().getDetail();
+                        smsService.sendGasLeakSms(customerOptional.get().getPhone(), customerOptional.get().getName(), address);
+                        //發送消防部門
+                        smsService.sendGasLeakSmsToFireDepartment("18610644911", customerOptional.get().getName(), address,customerOptional.get().getPhone());
+                    }
+
+                }
             }
         }
         catch (Exception exception)

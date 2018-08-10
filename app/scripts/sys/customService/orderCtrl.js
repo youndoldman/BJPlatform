@@ -68,7 +68,8 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
                 ,{key:"PTDebtCredit",value:"赊销"},{key:"PTMonthlyCredit ",value:"月结"}],
             orderStatus:[{key:null,value:"全部订单"},{key:0,value:"待派送"},{key:1,value:"派送中"},{key:2,value:"待核单"},
                 {key:3,value:"已完成"},{key:4,value:"已作废"}],
-            orderStatusDisplay:["待派送","派送中","待核单","已完成","已作废"]
+            orderStatusDisplay:["待派送","派送中","待核单","已完成","已作废"],
+            orderServiceQuality:[{key:null,value:"全部评价"},{key:"OSQPositive",value:"不满意"},{key:"OSQNegative",value:"满意"}],
         };
         $scope.q = {
             dispatcherId:null,
@@ -81,6 +82,7 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
             accessType:$scope.vm.accessType[0],
             payStatus:$scope.vm.payStatus[0],
             payType:$scope.vm.payType[0],
+            orderServiceQuality:$scope.vm.orderServiceQuality[0],
 
         };
 
@@ -163,6 +165,7 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
                 accessType:$scope.q.accessType.key,
                 payStatus:$scope.q.payStatus.key,
                 payType:$scope.q.payType.key,
+                orderServiceQuality:$scope.q.orderServiceQuality.key,
 
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize,
@@ -214,6 +217,15 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
             $scope.pager.setCurPageNo(1);
             searchOrder();
         };
+        //用户评价查询改变
+        $scope.orderServiceQualitySearchChange = function () {
+            if ($scope.q.orderServiceQuality==null) {
+                return;
+            };
+            $scope.pager.setCurPageNo(1);
+            searchOrder();
+        };
+
 
         //发表状态改变
         $scope.invoiceStatusChanged = function (order) {

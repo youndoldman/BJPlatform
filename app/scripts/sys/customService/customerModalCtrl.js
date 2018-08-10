@@ -14,7 +14,9 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
             }
         },
         currentPalletNumber:null,
-        palletList:[]
+        palletList:[],
+        userCard:null,
+        isBindedUserCard:false
     };
 
 
@@ -223,6 +225,7 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
         //托盘查询
         if($scope.isModify){
             $scope.retrievePallets();
+            $scope.retrieveUserCards();
         }
 
     };
@@ -262,5 +265,50 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
             udcModal.info({"title": "错误信息", "message": "查询托盘信息失败:  "+value.message});
         })
     };
+
+    //用户卡查询
+    $scope.retrieveUserCards = function () {
+        var queryParams = {
+            userId:$scope.vm.currentCustomer.userId,
+            status:1,
+        };
+        CustomerManageService.retrieveUserCards(queryParams).then(function (userCards) {
+            $scope.vm.userCardList = userCards.items;
+            if($scope.vm.userCardList.length==1){
+                $scope.vm.userCard = $scope.vm.userCardList[0].number;
+                $scope.vm.isBindedUserCard = true;
+            }else{
+                $scope.vm.userCard = null;
+                $scope.vm.isBindedUserCard = false;
+            }
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": "查询用户卡信息失败:  "+value.message});
+        })
+    };
+
+    //用户卡绑定
+    $scope.userCardbind = function (userCardNumber) {
+        if(userCardNumber==null){
+            udcModal.info({"title": "错误信息", "message": "请输入用户卡号"});
+            return;
+        }
+        CustomerManageService.bindUserCard($scope.vm.currentCustomer.userId, userCardNumber).then(function () {
+            udcModal.info({"title": "处理结果", "message": "绑定成功 "});
+            $scope.retrieveUserCards();
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": "绑定失败:  "+value.message});
+        })
+    };
+
+    //用户卡解除绑定
+    $scope.userCardunBind = function (userCardNumber) {
+        CustomerManageService.unBindUserCard($scope.vm.currentCustomer.userId, userCardNumber).then(function () {
+            udcModal.info({"title": "处理结果", "message": "解除绑定成功 "});
+            $scope.retrieveUserCards();
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": "解除绑定失败:  "+value.message});
+        })
+    };
+
     init();
 }]);
