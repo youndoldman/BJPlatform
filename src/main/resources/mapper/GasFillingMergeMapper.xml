@@ -19,6 +19,7 @@
         <result column="sequence" property="sequence" jdbcType="INTEGER"/>
         <result column="merge_time" property="mergeTime" jdbcType="TIMESTAMP"/>
         <result column="warning_status" property="warnningStatus"  typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+        <result column="tare_differ_weight" property="tareDifferWeight" jdbcType="FLOAT"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
@@ -34,7 +35,8 @@
 
 
     <sql id="InsertColumnList">
-        station_number,machine_number,cyn_idx,client_code,user_idx,filling_start_time,use_time,filling_type,target_weight,tare_weight,real_weight,deviation,result,sequence,merge_time,warning_status, note
+        station_number,machine_number,cyn_idx,client_code,user_idx,filling_start_time,use_time,filling_type,
+        target_weight,tare_weight,real_weight,deviation,result,sequence,merge_time,warning_status, tare_differ_weight,note
     </sql>
     <insert id="insert">
     INSERT IGNORE INTO <include refid="TblGasFillingMerge"/>
@@ -44,7 +46,7 @@
         #{clientCode},
         (select id from t_user where user_id = #{userId}),
         #{startTime}, #{useTime},#{fillingType},#{targetWeight},#{tareWeight},#{realWeight},#{deviation},#{result},#{sequence},#{mergeTime},
-        #{warnningStatus.index},#{note})
+        #{warnningStatus.index},#{tareDifferWeight},#{note})
     </insert>
 
 

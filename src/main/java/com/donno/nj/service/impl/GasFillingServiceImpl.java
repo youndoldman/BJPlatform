@@ -143,12 +143,14 @@ public class GasFillingServiceImpl implements GasFillingService
             target.setWarnningStatus(WarnningStatus.WSNormal);
             if (gasCylinder.getEmptyWeight() != null &&  gasCylinder.getEmptyWeight() > 0)
             {
-                Float differWeight = systemParamDao.getGasTareDfferWeight();
-
-                if (gasCylinder.getEmptyWeight() - target.getTareWeight()  > differWeight )
+                Float sysDifferWeightParam = systemParamDao.getGasTareDfferWeight();
+                Float differWeight = gasCylinder.getEmptyWeight() - target.getTareWeight();
+                if (differWeight  > sysDifferWeightParam )
                 {
                     target.setWarnningStatus(WarnningStatus.WSWarnning1);
                 }
+
+                target.setTareDifferWeight(differWeight);
             }
 
             /*添加到融合后的数据表*/

@@ -41,6 +41,8 @@ public class GasFilling implements Serializable
 
     private WarnningStatus warnningStatus;//皮重称重告警
 
+    private Float tareDifferWeight;//皮重差值
+
     Date mergeTime;
     private String  note;
     private Date createTime;
@@ -122,6 +124,11 @@ public class GasFilling implements Serializable
 
     public WarnningStatus getWarnningStatus() {
         return warnningStatus;
+    }
+
+
+    public Float getTareDifferWeight() {
+        return tareDifferWeight;
     }
 
     public  String getNote()
@@ -212,6 +219,10 @@ public class GasFilling implements Serializable
 
     public void setWarnningStatus(WarnningStatus warnningStatus) {
         this.warnningStatus = warnningStatus;
+    }
+
+    public void setTareDifferWeight(Float tareDifferWeight) {
+        this.tareDifferWeight = tareDifferWeight;
     }
 
     public void setNote(String note)
