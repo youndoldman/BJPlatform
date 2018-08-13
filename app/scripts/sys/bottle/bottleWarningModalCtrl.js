@@ -37,6 +37,7 @@ bottleApp.controller('BottleWarningModalCtrl', ['$scope', 'close', 'BottleServic
         } else {
             $scope.isModify = false;
         }
+        console.log($scope.vm.warning);
         $scope.getBottleTakeOverHistoryByCode($scope.vm.warning.gasCylinder.number,null,null);
         searchOpsLog();
 

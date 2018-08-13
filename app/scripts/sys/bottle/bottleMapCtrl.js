@@ -61,6 +61,12 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
                     "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707",
                     "#651067", "#329262", "#5574a6", "#3b3eac"
                 ];
+                var emptyLineStyle = {
+                    lineWidth: 0,
+                    fillStyle: null,
+                    strokeStyle: null,
+                    borderStyle: null
+                };
                 $scope.pathSimplifierIns = new PathSimplifier({
                     zIndex: 100,
                     //autoSetFitView:false,
@@ -70,36 +76,45 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
                         return pathData.path;
                     },
                     getHoverTitle: function(pathData, pathIndex, pointIndex) {
-
-                        if (pointIndex >= 0) {
-                            //point
-                            return pathData.name + '，点：' + pointIndex + '/' + pathData.path.length;
-                        }
-
-                        return pathData.name + '，点数量' + pathData.path.length;
+                        return null;
+                        //if (pointIndex >= 0) {
+                        //    //point
+                        //    return pathData.name + '，点：' + pointIndex + '/' + pathData.path.length;
+                        //}
+                        //
+                        //return pathData.name + '，点数量' + pathData.path.length;
                     },
                     renderOptions: {
-                        pathLineStyle: {
-                            dirArrowStyle: true
-                        },
-                        getPathStyle: function(pathItem, zoom) {
-
-                            var color = colors[pathItem.pathIndex % colors.length],
-                                lineWidth = Math.round(2 * Math.pow(1.1, zoom - 3));
-
-                            return {
-                                pathLineStyle: {
-                                    strokeStyle: color,
-                                    lineWidth: lineWidth
-                                },
-                                pathLineSelectedStyle: {
-                                    lineWidth: lineWidth + 2
-                                },
-                                pathNavigatorStyle: {
-                                    fillStyle: color
-                                }
-                            };
-                        }
+                        //pathLineStyle: {
+                        //    dirArrowStyle: true
+                        //},
+                        //将点、线相关的style全部置emptyLineStyle
+                        pathLineStyle: emptyLineStyle,
+                        pathLineSelectedStyle: emptyLineStyle,
+                        pathLineHoverStyle: emptyLineStyle,
+                        keyPointStyle: emptyLineStyle,
+                        startPointStyle: emptyLineStyle,
+                        endPointStyle: emptyLineStyle,
+                        keyPointHoverStyle: emptyLineStyle,
+                        keyPointOnSelectedPathLineStyle: emptyLineStyle,
+                        //getPathStyle: function(pathItem, zoom) {
+                        //
+                        //    var color = colors[pathItem.pathIndex % colors.length],
+                        //        lineWidth = Math.round(2 * Math.pow(1.1, zoom - 3));
+                        //
+                        //    return {
+                        //        pathLineStyle: {
+                        //            strokeStyle: color,
+                        //            lineWidth: lineWidth
+                        //        },
+                        //        pathLineSelectedStyle: {
+                        //            lineWidth: lineWidth + 2
+                        //        },
+                        //        pathNavigatorStyle: {
+                        //            fillStyle: color
+                        //        }
+                        //    };
+                        //}
                     }
                 });
 
@@ -140,36 +155,37 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
 
             var paths = [];
             paths.push($scope.vm.selectedBottlePath);
-                $('#loadingTip').remove();
-                $scope.pathSimplifierIns.setData(paths);
-                function onload() {
-                    $scope.pathSimplifierIns.renderLater();
-                }
-                function onerror(e) {
-                    alert('图片加载失败！');
-                }
-                var navg1 = $scope.pathSimplifierIns.createPathNavigator(0, {
-                    loop: true,
-                    speed: 1000,
-                    pathNavigatorStyle: {
-                        width: 16,
-                        height: 32,
-                        //使用图片
-                        content: $scope.PathSimplifier.Render.Canvas.getImageContent('../images/icon/car.png', onload, onerror),
-                        strokeStyle: null,
-                        fillStyle: null,
-                        //经过路径的样式
-                        //pathLinePassedStyle: {
-                        //    lineWidth: 6,
-                        //    strokeStyle: 'black',
-                        //    dirArrowStyle: {
-                        //        stepSpace: 15,
-                        //        strokeStyle: 'red'
-                        //    }
-                        //}
+            $('#loadingTip').remove();
+            $scope.pathSimplifierIns.setData(paths);
+            function onload() {
+                $scope.pathSimplifierIns.renderLater();
+            }
+            function onerror(e) {
+                alert('图片加载失败！');
+            }
+            var navg1 = $scope.pathSimplifierIns.createPathNavigator(0, {
+                loop: true,
+                speed: 500,
+                pathNavigatorStyle: {
+                    width: 16,
+                    height: 32,
+                    //使用图片
+                    content: $scope.PathSimplifier.Render.Canvas.getImageContent('../images/icon/car.png', onload, onerror),
+                    strokeStyle: null,
+                    fillStyle: null,
+                    //经过路径的样式
+                    pathLinePassedStyle: {
+                        lineWidth: 6,
+                        strokeStyle: 'black',
+                        dirArrowStyle: {
+                            stepSpace: 15,
+                            strokeStyle: 'red'
+                        }
                     }
-                });
-                navg1.start();
+
+                }
+            });
+            navg1.start();
 
 
         };
@@ -184,7 +200,7 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
         var mapInitial = function() {
             $scope.map = new AMap.Map('mapContainer', {
                 center: [102.7278090000, 25.1333240000],
-                zoom: 15
+                zoom: 5
             });
             AMap.plugin(['AMap.ToolBar','AMap.Scale','AMap.OverView'],
                 function(){
@@ -195,40 +211,41 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
                     //$scope.map.addControl(new AMap.OverView({isOpen:true}));
                 });
 
-            //var style = [{
-            //    url: 'http://a.amap.com/jsapi_demos/static/images/mass0.png',
-            //    anchor: new AMap.Pixel(6, 6),
-            //    size: new AMap.Size(11, 11)
-            //},{
-            //    url: 'http://a.amap.com/jsapi_demos/static/images/mass1.png',
-            //    anchor: new AMap.Pixel(4, 4),
-            //    size: new AMap.Size(7, 7)
-            //},{
-            //    url: '../../images/icon/bottom.ico',
-            //    anchor: new AMap.Pixel(3, 3),
-            //    size: new AMap.Size(20, 20)
-            //}
-            //];
+            var style = [{
+                url: '../images/icon/bottle.ico',
+                anchor: new AMap.Pixel(3, 3),
+                size: new AMap.Size(20, 20)
+            },{
+                url: '../images/icon/bottle.ico',
+                anchor: new AMap.Pixel(3, 3),
+                size: new AMap.Size(20, 20)
+            },{
+                url: '../images/icon/bottle.ico',
+                anchor: new AMap.Pixel(3, 3),
+                size: new AMap.Size(20, 20)
+            }
+            ];
 
-            //var mass = new AMap.MassMarks(citys, {
-            //    opacity:0.8,
-            //    zIndex: 111,
-            //    cursor:'pointer',
-            //    style:style
-            //});
-            //var marker = new AMap.Marker({content:' ',map:$scope.map})
-            //mass.on('mouseover',function(e){
-            //    marker.setPosition(e.data.lnglat);
-            //    marker.setLabel({content:e.data.name})
-            //})
-            //mass.setMap($scope.map);
-            //var setStyle = function(multiIcon) {
-            //    if(multiIcon){
-            //        mass.setStyle(style);
-            //    }else{
-            //        mass.setStyle(style[2]);
-            //    }
-            //}
+            var mass = new AMap.MassMarks(citys, {
+                opacity:0.8,
+                zIndex: 111,
+                cursor:'pointer',
+                style:style
+            });
+            var marker = new AMap.Marker({content:' ',map:$scope.map})
+            mass.on('mouseover',function(e){
+                marker.setPosition(e.data.lnglat);
+                marker.setLabel({content: e.id})
+            })
+            mass.setMap($scope.map);
+            var setStyle = function(multiIcon) {
+                if(multiIcon){
+                    mass.setStyle(style);
+                }else{
+                    mass.setStyle(style[2]);
+                }
+            }
+
 
 
         };
@@ -257,10 +274,10 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
         };
         //========================
 
-        $scope.location = function(lon,lan)
-        {
-            BottleService.location(lon, lan);
-        };
+        //$scope.location = function(lon,lan)
+        //{
+        //    BottleService.location(lon, lan);
+        //};
         var gotoPageBottles = function (pageNo) {
             $scope.pagerBottle.setCurPageNo(pageNo);
             searchBottles();
@@ -389,7 +406,7 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
         };
 
         //钢瓶定位
-        $scope.location = function (longitude,latitude) {
+        $scope.location = function (bottle,longitude,latitude) {
 
             $scope.map.clearMap( );
             $scope.pathSimplifierIns.setData([]);
@@ -407,7 +424,8 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
                 map : $scope.map
             });
             markerDest.setAnimation("AMAP_ANIMATION_BOUNCE");
-            $scope.map.setCenter([longitude, latitude])
+            $scope.map.setCenter([longitude, latitude]);
+            gasCylindInfoMark(bottle);
         };
 
         //钢瓶历史轨迹
@@ -515,6 +533,34 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
                 //显示记录
                 markHistory();
             });
+        };
+
+
+        //创建钢瓶标注
+        var  gasCylindInfoMark　= function(bottle) {
+            var info=[];
+            info.push("<div><img style=\"flow:left;width: 40px;height: 40px\" src=\"../images/icon/bottle.ico\"/>"+"");
+            info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>"+"编码:   "+bottle.number+"</b>");
+            info.push("<b>厂家:   "+bottle.factory.name+"</b>");
+            info.push("<b>规格:   "+bottle.spec.name+"</b>");
+            info.push("<b>皮重:   "+bottle.tareWeight+"公斤</b>");
+            info.push("<b>状态:   "+bottle.serviceStatus.name+"</b>");
+            if(bottle.user!=null){
+                info.push("<b>所属责任人:   "+bottle.user.name+"|"+bottle.user.userGroup.name+"</b>");
+            }
+            if(bottle.userDepartment!=null){
+                info.push("<b>所属责任部门:   "+bottle.userDepartment.name+"</b>");
+
+            }
+
+
+            info.push("<b>下次钢检:   "+bottle.nextVerifyDate+"</b>");
+            info.push("</div></div>");
+            var infoWindow= new AMap.InfoWindow({
+                content: info.join("<br/>")
+            });
+            infoWindow.open($scope.map, [bottle.longitude,bottle.latitude]);
+
         };
         init();
 

@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
     'rootService', 'pager', 'udcModal', 'GisWatchService', 'MapService', '$timeout','$interval',function ($scope, $rootScope, $filter, $location, Constants,
@@ -103,7 +103,6 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
                     };
                     data.push(temp);
                 }
-                console.log(data);
 
                 var style = [{
                     url: '../images/icon/delivery.ico',
@@ -229,6 +228,9 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
             });
             markerGasTray.setAnimation("AMAP_ANIMATION_DROP");
             markerGasTray.content = gasTray;
+
+            //var e={target:{content:gasTray}};
+            //gasTrayInfoMark(e);
             //给Marker绑定单击事件
             markerGasTray.on('click', gasTrayInfoMark);
         };
@@ -269,7 +271,7 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
                 searchGasTray();
                 reflesh();//标注配送工
                 markAllLeakGasTray();//标注漏气托盘
-            }, 5000);
+            }, 8000);
 
             //markPeisong();
             //markDiaobo();
@@ -310,6 +312,8 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
                 }
                 if(paths.length>0){
                     drawPath(paths);
+                }else{
+                    $scope.pathSimplifierIns.clearPathNavigators();
                 }
 
             });
@@ -352,16 +356,17 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
                 var userType = paths[i].name.split('|')[0];
                 var imageName = "";
                 if(userType=="配送员"){
-                    imageName = "../images/icon/car.png";
+                    imageName = "../images/icon/worker.png";
                 }else{
-                    imageName = "../images/icon/plane.png";
+                    imageName = "../images/icon/delivery.png";
                 }
                 var navg1 = $scope.pathSimplifierIns.createPathNavigator(i, {
                     loop: false,
                     speed: 100,
                     pathNavigatorStyle: {
-                        width: 20,
-                        height: 32,
+                        width: 60,
+                        height: 45,
+                        autoRotate: false,
                         //使用图片
                         content: $scope.PathSimplifier.Render.Canvas.getImageContent(imageName, onload, onerror),
                         strokeStyle: null,
@@ -431,6 +436,7 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
                     }
                 });
 
+
                 window.pathSimplifierIns = $scope.pathSimplifierIns;
             });
         };
@@ -498,7 +504,7 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
                 var infoWindow= new AMap.InfoWindow({
                     content: info.join("<br/>")
                 });
-                infoWindow.open($scope.map, e.target.getPosition());
+                infoWindow.open($scope.map, [gasTray.longitude,gasTray.latitude]);
             });
         };
 

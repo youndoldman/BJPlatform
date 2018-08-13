@@ -43,7 +43,7 @@
                 <td class="message">{{bottle.spec.name}}</td>
                 <td class="message">{{bottle.serviceStatus.name}}</td>
                 <td class="operate">
-                    <button title="查看位置" ng-click="location(bottle.longitude, bottle.latitude)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <button title="查看位置" ng-click="location(bottle, bottle.longitude, bottle.latitude)" type="button" class="btn btn-primary btn-outline btn-xs">
                         <i class="">定位</i>
                     </button>
                     <button title="历史轨迹" ng-click="displayHistory(bottle.number)" type="button" class="btn btn-primary btn-outline btn-xs">

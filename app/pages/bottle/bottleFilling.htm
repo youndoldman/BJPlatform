@@ -1,0 +1,92 @@
+<div class="ribbon">
+    <a href=""><span class="home fa fa-home"></span></a>
+    <ol class="breadcrumb">
+        <li>灌装记录</li>
+    </ol>
+</div>
+
+
+
+<div class="table-wrapper" style="height: 250px">
+    <div class="toolbar">
+        <form role="form">
+            <div class="inline-group">
+                <label class="input"><input type="text" class="form-control input-sm" ng-model="q.cynNumber" ng-change="search()" placeholder="钢瓶编码"> </label>
+                <label class="input">充装站：</label>
+                <label class="input"><select  ng-model="q.station" ng-options="station.value for station in vm.stationList" class="form-control" ng-selected="" ng-change="search()"></select></label>
+                <label class="input">充装秤：</label>
+                <label class="input"><select  ng-model="q.machine" ng-options="machine.value for machine in vm.machineList" class="form-control" ng-selected="" ng-change="search()"></select></label>
+                <label class="input">状态：</label>
+                <label class="input"><select  ng-model="q.warningStatus" ng-options="warningStatus.value for warningStatus in vm.warningStatusList" class="form-control" ng-selected="" ng-change="search()"></select></label>
+
+
+
+                <label class="input">时间：</label>
+                <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>
+                <label class="input">—</label>
+                <label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control" ng-model="q.endTime"></label>
+                <button title="删除时间" ng-click="deleteTimeRange()" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <i class="fa fa-trash-o"></i>
+                </button>
+                <button type="submit" class="btn btn-sm btn-primary" ng-click="search()"><i class="fa fa-search"></i> 搜索 </button>
+                <!--<button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUp()"><i class="fa fa-plus"></i> 新增钢瓶 </button>-->
+            </div>
+        </form>
+    </div>
+    <table class="table table-striped table-hover props table-sm">
+        <thead>
+        <tr>
+            <th width="1%"></th>
+            <th width="3%">序号</th>
+            <th width="7%">充装站</th>
+            <th width="5%">秤号</th>
+            <th width="5%">瓶号</th>
+            <th width="5%">客户代码</th>
+            <th width="10%">灌装时间</th>
+            <th width="5%">用时(秒)</th>
+            <th width="5%">方式</th>
+            <th width="5%">目标量(公斤)</th>
+            <th width="5%">瓶重(公斤)</th>
+            <th width="5%">灌装量(公斤)</th>
+            <th width="5%">误差值(公斤)</th>
+            <th width="5%">灌装结果</th>
+            <th width="5%">皮重差值</th>
+            <th width="5%">残气告警</th>
+            <th width="10%">创建时间</th>
+            <th width="10%">操作</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="filling in vm.fillingList">
+            <td></td>
+            <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
+            <td class="message">{{filling.stationNumber}}</td>
+            <td class="message">{{filling.machineNumber}}</td>
+            <td class="message">{{filling.cynNumber}}</td>
+            <td class="message">{{filling.clientCode}}</td>
+            <td class="message">{{filling.startTime}}</td>
+            <td class="message">{{filling.useTime}}</td>
+            <td class="message">{{filling.fillingType}}</td>
+            <td class="message">{{filling.targetWeight}}</td>
+            <td class="message">{{filling.tareWeight}}</td>
+            <td class="message">{{filling.realWeight}}</td>
+            <td class="message">{{filling.deviation}}</td>
+            <td class="message">{{filling.result}}</td>
+            <td class="message">{{filling.tareDifferWeight}}</td>
+            <td class="message">{{filling.warnningStatus.name}}</td>
+            <td class="message">{{filling.createTime}}</td>
+            <td class="operate">
+                <!--<button title="回溯" ng-click="modify(filling.cynNumber)" type="button" class="btn btn-primary btn-outline btn-xs">-->
+                    <!--<i class="">回溯</i>-->
+                <!--</button>-->
+                <!--<button title="忽略" ng-click="delete(bottle)" type="button" class="btn btn-primary btn-outline btn-xs">-->
+                    <!--<i class="">忽略</i>-->
+                <!--</button>-->
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div ng-if="vm.bottleList.length == 0" nj-table-no-data></div>
+    <div nj-pager pager="pager"></div>
+</div>

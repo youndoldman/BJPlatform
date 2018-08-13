@@ -2,6 +2,7 @@
 var bottleApp = angular.module('BottleApp', ['ui.router', 'CommonModule', 'angularModalService'])
     .config(['$httpProvider', '$stateProvider', '$urlRouterProvider', function($httpProvider, $stateProvider, $urlRouterProvider) {
 
+
         // 设置默认显示页面
         $urlRouterProvider.otherwise('/bottles/map');
         $stateProvider
@@ -64,6 +65,19 @@ var bottleApp = angular.module('BottleApp', ['ui.router', 'CommonModule', 'angul
                 },
                 onEnter: function (rootService, NavItem) {
                     rootService.updateActiveNavL2(NavItem.GasCenter.menuItems[3]);
+                }
+            })
+            .state('bottles.filling',{
+                url:'/filling',
+                views: {
+                    "content@bottles": {
+                        templateUrl: '../pages/bottle/bottleFilling.htm',
+                        controller: 'BottleFillingCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.GasCenter.menuItems[4]);
                 }
             });
         $httpProvider.interceptors.push('HttpInterceptor');

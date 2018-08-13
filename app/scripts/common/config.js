@@ -97,6 +97,9 @@ commonModule.constant('URI', {
         'UserCard':'../../../api/UserCard',//用户卡查询
         'UserCardBind':'../../../api/UserCard/Bind',//用户卡绑定
         'UserCardunBind':'../../../api/UserCard/unBind',//用户卡解绑定
+        'GasFillingMerge':'../../../api/GasFillingMerge',//8.3.	充装数据查询
+
+
 
 
 
@@ -474,6 +477,11 @@ commonModule.constant('NavItem', {
             name: "库存管理",
             href: "./gasCenter.htm#/bottles/stock",
             icon: "fa-magnet"
+        },{
+            index: 4,
+            name: "罐装记录",
+            href: "./gasCenter.htm#/bottles/filling",
+            icon: "fa-gears"
         }]
     },
     //'AppCenter': {
