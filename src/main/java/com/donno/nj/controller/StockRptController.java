@@ -100,6 +100,4 @@ public class StockRptController
         Integer count = stockInOutRptService.count(params);
         return ResponseEntity.ok(ListRep.assemble(stockRptList, count));
     }
-
-
 }

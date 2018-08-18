@@ -11,7 +11,6 @@
     </resultMap>
 
     <sql id="qryStockInOutRpt">
-
         select t_department.id as department_id, t_department.name as department_name, t_department.code as department_code,
         t_gas_cylinder_spec.name as spec_name,t_gas_cylinder_spec.code as spec_code,
         sum(t_gas_cylinder_in_out.amount) as amount
@@ -21,7 +20,22 @@
         AND t_gas_cylinder.id =t_gas_cylinder_in_out.gas_cyr_idx
         <if test="departmentCode != null">
             AND  t_department.code  =  #{departmentCode}
-            AND t_gas_cylinder.id in (select cylinder_idx from t_cylinder_user where user_idx in ( select user_idx from t_sysuser where department_idx = (select id from t_department where code = #{departmentCode})  ))
+
+            <if test="stockType != null">
+
+                <if test="stockType == 0">
+                    AND   t_gas_cylinder_in_out.src_user_idx in
+                    ( select user_idx from t_sysuser where department_idx =
+                    (select id from t_department where code = #{departmentCode})  )
+                </if>
+                <if test="stockType == 1">
+                    AND   t_gas_cylinder_in_out.target_user_idx in
+                    ( select user_idx from t_sysuser where department_idx =
+                    (select id from t_department where code = #{departmentCode})  )
+                </if>
+
+            </if>
+
         </if>
 
         <if test="startTime != null">
@@ -38,6 +52,8 @@
 
         group by t_gas_cylinder_spec.id
     </sql>
+
+
 
 
 
