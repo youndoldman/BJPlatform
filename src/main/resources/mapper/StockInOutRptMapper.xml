@@ -24,12 +24,12 @@
             <if test="stockType != null">
 
                 <if test="stockType == 0">
-                    AND   t_gas_cylinder_in_out.src_user_idx in
+                    AND   t_gas_cylinder_in_out.target_user_idx in
                     ( select user_idx from t_sysuser where department_idx =
                     (select id from t_department where code = #{departmentCode})  )
                 </if>
                 <if test="stockType == 1">
-                    AND   t_gas_cylinder_in_out.target_user_idx in
+                    AND   t_gas_cylinder_in_out.src_user_idx in
                     ( select user_idx from t_sysuser where department_idx =
                     (select id from t_department where code = #{departmentCode})  )
                 </if>

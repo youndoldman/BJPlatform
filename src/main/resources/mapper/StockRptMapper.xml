@@ -22,6 +22,7 @@
         <if test="departmentCode != null">
             AND  t_department.code  =  #{departmentCode}
             AND t_gas_cylinder.id in (select cylinder_idx from t_cylinder_user where user_idx in ( select user_idx from t_sysuser where department_idx = (select id from t_department where code = #{departmentCode})  ))
+            AND t_gas_cylinder.service_status = 2
         </if>
 
         <if test="loadStatus != null">AND  load_status = #{loadStatus}</if>
