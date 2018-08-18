@@ -196,6 +196,7 @@ public class TicketServiceImpl implements TicketService
         }
     }
 
+
     public void checkStartDate(Date startDate)
     {
         if (startDate == null)
@@ -239,7 +240,20 @@ public class TicketServiceImpl implements TicketService
         checkOperator(ticket.getOperator());
 
         /*规格检查*/
-        checkSpec(ticket.getSpecCode());
+        String specCode = ticket.getSpecCode();
+        if (specCode == null || specCode.trim().length() == 0)
+        {
+            throw new ServerSideBusinessException("缺少规格信息！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        Goods target = goodsDao.findByCode(specCode);
+        if (target == null)
+        {
+            throw new ServerSideBusinessException("规格信息不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        //设置价格
+        ticket.setPrice(target.getPrice());
 
         /*生效日期检查*/
         checkStartDate(ticket.getStartDate());

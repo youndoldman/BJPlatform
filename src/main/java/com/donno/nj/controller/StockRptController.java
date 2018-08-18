@@ -84,9 +84,9 @@ public class StockRptController
         }
 
         if (loadStatus != null)
-        {
-            params.putAll(ImmutableMap.of("loadStatus", loadStatus));
-        }
+    {
+        params.putAll(ImmutableMap.of("loadStatus", loadStatus));
+    }
 
         if (stockType != null)
         {
