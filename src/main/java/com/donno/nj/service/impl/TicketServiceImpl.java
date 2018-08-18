@@ -255,6 +255,7 @@ public class TicketServiceImpl implements TicketService
             Date curDate = new Date();
             String dateFmt =  new SimpleDateFormat("yyyyMMddHHmmssSSS").format(curDate);
             ticketSn = ticketSn + (dateFmt);
+            ticketSn = String.format("%s-%d",ticketSn,iCount+1);
             newTicket.setTicketSn(ticketSn);
 
             ticketDao.insert(newTicket);
