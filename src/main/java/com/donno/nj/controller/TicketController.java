@@ -80,12 +80,14 @@ public class TicketController
 
     @OperationLog(desc = "增加气票信息")
     @RequestMapping(value = "/api/Ticket", method = RequestMethod.POST)
-    public ResponseEntity create(@RequestBody Ticket ticket, UriComponentsBuilder ucBuilder)
+    public ResponseEntity create(@RequestBody Ticket ticket,
+                                 @RequestParam(value = "ticketCount", required = true) Integer ticketCount,
+                                 UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
 
         /*创建*/
-        ticketService.create(ticket);
+        ticketService.create(ticket,ticketCount);
 
         URI uri = ucBuilder.path("/api/Ticket/{id}").buildAndExpand(ticket.getId()).toUri();
         responseEntity = ResponseEntity.created(uri).build();

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -134,11 +135,6 @@ public class TicketServiceImpl implements TicketService
             throw new ServerSideBusinessException("客户信息不全，请补充！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-//        User target = userDao.findByUserId(customer.getUserId());
-//        if (target == null)
-//        {
-//            throw new ServerSideBusinessException("客户不存在！", HttpStatus.NOT_ACCEPTABLE);
-//        }
 
         /*只有气票用户才能增加气票*/
         Customer target = customerDao.findByCstUserId(customer.getUserId());
@@ -228,7 +224,7 @@ public class TicketServiceImpl implements TicketService
 
     @Override
     @OperationLog(desc = "添加气票信息")
-    public void create(Ticket ticket)
+    public void create(Ticket ticket,Integer ticketCount)
     {
         /*参数校验*/
         if (ticket == null)
@@ -236,24 +232,33 @@ public class TicketServiceImpl implements TicketService
             throw new ServerSideBusinessException("气票信息不全，请补充信息！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        /*编号检查*/
-        checkTicketSn(ticket.getTicketSn());
-
         /*客户信息校验*/
-        checkCustomer(ticket.getCustomer());
+        //checkCustomer(ticket.getCustomer());
 
         /*操作员信息校验*/
-        checkOperator(ticket.getOperator());
+        //checkOperator(ticket.getOperator());
 
         /*规格检查*/
-//        checkSpec(ticket.getSpec());
-        checkSpec(ticket.getSpecCode());
+        //checkSpec(ticket.getSpecCode());
 
         /*生效日期检查*/
         checkStartDate(ticket.getStartDate());
         checkEndDate(ticket.getEndDate());
 
-        ticketDao.insert(ticket);
+        for (Integer iCount = 0 ;iCount < ticketCount ; iCount++)
+        {
+            Ticket newTicket = new Ticket();
+            newTicket = ticket;
+
+            //生成气票编号
+            String ticketSn = "TSN-";
+            Date curDate = new Date();
+            String dateFmt =  new SimpleDateFormat("yyyyMMddHHmmssSSS").format(curDate);
+            ticketSn = ticketSn + (dateFmt);
+            newTicket.setTicketSn(ticketSn);
+
+            ticketDao.insert(newTicket);
+        }
     }
 
     @Override

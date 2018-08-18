@@ -16,7 +16,7 @@ public interface TicketService
 
     Integer count(Map params);
 
-    void create(Ticket ticket);
+    void create(Ticket ticket,Integer ticketCount);
 
     void update(String ticketSn, Ticket newTicket);
 
