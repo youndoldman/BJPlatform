@@ -126,7 +126,7 @@ public class CouponServiceImpl implements CouponService
 
     @Override
     @OperationLog(desc = "添加优惠券信息")
-    public void create(Coupon coupon)
+    public void create(Coupon coupon,Integer couponCount)
     {
         /*参数校验*/
         if (coupon == null)
@@ -147,7 +147,11 @@ public class CouponServiceImpl implements CouponService
         checkStartDate(coupon.getStartDate());
         checkEndDate(coupon.getEndDate());
 
-        couponDao.insert(coupon);
+        for (Integer iCount = 0; iCount < couponCount;iCount++)
+        {
+            couponDao.insert(coupon);
+        }
+
     }
 
     @Override

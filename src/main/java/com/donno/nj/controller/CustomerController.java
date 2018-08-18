@@ -41,8 +41,6 @@ public class CustomerController
     @Autowired
     CustomerDistrictService customerDistrictService ;
 
-
-
     @RequestMapping(value = "/api/customers/findByUserId", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity findByUserId(@RequestParam(value = "userId", defaultValue = "") String userId)
     {
@@ -250,25 +248,6 @@ public class CustomerController
 
         return responseEntity;
     }
-
-//    @RequestMapping(value = "/api/customers/{number}", method = RequestMethod.GET)
-//    public ResponseEntity<Customer> getCustomerByNumber(@PathVariable("number") String number)
-//    {
-//        ResponseEntity responseEntity;
-//
-////        Optional<Customer> curCustomer = customerService.findByNumber(number);
-////        if (curCustomer.isPresent())
-////        {
-////            responseEntity = ResponseEntity.ok(curCustomer.get());
-////        }
-////        else
-////        {
-////            responseEntity = new ResponseEntity<Customer>(HttpStatus.NOT_FOUND);
-////        }
-//
-//        return responseEntity;
-//    }
-
 
 
     @OperationLog(desc = "修改用户信息")

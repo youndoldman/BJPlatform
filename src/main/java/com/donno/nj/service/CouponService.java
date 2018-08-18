@@ -14,7 +14,7 @@ public interface CouponService
 
     Integer count(Map params);
 
-    void create(Coupon coupon);
+    void create(Coupon coupon,Integer couponCount);
 
     void update(Integer id, Coupon newCoupon);
 

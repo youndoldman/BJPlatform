@@ -70,12 +70,14 @@ public class CouponController
 
     @OperationLog(desc = "增加优惠券信息")
     @RequestMapping(value = "/api/Coupon", method = RequestMethod.POST)
-    public ResponseEntity create(@RequestBody Coupon coupon, UriComponentsBuilder ucBuilder)
+    public ResponseEntity create(@RequestBody Coupon coupon,
+                                 @RequestParam(value = "couponCount", required = true) Integer couponCount,
+                                 UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
 
         /*创建*/
-        couponService.create(coupon);
+        couponService.create(coupon,couponCount);
 
         URI uri = ucBuilder.path("/api/Coupon/{id}").buildAndExpand(coupon.getId()).toUri();
         responseEntity = ResponseEntity.created(uri).build();
