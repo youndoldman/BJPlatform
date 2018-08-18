@@ -233,13 +233,13 @@ public class TicketServiceImpl implements TicketService
         }
 
         /*客户信息校验*/
-        //checkCustomer(ticket.getCustomer());
+        checkCustomer(ticket.getCustomer());
 
         /*操作员信息校验*/
-        //checkOperator(ticket.getOperator());
+        checkOperator(ticket.getOperator());
 
         /*规格检查*/
-        //checkSpec(ticket.getSpecCode());
+        checkSpec(ticket.getSpecCode());
 
         /*生效日期检查*/
         checkStartDate(ticket.getStartDate());
