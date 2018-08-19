@@ -11,10 +11,11 @@ decisionApp.controller('GasUsageCtrl', ['$scope', '$rootScope', '$filter', '$loc
         };
         $scope.search = function () {
             //启动绘制托盘重量的定时器
-            $interval.cancel($scope.timer);
-            $scope.timer = $interval( function(){
-                retrieveGasCynTrayHistory();
-            }, 1000);
+            retrieveGasCynTrayHistory();
+            //$interval.cancel($scope.timer);
+            //$scope.timer = $interval( function(){
+            //    retrieveGasCynTrayHistory();
+            //}, 1000);
         };
         $(function () {
             $('#datetimepickerStart').datetimepicker({
@@ -142,7 +143,7 @@ decisionApp.controller('GasUsageCtrl', ['$scope', '$rootScope', '$filter', '$loc
                 var name = null;
                 var unitData = {legend:null, items:[]};
                 if(gasCynTrayHistoryList.length==0){
-                    $interval.cancel($scope.timer);
+                    //$interval.cancel($scope.timer);
                     udcModal.info({"title": "查询结果", "message": "无数据"});
                 }
                 for (var i=0;i<gasCynTrayHistoryList.length;i++){

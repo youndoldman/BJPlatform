@@ -24,50 +24,50 @@
     <table class="table table-striped table-hover props table-sm">
         <thead>
         <tr>
-            <th width="1%"></th>
-            <th width="5%">序号</th>
-            <th width="5%">钢瓶编码</th>
-            <th width="5%">出厂编码</th>
-            <th width="5%">钢瓶规格</th>
+            <th width="1%" class="text-center"></th>
+            <th width="5%" class="text-center">序号</th>
+            <th width="5%" class="text-center">钢瓶编码</th>
+            <th width="5%" class="text-center">出厂编码</th>
+            <th width="5%" class="text-center">钢瓶规格</th>
 
-            <th width="5%">钢瓶皮重</th>
+            <th width="5%" class="text-center">钢瓶皮重</th>
 
-            <th width="10%">生产厂家</th>
+            <th width="10%" class="text-center">生产厂家</th>
             <!--<th width="5%">定位终端</th>-->
-            <th width="5%">空重瓶</th>
-            <th width="8%">生产日期</th>
-            <th width="8%">上次钢检日期</th>
-            <th width="8%">下次钢检日期</th>
-            <th width="8%">报废日期</th>
-            <th width="5%">启用状态</th>
-            <th width="5%">工作状态</th>
-            <th width="5%">责任人</th>
-            <th width="5%">部门</th>
-            <th width="10%">操作</th>
+            <th width="5%" class="text-center">空重瓶</th>
+            <th width="8%" class="text-center">生产日期</th>
+            <th width="8%" class="text-center">上次钢检日期</th>
+            <th width="8%" class="text-center">下次钢检日期</th>
+            <th width="8%" class="text-center">报废日期</th>
+            <th width="5%" class="text-center">启用状态</th>
+            <th width="5%" class="text-center">工作状态</th>
+            <th width="5%" class="text-center">责任人</th>
+            <th width="5%" class="text-center">部门</th>
+            <th width="10%" class="text-center">操作</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="bottle in vm.bottleList">
+        <tr ng-repeat="bottle in vm.bottleList" class="text-center">
             <td></td>
-            <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
-            <td class="message">{{bottle.number}}</td>
-            <td class="message">{{bottle.publicNumber}}</td>
-            <td class="message">{{bottle.spec.name}}</td>
-            <td class="message">{{bottle.tareWeight}}</td>
-            <td class="message">{{bottle.factory.name}}</td>
+            <td class="message text-center">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
+            <td class="message text-center">{{bottle.number}}</td>
+            <td class="message text-center">{{bottle.publicNumber}}</td>
+            <td class="message text-center">{{bottle.spec.name}}</td>
+            <td class="message text-center">{{bottle.tareWeight}}</td>
+            <td class="message text-center">{{bottle.factory.name}}</td>
 
             <!--<td class="message">{{bottle.locationDevice.number}}</td>-->
-            <td class="message">{{bottle.loadStatus.name}}</td>
-            <td class="message">{{bottle.productionDate}}</td>
-            <td class="message">{{bottle.verifyDate}}</td>
-            <td class="message">{{bottle.nextVerifyDate}}</td>
-            <td class="message">{{bottle.scrapDate}}</td>
-            <td class="message">{{bottle.lifeStatus.name}}</td>
-            <td class="message">{{bottle.serviceStatus.name}}</td>
-            <td class="message"title="姓名:{{bottle.user.name}}">{{bottle.user.userId}}</td>
-            <td class="message" ng-if="bottle.user.userGroup.code==0004">客户</td>
-            <td class="message" ng-if="bottle.user.userGroup.code!=0004">{{bottle.userDepartment.name}}</td>
-            <td class="operate">
+            <td class="message text-center">{{bottle.loadStatus.name}}</td>
+            <td class="message text-center">{{bottle.productionDate}}</td>
+            <td class="message text-center">{{bottle.verifyDate}}</td>
+            <td class="message text-center">{{bottle.nextVerifyDate}}</td>
+            <td class="message text-center">{{bottle.scrapDate}}</td>
+            <td class="message text-center">{{bottle.lifeStatus.name}}</td>
+            <td class="message text-center">{{bottle.serviceStatus.name}}</td>
+            <td class="message text-center"title="姓名:{{bottle.user.name}}">{{bottle.user.userId}}</td>
+            <td class="message text-center" ng-if="bottle.user.userGroup.code==0004">客户</td>
+            <td class="message text-center" ng-if="bottle.user.userGroup.code!=0004">{{bottle.userDepartment.name}}</td>
+            <td class="operate text-center">
                 <!--<button title="详情" ng-click="location(bottle.location|lonFilter, bottle.location|lanFilter)" type="button" class="btn btn-primary btn-outline btn-xs">-->
                     <!--<i class="fa fa-info-circle"></i>-->
                 <!--</button>-->

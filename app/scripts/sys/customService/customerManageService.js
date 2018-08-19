@@ -160,13 +160,13 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     };
 
     //增加气票信息
-    this.addTicketInfo = function (ticketInfo) {
-        return promise.wrap($http.post(ticketUri, ticketInfo));
+    this.addTicketInfo = function (ticketQuantity,ticketInfo) {
+        return promise.wrap($http.post(ticketUri+"?ticketCount="+ticketQuantity, ticketInfo));
     };
     //查询气票
     this.searchTicket = function(params){
         return promise.wrap($http.get(ticketUri, {params: params}));
-    }
+    };
 
 
     //删除气票
@@ -175,8 +175,8 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     };
 
     //增加优惠券
-    this.addCoupon = function(couponInfo){
-        return promise.wrap($http.post(couponUri, couponInfo));
+    this.addCoupon = function(couponQuantity, couponInfo){
+        return promise.wrap($http.post(couponUri+"?couponCount="+couponQuantity, couponInfo));
     };
 
     //查询优惠券

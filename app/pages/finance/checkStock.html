@@ -93,7 +93,7 @@
 
         <tr  ng-repeat="item in data.gasCylinderSpecList">
             <td width="20%" class="message tableContentAdjust">{{item.name}}</td>
-            <td width="20%"  class="message tableContentAdjust">{{(item.currentKucun.amount + item.todayStockIn.amount - item.todayStockOut.amount) > 0 ? (item.currentKucun.amount + item.todayStockIn.amount - item.todayStockOut.amount) : null}}</td>
+            <td width="20%"  class="message tableContentAdjust">{{(item.currentKucun.amount - item.todayStockIn.amount + item.todayStockOut.amount)}}</td>
             <td width="20%"  class="message tableContentAdjust">{{item.todayStockIn.amount}}</td>
             <td width="20%"  class="message tableContentAdjust">{{item.monthlyStockIn.amount}}</td>
             <td width="20%"  class="message tableContentAdjust">{{item.currentKucun.amount}}</td>
@@ -101,7 +101,7 @@
 
         <tr>
             <td width="20%" class="message tableContentAdjust">合计</td>
-            <td width="20%"  class="message tableContentAdjust">{{(q.sumCurrentKucun + q.sumTodayIn - q.sumTodayOut) > 0 ? (q.sumCurrentKucun + q.sumTodayIn - q.sumTodayOut) : null}}</td>
+            <td width="20%"  class="message tableContentAdjust">{{(q.sumCurrentKucun - q.sumTodayIn + q.sumTodayOut)}}</td>
             <td width="20%"  class="message tableContentAdjust">{{q.sumTodayIn}}</td>
             <td width="20%"  class="message tableContentAdjust">{{q.sumMonthlyIn}}</td>
 

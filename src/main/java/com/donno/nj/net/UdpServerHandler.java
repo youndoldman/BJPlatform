@@ -106,7 +106,7 @@ public class UdpServerHandler
                                 +customerOptional.get().getAddress().getDetail();
                         smsService.sendGasLeakSms(customerOptional.get().getPhone(), customerOptional.get().getName(), address);
                         //發送消防部門
-                        smsService.sendGasLeakSmsToFireDepartment("18610644911", customerOptional.get().getName(), address,customerOptional.get().getPhone());
+                        smsService.sendGasLeakSmsToFireDepartment("13608851223", customerOptional.get().getName(), address,customerOptional.get().getPhone());
                     }
 
                 }

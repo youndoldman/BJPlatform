@@ -416,6 +416,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                     initVal: customer
                 }
             }).then(function (result) {
+                $scope.pagerCustomer.setCurPageNo(1);
                 if (result.value) {
                     var queryParams = {
                         userId:result.param,
@@ -715,12 +716,11 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
             $scope.timer = $interval(function(){
                 $scope.currentKTYUser = sessionStorage.getKTYCurUser();
-                console.info($scope.currentKTYUser);
                 if($scope.currentKTYUser != null)
                 {
                     $interval.cancel($scope.timer);
                 }
-            }, 50);
+            }, 1000);
 
             $scope.pagerCallReport.pageSize = 10;
             $scope.pagerCallReport.update($scope.qCallReport, 0, 1);

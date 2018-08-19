@@ -136,7 +136,7 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
         getProvincesConfig("中国");
         //初始化地址信息
         if(title == "新增客户") {
-            console.log(initVal)
+            $scope.vm.currentCustomer.password = "888888";
             $scope.vm.currentCustomer.phone = _.clone(initVal);
             $scope.vm.currentCustomer.address.province = "云南省";
             getCitysConfig($scope.vm.currentCustomer.address.province);
