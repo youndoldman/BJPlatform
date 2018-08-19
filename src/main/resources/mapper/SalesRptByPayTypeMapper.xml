@@ -17,10 +17,10 @@
         </if>
 
         <if test="startTime != null">
-            and ( t_order.pay_time >= #{startTime}  )
+            and ( t_order.complete_time >= #{startTime}  )
         </if>
         <if test="endTime != null">
-            and ( #{endTime}  >= t_order.pay_time )
+            and ( #{endTime}  >= t_order.complete_time )
         </if>
 
         <if test="payStatus != null">
@@ -30,6 +30,8 @@
         <if test="dispatchUserIdx != null">
             and t_sysuser.user_idx = #{dispatchUserIdx}
         </if>
+
+        AND  t_order.status = 3
 
     </sql>
 

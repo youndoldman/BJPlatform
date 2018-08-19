@@ -864,6 +864,10 @@ public class OrderServiceImpl implements OrderService
         newOrder.setId(id);
 
         /*更新数据*/
+        if (newOrder.getOrderStatus() == OrderStatus.OSCompleted.getIndex())
+        {
+            newOrder.setCompleteTime(new Date());
+        }
         orderDao.update(newOrder);
 
         /*检查任务是否存在，处理订单*/
@@ -881,7 +885,6 @@ public class OrderServiceImpl implements OrderService
             SysUser candiUser = sysUserDao.findBySysUserId(strCandiUser);
             orderDao.insertDistatcher(newOrder.getId(),candiUser.getId());
         }
-
 
         /*订单变更历史记录*/
         OrderOperHistory(newOrder,newOrder.getOrderStatus());

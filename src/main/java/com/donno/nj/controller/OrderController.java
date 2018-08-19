@@ -111,7 +111,7 @@ public class OrderController
         }
         else
         {
-            orderOptional.get().setOrderStatus(orderStatus);
+            //orderOptional.get().setOrderStatus(orderStatus);
 
             Map<String, Object> variables = new HashMap<String, Object>();
 
@@ -150,7 +150,10 @@ public class OrderController
                 throw new ServerSideBusinessException("查询参数错误，订单状态不正确！", HttpStatus.NOT_ACCEPTABLE);
             }
 
-            orderService.update(taskId,variables,orderOptional.get().getId(),orderOptional.get());
+            Order newOrder = new Order();
+            newOrder.setId(orderOptional.get().getId());
+            newOrder.setOrderStatus(orderStatus);
+            orderService.update(taskId,variables,orderOptional.get().getId(),newOrder);
         }
 
         return ResponseEntity.ok().build();

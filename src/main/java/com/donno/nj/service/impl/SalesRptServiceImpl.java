@@ -21,7 +21,6 @@ import java.util.*;
 @Service
 public class SalesRptServiceImpl implements SalesRptService
 {
-
     @Autowired
     private SalesByPayTypeRptDao salesByPayTypeRptDao;
 

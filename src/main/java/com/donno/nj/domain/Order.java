@@ -48,9 +48,10 @@ public class Order implements Serializable
 
     private String  note;
 
-
-    private Date createTime;
     private Date payTime;//支付时间
+    private Date completeTime;//结单时间
+    private Date createTime;
+
     private Date updateTime;
 
     List<OrderDetail> orderDetailList;
@@ -185,6 +186,11 @@ public class Order implements Serializable
     public  Date getPayTime()
     {
         return  payTime;
+    }
+
+    public Date getCompleteTime()
+    {
+        return completeTime;
     }
 
     public OrderServiceQuality getOrderServiceQuality() {
@@ -332,6 +338,11 @@ public class Order implements Serializable
     public void setPayTime(Date payTime)
     {
         this.payTime = payTime;
+    }
+
+    public void setCompleteTime(Date completeTime)
+    {
+        this.completeTime = completeTime;
     }
 
     public void setOrderTriggerType(OrderTriggerType orderTriggerType)

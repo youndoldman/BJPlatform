@@ -224,6 +224,7 @@
         <if test="orderAmount != null">amount = #{orderAmount},</if>
         <if test="refoundSum != null">refound_sum = #{refoundSum},</if>
         <if test="payTime != null">pay_time = #{payTime},</if>
+        <if test="completeTime != null">complete_time = #{completeTime},</if>
         <if test="payStatus != null">pay_status = #{payStatus.index},</if>
         <if test="payType != null">pay_type = #{payType.index},</if>
         <if test="orderServiceQuality != null">service_quality = #{orderServiceQuality.index},</if>
