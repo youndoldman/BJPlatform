@@ -78,7 +78,7 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
         customer:{userId:null},
         operator:{userId:null},
         specCode:null,
-        ticketSn:null,
+        ticketQuantity:null,
         startDate:null,
         endDate:null,
         note:null,
@@ -131,17 +131,16 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
         var ticketInfo = {
             customer:$scope.q.customer,
             operator:$scope.q.operator,
-            ticketSn:$scope.q.ticketSn,
+            //ticketSn:$scope.q.ticketSn,
             specCode:$scope.q.specCode,
             ticketStatus:0,
             startDate:$scope.q.startDate,
             endDate:$scope.q.endDate,
             note:$scope.q.note,
         };
-        console.info(ticketInfo);
 
         if (title == "增加气票") {
-            CustomerManageService.addTicketInfo(ticketInfo).then(function () {
+            CustomerManageService.addTicketInfo($scope.q.ticketQuantity,ticketInfo).then(function () {
                 udcModal.info({"title": "处理结果", "message": "新增气票信息成功 "});
                 $scope.close(true);
             }, function(value) {
@@ -150,7 +149,12 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
         }
     };
 
-    $scope.couponSubmit = function (couponInfo) {
+    //增加气票和优惠券
+    $scope.ticketcouponSubmit = function () {
+        $scope.ticketSubmit();
+        $scope.couponSubmit();
+    };
+    $scope.couponSubmit = function () {
         var couponInfo = {
             customer:$scope.q.customer,
             operator:$scope.q.operator,
@@ -161,15 +165,15 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
             note:$scope.q.note1,
         };
         console.info(couponInfo);
-        for(var i = 0; i< $scope.q.quantity; i++)
-        {
-            CustomerManageService.addCoupon(couponInfo).then(function () {
+        //for(var i = 0; i< $scope.q.quantity; i++)
+        //{
+            CustomerManageService.addCoupon($scope.q.quantity, couponInfo).then(function () {
                 udcModal.info({"title": "处理结果", "message": "新增优惠券成功 "});
                 $scope.close(true);
             }, function(value) {
                 udcModal.info({"title": "处理结果", "message": "新增优惠券失败 "+value.message});
             })
-        }
+        //}
     };
 
     $scope.provincesChange = function () {

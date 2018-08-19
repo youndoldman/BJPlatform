@@ -105,6 +105,8 @@ commonModule.constant('URI', {
 
 
 
+
+
         'ktyAuthenticate': 'https://cc.ketianyun.com/thirdparty/api/v1/authenticate',//科天云登录接口
         'ktyReport1': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/agent/call',//科天云获取坐席-工作组及直拨电话统计报表
         'ktyReport2': 'https://cc.ketianyun.com/thirdparty/api/v1/callsdata/agent/operation',//科天云获取坐席-操作状态统计报表
@@ -342,6 +344,18 @@ commonModule.constant('NavItem', {
             name: "来话分析",
             target: "_blank",
             href: "./customService.htm#/CustomService/report6",
+            icon: "fa-table"
+        }, {
+            index: 13,
+            name: "气票查询",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/ticket",
+            icon: "fa-table"
+        }, {
+            index: 14,
+            name: "优惠券查询",
+            target: "_blank",
+            href: "./customService.htm#/CustomService/coupon",
             icon: "fa-table"
         }
         ]

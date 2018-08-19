@@ -21,6 +21,13 @@
                             <select name="spec" ng-model="vm.bottle.spec" ng-options="spec.name for spec in vm.config.specs" class="form-control" ng-selected=""></select>
                         </div>
                     </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label-large">皮重：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="text" name="tareWeight" class="form-control" ng-model="vm.bottle.tareWeight"  required>
+                        </div>
+                        <label class="input-tips" ng-show="bottleForm.tareWeight.$error.required || bottleForm.tareWeight.$invalid">&nbsp;*&nbsp;必填项</label>
+                    </div>
 
 
                     <div class="input-group pdb15" >
@@ -50,26 +57,26 @@
                             <input type="text" id='datetimepickerScrapDate' name="scrapDate" class="form-control" ng-model="vm.bottle.scrapDate"  required>
                         </div>
                     </div>
-                    <div class="input-group pdb15">
-                        <label class="col-sm-4 control-label input-label-large">启用状态：</label>
-                        <div class="col-sm-8 input-width">
-                            <select name="status" ng-model="vm.bottle.lifeStatus" ng-options="lifeStatus.value as lifeStatus.name for lifeStatus in vm.config.lifeStatus" class="form-control" ng-selected=""></select>
-                        </div>
-                    </div>
-                    <div class="input-group pdb15">
-                        <label class="col-sm-4 control-label input-label-large">工作状态：</label>
-                        <div class="col-sm-8 input-width">
-                            <select name="status" ng-model="vm.bottle.serviceStatus" ng-options="serviceStatus.value as serviceStatus.name for serviceStatus in vm.config.serviceStatus" class="form-control" ng-selected=""></select>
-                        </div>
-                    </div>
-                    <div class="input-group pdb15" ng-if="isModify">
-                        <label class="col-sm-4 control-label input-label-large">定位终端编码：</label>
-                        <div class="col-sm-8 input-width">
-                            <input type="text" name="locationDevNumber" class="form-control" ng-model="vm.bottle.locationDevice.number"  required>
-                        </div>
-                        <button ng-if="isBinded" type="button" class="btn btn-sm btn-danger" ng-click="unBind()"><i class="fa fa-plus"></i> 解绑 </button>
-                        <button ng-if="!isBinded" type="button" class="btn btn-sm btn-success" ng-click="bind()"><i class="fa fa-plus"></i> 绑定 </button>
-                    </div>
+                    <!--<div class="input-group pdb15">-->
+                        <!--<label class="col-sm-4 control-label input-label-large">启用状态：</label>-->
+                        <!--<div class="col-sm-8 input-width">-->
+                            <!--<select name="status" ng-model="vm.bottle.lifeStatus" ng-options="lifeStatus.value as lifeStatus.name for lifeStatus in vm.config.lifeStatus" class="form-control" ng-selected=""></select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="input-group pdb15">-->
+                        <!--<label class="col-sm-4 control-label input-label-large">工作状态：</label>-->
+                        <!--<div class="col-sm-8 input-width">-->
+                            <!--<select name="status" ng-model="vm.bottle.serviceStatus" ng-options="serviceStatus.value as serviceStatus.name for serviceStatus in vm.config.serviceStatus" class="form-control" ng-selected=""></select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="input-group pdb15" ng-if="isModify">-->
+                        <!--<label class="col-sm-4 control-label input-label-large">定位终端编码：</label>-->
+                        <!--<div class="col-sm-8 input-width">-->
+                            <!--<input type="text" name="locationDevNumber" class="form-control" ng-model="vm.bottle.locationDevice.number"  required>-->
+                        <!--</div>-->
+                        <!--<button ng-if="isBinded" type="button" class="btn btn-sm btn-danger" ng-click="unBind()"><i class="fa fa-plus"></i> 解绑 </button>-->
+                        <!--<button ng-if="!isBinded" type="button" class="btn btn-sm btn-success" ng-click="bind()"><i class="fa fa-plus"></i> 绑定 </button>-->
+                    <!--</div>-->
 
                 </div>
 

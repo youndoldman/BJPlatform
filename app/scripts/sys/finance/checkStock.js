@@ -226,7 +226,6 @@ financeApp.controller('checkStockCtrl', ['$scope', '$rootScope', '$filter', '$lo
                                         $scope.data.gasCylinderSpecList[i].todayStockOut = stockOutList[k];
 
                                         $scope.q.sumTodayOut +=  $scope.data.gasCylinderSpecList[i].todayStockOut.amount;
-
                                    // }
                                 }
                             }
