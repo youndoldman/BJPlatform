@@ -31,6 +31,8 @@ public class CouponController
     public ResponseEntity retrieve(
                                    @RequestParam(value = "customerUserId", defaultValue = "") String customerUserId,
                                    @RequestParam(value = "operatorUserId", defaultValue = "") String operatorUserId,
+                                   @RequestParam(value = "saleStartTime", defaultValue = "") String saleStartTime,
+                                   @RequestParam(value = "saleEndTime", defaultValue = "") String saleEndTime,
                                    @RequestParam(value = "specCode", defaultValue = "") String specCode,
                                    @RequestParam(value = "useStatus", required = false) Integer useStatus,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
@@ -57,6 +59,16 @@ public class CouponController
         if (useStatus != null)
         {
             params.putAll(ImmutableMap.of("useStatus", useStatus));
+        }
+
+        if (saleStartTime.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("saleStartTime", saleStartTime));
+        }
+
+        if (saleEndTime.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("saleEndTime", saleEndTime));
         }
 
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
