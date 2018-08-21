@@ -24,6 +24,8 @@ public interface DiscountStrategyService
     void update(Integer id, DiscountStrategy newDiscountStrategy);
 
     void deleteById(Integer id);
+    void CancelById(Integer id);
+
 
 
     void discountTrigger();

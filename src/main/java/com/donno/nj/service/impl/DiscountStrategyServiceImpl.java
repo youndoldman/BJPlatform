@@ -136,6 +136,18 @@ public class DiscountStrategyServiceImpl implements DiscountStrategyService
         discountDetailDao.deleteByDiscountStrategyIdx(id);
     }
 
+    @Override
+    @OperationLog(desc = "作废优惠策略信息")
+    public void CancelById(Integer id)
+    {
+        DiscountStrategy newDiscountStrategy = new DiscountStrategy();
+        newDiscountStrategy.setId(id);
+        newDiscountStrategy.setDiscountStrategyStatus(DiscountStrategyStatus.DSSInvalid);
+
+        /*作废优惠策略总表*/
+        discountStrategyDao.update(newDiscountStrategy);
+    }
+
     @OperationLog(desc = "检查优惠方案，未生效方案触发")
     public void discountTrigger()
     {

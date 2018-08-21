@@ -114,6 +114,26 @@ public class DiscountStrategyController
         return responseEntity;
     }
 
+    @OperationLog(desc = "作废优惠策略信息")
+    @RequestMapping(value = "/api/DiscountStrategies/Cancel/{id}", method = RequestMethod.PUT)
+    public ResponseEntity cancel(@PathVariable("id") Integer id)
+    {
+        ResponseEntity responseEntity;
+
+        Optional<DiscountStrategy> strategyOptional = discountStrategyService.findById(id);
+        if (strategyOptional.isPresent())
+        {
+            discountStrategyService.CancelById(strategyOptional.get().getId());
+            responseEntity = ResponseEntity.noContent().build();
+        }
+        else
+        {
+            responseEntity = ResponseEntity.notFound().build();
+        }
+
+        return responseEntity;
+    }
+
     @OperationLog(desc = "删除优惠策略信息")
     @RequestMapping(value = "/api/DiscountStrategies/{id}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable("id") Integer id)
