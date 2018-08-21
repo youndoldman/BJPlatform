@@ -49,6 +49,10 @@
             AND
             t_coupon.spec_idx = t_goods.id
 
+            <if test="couponSn != null">
+                and t_coupon.coupon_sn =  #{couponSn}
+            </if>
+
             <if test="customerUserId != null">
                 and t_coupon.customer_idx = (SELECT  id from t_user where user_id = #{customerUserId})
             </if>

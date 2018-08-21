@@ -28,7 +28,7 @@ public class CouponController
 
     @RequestMapping(value = "/api/Coupon", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取优惠券信息列表")
-    public ResponseEntity retrieve(
+    public ResponseEntity retrieve(@RequestParam(value = "couponSn", defaultValue = "") String couponSn,
                                    @RequestParam(value = "customerUserId", defaultValue = "") String customerUserId,
                                    @RequestParam(value = "operatorUserId", defaultValue = "") String operatorUserId,
                                    @RequestParam(value = "saleStartTime", defaultValue = "") String saleStartTime,
@@ -40,6 +40,11 @@ public class CouponController
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
     {
         Map params = new HashMap<String,String>();
+
+        if (couponSn.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("couponSn", couponSn));
+        }
 
         if (customerUserId.trim().length() > 0)
         {
