@@ -20,6 +20,7 @@ public class Ticket implements Serializable
     //private User operator;  //操作员
 
     private String salemanId;  //销售员id
+    private String salemanName;  //销售员姓名
 
     private String saleDepartmentCode;//气票销售时销售人员所在部门
 
@@ -84,6 +85,10 @@ public class Ticket implements Serializable
     public String getSalemanId()
     {
         return salemanId;
+    }
+
+    public String getSalemanName() {
+        return salemanName;
     }
 
     public String getSaleDepartmentCode() {
@@ -165,6 +170,10 @@ public class Ticket implements Serializable
     public void setSalemanId(String salemanId)
     {
         this.salemanId = salemanId;
+    }
+
+    public void setSalemanName(String salemanName) {
+        this.salemanName = salemanName;
     }
 
     public void setSaleDepartmentCode(String saleDepartmentCode) {

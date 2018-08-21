@@ -34,6 +34,14 @@
         id = #{id}
     </select>
 
+    <select id="findUserNameById" resultType="java.lang.String">
+        SELECT t_user.name
+        FROM t_user
+        WHERE
+        id = #{id}
+    </select>
+
+
 
 
     <select id="findById" resultMap="BaseResultMap">

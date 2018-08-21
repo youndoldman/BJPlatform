@@ -27,6 +27,9 @@
         <association property="salemanId" column="saleman_idx" select="com.donno.nj.dao.UserDao.findUserIdById">
         </association>
 
+        <association property="salemanName" column="saleman_idx" select="com.donno.nj.dao.UserDao.findUserNameById">
+        </association>
+
         <association property="saleDepartmentCode" column="sale_dep_idx" select="com.donno.nj.dao.DepartmentDao.findCodeById">
         </association>
 
