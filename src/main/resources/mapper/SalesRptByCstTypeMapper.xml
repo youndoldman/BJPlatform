@@ -20,10 +20,8 @@
         t_order_detail.order_idx = t_order.id
         and   t_order_detail.goods_idx = t_goods.id
         and   t_order.id = t_order_dispatcher.order_idx
-
-
         AND t_order_dispatcher.dispatcher_dep_idx = t_department.id
-
+        AND   t_order_dispatcher.dispatcher_idx = t_sysuser.user_idx
         and   t_order.customer_idx	= t_customer.user_idx
         and   t_customer.cst_type = t_customer_type.id
 
@@ -79,8 +77,5 @@
         )
         as b
     </select>
-
-
-
 
 </mapper>
