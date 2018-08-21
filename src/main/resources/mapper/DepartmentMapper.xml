@@ -51,6 +51,13 @@
         code = #{code}
     </select>
 
+    <select id="findCodeById" resultType="java.lang.String">
+        SELECT code
+        FROM <include refid="TableName"/>
+        WHERE
+        id = #{id}
+    </select>
+
 
     <select id="findSubDep" resultMap="SubDepResultMap">
         SELECT <include refid="QueryColumnList"/>

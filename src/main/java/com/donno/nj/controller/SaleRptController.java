@@ -93,7 +93,6 @@ public class SaleRptController
             }
         }
 
-
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 
         List<SalesRpt> salesRptList = salesRptService.retrieveSaleRpt(params, EByType.EByPayType);

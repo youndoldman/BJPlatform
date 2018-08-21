@@ -17,7 +17,6 @@ import java.util.*;
 @Service
 public class TicketServiceImpl implements TicketService
 {
-
     @Autowired
     private TicketDao ticketDao;
 
@@ -85,16 +84,18 @@ public class TicketServiceImpl implements TicketService
 
     public void mergeTicket(List<Ticket> tickets,List<Ticket> targets)
     {
-        boolean finded = false;
         for (Ticket ticket :tickets)
         {
-            finded = false;
+            boolean finded = false;
             for (Ticket target :targets)
             {
-                if (ticket.getSpecCode().equals(target.getSpecCode()))
+                if (!ticket.getTicketSn().equals(target.getTicketSn()))
+                {
+                   //
+                }
+                else
                 {
                     finded = true;
-                    target.setPrice(target.getPrice() + ticket.getPrice() );
                     break;
                 }
             }
@@ -109,9 +110,55 @@ public class TicketServiceImpl implements TicketService
 
     @Override
     @OperationLog(desc = "查询气票数量")
-    public Integer count(Map params) {
-        return ticketDao.count(params);
+    public Integer count(Map params)
+    {
+        Integer ticketCount = 0 ;
+
+        if (params.containsKey("departmentCode"))
+        {
+            ticketCount = recurseCount(params);
+        }
+        else
+        {
+            ticketCount = ticketDao.count(params);
+        }
+
+        return ticketCount;
     }
+
+    Integer recurseCount(Map params)
+    {
+        Integer ticketCount = 0;
+        String departmentCode = params.get("departmentCode").toString();
+        Department department = departmentDao.findByCode(departmentCode);
+        if(department == null)
+        {
+            throw new ServerSideBusinessException("部门信息不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
+        department.setLstSubDepartment(departmentDao.findSubDep(department.getId()));
+        if ( department.getLstSubDepartment() != null && department.getLstSubDepartment().size() > 0 )
+        {
+            for (Department childDep : department.getLstSubDepartment())
+            {
+                Map subParam = new HashMap<String,String>();
+                subParam.putAll(params);
+                subParam.remove("departmentCode");
+                subParam.putAll(ImmutableMap.of("departmentCode", childDep.getCode()));
+
+                Integer subTicketCount = recurseCount(subParam);
+
+                ticketCount = ticketCount + subTicketCount;
+            }
+        }
+        else
+        {
+            ticketCount = ticketDao.count(params);
+        }
+
+        return ticketCount;
+    }
+
+
 
     public void checkTicketSn(String ticketSn)
     {
@@ -150,19 +197,18 @@ public class TicketServiceImpl implements TicketService
         customer.setId(target.getId());
     }
 
-    public void checkOperator(User operator)
+    public void checkSaleman(String salemanId)
     {
-        if (operator == null || operator.getUserId() == null || operator.getUserId().trim().length() == 0)
+        if (salemanId == null || salemanId.trim().length() == 0)
         {
-            throw new ServerSideBusinessException("操作员信息不全，请补充！", HttpStatus.NOT_ACCEPTABLE);
+            throw new ServerSideBusinessException("业务员信息不全，请补充！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        User target = userDao.findByUserId(operator.getUserId());
-        if (userDao.findByUserId(operator.getUserId()) == null)
+        User target = userDao.findByUserId(salemanId);
+        if (target == null)
         {
-            throw new ServerSideBusinessException("操作员不存在！", HttpStatus.NOT_ACCEPTABLE);
+            throw new ServerSideBusinessException("业务员不存在！", HttpStatus.NOT_ACCEPTABLE);
         }
-        operator.setId(target.getId());
     }
 
 
@@ -236,8 +282,8 @@ public class TicketServiceImpl implements TicketService
         /*客户信息校验*/
         checkCustomer(ticket.getCustomer());
 
-        /*操作员信息校验*/
-        checkOperator(ticket.getOperator());
+        /*业务员信息校验*/
+        checkSaleman(ticket.getSalemanId());
 
         /*规格检查*/
         String specCode = ticket.getSpecCode();
@@ -246,18 +292,23 @@ public class TicketServiceImpl implements TicketService
             throw new ServerSideBusinessException("缺少规格信息！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        Goods target = goodsDao.findByCode(specCode);
-        if (target == null)
+        Goods targetGoods = goodsDao.findByCode(specCode);
+        if (targetGoods == null)
         {
             throw new ServerSideBusinessException("规格信息不存在！", HttpStatus.NOT_ACCEPTABLE);
         }
 
         //设置价格
-        ticket.setPrice(target.getPrice());
+        ticket.setPrice(targetGoods.getPrice());
 
         /*生效日期检查*/
         checkStartDate(ticket.getStartDate());
         checkEndDate(ticket.getEndDate());
+
+        String ticketSn = "TSN-";
+        Date curDate = new Date();
+        String dateFmt =  new SimpleDateFormat("yyyyMMddHHmmssSSS").format(curDate);
+        ticketSn = ticketSn + (dateFmt);
 
         for (Integer iCount = 0 ;iCount < ticketCount ; iCount++)
         {
@@ -265,12 +316,8 @@ public class TicketServiceImpl implements TicketService
             newTicket = ticket;
 
             //生成气票编号
-            String ticketSn = "TSN-";
-            Date curDate = new Date();
-            String dateFmt =  new SimpleDateFormat("yyyyMMddHHmmssSSS").format(curDate);
-            ticketSn = ticketSn + (dateFmt);
-            ticketSn = String.format("%s-%d",ticketSn,iCount+1);
-            newTicket.setTicketSn(ticketSn);
+            String newSn = String.format("%s-%d",ticketSn,iCount+1);
+            newTicket.setTicketSn(newSn);
 
             ticketDao.insert(newTicket);
         }
@@ -306,9 +353,9 @@ public class TicketServiceImpl implements TicketService
         }
 
         /*操作员信息校验*/
-        if (newTicket.getOperator() != null)
+        if (newTicket.getSalemanId() != null)
         {
-            checkOperator(newTicket.getOperator());
+            checkSaleman(newTicket.getSalemanId());
         }
 
         /*规格检查*/

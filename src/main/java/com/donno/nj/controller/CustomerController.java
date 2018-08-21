@@ -171,7 +171,7 @@ public class CustomerController
             params.putAll(ImmutableMap.of("status", status));
         }
 
-        if (customerTypeCode.trim().length() > 0)
+        if (settlementTypeCode.trim().length() > 0)
         {
             params.putAll(ImmutableMap.of("settlementTypeCode", settlementTypeCode));
         }

@@ -35,9 +35,12 @@ public class TicketController
     @OperationLog(desc = "获取气票信息列表")
     public ResponseEntity retrieve(@RequestParam(value = "ticketSn", defaultValue = "") String ticketSn,
                                    @RequestParam(value = "customerUserId", defaultValue = "") String customerUserId,
-                                   @RequestParam(value = "operatorUserId", defaultValue = "") String operatorUserId,
+                                   @RequestParam(value = "saleUserId", defaultValue = "") String saleUserId,
+                                   @RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
                                    @RequestParam(value = "specCode", defaultValue = "") String specCode,
                                    @RequestParam(value = "useStatus", required = false) Integer useStatus,
+                                   @RequestParam(value = "saleStartTime", defaultValue = "") String saleStartTime,
+                                   @RequestParam(value = "saleEndTime", defaultValue = "") String saleEndTime,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
@@ -54,9 +57,14 @@ public class TicketController
             params.putAll(ImmutableMap.of("customerUserId", customerUserId));
         }
 
-        if (operatorUserId.trim().length() > 0)
+        if (departmentCode.trim().length() > 0)
         {
-            params.putAll(ImmutableMap.of("operatorUserId", operatorUserId));
+            params.putAll(ImmutableMap.of("departmentCode", departmentCode));
+        }
+
+        if (saleUserId.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("saleUserId", saleUserId));
         }
 
         if (specCode.trim().length() > 0)
@@ -67,6 +75,16 @@ public class TicketController
         if (useStatus != null)
         {
             params.putAll(ImmutableMap.of("useStatus", useStatus));
+        }
+
+        if (saleStartTime.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("saleStartTime", saleStartTime));
+        }
+
+        if (saleEndTime.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("saleEndTime", saleEndTime));
         }
 
         params.putAll(paginationParams(pageNo, pageSize, orderBy));

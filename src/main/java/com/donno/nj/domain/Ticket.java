@@ -17,7 +17,12 @@ public class Ticket implements Serializable
     private String specCode;
     private String specName;
     private Float price;
-    private User operator;  //操作员
+    //private User operator;  //操作员
+
+    private String salemanId;  //销售员id
+
+    private String saleDepartmentCode;//气票销售时销售人员所在部门
+
     private TicketStatus  ticketStatus;
     private Date startDate;  //有效期
     private Date endDate;   //有效期
@@ -71,8 +76,18 @@ public class Ticket implements Serializable
         return  price;
     }
 
-    public User getOperator() {
-        return operator;
+//    public User getOperator() {
+//        return operator;
+//    }
+
+
+    public String getSalemanId()
+    {
+        return salemanId;
+    }
+
+    public String getSaleDepartmentCode() {
+        return saleDepartmentCode;
     }
 
     public Date getStartDate()
@@ -143,8 +158,17 @@ public class Ticket implements Serializable
         this.price = price;
     }
 
-    public void setOperator(User operator) {
-        this.operator = operator;
+//    public void setOperator(User operator) {
+//        this.operator = operator;
+//    }
+
+    public void setSalemanId(String salemanId)
+    {
+        this.salemanId = salemanId;
+    }
+
+    public void setSaleDepartmentCode(String saleDepartmentCode) {
+        this.saleDepartmentCode = saleDepartmentCode;
     }
 
     public  void setStartDate(Date startDate)

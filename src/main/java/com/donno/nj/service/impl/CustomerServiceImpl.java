@@ -4,6 +4,7 @@ import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.dao.*;
 import com.donno.nj.domain.*;
 import com.donno.nj.service.CustomerService;
+import com.donno.nj.service.TicketService;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,11 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
     @Autowired
     private OrderDao orderDao;
 
+    @Autowired
+    private TicketDao ticketDao;
+
+    @Autowired
+    private CouponDao couponDao;
 
     @Autowired
     private UserPositionDao userPositionDao;
@@ -225,6 +231,22 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
         if (orderDao.count(params) > 0)
         {
             throw new ServerSideBusinessException("客户已有订单记录，不能删除客户信息！",HttpStatus.FORBIDDEN);
+        }
+
+        /*有关联气票，则不允许删除，需先删除关联气票*/
+        params.clear();
+        params.putAll(ImmutableMap.of("customerUserId", customer.getUserId()));
+        if (ticketDao.count(params) > 0)
+        {
+            throw new ServerSideBusinessException("客户已有气票记录，不能删除客户信息！",HttpStatus.FORBIDDEN);
+        }
+
+        /*有关联优惠券，则不允许删除，需先删除关联优惠券*/
+        params.clear();
+        params.putAll(ImmutableMap.of("customerUserId", customer.getUserId()));
+        if (couponDao.count(params) > 0)
+        {
+            throw new ServerSideBusinessException("客户已有优惠券记录，不能删除客户信息！",HttpStatus.FORBIDDEN);
         }
 
         /*删除位置信息表*/

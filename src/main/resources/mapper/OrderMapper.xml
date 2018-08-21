@@ -34,14 +34,14 @@
         <result column="note" property="note" jdbcType="VARCHAR"/>
         <result column="recycle_gas_cylinder" property="recycleGasCylinder" jdbcType="VARCHAR"/>
         <result column="delivery_gas_cylinder" property="deliveryGasCylinder" jdbcType="VARCHAR"/>
-
-
         <result column="service_quality" property="orderServiceQuality" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
-
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
 
         <association property="customer" column="customer_idx" select="com.donno.nj.dao.CustomerDao.selectById">
+        </association>
+
+        <association property="couponCount" column="order_sn" select="com.donno.nj.dao.CouponOrderDao.CountByOrderSn">
         </association>
 
         <association property="dispatcher" column="id" select="com.donno.nj.dao.SysUserDao.findByOrderIdx">
@@ -49,8 +49,57 @@
 
         <collection property="orderDetailList" column="id" ofType="com.donno.nj.domain.OrderDetail" select="com.donno.nj.dao.OrderDetailDao.findByOrderIdx">
         </collection>
-
     </resultMap>
+
+
+    <!--<resultMap id="DetailResultMap" type="com.donno.nj.domain.Order">-->
+        <!--<id column="id" property="id" jdbcType="INTEGER"/>-->
+        <!--<result column="order_sn" property="orderSn" jdbcType="VARCHAR"/>-->
+        <!--<result column="call_in_phone" property="callInPhone" jdbcType="VARCHAR"/>-->
+        <!--<result column="origal_amount" property="originalAmount" jdbcType="FLOAT"/>-->
+        <!--<result column="amount" property="orderAmount" jdbcType="FLOAT"/>-->
+        <!--<result column="refound_sum" property="refoundSum" jdbcType="FLOAT"/>-->
+        <!--<result column="pay_type" property="payType"  typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>-->
+        <!--<result column="access_type" property="accessType" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>-->
+        <!--<result column="order_trigger_type" property="orderTriggerType" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>-->
+
+        <!--<result column="status" property="orderStatus" jdbcType="INTEGER"/>-->
+        <!--<result column="pay_status" property="payStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>-->
+
+        <!--<result column="invoice_status" property="invoiceStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>-->
+        <!--<result column="time_span" property="timeSpan" jdbcType="INTEGER"/>-->
+
+        <!--<result column="urgent" property="urgent" jdbcType="BOOLEAN"/>-->
+        <!--<result column="addr_province" property="recvAddr.province" jdbcType="VARCHAR"/>-->
+        <!--<result column="addr_city" property="recvAddr.city" jdbcType="VARCHAR"/>-->
+        <!--<result column="addr_county" property="recvAddr.county" jdbcType="VARCHAR"/>-->
+        <!--<result column="addr_detail" property="recvAddr.detail" jdbcType="VARCHAR"/>-->
+        <!--<result column="longitude" property="recvLongitude" jdbcType="DOUBLE"/>-->
+        <!--<result column="latitude" property="recvLatitude" jdbcType="DOUBLE"/>-->
+        <!--<result column="recv_name" property="recvName" jdbcType="VARCHAR"/>-->
+        <!--<result column="recv_phone" property="recvPhone" jdbcType="VARCHAR"/>-->
+        <!--<result column="reserve_time" property="reserveTime" jdbcType="TIMESTAMP"/>-->
+        <!--<result column="comment" property="comment" jdbcType="VARCHAR"/>-->
+        <!--<result column="note" property="note" jdbcType="VARCHAR"/>-->
+        <!--<result column="recycle_gas_cylinder" property="recycleGasCylinder" jdbcType="VARCHAR"/>-->
+        <!--<result column="delivery_gas_cylinder" property="deliveryGasCylinder" jdbcType="VARCHAR"/>-->
+        <!--<result column="service_quality" property="orderServiceQuality" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>-->
+        <!--<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>-->
+        <!--<result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>-->
+
+        <!--<association property="customer" column="customer_idx" select="com.donno.nj.dao.CustomerDao.selectById">-->
+        <!--</association>-->
+
+        <!--<association property="couponCount" column="order_sn" select="com.donno.nj.dao.CouponOrderDao.CountByOrderSn">-->
+        <!--</association>-->
+
+        <!--<association property="dispatcher" column="id" select="com.donno.nj.dao.SysUserDao.findByOrderIdx">-->
+        <!--</association>-->
+
+        <!--<collection property="orderDetailList" column="id" ofType="com.donno.nj.domain.OrderDetail" select="com.donno.nj.dao.OrderDetailDao.findByOrderIdx">-->
+        <!--</collection>-->
+
+    <!--</resultMap>-->
 
     <sql id="TblOrder">
         t_order
@@ -118,8 +167,8 @@
                 AND  pay_type = #{payType.index}
             </if>
 
-            <if test="payType != null">
-                AND  pay_type = #{payType.index}
+            <if test="accessType != null">
+                AND  access_type = #{accessType.index}
             </if>
 
 
@@ -244,10 +293,11 @@
 
      <!--订单派送人-->
     <insert id="insertDistatcher" >
-        INSERT INTO  t_order_dispatcher(order_idx,dispatcher_idx)
+        INSERT INTO  t_order_dispatcher(order_idx,dispatcher_idx,dispatcher_dep_idx)
         VALUES
         (
-         #{orderIdx},#{userIdx}
+         #{orderIdx},#{userIdx},
+         (select department_idx FROM t_sysuser where user_idx=#{userIdx} )
         )
     </insert>
 

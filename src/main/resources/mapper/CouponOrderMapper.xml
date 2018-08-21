@@ -89,6 +89,14 @@
 
     </select>
 
+    <select id="CountByOrderSn" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM <include refid="TableName"/>
+        <where>
+            order_idx = (SELECT  id from t_order WHERE  order_sn = #{orderSn})
+        </where>
+    </select>
+
 
     <select id="findByCouponIdx" resultMap="BaseResultMap">
         SELECT <include refid="QueryColumnList"/>

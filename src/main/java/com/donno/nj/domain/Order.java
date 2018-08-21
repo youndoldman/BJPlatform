@@ -15,9 +15,11 @@ public class Order implements Serializable
     Customer customer;
 
     private Float  originalAmount;//订单原始金额
-    private Float  orderAmount;//订单金额
+    private Float  orderAmount;//订单实际金额
     private Float  refoundSum;//退款金额
     private PayType payType;//支付方式
+
+    private Integer couponCount;//使用的优惠券数量
 
     private Integer orderStatus;//订单状态
     private PayStatus payStatus;
@@ -141,7 +143,9 @@ public class Order implements Serializable
         return accessType;
     }
 
-
+    public Integer getCouponCount() {
+        return couponCount;
+    }
 
     public CustomerAddress getRecvAddr()
     {
@@ -357,6 +361,10 @@ public class Order implements Serializable
 
     public void setOrderServiceQuality(OrderServiceQuality orderServiceQuality) {
         this.orderServiceQuality = orderServiceQuality;
+    }
+
+    public void setCouponCount(Integer couponCount) {
+        this.couponCount = couponCount;
     }
 
     public void setRecycleGasCylinder(String recycleGasCylinder)

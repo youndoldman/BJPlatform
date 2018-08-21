@@ -114,7 +114,6 @@ public class SaleCashRptController
         }
         saleCashRpt.setTicketSaleCash(ticketSale);
 
-
         /*今日存银行款*/
         Float depositCash = 0f;
         List<DepositDetail>  depositDetails = depositDetailService.retrieve(params);

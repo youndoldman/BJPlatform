@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -141,17 +142,38 @@ public class CouponServiceImpl implements CouponService
         checkOperator(coupon.getOperator());
 
         /*规格检查*/
-        checkSpec(coupon.getSpecCode());
+        String specCode = coupon.getSpecCode();
+        if (specCode == null || specCode.trim().length() == 0)
+        {
+            throw new ServerSideBusinessException("缺少规格信息！", HttpStatus.NOT_ACCEPTABLE);
+        }
+        Goods targetGoods = goodsDao.findByCode(specCode);
+        if (targetGoods == null)
+        {
+            throw new ServerSideBusinessException("规格信息不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        //设置价格
+        coupon.setPrice(targetGoods.getPrice());
 
         /*生效日期检查*/
         checkStartDate(coupon.getStartDate());
         checkEndDate(coupon.getEndDate());
 
+        //生成气票编号
+        String couponSn = "CSN-";
+        Date curDate = new Date();
+        String dateFmt =  new SimpleDateFormat("yyyyMMddHHmmssSSS").format(curDate);
+        couponSn = couponSn + (dateFmt);
+
+
         for (Integer iCount = 0; iCount < couponCount;iCount++)
         {
+            String newCouponSn = String.format("%s-%d",couponSn,iCount+1);
+            coupon.setCouponSn(newCouponSn);
+
             couponDao.insert(coupon);
         }
-
     }
 
     @Override

@@ -1033,6 +1033,7 @@ public class OrderServiceImpl implements OrderService
 
         /*优惠券*/
         String[] couponList = coupuns.split(",");
+        Float couponSum = 0f;
         for (String couponId :couponList)
         {
             if (couponId.trim().length() > 0)
@@ -1049,6 +1050,8 @@ public class OrderServiceImpl implements OrderService
                 target.setCouponStatus(TicketStatus.TSUsed);
                 target.setUseTime(new Date());
                 couponDao.update(target);
+
+                couponSum = couponSum + target.getPrice();
 
                 /*增加优惠券订单关联消费记录*/
                 CouponOrder couponOrder = new CouponOrder();
@@ -1094,6 +1097,10 @@ public class OrderServiceImpl implements OrderService
 
         /*更改订单支付状态为已支付*/
         order.setPayStatus(PayStatus.PSPaied);
+        order.setPayType(PayType.PTTicket);
+
+        order.setOrderAmount(order.getOrderAmount() - couponSum);//交掉优惠卷抵扣金额
+
 
         order.setPayTime(new Date());
         if (message.trim().length() >0 )

@@ -9,6 +9,7 @@
         <result column="spec_code" property="specCode" jdbcType="VARCHAR"/>
         <result column="spec_name" property="specName" jdbcType="VARCHAR"/>
         <result column="use_status" property="ticketStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+
         <result column="exp_time_start" property="startDate" jdbcType="TIMESTAMP"/>
         <result column="exp_time_end" property="endDate" jdbcType="TIMESTAMP"/>
         <result column="use_time" property="useTime" jdbcType="TIMESTAMP"/>
@@ -23,11 +24,17 @@
         <!--<association property="spec" column="spec_idx" select="com.donno.nj.dao.GoodsDao.findById">-->
         <!--</association>-->
 
+        <association property="salemanId" column="saleman_idx" select="com.donno.nj.dao.UserDao.findUserIdById">
+        </association>
+
+        <association property="saleDepartmentCode" column="sale_dep_idx" select="com.donno.nj.dao.DepartmentDao.findCodeById">
+        </association>
+
         <association property="customer" column="customer_idx" select="com.donno.nj.dao.UserDao.findById">
         </association>
 
-        <association property="operator" column="oper_idx" select="com.donno.nj.dao.UserDao.findById">
-        </association>
+        <!--<association property="operator" column="oper_idx" select="com.donno.nj.dao.UserDao.findById">-->
+        <!--</association>-->
 
     </resultMap>
 
@@ -42,15 +49,13 @@
 
 
     <sql id="QueryColumnList">
-       t_ticket.id,t_ticket.ticket_sn, t_ticket.customer_idx, t_ticket.oper_idx,t_ticket.price,  t_ticket.exp_time_start,t_ticket.exp_time_end,t_ticket.use_status,t_ticket.use_time, t_ticket.note,t_ticket.create_time,t_ticket.update_time,
+       t_ticket.id,t_ticket.ticket_sn, t_ticket.customer_idx, t_ticket.saleman_idx,t_ticket.sale_dep_idx,t_ticket.price,  t_ticket.exp_time_start,t_ticket.exp_time_end,t_ticket.use_status,t_ticket.use_time, t_ticket.note,t_ticket.create_time,t_ticket.update_time,
         t_goods.specifications as spec_name, t_goods.code as spec_code
     </sql>
 
     <sql id="InsertColumnList">
-       ticket_sn,customer_idx,spec_idx, oper_idx,price,  exp_time_start,exp_time_end,use_status,use_time, note
+       ticket_sn,customer_idx,spec_idx, saleman_idx,sale_dep_idx,price,  exp_time_start,exp_time_end,use_status,use_time, note
     </sql>
-
-
 
 
     <sql id="getListCondition">
@@ -62,11 +67,9 @@
                 and t_ticket.ticket_sn =  #{ticketSn}
             </if>
             <if test="customerUserId != null">
-                and t_ticket.customer_idx = (SELECT  id from t_user where user_id = #{customerUserId})
+                and t_ticket.customer_idx in (SELECT  id from t_user where user_id = #{customerUserId})
             </if>
-            <if test="operatorUserId != null">
-                and t_ticket.oper_idx = (SELECT  id from t_user where user_id = #{operatorUserId})
-            </if>
+
 
             <if test="useStatus != null">
                 and t_ticket.use_status = #{useStatus}
@@ -92,13 +95,23 @@
                 <!--</if>-->
             </if>
 
-            <if test="startSaleTime != null">
-                and t_ticket.create_time >= #{startSaleTime}
+            <if test="saleStartTime != null">
+                and t_ticket.create_time >= #{saleStartTime}
             </if>
 
-            <if test="endSaleTime != null">
-                and #{endSaleTime}  >= t_ticket.create_time
+            <if test="saleEndTime != null">
+                and #{saleEndTime}  >= t_ticket.create_time
             </if>
+
+            <if test="departmentCode != null">
+                and t_ticket.sale_dep_idx in ( select t_department.id from t_department where t_department.code = #{departmentCode})
+            </if>
+
+            <if test="saleUserId != null">
+                and t_ticket.saleman_idx in (select t_user.id from t_user where t_user.user_id =#{saleUserId} )
+            </if>
+
+
 
         </where>
     </sql>
@@ -152,7 +165,8 @@
         VALUES( #{ticketSn},
         (select id from t_user where user_id = #{customer.userId} ),
         (select id from t_goods where code = #{specCode} ),
-        (select id from t_user where user_id = #{operator.userId} ),
+        (select id from t_user where user_id = #{salemanId} ),
+        (select department_idx from t_sysuser where user_idx = (select id from t_user where user_id = #{salemanId})),
         #{price},#{startDate},#{endDate},#{ticketStatus.index},#{useTime},#{note})
     </insert>
 
@@ -167,7 +181,7 @@
         <set>
             <if test="ticketSn != null">ticket_sn = #{ticketSn},</if>
             <if test="customer != null">customer_idx = (SELECT  id from t_user where user_id = #{customer.userId}),</if>
-            <if test="operator != null">oper_idx = (SELECT  id from t_user where user_id = #{operator.userId}),</if>
+            <if test="salemanId != null">saleman_idx = (SELECT  id from t_user where user_id = #{salemanId}),</if>
             <if test="specCode != null">spec_idx = (SELECT  id from t_goods where code = #{specCode}),</if>
             <if test="price != null">price = #{price},</if>
             <if test="ticketStatus != null">use_status = #{ticketStatus.index},</if>

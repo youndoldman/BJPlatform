@@ -4,6 +4,7 @@
 <mapper namespace="com.donno.nj.dao.CouponDao">
     <resultMap id="BaseResultMap" type="com.donno.nj.domain.Coupon">
         <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="coupon_sn" property="couponSn" jdbcType="VARCHAR"/>
         <result column="price" property="price" jdbcType="DOUBLE"/>
         <result column="spec_code" property="specCode" jdbcType="VARCHAR"/>
         <result column="spec_name" property="specName" jdbcType="VARCHAR"/>
@@ -33,18 +34,14 @@
     </sql>
 
 
-
     <sql id="QueryColumnList">
-       t_coupon.id, t_coupon.customer_idx, t_coupon.oper_idx,t_coupon.price,  t_coupon.exp_time_start,t_coupon.exp_time_end,t_coupon.use_status,t_coupon.use_time, t_coupon.note,t_coupon.create_time,t_coupon.update_time,
+       t_coupon.id,t_coupon.coupon_sn, t_coupon.customer_idx, t_coupon.oper_idx,t_coupon.price,  t_coupon.exp_time_start,t_coupon.exp_time_end,t_coupon.use_status,t_coupon.use_time, t_coupon.note,t_coupon.create_time,t_coupon.update_time,
         t_goods.specifications as spec_name, t_goods.code as spec_code
     </sql>
 
     <sql id="InsertColumnList">
-       customer_idx,spec_idx, oper_idx,price,  exp_time_start,exp_time_end,use_status,use_time, note
+       customer_idx,coupon_sn,spec_idx, oper_idx,price,  exp_time_start,exp_time_end,use_status,use_time, note
     </sql>
-
-
-
 
     <sql id="getListCondition">
         <where>
@@ -116,12 +113,11 @@
         t_coupon.id = #{id}
     </select>
 
-
-
     <insert id="insert">
         INSERT IGNORE INTO <include refid="TableName"/>(<include refid="InsertColumnList"/>)
         VALUES(
         (select id from t_user where user_id = #{customer.userId} ),
+        #{couponSn},
         (select id from t_goods where code = #{specCode} ),
         (select id from t_user where user_id = #{operator.userId} ),
         #{price},#{startDate},#{endDate},#{couponStatus.index},#{useTime},#{note})

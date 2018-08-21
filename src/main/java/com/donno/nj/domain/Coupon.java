@@ -9,6 +9,7 @@ import java.util.Date;
 public class Coupon implements Serializable
 {
     private Integer id;
+    private String couponSn;
     private User customer;  //客户
 
     private String specCode;
@@ -25,7 +26,6 @@ public class Coupon implements Serializable
     protected Date createTime;
     protected Date updateTime;
 
-
     public Coupon()
     {
     }
@@ -35,10 +35,13 @@ public class Coupon implements Serializable
         return id;
     }
 
+    public String getCouponSn() {
+        return couponSn;
+    }
+
     public User getCustomer() {
         return customer;
     }
-
 
     public String getSpecCode() {
         return specCode;
@@ -52,7 +55,6 @@ public class Coupon implements Serializable
     {
         return couponStatus;
     }
-
 
     public Float getPrice()
     {
@@ -93,10 +95,14 @@ public class Coupon implements Serializable
         return updateTime;
     }
 
-
     public void setId(Integer id)
     {
         this.id = id;
+    }
+
+    public void setCouponSn(String couponSn)
+    {
+        this.couponSn = couponSn;
     }
 
     public void setCustomer(User customer) {
