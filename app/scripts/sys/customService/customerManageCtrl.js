@@ -13,12 +13,20 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
 
         $scope.q = {
             CustomerName: historyQ.CustomerName || "",
-            CustomerID: historyQ.CustomerName || ""
+            CustomerID: historyQ.CustomerName || "",
+            customerType:null,
+            settlementType:null,
+            customerLevel:null
         };
 
         $scope.vm = {
             customerList: [],
             gasTicketEditBoolean:true,
+            customerTypeList: [{key:null,value:"全部"},{key:"00001",value:"居民客户"},{key:"00002",value:"餐饮客户"}],
+            settlementTypeList: [{key:null,value:"全部"},{key:"00001",value:"普通客户"},{key:"00002",value:"月结客户"},{key:"00003",value:"气票客户"}],
+            customerLevelList: [{key:null,value:"全部"},{key:"00001",value:"一级客户"},{key:"00002",value:"二级客户"},{key:"00003",value:"三级客户"}
+                ,{key:"00004",value:"四级客户"},{key:"00005",value:"五级客户"},{key:"00006",value:"六级客户"},{key:"00007",value:"七级客户"}
+                ,{key:"00008",value:"八级客户"},{key:"00009",value:"九级客户"},{key:"00010",value:"十级客户"}],
         };
         $scope.search = function () {
             $scope.pager.setCurPageNo(1);
@@ -141,6 +149,9 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
             var queryParams = {
                 userId: $scope.q.CustomerID,
                 userName: $scope.q.CustomerName,
+                settlementTypeCode: $scope.q.settlementType.key,
+                customerTypeCode: $scope.q.customerType.key,
+                customerLevelCode: $scope.q.customerLevel.key,
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize
             };
@@ -153,11 +164,12 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
 
         var init = function () {
             $scope.pager.pageSize=25;
+            $scope.q.settlementType = $scope.vm.settlementTypeList[0];
+            $scope.q.customerType= $scope.vm.customerTypeList[0];
+            $scope.q.customerLevel = $scope.vm.customerLevelList[0];
+
             searchCustomer();
-
-
-
-        }
+        };
         //判断是不是气票用户
         $scope.isTicketUser =  function(customer){
             if(customer.settlementType.code == "00003")

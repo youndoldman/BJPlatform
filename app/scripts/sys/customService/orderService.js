@@ -6,7 +6,7 @@ customServiceApp.service('OrderService', ['$http', 'URI', 'promiseWrapper','MISC
     var taskOrdersDealUri = URI.resources.taskOrdersDeal;
     var usersUri = URI.resources.users;
     var orderCancelUri = URI.resources.orderCancel;
-
+    var ticketUri = URI.resources.ticket;
 
     this.toViewModelTaskOrders = function (taskOrdersFromApi) {
         if(taskOrdersFromApi.object==null)
@@ -111,5 +111,12 @@ customServiceApp.service('OrderService', ['$http', 'URI', 'promiseWrapper','MISC
         return promise.wrap($http.put(orderCancelUri+'/'+orderSn));
 
     }
+
+    //请求气票表
+    this.retrieveTicket = function (params) {
+        return promise.wrap($http.get(ticketUri, {params: params}));
+    };
+
+
 }]);
 

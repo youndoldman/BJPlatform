@@ -10,6 +10,16 @@
     <div class="toolbar">
         <form role="form">
             <div class="inline-group">
+                <label class="input">客户类型：</label>
+                <label class="input"><select  ng-model="q.customerType" ng-options="customerType.value for customerType in vm.customerTypeList" class="form-control" ng-selected="" ng-change="search()"></select></label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label class="input">客户结算：</label>
+                <label class="input"><select  ng-model="q.settlementType" ng-options="settlementType.value for settlementType in vm.settlementTypeList" class="form-control" ng-selected="" ng-change="search()"></select></label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label class="input">客户等级：</label>
+                <label class="input"><select  ng-model="q.customerLevel" ng-options="customerLevel.value for customerLevel in vm.customerLevelList" class="form-control" ng-selected="" ng-change="search()"></select></label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+
                 <label class="input">客户编号：</label>
                 <label class="input"><input type="text"  class="form-control" ng-model="q.CustomerID"></label>
                 &nbsp;&nbsp;&nbsp;&nbsp;

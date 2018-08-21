@@ -93,6 +93,7 @@ public class WXPay {
      */
     public Map<String, String> fillRequestData(Map<String, String> reqData) throws Exception {
         reqData.put("mch_id", config.getMchID());
+        reqData.put("sub_mch_id", config.getSubMchID());
         reqData.put("nonce_str", WXPayUtil.generateUUID());
         if (SignType.MD5.equals(this.signType)) {
             reqData.put("sign_type", WXPayConstants.MD5);

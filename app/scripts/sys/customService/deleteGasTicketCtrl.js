@@ -44,6 +44,7 @@ customServiceApp.controller('DeleteGasTicketModalCtrl', ['$scope', 'close', 'Cus
     $scope.searchTickets= function(){
         var queryParams = {
             customerUserId:$scope.vm.currentCustomer.userId,
+            useStatus:0,//未使用
             pageNo: $scope.pager.getCurPageNo(),
             pageSize: $scope.pager.pageSize
         };
@@ -51,10 +52,8 @@ customServiceApp.controller('DeleteGasTicketModalCtrl', ['$scope', 'close', 'Cus
         CustomerManageService.searchTicket(queryParams).then(function (tickets) {
             $scope.pager.update($scope.q, tickets.total, queryParams.pageNo);
             $scope.vm.currentCustomerTickets = tickets.items;
-
-
         });
-}
+    }
     //删除气票
     $scope.deleteTicket = function (ticketDetail) {
         udcModal.confirm({"title": "删除气票", "message": "是否永久删除该气票，编号为：" + ticketDetail.ticketSn})
@@ -62,7 +61,6 @@ customServiceApp.controller('DeleteGasTicketModalCtrl', ['$scope', 'close', 'Cus
                 if (result) {
                     CustomerManageService.deleteTicket(ticketDetail).then(function () {
                         udcModal.info({"title": "处理结果", "message": "删除气票成功 "});
-
                         $scope.searchTickets();
                     }, function(value) {
                         udcModal.info({"title": "处理结果", "message": "删除气票失败 "+value.message});
@@ -74,6 +72,7 @@ customServiceApp.controller('DeleteGasTicketModalCtrl', ['$scope', 'close', 'Cus
     $scope.searchCoupons= function(){
         var queryParams = {
             customerUserId:$scope.vm.currentCustomer.userId,
+            useStatus:0,//未使用
             pageNo: $scope.pagerCoupon.getCurPageNo(),
             pageSize: $scope.pagerCoupon.pageSize
         };
