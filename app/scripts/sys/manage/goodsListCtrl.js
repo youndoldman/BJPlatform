@@ -245,6 +245,25 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
                     }
                 })
         };
+        //作废优惠策略
+        $scope.cancelDiscountStrategies = function (couponAdjustment) {
+            udcModal.confirm({"title": "作废优惠策略", "message": "是否永久作废优惠策略 " + couponAdjustment.name})
+                .then(function (result) {
+                    if (result) {
+                        GoodsService.cancelDiscountStrategies(couponAdjustment).then(function () {
+                            udcModal.info({"title": "处理结果", "message": "作废优惠策略成功 "});
+                            $scope.searchCouponAdjustment();
+                        }, function(value) {
+                            udcModal.info({"title": "处理结果", "message": "作废优惠策略失败 "+value.message});
+                        })
+                    }
+                })
+        };
+
+
+
+
+
 
         $scope.modifyGoods = function (goods) {
             udcModal.show({

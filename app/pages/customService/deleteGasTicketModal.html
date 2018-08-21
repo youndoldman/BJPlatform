@@ -1,5 +1,5 @@
 <div class="modal" tabindex="-1" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog"  style=" width: 1000px;">
+    <div class="modal-dialog"  style=" width: 1200px;">
         <div class="modal-content">
             <form name="userForm" novalidate>
                 <div class="modal-header">
@@ -18,10 +18,10 @@
                                 <thead>
                                 <tr>
                                     <td style="background: lightblue;text-align: center" width="5%">序号</td>
-                                    <td style="background: lightblue;text-align: center" width="10%">客户编号</td>
-                                    <td style="background: lightblue;text-align: center" width="10%">办理人编号</td>
-                                    <td style="background: lightblue;text-align: center" width="10%">气票编号</td>
-                                    <td style="background: lightblue;text-align: center" width="10%">气票规格</td>
+                                    <td style="background: lightblue;text-align: center" width="5%">客户编号</td>
+                                    <td style="background: lightblue;text-align: center" width="10%">销售员工ID</td>
+                                    <td style="background: lightblue;text-align: center" width="20%">气票编号</td>
+                                    <td style="background: lightblue;text-align: center" width="5%">气票规格</td>
                                     <td style="background: lightblue;text-align: center" width="10%">使用状态</td>
                                     <td style="background: lightblue;text-align: center" width="10%">使用时间</td>
                                     <td style="background: lightblue;text-align: center" width="10%">有效期起始</td>
@@ -33,7 +33,7 @@
                                 <tr ng-repeat="ticketDetail in vm.currentCustomerTickets">
                                     <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
                                     <td class="message">{{ticketDetail.customer.userId}}</td>
-                                    <td class="message">{{ticketDetail.operator.userId}}</td>
+                                    <td class="message">{{ticketDetail.salemanId}}</td>
                                     <td class="message">{{ticketDetail.ticketSn}}</td>
                                     <td class="message">{{ticketDetail.specName}}</td>
                                     <td class="message">{{ticketDetail.ticketStatus.name}}</td>
@@ -74,6 +74,7 @@
                                     <td style="background: lightblue;text-align: center" width="5%">序号</td>
                                     <td style="background: lightblue;text-align: center" width="10%">客户编号</td>
                                     <td style="background: lightblue;text-align: center" width="10%">办理人编号</td>
+                                    <td style="background: lightblue;text-align: center" width="10%">优惠券编号</td>
                                     <td style="background: lightblue;text-align: center" width="10%">优惠券规格</td>
                                     <td style="background: lightblue;text-align: center" width="10%">使用状态</td>
                                     <td style="background: lightblue;text-align: center" width="10%">使用时间</td>
@@ -87,6 +88,7 @@
                                     <td class="message">{{$index+1 + pagerCoupon.pageSize*(pagerCoupon.getCurPageNo()-1)}}</td>
                                     <td class="message">{{couponDetail.customer.userId}}</td>
                                     <td class="message">{{couponDetail.operator.userId}}</td>
+                                    <td class="message">{{couponDetail.couponSn}}</td>
                                     <td class="message">{{couponDetail.specName}}</td>
                                     <td class="message">{{couponDetail.couponStatus.name}}</td>
                                     <td class="message">{{couponDetail.useTime}}</td>

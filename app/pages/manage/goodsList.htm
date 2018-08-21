@@ -260,15 +260,18 @@
                 <td class="operate">
                     <button title="修改" ng-hide="couponAdjustment.discountStrategyStatus.index == 1 ? true : false"
                             ng-click="modifyCouponAdjustment(couponAdjustment)" type="button" class="btn btn-primary btn-outline btn-xs">
-                        <i class="fa fa-edit"></i>
+                        <i class="">修改</i>
                     </button>
                     <button title="查看" ng-hide="couponAdjustment.discountStrategyStatus.index == 1 ? false : true"
                             ng-click="modifyCouponAdjustment(couponAdjustment)" type="button" class="btn btn-primary btn-outline btn-xs">
-                        <i class="fa fa-edit"></i>
+                        <i class="">查看</i>
                     </button>
                     <button title="删除" ng-hide="couponAdjustment.discountStrategyStatus.index == 1 ? true : false"
                             ng-click="deleteCouponAdjustment(couponAdjustment)" type="button" class="btn btn-primary btn-outline btn-xs">
-                        <i class="fa fa-trash-o"></i>
+                        <i class="">删除</i>
+                    </button>
+                    <button title="作废" ng-click="cancelDiscountStrategies(couponAdjustment)" type="button" class="btn btn-primary btn-outline btn-xs">
+                        <i class="">作废</i>
                     </button>
                 </td>
             </tr>

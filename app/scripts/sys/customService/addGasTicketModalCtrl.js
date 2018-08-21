@@ -87,7 +87,9 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
         quantity:null,
         startDate1:null,
         endDate1:null,
-        note1:null
+        note1:null,
+        salemanId:null,//销售员工ID
+        salemanName:null//销售员工姓名
     };
 
     $scope.vm = {
@@ -130,13 +132,15 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
     $scope.ticketSubmit = function () {
         var ticketInfo = {
             customer:$scope.q.customer,
-            operator:$scope.q.operator,
+            //operator:$scope.q.operator,
             //ticketSn:$scope.q.ticketSn,
             specCode:$scope.q.specCode,
             ticketStatus:0,
             startDate:$scope.q.startDate,
             endDate:$scope.q.endDate,
             note:$scope.q.note,
+            salemanId:$scope.q.salemanId,
+
         };
 
         if (title == "增加气票") {
@@ -151,8 +155,14 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
 
     //增加气票和优惠券
     $scope.ticketcouponSubmit = function () {
-        $scope.ticketSubmit();
-        $scope.couponSubmit();
+        if($scope.q.ticketQuantity>0){
+            $scope.ticketSubmit();
+        }
+        if($scope.q.quantity>0){
+            $scope.couponSubmit();
+        }
+
+
     };
     $scope.couponSubmit = function () {
         var couponInfo = {
@@ -164,7 +174,7 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
             endDate:$scope.q.endDate1,
             note:$scope.q.note1,
         };
-        console.info(couponInfo);
+        //console.info(couponInfo);
         //for(var i = 0; i< $scope.q.quantity; i++)
         //{
             CustomerManageService.addCoupon($scope.q.quantity, couponInfo).then(function () {
@@ -326,7 +336,21 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
     $scope.specCodeChange1 = function () {
         $scope.q.specCode1 = $scope.vm.selectedGoods1.code;
         console.info( $scope.q.specCode1)
-    }
+    };
+
+    //查询员工姓名
+    $scope.getSalesManName = function () {
+
+        var queryParams = {
+            userId: $scope.q.salemanId,
+        };
+
+        CustomerManageService.FindSysUserUri(queryParams).then(function (sysUsers) {
+            $scope.q.salemanName = sysUsers.name;
+        }, function(value) {
+            $scope.q.salemanName = null;
+        })
+    };
 
     init();
 }]);

@@ -21,13 +21,16 @@
                         <label class="input">客户ID：</label>
                         <label class="input"><input type="text"  class="form-control" ng-model="q.customerUserId"></label>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <!--<label class="input">时间：</label>-->
-                        <!--<label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>-->
-                        <!--<label class="input">—</label>-->
-                        <!--<label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control" ng-model="q.endTime"></label>-->
-                        <!--<button title="删除时间" ng-click="deleteTimeRange()" type="button" class="btn btn-primary btn-outline btn-xs">-->
-                            <!--<i class="fa fa-trash-o"></i>-->
-                        <!--</button>-->
+                        <label class="input">销售员ID：</label>
+                        <label class="input"><input type="text"  class="form-control" ng-model="q.saleUserId"></label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="input">时间：</label>
+                        <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>
+                        <label class="input">—</label>
+                        <label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control" ng-model="q.endTime"></label>
+                        <button title="删除时间" ng-click="deleteTimeRange()" type="button" class="btn btn-primary btn-outline btn-xs">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -44,8 +47,8 @@
             <th width="11%">气票编号</th>
             <th width="5%">客户ID</th>
             <th width="5%">客户姓名</th>
-            <th width="5%">办理人ID</th>
-            <th width="5%">办理人姓名</th>
+            <th width="5%">销售员ID</th>
+            <th width="5%">销售员姓名</th>
             <th width="5%">气票规格</th>
             <th width="5%">气票面值(元)</th>
             <th width="5%">使用状态</th>
@@ -63,8 +66,8 @@
             <td class="message">{{ticket.ticketSn}}</td>
             <td class="message">{{ticket.customer.userId}}</td>
             <td class="message">{{ticket.customer.name}}</td>
-            <td class="message">{{ticket.operator.userId}}</td>
-            <td class="message">{{ticket.operator.name}}</td>
+            <td class="message">{{ticket.salemanId}}</td>
+            <td class="message">{{ticket.salemanName}}</td>
             <td class="message">{{ticket.specName}}</td>
             <td class="message">{{ticket.price}}</td>
             <td class="message">{{ticket.ticketStatus.name}}</td>

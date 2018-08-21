@@ -15,19 +15,19 @@
                         <label class="input">使用状态：</label>
                         <label class="input"><select  ng-model="q.useStatus" ng-options="useStatus.name for useStatus in vm.useStatusList" class="form-control" ng-selected="" ng-change="couponStatusChange()"></select></label>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <!--<label class="input">优惠券编号：</label>-->
-                        <!--<label class="input"><input type="text"  class="form-control" ng-model="q.couponSn"></label>-->
-                        <!--&nbsp;&nbsp;&nbsp;&nbsp;-->
+                        <label class="input">优惠券编号：</label>
+                        <label class="input"><input type="text"  class="form-control" ng-model="q.couponSn"></label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
                         <label class="input">客户ID：</label>
                         <label class="input"><input type="text"  class="form-control" ng-model="q.customerUserId"></label>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <!--<label class="input">时间：</label>-->
-                        <!--<label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>-->
-                        <!--<label class="input">—</label>-->
-                        <!--<label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control" ng-model="q.endTime"></label>-->
-                        <!--<button title="删除时间" ng-click="deleteTimeRange()" type="button" class="btn btn-primary btn-outline btn-xs">-->
-                            <!--<i class="fa fa-trash-o"></i>-->
-                        <!--</button>-->
+                        <label class="input">时间：</label>
+                        <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>
+                        <label class="input">—</label>
+                        <label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control" ng-model="q.endTime"></label>
+                        <button title="删除时间" ng-click="deleteTimeRange()" type="button" class="btn btn-primary btn-outline btn-xs">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -60,7 +60,7 @@
         <tr ng-repeat="coupon in vm.couponList">
             <td></td>
             <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
-            <td class="message">{{coupon.id}}</td>
+            <td class="message">{{coupon.couponSn}}</td>
             <td class="message">{{coupon.customer.userId}}</td>
             <td class="message">{{coupon.customer.name}}</td>
             <td class="message">{{coupon.operator.userId}}</td>
