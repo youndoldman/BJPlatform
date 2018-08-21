@@ -840,21 +840,22 @@ public class OrderServiceImpl implements OrderService
             throw new ServerSideBusinessException("订单数据错误，缺少客户结算类型信息！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (settlementCode.equals(ServerConstantValue.SETTLEMENT_TYPE_COMMON_USER))//普通用户
-        {
-            if (payType == PayType.PTOnLine || payType == PayType.PTCash ||payType == PayType.PTDebtCredit )
-            {
-                //to do nothing
-            }
-            else
-            {
-                throw new ServerSideBusinessException("客户支付方式错误！", HttpStatus.NOT_ACCEPTABLE);
-            }
-        }
-        else
-        {
-            throw new ServerSideBusinessException("客户支付方式错误！", HttpStatus.NOT_ACCEPTABLE);
-        }
+        //2018.08.21 放开限制
+//        if (settlementCode.equals(ServerConstantValue.SETTLEMENT_TYPE_COMMON_USER))//普通用户
+//        {
+//            if (payType == PayType.PTOnLine || payType == PayType.PTCash ||payType == PayType.PTDebtCredit )
+//            {
+//                //to do nothing
+//            }
+//            else
+//            {
+//                throw new ServerSideBusinessException("客户支付方式错误！", HttpStatus.NOT_ACCEPTABLE);
+//            }
+//        }
+//        else
+//        {
+//            throw new ServerSideBusinessException("客户支付方式错误！", HttpStatus.NOT_ACCEPTABLE);
+//        }
     }
 
     @Override
