@@ -1,7 +1,7 @@
 <div class="ribbon">
     <a href=""><span class="home fa fa-home"></span></a>
     <ol class="breadcrumb">
-        <li>优惠券列表</li>
+        <li>托盘列表</li>
     </ol>
 </div>
 
@@ -12,12 +12,12 @@
             <div class="row">
                 <div class="col-md-11">
                     <div class="col-md-12">
-                        <label class="input">使用状态：</label>
-                        <label class="input"><select  ng-model="q.useStatus" ng-options="useStatus.name for useStatus in vm.useStatusList" class="form-control" ng-selected="" ng-change="couponStatusChange()"></select></label>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <!--<label class="input">优惠券编号：</label>-->
-                        <!--<label class="input"><input type="text"  class="form-control" ng-model="q.couponSn"></label>-->
-                        <!--&nbsp;&nbsp;&nbsp;&nbsp;-->
+                        <!--<label class="input">使用状态：</label>-->
+                        <!--<label class="input"><select  ng-model="q.useStatus" ng-options="useStatus.name for useStatus in vm.useStatusList" class="form-control" ng-selected="" ng-change="ticketStatusChange()"></select></label>-->
+                        <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+                        <label class="input">托盘编号：</label>
+                        <label class="input"><input type="text"  class="form-control" ng-model="q.gasCynTraySn"></label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
                         <label class="input">客户ID：</label>
                         <label class="input"><input type="text"  class="form-control" ng-model="q.customerUserId"></label>
                         &nbsp;&nbsp;&nbsp;&nbsp;
@@ -41,40 +41,36 @@
         <tr>
             <th width="1%"></th>
             <th width="3%">序号</th>
-            <th width="11%">优惠券编号</th>
+            <th width="5%">托盘编号</th>
             <th width="5%">客户ID</th>
             <th width="5%">客户姓名</th>
-            <th width="5%">办理人ID</th>
-            <th width="5%">办理人姓名</th>
-            <th width="5%">气票规格</th>
-            <th width="5%">气票面值(元)</th>
+            <th width="5%">缺气告警</th>
+            <th width="5%">漏气告警</th>
+            <th width="5%">测量重量(公斤)</th>
+            <th width="5%">经度</th>
+            <th width="5%">纬度</th>
             <th width="5%">使用状态</th>
-            <th width="8%">使用时间</th>
-            <th width="8%">有效期起始</th>
-            <th width="8%">有效期结束</th>
-            <th width="8%">创建时间</th>
+            <th width="10%">创建时间</th>
             <!--<th width="15%">操作</th>-->
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="coupon in vm.couponList">
+        <tr ng-repeat="gasCynTray in vm.gasCynTrayList">
             <td></td>
             <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
-            <td class="message">{{coupon.id}}</td>
-            <td class="message">{{coupon.customer.userId}}</td>
-            <td class="message">{{coupon.customer.name}}</td>
-            <td class="message">{{coupon.operator.userId}}</td>
-            <td class="message">{{coupon.operator.name}}</td>
-            <td class="message">{{coupon.specName}}</td>
-            <td class="message">{{coupon.price}}</td>
-            <td class="message">{{coupon.couponStatus.name}}</td>
-            <td class="message">{{coupon.useTime}}</td>
-            <td class="message">{{coupon.startDate}}</td>
-            <td class="message">{{coupon.endDate}}</td>
-            <td class="message">{{coupon.createTime}}</td>
+            <td class="message">{{gasCynTray.number}}</td>
+            <td class="message">{{gasCynTray.user.userId}}</td>
+            <td class="message">{{gasCynTray.user.name}}</td>
+            <td class="message">{{gasCynTray.warnningStatus.name}}</td>
+            <td class="message">{{gasCynTray.leakStatus.name}}</td>
+            <td class="message">{{gasCynTray.weight}}</td>
+            <td class="message">{{gasCynTray.longitude}}</td>
+            <td class="message">{{gasCynTray.latitude}}</td>
+            <td class="message">{{gasCynTray.deviceStatus.name}}</td>
+            <td class="message">{{gasCynTray.createTime}}</td>
         </tr>
         </tbody>
     </table>
-    <div ng-if="vm.couponList.length == 0" nj-table-no-data></div>
+    <div ng-if="vm.gasCynTrayList.length == 0" nj-table-no-data></div>
     <div nj-pager pager="pager"></div>
 </div>

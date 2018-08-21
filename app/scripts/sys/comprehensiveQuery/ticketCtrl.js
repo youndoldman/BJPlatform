@@ -1,6 +1,6 @@
 'use strict';
 
-customServiceApp.controller('TicketCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
+comprehensiveQueryApp.controller('TicketCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
     'rootService', 'pager', 'udcModal', 'TicketService', 'sessionStorage',function ($scope, $rootScope, $filter, $location, Constants,
                                                                                                         rootService, pager, udcModal, TicketService,sessionStorage) {
         var gotoPage = function (pageNo) {
@@ -93,6 +93,21 @@ customServiceApp.controller('TicketCtrl', ['$scope', '$rootScope', '$filter', '$
                 $scope.vm.ticketList = complaints.items;
             });
         };
+        $scope.modify = function (ticket) {
+            udcModal.show({
+                templateUrl: "./comprehensiveQuery/ticketModal.htm",
+                controller: "TicketModalCtrl",
+                inputs: {
+                    title: '修改气票',
+                    initVal: bottle
+                }
+            }).then(function (ticket) {
+                if (result) {
+                    searchTicket();
+                }
+            })
+        };
+
 
         var init = function () {
             //查询投诉单状态初始化为全部

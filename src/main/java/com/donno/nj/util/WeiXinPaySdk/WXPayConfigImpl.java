@@ -36,11 +36,20 @@ public class WXPayConfigImpl extends WXPayConfig{
     public String getAppSecret() {
         return "c1c9b7a09f220ecd9ebc0babc8472406";
     }//用户端小程序Secret
+//    public String getOfficialID() {
+//        return "wxa0520852c6131227";
+//    }//公众号APPID
     public String getOfficialID() {
-        return "wxa0520852c6131227";
-    }//公众号APPID
+    return "wx79b9da605c0e56bd";
+}//公众号APPID
+//    public String getMchID() {
+//        return "1313996901";
+//    }//商户号
     public String getMchID() {
-        return "1313996901";
+        return "1509570551";
+    }//sub商户号
+    public String getSubMchID() {
+        return "1509646181";
     }//商户号
     public String getKey() {
         return "panva95007panva95007panva95007PA";
