@@ -34,6 +34,13 @@ public abstract class WXPayConfig {
      */
     abstract String getMchID();
 
+    /**
+     * 获取 SubMch ID
+     *
+     * @return Mch ID
+     */
+    abstract String getSubMchID();
+
 
     /**
      * 获取 API 密钥

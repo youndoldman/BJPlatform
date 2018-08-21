@@ -190,32 +190,6 @@ var customServiceApp = angular.module('CustomServiceApp', ['ui.router', 'CommonM
                     rootService.updateActiveNavL2(NavItem.CustomService.menuItems[12]);
                 }
             })
-            .state('CustomService.ticket',{
-                url:'/ticket',
-                views: {
-                    "content@CustomService": {
-                        templateUrl: '../pages/customService/ticketList.htm',
-                        controller: 'TicketCtrl',
-                        resolve: {}
-                    }
-                },
-                onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[13]);
-                }
-            })
-            .state('CustomService.coupon',{
-                url:'/coupon',
-                views: {
-                    "content@CustomService": {
-                        templateUrl: '../pages/customService/couponList.htm',
-                        controller: 'CouponCtrl',
-                        resolve: {}
-                    }
-                },
-                onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.CustomService.menuItems[14]);
-                }
-            })
         ;
 
         $httpProvider.interceptors.push('HttpInterceptor');

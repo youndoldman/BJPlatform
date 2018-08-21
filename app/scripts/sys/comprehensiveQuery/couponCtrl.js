@@ -1,6 +1,6 @@
 'use strict';
 
-customServiceApp.controller('CouponCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
+comprehensiveQueryApp.controller('CouponCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
     'rootService', 'pager', 'udcModal', 'TicketService', 'sessionStorage',function ($scope, $rootScope, $filter, $location, Constants,
                                                                                                         rootService, pager, udcModal, TicketService,sessionStorage) {
         var gotoPage = function (pageNo) {

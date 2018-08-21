@@ -206,6 +206,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             callInPhone:"00000000",//呼入电话
             callOutPhone:null,//呼出电话
             currentCustomer:null,
+            currentTicketCount:null,//当前气票张数
             CustomerList: [],
             CustomerOrderHistory: [],
             CustomerAutoReportList:[ //不间断供气客户
@@ -575,7 +576,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 $scope.pagerHistory.update($scope.qHistory, orders.total, queryParams.pageNo);
                 $scope.vm.CustomerOrderHistory = orders.items;
             });
-        }
+        };
 
         var searchCustomer = function () {
             //清空表格
@@ -659,6 +660,9 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
             //更新商品
             $scope.goodsTypeChange();
+
+            //查询气票张数
+            searchTicketCount();
         };
 
 //商品类型改变
@@ -1038,5 +1042,17 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 }
             });
         };
+
+        //查询气票张数
+        var searchTicketCount = function () {
+            //清空表格
+            $scope.vm.CustomerOrderHistory = [];
+            var queryParams = {
+                customerUserId:$scope.vm.currentCustomer.userId,
+            };
+            OrderService.retrieveTicket(queryParams).then(function (tickets) {
+                $scope.vm.currentTicketCount = tickets.total;
+            });
+        }
 
     }]);

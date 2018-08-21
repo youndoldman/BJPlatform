@@ -345,18 +345,6 @@ commonModule.constant('NavItem', {
             target: "_blank",
             href: "./customService.htm#/CustomService/report6",
             icon: "fa-table"
-        }, {
-            index: 13,
-            name: "气票查询",
-            target: "_blank",
-            href: "./customService.htm#/CustomService/ticket",
-            icon: "fa-table"
-        }, {
-            index: 14,
-            name: "优惠券查询",
-            target: "_blank",
-            href: "./customService.htm#/CustomService/coupon",
-            icon: "fa-table"
         }
         ]
     },
@@ -498,17 +486,36 @@ commonModule.constant('NavItem', {
             icon: "fa-gears"
         }]
     },
-    //'AppCenter': {
-    //    roles:[],
-    //    name: "增值服务",
-    //    href: "./appCenter.htm",
-    //    menuItems: [{
-    //        index: 0,
-    //        name: "便民服务",
-    //        href: "./appCenter.htm#/apps",
-    //        icon: "fa-phone"
-    //    }]
-    //},
+    'ComprehensiveQueryCenter': {
+        roles:[],
+        name: "综合查询",
+        href: "./comprehensiveQueryCenter.htm",
+        menuItems: [{
+            index: 0,
+            name: "气票查询",
+            target: "_blank",
+            href: "./comprehensiveQueryCenter.htm#/ComprehensiveQuery/ticket",
+            icon: "fa-table"
+        }, {
+            index: 1,
+            name: "优惠券查询",
+            target: "_blank",
+            href: "./comprehensiveQueryCenter.htm#/ComprehensiveQuery/coupon",
+            icon: "fa-table"
+        }, {
+            index: 2,
+            name: "用户卡查询",
+            target: "_blank",
+            href: "./comprehensiveQueryCenter.htm#/ComprehensiveQuery/userCard",
+            icon: "fa-table"
+        }, {
+            index: 3,
+            name: "托盘查询",
+            target: "_blank",
+            href: "./comprehensiveQueryCenter.htm#/ComprehensiveQuery/gasCynTray",
+            icon: "fa-table"
+        }]
+    },
     'ComprehensiveSituationCenter': {
         roles:[],
         name: "综合态势",
