@@ -7,7 +7,7 @@ customServiceApp.service('OrderService', ['$http', 'URI', 'promiseWrapper','MISC
     var usersUri = URI.resources.users;
     var orderCancelUri = URI.resources.orderCancel;
     var ticketUri = URI.resources.ticket;
-
+    var sysUserFindByUserIdUri = URI.resources.sysUserFindByUserId;
     this.toViewModelTaskOrders = function (taskOrdersFromApi) {
         if(taskOrdersFromApi.object==null)
         {

@@ -8,45 +8,45 @@ comprehensiveQueryApp.controller('TicketCtrl', ['$scope', '$rootScope', '$filter
             searchTicket();
         };
 
-        //$(function () {
-        //    $('#datetimepickerStart').datetimepicker({
-        //        format: 'YYYY-MM-DD HH:mm',
-        //        locale: moment.locale('zh-cn'),
-        //        //sideBySide:true,
-        //        showTodayButton:true,
-        //        toolbarPlacement:'top',
-        //    });
-        //    $('#datetimepickerEnd').datetimepicker({
-        //        format: 'YYYY-MM-DD HH:mm',
-        //        locale: moment.locale('zh-cn'),
-        //        //sideBySide:true,
-        //        showTodayButton:true,
-        //        toolbarPlacement:'top',
-        //
-        //    });
-        //});
-        //$(function () {
-        //    $('#datetimepickerStart').datetimepicker()
-        //        .on('dp.change', function (ev) {
-        //            var date = ev.date._d;
-        //            var month = date.getMonth()+1;
-        //            $scope.q.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
-        //                +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-        //            console.log("changed")
-        //        });
-        //    $('#datetimepickerEnd').datetimepicker()
-        //        .on('dp.change', function (ev) {
-        //            var date = ev.date._d;
-        //            var month = date.getMonth()+1;
-        //            $scope.q.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
-        //                +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-        //        });
-        //});
-        ////清除时间范围
-        //$scope.deleteTimeRange = function () {
-        //    $scope.q.startTime = null;
-        //    $scope.q.endTime = null;
-        //};
+        $(function () {
+            $('#datetimepickerStart').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
+            $('#datetimepickerEnd').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+
+            });
+        });
+        $(function () {
+            $('#datetimepickerStart').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                    console.log("changed")
+                });
+            $('#datetimepickerEnd').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
+        });
+        //清除时间范围
+        $scope.deleteTimeRange = function () {
+            $scope.q.startTime = null;
+            $scope.q.endTime = null;
+        };
 
 
 
@@ -65,6 +65,7 @@ comprehensiveQueryApp.controller('TicketCtrl', ['$scope', '$rootScope', '$filter
             ticketSn:null,
             customerUserId:null,
             specCode:null,
+            saleUserId:null,
             useStatus:{}
 
         };
@@ -80,9 +81,12 @@ comprehensiveQueryApp.controller('TicketCtrl', ['$scope', '$rootScope', '$filter
 
         var searchTicket = function () {
             var queryParams = {
+                saleStartTime:$scope.q.startTime,
+                saleEndTime:$scope.q.endTime,
                 ticketSn:$scope.q.ticketSn,
                 customerUserId:$scope.q.customerUserId,
                 useStatus:$scope.q.useStatus.index,
+                saleUserId:$scope.q.saleUserId,
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize,
                 orderBy:"id desc"
@@ -93,15 +97,17 @@ comprehensiveQueryApp.controller('TicketCtrl', ['$scope', '$rootScope', '$filter
                 $scope.vm.ticketList = complaints.items;
             });
         };
+
+
         $scope.modify = function (ticket) {
             udcModal.show({
                 templateUrl: "./comprehensiveQuery/ticketModal.htm",
                 controller: "TicketModalCtrl",
                 inputs: {
                     title: '修改气票',
-                    initVal: bottle
+                    initVal: ticket
                 }
-            }).then(function (ticket) {
+            }).then(function (result) {
                 if (result) {
                     searchTicket();
                 }

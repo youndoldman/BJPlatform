@@ -1,9 +1,10 @@
 'use strict';
-comprehensiveQueryApp.controller('TicketModalCtrl', ['$scope', 'close', 'TicketService', 'title', 'initVal','Upload','URI','udcModal', function ($scope, close, TicketService, title, initVal,Upload,URI,udcModal) {
+comprehensiveQueryApp.controller('TicketModalCtrl', ['$scope', 'close', 'TicketService', 'title', 'initVal','URI','udcModal', function ($scope, close, TicketService, title, initVal,URI,udcModal) {
     $scope.modalTitle = title;
     $scope.vm = {
-        modifyTicket:null,
-        originalTicket:null
+        modifyTicket:{ticketSn:null},
+        originalTicket:null,
+        name:null
     };
 
     $scope.isModify = false;
@@ -24,13 +25,24 @@ comprehensiveQueryApp.controller('TicketModalCtrl', ['$scope', 'close', 'TicketS
 
     var init = function () {
         $scope.vm.originalTicket = _.clone(initVal);
+        $scope.vm.modifyTicket.ticketSn = $scope.vm.originalTicket.ticketSn;
         if(title == "修改气票") {
             $scope.isModify = true;
-        }
-        else {
+        } else {
             $scope.isModify = false;
         }
     };
 
     init();
+    //查询员工姓名
+    $scope.getSalesManName = function () {
+        var queryParams = {
+            userId: $scope.vm.modifyTicket.salemanId,
+        };
+        TicketService.FindSysUserUri(queryParams).then(function (sysUsers) {
+            $scope.vm.name = sysUsers.name;
+        }, function(value) {
+            $scope.vm.name = null;
+        })
+    };
 }]);

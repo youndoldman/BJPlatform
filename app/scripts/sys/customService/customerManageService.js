@@ -31,6 +31,9 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     var userCardUri = URI.resources.UserCard;//用户卡查询
     var userCardUnBindUri = URI.resources.UserCardunBind;//用户卡解绑定
 
+    var sysUserUri = URI.resources.users;
+    var sysUserFindByUserIdUri = URI.resources.sysUserFindByUserId;
+
     this.retrieveGoods = function (params) {
         return promise.wrap($http.get(goodsUri, {params: params}));
     };
@@ -220,6 +223,18 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     this.retrieveUserCards = function (params) {
         return promise.wrap($http.get(userCardUri, {params: params}));
     };
+
+    //查询系统客户
+    this.retrieveSysUserUri = function (params) {
+        return promise.wrap($http.get(sysUserUri, {params: params}));
+    };
+
+
+    //精确查询系统客户
+    this.FindSysUserUri = function (params) {
+        return promise.wrap($http.get(sysUserFindByUserIdUri, {params: params}));
+    };
+
 
 }]);
 

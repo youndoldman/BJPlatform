@@ -99,6 +99,9 @@ commonModule.constant('URI', {
         'UserCardunBind':'../../../api/UserCard/unBind',//用户卡解绑定
         'GasFillingMerge':'../../../api/GasFillingMerge',//8.3.	充装数据查询
 
+        'sysUserFindByUserId':'../../../api/sysusers/FindByUserId',//系统用户精确查询
+        'DiscountStrategiesCancel':'../../../api/DiscountStrategies/Cancel',//10.8.	作废优惠方案
+
 
 
 

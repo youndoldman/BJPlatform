@@ -11,14 +11,14 @@
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label-large">销售员工ID：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="id" class="form-control" ng-model="vm.modifyTicket.salemanId"  ng-disabled="isModify" required>
+                            <input type="text" name="id" class="form-control" ng-model="vm.modifyTicket.salemanId" ng-change="getSalesManName()">
                         </div>
                         <label class="input-tips" ng-show="ticketForm.id.$error.required || ticketForm.id.$invalid">&nbsp;*&nbsp;必填项</label>
                     </div>
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label-large">销售员工姓名：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="name" class="form-control" ng-model="vm.name"  ng-disabled="isModify" ng-disabled="true" required>
+                            <input type="text" name="name" class="form-control" ng-model="vm.name" ng-disabled="true" required>
                         </div>
                     </div>
 

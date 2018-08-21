@@ -17,6 +17,12 @@ manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper','MISC', func
     var subdistrictUri = URI.resources.subdistrict;
 
     var gasCynFactoryUri = URI.resources.GasCynFactory;//6.8.	钢瓶厂家
+
+    var DiscountStrategiesCancelUri = URI.resources.DiscountStrategiesCancel;//10.8.	作废优惠方案
+
+
+
+
     //行政区域查询
     this.retrieveSubdistrict = function (keyWords) {
         return promise.wrap($http.get(subdistrictUri+"?key="+key+"&keywords="+keyWords));
@@ -124,6 +130,14 @@ manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper','MISC', func
     this.deleteDiscountStrategies = function (adjustDiscountStrategies) {
         return promise.wrap($http.delete(discountStrategiesUri + "/" + adjustDiscountStrategies.id));
     };
+
+    //作废优惠策略
+    this.cancelDiscountStrategies = function (adjustDiscountStrategies) {
+        return promise.wrap($http.put(DiscountStrategiesCancelUri + "/" + adjustDiscountStrategies.id));
+    };
+
+
+
     //查询优惠策略
     this.retrieveDiscountStrategies = function (params) {
         return promise.wrap($http.get(discountStrategiesUri,{params: params}));

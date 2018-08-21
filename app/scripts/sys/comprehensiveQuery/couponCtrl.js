@@ -8,45 +8,45 @@ comprehensiveQueryApp.controller('CouponCtrl', ['$scope', '$rootScope', '$filter
             searchCoupon();
         };
 
-        //$(function () {
-        //    $('#datetimepickerStart').datetimepicker({
-        //        format: 'YYYY-MM-DD HH:mm',
-        //        locale: moment.locale('zh-cn'),
-        //        //sideBySide:true,
-        //        showTodayButton:true,
-        //        toolbarPlacement:'top',
-        //    });
-        //    $('#datetimepickerEnd').datetimepicker({
-        //        format: 'YYYY-MM-DD HH:mm',
-        //        locale: moment.locale('zh-cn'),
-        //        //sideBySide:true,
-        //        showTodayButton:true,
-        //        toolbarPlacement:'top',
-        //
-        //    });
-        //});
-        //$(function () {
-        //    $('#datetimepickerStart').datetimepicker()
-        //        .on('dp.change', function (ev) {
-        //            var date = ev.date._d;
-        //            var month = date.getMonth()+1;
-        //            $scope.q.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
-        //                +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-        //            console.log("changed")
-        //        });
-        //    $('#datetimepickerEnd').datetimepicker()
-        //        .on('dp.change', function (ev) {
-        //            var date = ev.date._d;
-        //            var month = date.getMonth()+1;
-        //            $scope.q.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
-        //                +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-        //        });
-        //});
-        ////清除时间范围
-        //$scope.deleteTimeRange = function () {
-        //    $scope.q.startTime = null;
-        //    $scope.q.endTime = null;
-        //};
+        $(function () {
+            $('#datetimepickerStart').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
+            $('#datetimepickerEnd').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+
+            });
+        });
+        $(function () {
+            $('#datetimepickerStart').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                    console.log("changed")
+                });
+            $('#datetimepickerEnd').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
+        });
+        //清除时间范围
+        $scope.deleteTimeRange = function () {
+            $scope.q.startTime = null;
+            $scope.q.endTime = null;
+        };
 
 
 
@@ -80,7 +80,9 @@ comprehensiveQueryApp.controller('CouponCtrl', ['$scope', '$rootScope', '$filter
 
         var searchCoupon = function () {
             var queryParams = {
-                id:$scope.q.couponSn,
+                couponSn:$scope.q.couponSn,
+                saleStartTime:$scope.q.startTime,
+                saleEndTime:$scope.q.endTime,
                 customerUserId:$scope.q.customerUserId,
                 useStatus:$scope.q.useStatus.index,
                 pageNo: $scope.pager.getCurPageNo(),

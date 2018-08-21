@@ -26,11 +26,18 @@
                         </div>
                         <br>
                         <div class="row"  ng-if="!isModify">
+                            <!--<div class="col-xs-2 text-left">-->
+                                <!--<label>办理人编号</label><span style="color:red">*</span>-->
+                            <!--</div>-->
+                            <!--<div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">-->
+                                <!--<input type="text" class="form-control input-sm" ng-model="currentUser.userId">-->
+                            <!--</div>-->
                             <div class="col-xs-2 text-left">
-                                <label>办理人编号</label><span style="color:red">*</span>
+                                <label>规格代码</label><span style="color:red">*</span>
                             </div>
-                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <input type="text" class="form-control input-sm" ng-model="currentUser.userId">
+                            <div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">
+                                <select name="specCode" ng-model="vm.selectedGoods" ng-options="goods.name for goods in vm.goodsList" class="form-control" ng-selected="" ng-change="specCodeChange()"></select>
+
                             </div>
                             <div style="margin-left: 20px;" class="col-xs-2 text-left">
                                 <label>气票数量</label><span style="color:red">*</span>
@@ -39,22 +46,6 @@
                                 <!--<input type="text" class="form-control input-sm" ng-model="q.ticketSn">-->
                                 <input type="text" class="form-control input-sm" ng-model="q.ticketQuantity">
                             </div>
-                        </div>
-                        <br >
-                        <div class="row">
-                            <div class="col-xs-2 text-left">
-                                <label>规格代码</label><span style="color:red">*</span>
-                            </div>
-                            <div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">
-                                <select name="specCode" ng-model="vm.selectedGoods" ng-options="goods.name for goods in vm.goodsList" class="form-control" ng-selected="" ng-change="specCodeChange()"></select>
-
-                            </div>
-                            <!--<div style="margin-left: 20px;" class="col-xs-2 text-left">-->
-                                <!--<label>使用状态</label><span style="color:red">*</span>-->
-                            <!--</div>-->
-                            <!--<div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">-->
-                                <!--<select  ng-model="state" ng-options="ticketStatus for ticketStatus in vm.ticketStates" class="form-control" ng-selected="" ng-change="ticketStatusChange()"></select>-->
-                            <!--</div>-->
                         </div>
                         <br>
                         <div class="row">
@@ -72,7 +63,22 @@
                             </div>
                         </div>
                         <br>
-
+                        <div class="row"  ng-if="!isModify">
+                            <div class="col-xs-2 text-left">
+                                <label>销售员工ID</label><span style="color:red">*</span>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
+                                <input type="text" class="form-control input-sm" ng-model="q.salemanId" ng-change="getSalesManName()">
+                            </div>
+                            <div style="margin-left: 20px;" class="col-xs-2 text-left">
+                                <label>销售员工姓名</label><span style="color:red">*</span>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">
+                                <!--<input type="text" class="form-control input-sm" ng-model="q.ticketSn">-->
+                                <input type="text" class="form-control input-sm" ng-model="q.salemanName" ng-disabled="true">
+                            </div>
+                        </div>
+                        <br>
                         <div class="row">
                             <div  class="col-xs-2 text-left">
                                 <label>备注</label>

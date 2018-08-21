@@ -6,7 +6,7 @@ comprehensiveQueryApp.service('TicketService', ['$http', 'URI', 'promiseWrapper'
     var couponUri = URI.resources.coupon;
     var userCardUri = URI.resources.UserCard;
     var gasCynTrayUri = URI.resources.GasCynTray;
-
+    var sysUserFindByUserIdUri = URI.resources.sysUserFindByUserId;
     //请求气票表
     this.retrieveTicket = function (params) {
         return promise.wrap($http.get(ticketUri, {params: params}));
@@ -31,6 +31,11 @@ comprehensiveQueryApp.service('TicketService', ['$http', 'URI', 'promiseWrapper'
     //修改气票表
     this.modifyTicket = function (ticket) {
         return promise.wrap($http.put(ticketUri + "/" + ticket.ticketSn, ticket));
+    };
+
+    //精确查询系统客户
+    this.FindSysUserUri = function (params) {
+        return promise.wrap($http.get(sysUserFindByUserIdUri, {params: params}));
     };
 
 }]);
