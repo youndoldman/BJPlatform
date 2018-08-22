@@ -341,10 +341,10 @@ public class TicketServiceImpl implements TicketService
         }
 
         /*已经使用的气票不允许修改*/
-        if(ticket.getTicketStatus() == TicketStatus.TSUsed)
-        {
-            throw new ServerSideBusinessException("气票已经使用，不允许修改！", HttpStatus.NOT_ACCEPTABLE);
-        }
+//        if(ticket.getTicketStatus() == TicketStatus.TSUsed)
+//        {
+//            throw new ServerSideBusinessException("气票已经使用，不允许修改！", HttpStatus.NOT_ACCEPTABLE);
+//        }
 
         /*客户信息校验*/
         if (newTicket.getCustomer() != null)
