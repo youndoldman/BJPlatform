@@ -184,7 +184,10 @@
         <set>
             <if test="ticketSn != null">ticket_sn = #{ticketSn},</if>
             <if test="customer != null">customer_idx = (SELECT  id from t_user where user_id = #{customer.userId}),</if>
-            <if test="salemanId != null">saleman_idx = (SELECT  id from t_user where user_id = #{salemanId}),</if>
+            <if test="salemanId != null">
+                saleman_idx = (SELECT  id from t_user where user_id = #{salemanId}),
+                sale_dep_idx = (select department_idx from t_sysuser where user_idx = (select id from t_user where user_id = #{salemanId})),
+            </if>
             <if test="specCode != null">spec_idx = (SELECT  id from t_goods where code = #{specCode}),</if>
             <if test="price != null">price = #{price},</if>
             <if test="ticketStatus != null">use_status = #{ticketStatus.index},</if>

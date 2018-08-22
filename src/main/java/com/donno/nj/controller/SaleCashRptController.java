@@ -100,12 +100,12 @@ public class SaleCashRptController
         ticketSaleParams.putAll(params);
         if (startTime.trim().length() > 0)
         {
-            ticketSaleParams.putAll(ImmutableMap.of("startSaleTime", startTime));
+            ticketSaleParams.putAll(ImmutableMap.of("saleStartTime", startTime));
         }
 
         if (endTime.trim().length() > 0)
         {
-            ticketSaleParams.putAll(ImmutableMap.of("endSaleTime", endTime));
+            ticketSaleParams.putAll(ImmutableMap.of("saleEndTime", endTime));
         }
         List<Ticket> ticketList = ticketService.retrieve(ticketSaleParams);
         for (Ticket ticket :ticketList )
