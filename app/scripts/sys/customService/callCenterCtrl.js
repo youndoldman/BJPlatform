@@ -40,7 +40,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
         $scope.pagerHistory = pager.init('CustomerListCtrl', gotoPageHistory);
 
-        
+
         $scope.pagerGasCynTrayWarning = pager.init('CustomerListCtrl', gotoPageGasCynTrayWarning);
 
         $(function () {
@@ -214,7 +214,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             currentCustomerCredit:null,//当前用户欠款
             callReportList:[],
             missedCallReportList:[],
-            orderStatusDisplay:["待派送","派送中","待核单","已完成","已作废"]
+            orderStatusDisplay:["待派送","派送中","待核单","已完成","已作废"],
+            missCallCount:0
         };
 
         //当前订单信息
@@ -454,54 +455,54 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             //CustomerManageService.retrieveCloudUsers(query).then(function (cloudUsers) {
             //    if(cloudUsers.total !=0 )
             //    {
-                    //$scope.currentKTYUser = cloudUsers.items[0];
-                    console.info($scope.currentKTYUser)
-                    var userName = $scope.currentKTYUser.items[0].userId;
-                    var password = $scope.currentKTYUser.items[0].password;
+            //$scope.currentKTYUser = cloudUsers.items[0];
+            console.info($scope.currentKTYUser)
+            var userName = $scope.currentKTYUser.items[0].userId;
+            var password = $scope.currentKTYUser.items[0].password;
 
-                    var jsonData = {
-                        ani:null,
-                        dnis:null,
-                    }
-                    jsonData.ani = $scope.q.ani;
-                    jsonData.dnis = $scope.q.dnis;
+            var jsonData = {
+                ani:null,
+                dnis:null,
+            }
+            jsonData.ani = $scope.q.ani;
+            jsonData.dnis = $scope.q.dnis;
 
-                    KtyService.authenticate(userName,password).then(function (response) {
-                        $scope.q.token = response.data.token;
+            KtyService.authenticate(userName,password).then(function (response) {
+                $scope.q.token = response.data.token;
 
-                        var queryParams = {
-                            order:"desc",
-                            page: $scope.pagerCallReport.getCurPageNo(),
-                            per_page: $scope.pagerCallReport.pageSize,
-                            sortBy:"createTime",
-                            from:$scope.q.startTime,
-                            to:$scope.q.endTime,
+                var queryParams = {
+                    order:"desc",
+                    page: $scope.pagerCallReport.getCurPageNo(),
+                    per_page: $scope.pagerCallReport.pageSize,
+                    sortBy:"createTime",
+                    from:$scope.q.startTime,
+                    to:$scope.q.endTime,
+                }
+
+                queryParams.json = jsonData;
+                KtyService.retrieveCallreportSearch(queryParams, $scope.q.token).then(function (response) {
+                    $scope.vm.callReportList = response.data;
+                    console.log($scope.vm.callReportList);
+
+                    for(var  i =0; i < $scope.vm.callReportList.data.length; i++)
+                    {
+                        if($scope.vm.callReportList.data[i].direction == "ib")
+                        {
+                            $scope.vm.callReportList.data[i].directionCN = "呼入";
                         }
+                        else{
+                            $scope.vm.callReportList.data[i].directionCN = "呼出";
+                        }
+                    }
 
-                        queryParams.json = jsonData;
-                        KtyService.retrieveCallreportSearch(queryParams, $scope.q.token).then(function (response) {
-                            $scope.vm.callReportList = response.data;
-                            console.log($scope.vm.callReportList);
+                    $scope.pagerCallReport.update($scope.qCallReport, response.data.totalElements, queryParams.page);
+                }, function(value) {
+                    udcModal.info({"title": "查询失败", "message": value.message});
+                });
 
-                            for(var  i =0; i < $scope.vm.callReportList.data.length; i++)
-                            {
-                                if($scope.vm.callReportList.data[i].direction == "ib")
-                                {
-                                    $scope.vm.callReportList.data[i].directionCN = "呼入";
-                                }
-                                else{
-                                    $scope.vm.callReportList.data[i].directionCN = "呼出";
-                                }
-                            }
-
-                            $scope.pagerCallReport.update($scope.qCallReport, response.data.totalElements, queryParams.page);
-                        }, function(value) {
-                            udcModal.info({"title": "查询失败", "message": value.message});
-                        });
-
-                    }, function(value) {
-                        udcModal.info({"title": "连接结果", "message": value.message});
-                    })
+            }, function(value) {
+                udcModal.info({"title": "连接结果", "message": value.message});
+            })
             //    }
             //})
         }
@@ -511,57 +512,59 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             $scope.vm.missedCallReportList = [];
             $scope.pagerMissedCallReport.setCurPageNo(1);
             searchMissedCall();
-        }
+        };
 
-        var searchMissedCall = function(){
-            $scope.vm.missedCallReportList = [];
+        //登录授权，获取token
+        var getToken = function(){
             var userName = $scope.currentKTYUser.items[0].userId;
             var password = $scope.currentKTYUser.items[0].password;
-            var jsonData = {
-                ani:null,
-                dnis:null,
-                billingInSec:0,
-            }
-            jsonData.ani = $scope.q.ani1;
-            jsonData.dnis = $scope.q.dnis1;
-
             KtyService.authenticate(userName,password).then(function (response) {
                 $scope.q.token = response.data.token;
-
-                var queryParams = {
-                    order:"desc",
-                    page: $scope.pagerMissedCallReport.getCurPageNo(),
-                    per_page: $scope.pagerMissedCallReport.pageSize,
-                    sortBy:"createTime",
-                    from:$scope.q.startTime1,
-                    to:$scope.q.endTime1,
-                }
-                queryParams.json = jsonData;
-
-                KtyService.retrieveCallreportSearch(queryParams, $scope.q.token).then(function (response) {
-                    $scope.vm.missedCallReportList = response.data;
-
-                    console.log($scope.vm.missedCallReportList);
-
-                    for(var  i =0; i < $scope.vm.missedCallReportList.data.length; i++)
-                    {
-                        if($scope.vm.missedCallReportList.data[i].direction == "ib")
-                        {
-                            $scope.vm.missedCallReportList.data[i].directionCN = "呼入";
-                        }
-                        else{
-                            $scope.vm.missedCallReportList.data[i].directionCN = "呼出";
-                        }
-                    }
-                    $scope.pagerMissedCallReport.update($scope.qMissedCallReport, response.data.totalElements, queryParams.page);
-
-
-                }, function(value) {
-                    udcModal.info({"title": "查询失败", "message": value.message});
-                });
             }, function(value) {
-                udcModal.info({"title": "连接结果", "message": value.message});
+                udcModal.info({"title": "授权失败", "message": value.message});
+
             })
+        };
+
+        //查询未接来电记录
+        var searchMissedCall = function(){
+            var jsonData = {
+                //ani:$scope.q.ani1,
+                //dnis:$scope.q.dnis1,
+                billingInSec:0,
+                direction:"ib"
+            };
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            var startTime = year + "-" + month + "-" + day + " 00:00:00" ;
+
+
+
+            var queryParams = {
+                order:"desc",
+                page: $scope.pagerMissedCallReport.getCurPageNo(),
+                per_page: $scope.pagerMissedCallReport.pageSize,
+                sortBy:"createTime",
+                from:startTime,
+                to:"2028-08-18 00:00:00",
+                //from:$scope.q.startTime1,
+                //to:$scope.q.endTime1,
+            };
+            queryParams.json = jsonData;
+
+            KtyService.retrieveCallreportSearch(queryParams, $scope.q.token).then(function (response) {
+                if($scope.vm.missCallCount!=response.data.totalElements){
+                    $scope.vm.missCallCount=response.data.totalElements;
+                    $scope.vm.missedCallReportList = response.data;
+                    $scope.pagerMissedCallReport.update($scope.qMissedCallReport, response.data.totalElements, queryParams.page);
+                }
+
+            }, function(value) {
+                //udcModal.info({"title": "查询失败", "message": value.message});
+            });
+
         }
 
         var searchOrderHistory = function () {
@@ -642,6 +645,16 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             });
         };
 
+        $scope.showMissCallDetail = function (phone) {
+            $scope.pagerCustomer.setCurPageNo(1);
+            var queryParams = {
+                phone:phone,
+                pageNo: $scope.pagerCustomer.getCurPageNo(),
+                pageSize: $scope.pagerCustomer.pageSize
+            };
+            searchCustomerByParams(queryParams);
+        };
+
 //将列表中的客户信息显示到详情
         $scope.showDetail = function (customer) {
             $scope.vm.currentCustomer = customer;
@@ -701,7 +714,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             }
 
         };
-       
+
         $scope.searchUninterruptCustomers = function(){
             //清空表格
             var queryParams = {
@@ -718,18 +731,20 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
         var init = function () {
 
-            $scope.timer = $interval(function(){
+            $scope.timerGetClouderUser = $interval(function(){
                 $scope.currentKTYUser = sessionStorage.getKTYCurUser();
                 if($scope.currentKTYUser != null)
                 {
-                    $interval.cancel($scope.timer);
+                    //获取token
+                    getToken();
+                    $interval.cancel($scope.timerGetClouderUser);
                 }
             }, 1000);
 
             $scope.pagerCallReport.pageSize = 10;
             $scope.pagerCallReport.update($scope.qCallReport, 0, 1);
 
-            $scope.pagerMissedCallReport.pageSize = 10;
+            $scope.pagerMissedCallReport.pageSize = 20;
             $scope.pagerMissedCallReport.update($scope.qMissedCallReport, 0, 1);
 
             $scope.pagerGasCynTrayWarning.pageSize = 10;
@@ -767,13 +782,18 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 $scope.temp.selectedComplaintType = $scope.temp.complaintTypesList[0];
             });
             //不间断供气报警客户查询
-       
+
             $scope.searchUninterruptCustomers();
 
             //启动托盘漏气报警的检查线程
-            $scope.timer = $interval( function(){
+            $scope.timerCheckLeak = $interval( function(){
                 checkLeak();
             }, 4000);
+
+            //启动未接来电监听线程
+            $scope.timerSearchMissedCall = $interval( function(){
+                searchMissedCall();
+            }, 5000);
         };
 
         init();
@@ -943,7 +963,6 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         });
 
 //查询当前用户欠款
-
         var retrieveCustomerCredit = function(){
             var queryParams = {
                 userId:$scope.vm.currentCustomer.userId
@@ -1038,7 +1057,10 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             CustomerManageService.retrievePallets(queryParams).then(function (warnings) {
                 var warningsList = warnings.items;
                 for(var i=0; i<warningsList.length; i++){
-                    showNotification(warningsList[i]);
+                    if(warningsList[i].userId!=null){
+                        showNotification(warningsList[i]);
+                    }
+
                 }
             });
         };
@@ -1053,6 +1075,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             OrderService.retrieveTicket(queryParams).then(function (tickets) {
                 $scope.vm.currentTicketCount = tickets.total;
             });
-        }
+        };
+
+
 
     }]);
