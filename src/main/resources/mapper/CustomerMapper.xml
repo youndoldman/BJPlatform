@@ -42,6 +42,8 @@
 
         <association property="customerCompany" column="customer_company_idx" select="com.donno.nj.dao.CustomerCompanyDao.selectById">
         </association>
+
+
     </resultMap>
 
 
@@ -181,6 +183,10 @@
 
         <if test="status != null">
             AND  status = #{status}
+        </if>
+
+        <if test="settlementTypeCode != null">
+            AND  settlement_type = ( select id from t_settlement_type where code =#{settlementTypeCode} )
         </if>
 
         <if test="customerTypeCode != null">

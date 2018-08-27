@@ -249,12 +249,75 @@
       <form role="form">
         <div class="panel-body">
           <ul class="nav nav-tabs">
-            <li class="active"><a href="#tab_1" data-toggle="tab">来电记录</a></li>
-            <li><a href="#tab_2" data-toggle="tab">未处理来电</a></li>
+            <li class="active"><a href="#tab_1" data-toggle="tab">未接来电</a></li>
+            <li><a href="#tab_2" data-toggle="tab">通话记录</a></li>
             <li><a href="#tab_3" data-toggle="tab">不间断供气</a></li>
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="tab_1">
+              <!--<div class="row">-->
+                <!--<div class="col-xs-6">-->
+                  <!--<label class="text">时间：</label>-->
+                  <!--<label class="input"><input type="text"  id="datetimepickerStart1"  class="form-control" ng-model="q.startTime1"></label>-->
+                  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--</div>-->
+                <!--<div class="col-xs-6">-->
+                  <!--<label class="text">至</label>-->
+                  <!--<label class="input"><input type="text"  id="datetimepickerEnd1"  class="form-control" ng-model="q.endTime1"></label>-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<br>-->
+
+              <!--<div class="row">-->
+                <!--<div class="col-xs-6">-->
+                  <!--<label class="text">客户号码：</label>-->
+                  <!--<label class="input">-->
+                    <!--<input type="text" name="ani" class="form-control " placeholder="输入客户号码" ng-minlength="11" ng-model="q.ani1" ng-change="searchMissedCallReport()" >-->
+                  <!--</label>-->
+                  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--</div>-->
+                <!--<div class="col-xs-6">-->
+                  <!--<label class="text">客服号码：</label>-->
+                  <!--<label class="input">-->
+                    <!--<input type="text" name="dnis" class="form-control " placeholder="输入客服号码" ng-minlength="6" ng-model="q.dnis1" ng-change="searchMissedCallReport()" >-->
+                  <!--</label>-->
+                <!--</div>-->
+              <!--</div>-->
+
+              <!--<br>-->
+              <!--<div class="row">-->
+                <!--<div class="col-xs-6">-->
+                  <!--<div class="input-group-btn ">-->
+                    <!--<button type="search" class="btn btn-flat" ng-click="searchMissedCallReport()"><i class="fa fa-search"></i></button>-->
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<br>-->
+              <table class="table table-bordered table-hover .table-condensed table-striped" style="table-layout:fixed;">
+                <thead>
+                <tr>
+                  <td style="background: lightblue;text-align: left" width="20%">序号</td>
+                  <td style="background: lightblue;text-align: left" width="40%">未接客户号码</td>
+                  <!--<td style="background: lightblue;text-align: center" width="26%">客服号码</td>-->
+                  <!--<td style="background: lightblue;text-align: center" width="14%">方向</td>-->
+                  <td style="background: lightblue;text-align: left" width="40%">来电时间</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in vm.missedCallReportList.data" ng-click="showMissCallDetail(item.ani)">
+                  <td class="message">{{$index+1+pagerMissedCallReport.pageSize*(pagerMissedCallReport.getCurPageNo()-1)}}</td>
+                  <td class="message">{{item.ani}}</td>
+                  <!--<td class="message">{{item.dnis}}</td>-->
+                  <!--<td class="message">{{item.directionCN}}</td>-->
+                  <!--<td class="message">{{item.direction == ob ? callIn : callOut}}</td>-->
+                  <td class="message">{{item.createTime}}</td>
+                </tr>
+                </tbody>
+              </table>
+              <div ng-if="vm.missedCallReportList.data.length == 0" nj-table-no-data></div>
+              <div nj-pager pager="pagerMissedCallReport" hidePageSizeOptions="true"></div>
+            </div>
+            <div class="tab-pane " id="tab_2">
               <div class="row">
                 <div class="col-xs-6">
                   <label class="text">时间：</label>
@@ -319,70 +382,6 @@
             </div>
 
 
-            <!-- /.tab-pane -->
-            <div class="tab-pane" id="tab_2">
-              <div class="row">
-                <div class="col-xs-6">
-                  <label class="text">时间：</label>
-                  <label class="input"><input type="text"  id="datetimepickerStart1"  class="form-control" ng-model="q.startTime1"></label>
-                  <!--</div>-->
-                </div>
-                <div class="col-xs-6">
-                  <label class="text">至</label>
-                  <label class="input"><input type="text"  id="datetimepickerEnd1"  class="form-control" ng-model="q.endTime1"></label>
-                </div>
-              </div>
-              <br>
-
-              <div class="row">
-                <div class="col-xs-6">
-                  <label class="text">客户号码：</label>
-                  <label class="input">
-                    <input type="text" name="ani" class="form-control " placeholder="输入客户号码" ng-minlength="11" ng-model="q.ani1" ng-change="searchMissedCallReport()" >
-                  </label>
-                  <!--</div>-->
-                </div>
-                <div class="col-xs-6">
-                  <label class="text">客服号码：</label>
-                  <label class="input">
-                    <input type="text" name="dnis" class="form-control " placeholder="输入客服号码" ng-minlength="6" ng-model="q.dnis1" ng-change="searchMissedCallReport()" >
-                  </label>
-                </div>
-              </div>
-
-              <br>
-              <div class="row">
-                <div class="col-xs-6">
-                  <div class="input-group-btn ">
-                    <button type="search" class="btn btn-flat" ng-click="searchMissedCallReport()"><i class="fa fa-search"></i></button>
-                  </div>
-                </div>
-              </div>
-              <br>
-              <table class="table table-bordered table-hover .table-condensed table-striped" style="table-layout:fixed;">
-                <thead>
-                <tr>
-                  <td style="background: lightblue;text-align: center" width="10%">序号</td>
-                  <td style="background: lightblue;text-align: center" width="30%">未接客户号码</td>
-                  <td style="background: lightblue;text-align: center" width="26%">客服号码</td>
-                  <td style="background: lightblue;text-align: center" width="14%">方向</td>
-                  <td style="background: lightblue;text-align: center" width="20%">来电时间</td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="item in vm.missedCallReportList.data">
-                  <td class="message">{{$index+1+pagerMissedCallReport.pageSize*(pagerMissedCallReport.getCurPageNo()-1)}}</td>
-                  <td class="message">{{item.ani}}</td>
-                  <td class="message">{{item.dnis}}</td>
-                  <td class="message">{{item.directionCN}}</td>
-                  <!--<td class="message">{{item.direction == ob ? callIn : callOut}}</td>-->
-                  <td class="message">{{item.createTime}}</td>
-                </tr>
-                </tbody>
-              </table>
-              <div ng-if="vm.missedCallReportList.data.length == 0" nj-table-no-data></div>
-              <div nj-pager pager="pagerMissedCallReport"  ></div>
-            </div>
 
             <div class="tab-pane" id="tab_3">
               <br/>

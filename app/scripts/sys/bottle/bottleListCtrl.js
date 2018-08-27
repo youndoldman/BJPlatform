@@ -18,11 +18,20 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
         $scope.q = {
             number: null,
             liableUserId: null,
-            liableDepartmentCode: null
+            liableDepartmentCode: null,
+            serviceStatus:null
         };
 
         $scope.vm = {
-            bottleList: []
+            bottleList: [],
+            serviceStatusList:[{value:null,name:"全部状态"},
+                {value:0,name:"待使用"},
+                {value:1,name:"气站库存"},
+                {value:2,name:"门店库存"},
+                {value:3,name:"在途运输"},
+                {value:4,name:"在途派送"},
+                {value:5,name:"客户使用"},
+                {value:6,name:"空瓶回收"}],
         };
 
         $scope.search = function () {
@@ -99,7 +108,8 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize,
                 liableUserId: $scope.q.liableUserId,
-                liableDepartmentCode: $scope.q.liableDepartmentCode
+                liableDepartmentCode: $scope.q.liableDepartmentCode,
+                serviceStatus:$scope.q.serviceStatus.value
             };
             BottleService.retrieveBottles(queryParams).then(function (bottles) {
                 $scope.pager.update($scope.q, bottles.total, queryParams.pageNo);
@@ -114,6 +124,7 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
 
         var init = function () {
             //查询钢瓶
+            $scope.q.serviceStatus = $scope.vm.serviceStatusList[0];
             searchBottles();
         };
 
