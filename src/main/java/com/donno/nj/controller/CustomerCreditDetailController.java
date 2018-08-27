@@ -29,7 +29,7 @@ public class CustomerCreditDetailController
 
 
     @RequestMapping(value = "/api/CustomerCreditDetail", method = RequestMethod.GET, produces = "application/json")
-    @OperationLog(desc = "获取气票信息列表")
+    @OperationLog(desc = "获取信用信息列表")
     public ResponseEntity retrieve(
                                    @RequestParam(value = "userId", defaultValue = "") String userId,
                                    @RequestParam(value = "creditType", required = false) Integer creditType,

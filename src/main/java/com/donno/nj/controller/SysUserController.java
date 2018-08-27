@@ -120,16 +120,25 @@ public class SysUserController
     public ResponseEntity keepAlive(@PathVariable("userId") String userId)
     {
         /*设置用户在线*/
-        Map params = new HashMap<String,String>();
-        params.putAll(ImmutableMap.of("userId", userId));
-        List<SysUser> sysUserList = sysUserService.retrieve(params);
-        if (sysUserList.size() == 1)
+        Optional<SysUser> userOptional = sysUserService.findBySysUserId(userId);
+        if (userOptional.isPresent())
         {
-            sysUserList.get(0).setAliveStatus(AliveStatus.ASOnline);
-            sysUserList.get(0).setUpdateTime(new Date());
-            sysUserList.get(0).setAliveUpdateTime(new Date());
-            sysUserService.update(sysUserList.get(0).getId(),sysUserList.get(0));
+            userOptional.get().setAliveStatus(AliveStatus.ASOnline);
+            userOptional.get().setUpdateTime(new Date());
+            userOptional.get().setAliveUpdateTime(new Date());
+            sysUserService.update(userOptional.get().getId(),userOptional.get());
         }
+//
+//        Map params = new HashMap<String,String>();
+//        params.putAll(ImmutableMap.of("userId", userId));
+//        List<SysUser> sysUserList = sysUserService.retrieve(params);
+//        if (sysUserList.size() == 1)
+//        {
+//            sysUserList.get(0).setAliveStatus(AliveStatus.ASOnline);
+//            sysUserList.get(0).setUpdateTime(new Date());
+//            sysUserList.get(0).setAliveUpdateTime(new Date());
+//            sysUserService.update(sysUserList.get(0).getId(),sysUserList.get(0));
+//        }
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -140,15 +149,23 @@ public class SysUserController
         AppUtil.clearCurrentLoginUser();
 
         /*设置用户离线*/
-        Map params = new HashMap<String,String>();
-        params.putAll(ImmutableMap.of("userId", userId));
-        List<SysUser> sysUserList = sysUserService.retrieve(params);
-        if (sysUserList.size() == 1)
+        Optional<SysUser> userOptional = sysUserService.findBySysUserId(userId);
+        if (userOptional.isPresent())
         {
-            sysUserList.get(0).setAliveStatus(AliveStatus.ASOffline);
-            sysUserList.get(0).setUpdateTime(new Date());
-            sysUserService.update(sysUserList.get(0).getId(),sysUserList.get(0));
+            userOptional.get().setAliveStatus(AliveStatus.ASOffline);
+            userOptional.get().setUpdateTime(new Date());
+            sysUserService.update(userOptional.get().getId(),userOptional.get());
         }
+
+//        Map params = new HashMap<String,String>();
+//        params.putAll(ImmutableMap.of("userId", userId));
+//        List<SysUser> sysUserList = sysUserService.retrieve(params);
+//        if (sysUserList.size() == 1)
+//        {
+//            sysUserList.get(0).setAliveStatus(AliveStatus.ASOffline);
+//            sysUserList.get(0).setUpdateTime(new Date());
+//            sysUserService.update(sysUserList.get(0).getId(),sysUserList.get(0));
+//        }
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
