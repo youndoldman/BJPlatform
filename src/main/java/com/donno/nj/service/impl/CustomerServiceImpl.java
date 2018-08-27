@@ -51,6 +51,12 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
     @Autowired
     private UserPositionDao userPositionDao;
 
+    @Autowired
+    private GasCynTrayDao gasCynTrayDao;
+
+    @Autowired
+    private UserCardDao userCardDao;
+
     @Override
     @OperationLog(desc = "查询客户信息")
     public List<Customer> retrieve(Map params)
@@ -247,6 +253,22 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
         if (couponDao.count(params) > 0)
         {
             throw new ServerSideBusinessException("客户已有优惠券记录，不能删除客户信息！",HttpStatus.FORBIDDEN);
+        }
+
+        /*有关联托盘，则不允许删除，需要先解绑定托盘*/
+        params.clear();
+        params.putAll(ImmutableMap.of("userId", customer.getUserId()));
+        if (gasCynTrayDao.count(params) > 0)
+        {
+            throw new ServerSideBusinessException("客户已有绑定托盘，不能删除客户信息，请先解绑定托盘！",HttpStatus.FORBIDDEN);
+        }
+
+        /*有关联用户卡，则不允许删除，需要先解绑定用户卡*/
+        params.clear();
+        params.putAll(ImmutableMap.of("userId", customer.getUserId()));
+        if (userCardDao.count(params) > 0)
+        {
+            throw new ServerSideBusinessException("客户已有绑定用户卡信息，不能删除客户信息，请先解绑定用户卡！",HttpStatus.FORBIDDEN);
         }
 
         /*删除位置信息表*/
