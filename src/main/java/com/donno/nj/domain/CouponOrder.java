@@ -13,6 +13,7 @@ public class CouponOrder implements Serializable
     private String orderSn;       //订单编号
     private String specName;
     private Integer couponIdx;
+    private String couponSn;
     private Float price;
     private Date expStartDate;  //有效期
     private Date expEndDate;   //有效期
@@ -47,6 +48,10 @@ public class CouponOrder implements Serializable
 
     public Integer getCouponIdx() {
         return couponIdx;
+    }
+
+    public String getCouponSn() {
+        return couponSn;
     }
 
     public Float getPrice() {
@@ -97,6 +102,10 @@ public class CouponOrder implements Serializable
 
     public void setCouponIdx(Integer couponIdx) {
         this.couponIdx = couponIdx;
+    }
+
+    public void setCouponSn(String couponSn) {
+        this.couponSn = couponSn;
     }
 
     public void setExpStartDate(Date expStartDate) {

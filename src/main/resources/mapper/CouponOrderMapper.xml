@@ -9,6 +9,7 @@
         <result column="order_sn" property="orderSn" jdbcType="VARCHAR"/>
         <result column="spec_name" property="specName" jdbcType="VARCHAR"/>
         <result column="coupon_idx" property="couponIdx" jdbcType="INTEGER"/>
+        <result column="coupon_sn" property="couponSn" jdbcType="VARCHAR"/>
         <result column="price" property="price" jdbcType="DOUBLE"/>
         <result column="use_Time" property="useTime" jdbcType="TIMESTAMP"/>
         <result column="exp_start_date" property="expStartDate" jdbcType="TIMESTAMP"/>
@@ -29,7 +30,7 @@
     </sql>
 
     <sql id="QueryColumnList">
-        t_coupon_order.id, t_coupon_order.coupon_idx,t_user.user_id as user_id,t_order.order_sn as order_sn,
+        t_coupon_order.id, t_coupon_order.coupon_idx, t_coupon.coupon_sn as coupon_sn  , t_user.user_id as user_id,t_order.order_sn as order_sn,
          t_goods.name as spec_name,
         t_coupon.price,t_coupon.use_time as use_Time ,t_coupon.exp_time_start as exp_start_date,t_coupon.exp_time_end as exp_end_date,
         t_coupon_order.note,t_coupon_order.create_time,t_coupon_order.update_time

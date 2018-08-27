@@ -47,8 +47,13 @@
         <association property="dispatcher" column="id" select="com.donno.nj.dao.SysUserDao.findByOrderIdx">
         </association>
 
+        <collection property="orderOpHistoryList" column="id" ofType="com.donno.nj.domain.OrderOpHistory" select="com.donno.nj.dao.OrderOpHistoryDao.findByOrderIdx">
+        </collection>
+
         <collection property="orderDetailList" column="id" ofType="com.donno.nj.domain.OrderDetail" select="com.donno.nj.dao.OrderDetailDao.findByOrderIdx">
         </collection>
+
+
     </resultMap>
 
 

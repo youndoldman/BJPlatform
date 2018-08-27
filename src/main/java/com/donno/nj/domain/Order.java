@@ -48,6 +48,8 @@ public class Order implements Serializable
     private String  recycleGasCylinder;//回收的钢瓶号   zy添加
     private String  deliveryGasCylinder;//配送的钢瓶号  zy添加
 
+    private List<OrderOpHistory> orderOpHistoryList;
+
     private String  note;
 
     private Date payTime;//支付时间
@@ -185,6 +187,10 @@ public class Order implements Serializable
     public List<OrderDetail> getOrderDetailList()
     {
         return orderDetailList;
+    }
+
+    public List<OrderOpHistory> getOrderOpHistoryList() {
+        return orderOpHistoryList;
     }
 
     public  Date getPayTime()
@@ -332,6 +338,10 @@ public class Order implements Serializable
     public void setOrderDetailList(List<OrderDetail> orderDetailList)
     {
         this.orderDetailList = orderDetailList;
+    }
+
+    public void setOrderOpHistoryList(List<OrderOpHistory> orderOpHistoryList) {
+        this.orderOpHistoryList = orderOpHistoryList;
     }
 
     public void setComment(String comment)

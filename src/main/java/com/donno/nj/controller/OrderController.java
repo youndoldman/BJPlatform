@@ -366,13 +366,28 @@ public class OrderController
                                     @RequestParam(value = "tickets", defaultValue = "") String tickets
                                     )
     {
-        ResponseEntity responseEntity;
+        ResponseEntity responseEntity = ResponseEntity.ok().build();
 
         Optional<Order> orderOptional = orderService.findBySn(orderSn);
         if (orderOptional.isPresent())
         {
-            orderService.ticketPay(orderOptional.get(),coupons,tickets);
-            responseEntity = ResponseEntity.ok().build();
+            if (orderOptional.get().getPayStatus() == PayStatus.PSUnpaid)
+            {
+                orderService.ticketPay(orderOptional.get(),coupons,tickets);
+                responseEntity = ResponseEntity.ok().build();
+            }
+            else if (orderOptional.get().getPayStatus() == PayStatus.PSUnpaid)
+            {
+                throw new ServerSideBusinessException("定单已支付，请勿重复支付！", HttpStatus.NOT_ACCEPTABLE);
+            }
+            else if (orderOptional.get().getPayStatus() == PayStatus.PSRefounding)
+            {
+                throw new ServerSideBusinessException("定单处于退款状态！", HttpStatus.NOT_ACCEPTABLE);
+            }
+            else if (orderOptional.get().getPayStatus() == PayStatus.PSRefounded)
+            {
+                throw new ServerSideBusinessException("定单已退款！", HttpStatus.NOT_ACCEPTABLE);
+            }
         }
         else
         {
@@ -408,13 +423,28 @@ public class OrderController
                                    @RequestParam(value = "payType", required = true) PayType payType
     )
     {
-        ResponseEntity responseEntity;
+        ResponseEntity responseEntity = ResponseEntity.notFound().build();
 
         Optional<Order> orderOptional = orderService.findBySn(orderSn);
         if (orderOptional.isPresent())
         {
-            orderService.orderPay(orderOptional.get(),payType);
-            responseEntity = ResponseEntity.ok().build();
+            if (orderOptional.get().getPayStatus() == PayStatus.PSUnpaid)
+            {
+                orderService.orderPay(orderOptional.get(),payType);
+                responseEntity = ResponseEntity.ok().build();
+            }
+            else if (orderOptional.get().getPayStatus() == PayStatus.PSPaied)
+            {
+                throw new ServerSideBusinessException("定单已支付，请勿重复支付！", HttpStatus.NOT_ACCEPTABLE);
+            }
+            else if (orderOptional.get().getPayStatus() == PayStatus.PSRefounding)
+            {
+                throw new ServerSideBusinessException("定单处于退款状态！", HttpStatus.NOT_ACCEPTABLE);
+            }
+            else if (orderOptional.get().getPayStatus() == PayStatus.PSRefounded)
+            {
+                throw new ServerSideBusinessException("定单已退款！", HttpStatus.NOT_ACCEPTABLE);
+            }
         }
         else
         {

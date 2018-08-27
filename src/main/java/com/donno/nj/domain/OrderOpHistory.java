@@ -10,6 +10,7 @@ public class OrderOpHistory
     private String orderSn;
     private String userId;
 
+    private OrderStatus orderStatus;
     private String opLog;
     private Date updateTime;
 
@@ -39,6 +40,10 @@ public class OrderOpHistory
         return opLog;
     }
 
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
     public Date getUpdateTime()
     {
         return updateTime;
@@ -57,6 +62,10 @@ public class OrderOpHistory
     public void setOrderIdx(Integer orderIdx)
     {
         this.orderIdx = orderIdx;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public void setUserId(String userId)

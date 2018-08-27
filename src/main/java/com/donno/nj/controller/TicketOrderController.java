@@ -30,6 +30,7 @@ public class TicketOrderController
     @RequestMapping(value = "/api/TicketOrder", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取气票消费信息列表")
     public ResponseEntity retrieve(@RequestParam(value = "userId", defaultValue = "") String userId,
+                                   @RequestParam(value = "orderSn", defaultValue = "") String orderSn,
                                    @RequestParam(value = "useTimeStart", defaultValue = "") String useTimeStart,
                                    @RequestParam(value = "useTimeEnd", defaultValue = "") String useTimeEnd,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
@@ -41,6 +42,11 @@ public class TicketOrderController
         if (userId.trim().length() > 0)
         {
             params.putAll(ImmutableMap.of("userId", userId));
+        }
+
+        if (orderSn.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("orderSn", orderSn));
         }
 
         if (useTimeStart.trim().length() > 0)

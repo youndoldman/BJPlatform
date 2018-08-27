@@ -759,7 +759,8 @@ public class OrderServiceImpl implements OrderService
                 payType = srcOrder.getPayType();
             }
 
-            if(newOrder.getPayStatus() == PayStatus.PSPaied)
+            if(srcOrder.getPayStatus() == PayStatus.PSUnpaid &&
+                    newOrder.getPayStatus() == PayStatus.PSPaied)
             {
                 newOrder.setPayTime(new Date());
             }
@@ -803,7 +804,8 @@ public class OrderServiceImpl implements OrderService
 
     public void updatePayStatus(PayStatus payStatus,PayType payType,Customer customer,Order srcOrder)
     {
-        if (payStatus == PayStatus.PSPaied )
+        if (srcOrder.getPayStatus() == PayStatus.PSUnpaid &&
+                payStatus == PayStatus.PSPaied )
         {
             SettlementType settlementType = customer.getSettlementType();
             String settlementCode =  settlementType.getCode();
@@ -943,6 +945,7 @@ public class OrderServiceImpl implements OrderService
             OrderOpHistory orderOpHistory = new OrderOpHistory();
             orderOpHistory.setOrderSn(order.getOrderSn());
             orderOpHistory.setOrderIdx(order.getId());
+            orderOpHistory.setOrderStatus(OrderStatus.values()[orderStatus]);
             orderOpHistory.setUserId(user.get().getUserId());
 
             String opLog = "";
@@ -956,7 +959,7 @@ public class OrderServiceImpl implements OrderService
             }
             else if (orderStatus == OrderStatus.OSSigned.getIndex())
             {
-                opLog = "已签收";
+                    opLog = "已签收";
             }
             else if (orderStatus == OrderStatus.OSCompleted.getIndex())
             {

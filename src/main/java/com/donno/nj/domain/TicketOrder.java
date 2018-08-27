@@ -13,6 +13,7 @@ public class TicketOrder implements Serializable
     private String orderSn;       //订单编号
     private String specName;
     private Integer ticketIdx;
+    private  String ticketSn;
     private Float price;
     private Date expStartDate;  //有效期
     private Date expEndDate;   //有效期
@@ -47,6 +48,10 @@ public class TicketOrder implements Serializable
 
     public Integer getTicketIdx() {
         return ticketIdx;
+    }
+
+    public String getTicketSn() {
+        return ticketSn;
     }
 
     public Float getPrice() {
@@ -97,6 +102,10 @@ public class TicketOrder implements Serializable
 
     public void setTicketIdx(Integer ticketIdx) {
         this.ticketIdx = ticketIdx;
+    }
+
+    public void setTicketSn(String ticketSn) {
+        this.ticketSn = ticketSn;
     }
 
     public void setExpStartDate(Date expStartDate) {
