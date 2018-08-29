@@ -1,5 +1,6 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.*;
@@ -42,6 +43,7 @@ public class CustomerController
     CustomerDistrictService customerDistrictService ;
 
     @RequestMapping(value = "/api/customers/findByUserId", method = RequestMethod.GET, produces = "application/json")
+    //@Auth(allowedBizOp = {})
     public ResponseEntity findByUserId(@RequestParam(value = "userId", defaultValue = "") String userId)
     {
         ResponseEntity responseEntity;
@@ -67,13 +69,9 @@ public class CustomerController
     {
         ResponseEntity responseEntity;
 
-        Optional<User> validUser = customerService.findByUserId(userId);
+        Optional<User> validUser = customerService.findByUserIdPwd(userId,password);
 
         if (!validUser.isPresent())
-        {
-            responseEntity =  ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        else if (!password.equals(validUser.get().getPassword()))
         {
             responseEntity =  ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -117,6 +115,7 @@ public class CustomerController
 
     @RequestMapping(value = "/api/customers", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取客户列表")
+    //@Auth(allowedBizOp = {})
     public ResponseEntity retrieveCustomers(@RequestParam(value = "userId", defaultValue = "") String userId,
                                             @RequestParam(value = "userName", defaultValue = "") String userName,
                                             @RequestParam(value = "identity", defaultValue = "") String identity,
@@ -236,6 +235,7 @@ public class CustomerController
 
     @OperationLog(desc = "创建客户")
     @RequestMapping(value = "/api/customers", method = RequestMethod.POST)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE})
     public ResponseEntity createCustomer(@RequestBody Customer customer, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
@@ -252,6 +252,7 @@ public class CustomerController
 
     @OperationLog(desc = "修改用户信息")
     @RequestMapping(value = "/api/customers/{userId}", method = RequestMethod.PUT)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE})
     public ResponseEntity updateCustomer(@PathVariable("userId") String userId, @RequestBody Customer newCustomer)
     {
         ResponseEntity responseEntity;
@@ -290,6 +291,7 @@ public class CustomerController
 
     @OperationLog(desc = "删除用户信息")
     @RequestMapping(value = "/api/customers/{userId}", method = RequestMethod.DELETE)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE})
     public ResponseEntity deleteCustomer(@PathVariable("userId") String userId)
     {
         ResponseEntity responseEntity;

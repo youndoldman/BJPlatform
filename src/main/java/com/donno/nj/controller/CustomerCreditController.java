@@ -1,19 +1,16 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.CustomerCredit;
-import com.donno.nj.domain.Ticket;
+import com.donno.nj.domain.ServerConstantValue;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.CustomerCreditService;
-import com.donno.nj.service.TicketService;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +26,8 @@ public class CustomerCreditController
 
 
     @RequestMapping(value = "/api/CustomerCredit", method = RequestMethod.GET, produces = "application/json")
-    @OperationLog(desc = "获取气票信息列表")
+    @OperationLog(desc = "获取欠款信息列表")
+    //@Auth(allowedBizOp = {})
     public ResponseEntity retrieve(
                                    @RequestParam(value = "userId", defaultValue = "") String userId,
                                    @RequestParam(value = "creditType", required = false) Integer creditType,
@@ -58,27 +56,9 @@ public class CustomerCreditController
     }
 
 
-//    @OperationLog(desc = "增加客户欠款信息")
-//    @RequestMapping(value = "/api/CustomerCredit", method = RequestMethod.POST)
-//    public ResponseEntity create(@RequestBody CustomerCredit customerCredit, UriComponentsBuilder ucBuilder)
-//    {
-//        ResponseEntity responseEntity;
-//
-//        /*创建*/
-//        customerCreditService.create(customerCredit);
-//
-//        URI uri = ucBuilder.path("/api/CustomerCredit/{id}").buildAndExpand(customerCredit.getId()).toUri();
-//        responseEntity = ResponseEntity.created(uri).build();
-//
-//        return responseEntity;
-//    }
-
-
-
-
-
     @OperationLog(desc = "删除客户欠款信息")
     @RequestMapping(value = "/api/CustomerCredit/{id}", method = RequestMethod.DELETE)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN})
     public ResponseEntity delete(@PathVariable("id") Integer id)
     {
         ResponseEntity responseEntity;

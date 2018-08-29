@@ -3,10 +3,7 @@ package com.donno.nj.controller;
 import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
-import com.donno.nj.domain.AliveStatus;
-import com.donno.nj.domain.UserPosition;
-import com.donno.nj.domain.SysUser;
-import com.donno.nj.domain.User;
+import com.donno.nj.domain.*;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.*;
@@ -80,15 +77,11 @@ public class SysUserController
     {
         ResponseEntity responseEntity;
 
-        Optional<User> validUser = sysUserService.findByUserId(userId);
+        Optional<User> validUser = sysUserService.findByUserIdPwd(userId,password);
 
         if (!validUser.isPresent())
         {
-            throw new ServerSideBusinessException("用户不存在！",HttpStatus.UNAUTHORIZED);
-        }
-        else if (!password.equals(validUser.get().getPassword()))
-        {
-            throw new ServerSideBusinessException("用户密码错误！",HttpStatus.UNAUTHORIZED);
+            throw new ServerSideBusinessException("用户不存在或密码错误！",HttpStatus.UNAUTHORIZED);
         }
         else
         {
@@ -245,6 +238,7 @@ public class SysUserController
 
     @OperationLog(desc = "创建用户")
     @RequestMapping(value = "/api/sysusers", method = RequestMethod.POST)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity create(@RequestBody SysUser sysUser, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
@@ -259,6 +253,7 @@ public class SysUserController
 
     @OperationLog(desc = "修改用户信息")
     @RequestMapping(value = "/api/sysusers", method = RequestMethod.PUT)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity update(@RequestParam(value = "userId", defaultValue = "",required = true) String userId, @RequestBody SysUser newUser)
     {
         ResponseEntity responseEntity;
@@ -279,6 +274,7 @@ public class SysUserController
 
     @OperationLog(desc = "删除用户信息")
     @RequestMapping(value = "/api/sysusers", method = RequestMethod.DELETE)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity delete(
             //@RequestParam(value = "id", required = false) Integer id,
                                          @RequestParam(value = "userId", defaultValue = "") String userId

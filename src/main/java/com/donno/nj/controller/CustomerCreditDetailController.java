@@ -1,9 +1,11 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.CustomerCredit;
 import com.donno.nj.domain.CustomerCreditDetail;
+import com.donno.nj.domain.ServerConstantValue;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.CustomerCreditDetailService;
 import com.donno.nj.service.CustomerCreditService;
@@ -29,7 +31,8 @@ public class CustomerCreditDetailController
 
 
     @RequestMapping(value = "/api/CustomerCreditDetail", method = RequestMethod.GET, produces = "application/json")
-    @OperationLog(desc = "获取信用信息列表")
+    @OperationLog(desc = "获取欠款明细信息列表")
+    //@Auth(allowedBizOp = {})
     public ResponseEntity retrieve(
                                    @RequestParam(value = "userId", defaultValue = "") String userId,
                                    @RequestParam(value = "creditType", required = false) Integer creditType,
@@ -73,6 +76,7 @@ public class CustomerCreditDetailController
 
     @OperationLog(desc = "增加客户欠款信息")
     @RequestMapping(value = "/api/CustomerCreditDetail", method = RequestMethod.POST)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN})
     public ResponseEntity create(@RequestBody CustomerCreditDetail customerCreditDetail, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
@@ -90,6 +94,7 @@ public class CustomerCreditDetailController
 
     @OperationLog(desc = "删除客户欠款信息")
     @RequestMapping(value = "/api/CustomerCreditDetail/{id}", method = RequestMethod.DELETE)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN})
     public ResponseEntity delete(@PathVariable("id") Integer id)
     {
         ResponseEntity responseEntity;

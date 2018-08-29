@@ -106,8 +106,6 @@ public class DepositDetailServiceImpl implements DepositDetailService
             throw new ServerSideBusinessException("未读取到操作员信息，请重新登录！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-
-
         depositDetail.setOperId(userOptional.get().getUserId());
 
         /*添加记录*/

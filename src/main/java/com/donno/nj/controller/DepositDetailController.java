@@ -1,8 +1,10 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.DepositDetail;
+import com.donno.nj.domain.ServerConstantValue;
 import com.donno.nj.domain.WriteOffDetail;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.DepositDetailService;
@@ -28,6 +30,7 @@ public class DepositDetailController
 
     @RequestMapping(value = "/api/DepositDetail", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取入银行款记录信息列表")
+    //@Auth(allowedBizOp = {})
     public ResponseEntity retrieve(
                                    @RequestParam(value = "userId", defaultValue = "") String userId,
                                    @RequestParam(value = "startTime", defaultValue = "") String startTime,
@@ -64,6 +67,7 @@ public class DepositDetailController
 
     @OperationLog(desc = "增加入银行款记录信息")
     @RequestMapping(value = "/api/DepositDetail", method = RequestMethod.POST)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN ,ServerConstantValue.GP_FINANCE})
     public ResponseEntity create(@RequestBody DepositDetail depositDetail, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
@@ -80,6 +84,7 @@ public class DepositDetailController
 
     @OperationLog(desc = "删除入银行款记录信息")
     @RequestMapping(value = "/api/DepositDetail/{id}", method = RequestMethod.DELETE)
+   // @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN ,ServerConstantValue.GP_FINANCE})
     public ResponseEntity delete(@PathVariable("id") Integer id)
     {
         ResponseEntity responseEntity;

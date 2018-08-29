@@ -1,5 +1,6 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.GasCylinder;
@@ -29,6 +30,7 @@ public class GasCylinderPositionController
 
     @RequestMapping(value = "/api/GasCylinderPosition", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取钢瓶列表")
+    //@Auth(allowedBizOp = {})
     public ResponseEntity retrieve(@RequestParam(value = "number", defaultValue = "") String number,
                                    @RequestParam(value = "startTime", defaultValue = "") String startTime,
                                    @RequestParam(value = "endTime", defaultValue = "") String endTime,

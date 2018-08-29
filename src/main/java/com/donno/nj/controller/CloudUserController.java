@@ -1,5 +1,6 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.dao.CloudPanvaUserBindRelationDao;
@@ -37,7 +38,8 @@ public class CloudUserController
     }
 
     @RequestMapping(value = "/api/CloudUser", method = RequestMethod.GET, produces = "application/json")
-    @OperationLog(desc = "获取客户列表")
+    @OperationLog(desc = "获取云客服列表")
+    //@Auth(allowedBizOp = {})
     public ResponseEntity retrieve(@RequestParam(value = "cloudUserId", defaultValue = "") String cloudUserId,
                                    @RequestParam(value = "panvaUserId", defaultValue = "") String panvaUserId,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
@@ -66,6 +68,7 @@ public class CloudUserController
 
     @OperationLog(desc = "创建云客服用户")
     @RequestMapping(value = "/api/CloudUser", method = RequestMethod.POST)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity create(@RequestBody CloudUser cloudUser, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
@@ -80,6 +83,7 @@ public class CloudUserController
 
     @OperationLog(desc = "修改云客服用户信息")
     @RequestMapping(value = "/api/CloudUser", method = RequestMethod.PUT)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity update(@RequestParam(value = "userId", defaultValue = "") String userId,
                                  @RequestBody CloudUser newUser)
     {
@@ -101,6 +105,7 @@ public class CloudUserController
 
     @OperationLog(desc = "删除云用户信息")
     @RequestMapping(value = "/api/CloudUser", method = RequestMethod.DELETE)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity delete(@RequestParam(value = "userId", defaultValue = "") String userId)
     {
         ResponseEntity responseEntity;
@@ -123,6 +128,7 @@ public class CloudUserController
 
     @OperationLog(desc = "云客服绑定系统用户")
     @RequestMapping(value = "/api/CloudUser/Bind", method = RequestMethod.PUT)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity bindLocationDev(@RequestParam(value = "userId", defaultValue = "") String userId,
                                           @RequestParam(value = "panvaUserId", defaultValue = "") String panvaUserId)
     {
@@ -137,6 +143,7 @@ public class CloudUserController
 
     @OperationLog(desc = "解除绑定系统用户")
     @RequestMapping(value = "/api/CloudUser/UnBind", method = RequestMethod.PUT)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity unBindLocationDev(@RequestParam(value = "userId", defaultValue = "") String userId,
                                             @RequestParam(value = "panvaUserId", defaultValue = "") String panvaUserId)
     {

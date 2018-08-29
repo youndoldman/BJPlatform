@@ -1,7 +1,9 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
+import com.donno.nj.domain.ServerConstantValue;
 import com.donno.nj.domain.Ticket;
 import com.donno.nj.domain.TicketOrder;
 import com.donno.nj.representation.ListRep;
@@ -90,6 +92,7 @@ public class TicketOrderController
 
     @OperationLog(desc = "删除气票消费信息")
     @RequestMapping(value = "/api/TicketOrder/{id}", method = RequestMethod.DELETE)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
     public ResponseEntity delete(@PathVariable("id") Integer id)
     {
         ResponseEntity responseEntity;

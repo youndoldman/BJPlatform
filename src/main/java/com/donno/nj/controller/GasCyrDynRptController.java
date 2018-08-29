@@ -1,5 +1,6 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.GasCyrDynRpt;
@@ -31,7 +32,6 @@ public class GasCyrDynRptController
 {
     @Autowired
     private GasCyrDynRptService gasCyrDynRptService;
-
 
     @RequestMapping(value = "/api/Report/GasCyrDyn", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取门店钢瓶动态统计")

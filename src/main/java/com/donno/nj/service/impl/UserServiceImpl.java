@@ -37,6 +37,14 @@ public class UserServiceImpl  implements UserService
 
     @Override
     @OperationLog(desc = "根据用户ID查询客户信息")
+    public Optional<User> findByUserIdPwd(String userId,String password)
+    {
+        return Optional.fromNullable(userDao.findByUserIdPwd(userId,password));
+    }
+
+
+    @Override
+    @OperationLog(desc = "根据用户ID查询客户信息")
     public Optional<User> findById(Integer id) {
         return Optional.fromNullable(userDao.findById(id));
     }

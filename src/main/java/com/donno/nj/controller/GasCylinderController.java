@@ -1,9 +1,11 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.GasCylinder;
 import com.donno.nj.domain.GasCylinderSvcStatusOpHis;
+import com.donno.nj.domain.ServerConstantValue;
 import com.donno.nj.logger.DebugLogger;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.GasCylinderService;
@@ -34,6 +36,7 @@ public class GasCylinderController
 
     @RequestMapping(value = "/api/GasCylinder", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取钢瓶列表")
+    //@Auth(allowedBizOp = {})
     public ResponseEntity retrieve(@RequestParam(value = "number", defaultValue = "") String number,
                                    @RequestParam(value = "factoryCode", defaultValue = "") String factoryCode,
                                    @RequestParam(value = "specCode", defaultValue = "") String specCode,
@@ -99,6 +102,7 @@ public class GasCylinderController
 
     @OperationLog(desc = "创建钢瓶")
     @RequestMapping(value = "/api/GasCylinder", method = RequestMethod.POST)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_GAS_STORE_LEADER })
     public ResponseEntity create(@RequestBody GasCylinder gasCylinder, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
@@ -113,6 +117,7 @@ public class GasCylinderController
 
     @OperationLog(desc = "修改钢瓶信息")
     @RequestMapping(value = "/api/GasCylinder/{number}", method = RequestMethod.PUT)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_GAS_STORE_LEADER })
     public ResponseEntity update(@PathVariable("number") String number, @RequestBody GasCylinder newGasCylinder)
     {
         ResponseEntity responseEntity;
@@ -125,6 +130,7 @@ public class GasCylinderController
 
     @OperationLog(desc = "修改钢瓶业务状态")
     @RequestMapping(value = "/api/GasCylinder/TakeOver/{number}", method = RequestMethod.PUT)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_GAS_STORE_LEADER })
     public ResponseEntity updateCynSvcStatus(@PathVariable("number") String number,
                                              @RequestParam(value = "srcUserId", defaultValue = "",required = true) String srcUserId,
                                              @RequestParam(value = "targetUserId", defaultValue = "",required = true) String targetUserId,
@@ -141,6 +147,7 @@ public class GasCylinderController
 
     @OperationLog(desc = "查询钢瓶业务状态变化历史")
     @RequestMapping(value = "/api/GasCylinder/TakeOver/History/{number}", method = RequestMethod.GET)
+    //@Auth(allowedBizOp = {})
     public ResponseEntity getCynSvcStatusOpHis(@PathVariable("number") String number,
                                              @RequestParam(value = "startTime", defaultValue = "") String startTime,
                                              @RequestParam(value = "endTime", defaultValue = "") String endTime,
@@ -178,6 +185,7 @@ public class GasCylinderController
 
     @OperationLog(desc = "删除钢瓶信息")
     @RequestMapping(value = "/api/GasCylinder/{number}", method = RequestMethod.DELETE)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_GAS_STORE_LEADER })
     public ResponseEntity delete(@PathVariable("number") String number)
     {
         ResponseEntity responseEntity;
@@ -198,6 +206,7 @@ public class GasCylinderController
 
     @OperationLog(desc = "钢瓶绑定定位终端")
     @RequestMapping(value = "/api/GasCylinder/Bind/{gasCylinderNumber}", method = RequestMethod.PUT)
+    //@Auth(allowedBizOp = {})
     public ResponseEntity bindLocationDev(@PathVariable("gasCylinderNumber") String gasCylinderNumber,
                                           @RequestParam(value = "locationDevNumber", defaultValue = "") String locationDevNumber)
     {
@@ -212,6 +221,7 @@ public class GasCylinderController
 
     @OperationLog(desc = "钢瓶解除绑定定位终端")
     @RequestMapping(value = "/api/GasCylinder/UnBind/{gasCylinderNumber}", method = RequestMethod.PUT)
+    //@Auth(allowedBizOp = {})
     public ResponseEntity unBindLocationDev(@PathVariable("gasCylinderNumber") String gasCylinderNumber,
                                             @RequestParam(value = "locationDevNumber", defaultValue = "") String locationDevNumber)
     {
@@ -221,7 +231,5 @@ public class GasCylinderController
 
         return responseEntity;
     }
-
-
 
 }

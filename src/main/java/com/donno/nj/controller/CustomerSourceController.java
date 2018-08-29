@@ -1,8 +1,10 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.CustomerSource;
+import com.donno.nj.domain.ServerConstantValue;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.CustomerSourceService;
@@ -30,6 +32,7 @@ public class CustomerSourceController
 
     @RequestMapping(value = "/api/CustomerSource", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取客户来源信息列表")
+    //@Auth(allowedBizOp = {})
     public ResponseEntity retrieve(@RequestParam(value = "code", defaultValue = "") String code,
                                    @RequestParam(value = "name", defaultValue = "") String name,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
@@ -59,6 +62,7 @@ public class CustomerSourceController
 
     @OperationLog(desc = "创建客户来源信息")
     @RequestMapping(value = "/api/CustomerSource", method = RequestMethod.POST)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN})
     public ResponseEntity create(@RequestBody CustomerSource customerSource, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
@@ -75,6 +79,7 @@ public class CustomerSourceController
 
     @OperationLog(desc = "修改用户来源信息")
     @RequestMapping(value = "/api/CustomerSource", method = RequestMethod.PUT)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN})
     public ResponseEntity update(@RequestParam(value = "code", defaultValue = "",required = true) String code,
                                  @RequestBody CustomerSource newCustomerSource)
     {
@@ -106,6 +111,7 @@ public class CustomerSourceController
 
     @OperationLog(desc = "删除用户来源信息")
     @RequestMapping(value = "/api/CustomerSource", method = RequestMethod.DELETE)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN})
     public ResponseEntity delete(@RequestParam(value = "id", required = false) Integer id,
                                  @RequestParam(value = "code", defaultValue = "") String code,
                                  @RequestParam(value = "name", defaultValue = "") String name

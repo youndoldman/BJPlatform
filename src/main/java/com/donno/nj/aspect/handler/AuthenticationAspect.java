@@ -22,18 +22,21 @@ public class AuthenticationAspect {
         Optional<User> curUser = AppUtil.getCurrentLoginUser();
         if(!curUser.isPresent()) throw new UnauthorizedException("用户未登录");
 
-//        Boolean isForbidden = true;
-//        String[] bizOperations = auth.allowedBizOp();
-//        for(String bizOperation:bizOperations){
-//            if(curUser.get().getRole().equals(bizOperation))
-//            {
-//                isForbidden = false;
-//                break;
-//            }
-//        }
-//        if(isForbidden){
-//            throw new ForbiddenException("当前用户权限不足", HttpStatus.UNAUTHORIZED);
-//        }
+        if (auth.allowedBizOp().length > 0 )
+        {
+            Boolean isForbidden = true;
+            String[] bizOperations = auth.allowedBizOp();
+            for(String bizOperation:bizOperations){
+                if(curUser.get().getUserGroup().getCode().equals(bizOperation))
+                {
+                    isForbidden = false;
+                    break;
+                }
+            }
+            if(isForbidden){
+                throw new ForbiddenException("当前用户权限不足", HttpStatus.UNAUTHORIZED);
+            }
+        }
 
         return pjp.proceed();
     }

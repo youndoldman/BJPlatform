@@ -1,9 +1,11 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.CustomerLevel;
 import com.donno.nj.domain.CustomerType;
+import com.donno.nj.domain.ServerConstantValue;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.CustomerLevelService;
@@ -32,6 +34,7 @@ public class CustomerLevelController
 
     @RequestMapping(value = "/api/CustomerLevel", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取客户级别信息列表")
+    //@Auth(allowedBizOp = {})
     public ResponseEntity retrieve(@RequestParam(value = "code", defaultValue = "") String code,
                                    @RequestParam(value = "name", defaultValue = "") String name,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
@@ -61,6 +64,7 @@ public class CustomerLevelController
 
     @OperationLog(desc = "创建客户级别信息")
     @RequestMapping(value = "/api/CustomerLevel", method = RequestMethod.POST)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN})
     public ResponseEntity create(@RequestBody CustomerLevel customerLevel, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
@@ -77,6 +81,7 @@ public class CustomerLevelController
 
     @OperationLog(desc = "修改用户级别信息")
     @RequestMapping(value = "/api/CustomerLevel", method = RequestMethod.PUT)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN})
     public ResponseEntity update(@RequestParam(value = "code", defaultValue = "",required = true) String code,
                                  @RequestBody CustomerLevel newCustomerLevel)
     {
@@ -108,6 +113,7 @@ public class CustomerLevelController
 
     @OperationLog(desc = "删除用户级别信息")
     @RequestMapping(value = "/api/CustomerLevel", method = RequestMethod.DELETE)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN})
     public ResponseEntity delete(@RequestParam(value = "id", required = false) Integer id,
                                  @RequestParam(value = "code", defaultValue = "") String code,
                                  @RequestParam(value = "name", defaultValue = "") String name

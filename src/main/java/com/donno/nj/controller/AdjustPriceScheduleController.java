@@ -1,5 +1,6 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.*;
@@ -29,6 +30,7 @@ public class AdjustPriceScheduleController
 
     @RequestMapping(value = "/api/AdjustPriceSchedules", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取调价计划列表")
+    //@Auth(allowedBizOp = {})
     public ResponseEntity retrieve(@RequestParam(value = "name", defaultValue = "") String name,
                                    @RequestParam(value = "status", required = false) Integer status,
                                    @RequestParam(value = "startTime", defaultValue = "") String startTime,
@@ -69,6 +71,7 @@ public class AdjustPriceScheduleController
 
     @OperationLog(desc = "创建调价计划")
     @RequestMapping(value = "/api/AdjustPriceSchedules", method = RequestMethod.POST)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity create(@RequestBody AdjustPriceSchedule adjustPriceSchedule, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
@@ -84,6 +87,7 @@ public class AdjustPriceScheduleController
 
     @OperationLog(desc = "修改调价计划信息")
     @RequestMapping(value = "/api/AdjustPriceSchedules/{id}", method = RequestMethod.PUT)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity update(@PathVariable("id") Integer id, @RequestBody AdjustPriceSchedule newAdjustPriceSchedule)
     {
         ResponseEntity responseEntity;
@@ -109,6 +113,7 @@ public class AdjustPriceScheduleController
 
     @OperationLog(desc = "删除调价信息")
     @RequestMapping(value = "/api/AdjustPriceSchedules/{id}", method = RequestMethod.DELETE)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity delete(@PathVariable("id") Integer id)
     {
         ResponseEntity responseEntity;

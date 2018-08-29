@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserService
 {
     Optional<User> findByUserId(String userId);
+    Optional<User> findByUserIdPwd(String userId,String password);
     Optional<User> findById(Integer id);
 
 

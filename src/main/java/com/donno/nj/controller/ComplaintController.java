@@ -1,9 +1,11 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.EProcessStatus;
 import com.donno.nj.domain.Complaint;
+import com.donno.nj.domain.ServerConstantValue;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.ComplaintService;
 import com.google.common.base.Optional;
@@ -28,6 +30,7 @@ public class ComplaintController
 
     @RequestMapping(value = "/api/Complaint", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取投诉订单列表")
+    //@Auth(allowedBizOp = {})
     public ResponseEntity retrieve(@RequestParam(value = "complaintSn", defaultValue = "") String complaintSn,
                                    @RequestParam(value = "processStatus", defaultValue = "") EProcessStatus processStatus,
                                    @RequestParam(value = "complaintTypeCode", defaultValue = "") String complaintTypeCode,
@@ -90,6 +93,7 @@ public class ComplaintController
 
     @OperationLog(desc = "创建投诉订单")
     @RequestMapping(value = "/api/Complaint", method = RequestMethod.POST)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN ,ServerConstantValue.GP_CUSTOMER_SERVICE,ServerConstantValue.GP_GAS_STORE_LEADER})
     public ResponseEntity create(@RequestBody Complaint complaint, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
@@ -104,6 +108,7 @@ public class ComplaintController
 
     @OperationLog(desc = "修改投诉订单")
     @RequestMapping(value = "/api/Complaint/{complaintSn}", method = RequestMethod.PUT)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN ,ServerConstantValue.GP_CUSTOMER_SERVICE,ServerConstantValue.GP_GAS_STORE_LEADER})
     public ResponseEntity update(@PathVariable("complaintSn") String complaintSn, @RequestBody Complaint newcomplaint)
     {
         ResponseEntity responseEntity;
@@ -116,6 +121,7 @@ public class ComplaintController
 
     @OperationLog(desc = "删除投诉订单")
     @RequestMapping(value = "/api/Complaint/{complaintSn}", method = RequestMethod.DELETE)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN ,ServerConstantValue.GP_CUSTOMER_SERVICE,ServerConstantValue.GP_GAS_STORE_LEADER})
     public ResponseEntity delete(@PathVariable("complaintSn") String complaintSn)
     {
         ResponseEntity responseEntity;

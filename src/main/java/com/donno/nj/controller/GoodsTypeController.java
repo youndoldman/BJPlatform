@@ -1,7 +1,9 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
+import com.donno.nj.domain.ServerConstantValue;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.*;
 import com.donno.nj.domain.GoodsType;
@@ -62,6 +64,7 @@ public class GoodsTypeController
 
     @OperationLog(desc = "创建商品类型")
     @RequestMapping(value = "/api/GoodsTypes", method = RequestMethod.POST)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity create(@RequestBody GoodsType goodsType, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
@@ -83,6 +86,7 @@ public class GoodsTypeController
 
     @OperationLog(desc = "修改商品类型信息")
     @RequestMapping(value = "/api/GoodsTypes/{code}", method = RequestMethod.PUT)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity update(@PathVariable("code") String code, @RequestBody GoodsType newGoodsType)
     {
         ResponseEntity responseEntity;
@@ -95,6 +99,7 @@ public class GoodsTypeController
 
     @OperationLog(desc = "删除商品类型信息")
     @RequestMapping(value = "/api/GoodsTypes/{code}", method = RequestMethod.DELETE)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity delete(@PathVariable("code") String code)
     {
         ResponseEntity responseEntity;

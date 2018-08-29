@@ -1,7 +1,9 @@
 package com.donno.nj.controller;
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.DiscountStrategy;
+import com.donno.nj.domain.ServerConstantValue;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.*;
 import com.google.common.base.Optional;
@@ -24,6 +26,7 @@ public class DiscountStrategyController
 
     @RequestMapping(value = "/api/DiscountStrategies", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取优惠策略列表")
+    //@Auth(allowedBizOp = {})
     public ResponseEntity retrieve(@RequestParam(value = "name", defaultValue = "") String name,
                                    @RequestParam(value = "status", required = false) Integer status,
                                    @RequestParam(value = "conditionTypeCode", defaultValue = "") String conditionTypeCode,
@@ -81,6 +84,7 @@ public class DiscountStrategyController
 
     @OperationLog(desc = "创建优惠策略")
     @RequestMapping(value = "/api/DiscountStrategies", method = RequestMethod.POST)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity create(@RequestBody DiscountStrategy discountStrategy, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
@@ -96,6 +100,7 @@ public class DiscountStrategyController
 
     @OperationLog(desc = "修改优惠策略信息")
     @RequestMapping(value = "/api/DiscountStrategies/{id}", method = RequestMethod.PUT)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity update(@PathVariable("id") Integer id, @RequestBody DiscountStrategy newDiscountStrategy)
     {
         ResponseEntity responseEntity;
@@ -116,6 +121,7 @@ public class DiscountStrategyController
 
     @OperationLog(desc = "作废优惠策略信息")
     @RequestMapping(value = "/api/DiscountStrategies/Cancel/{id}", method = RequestMethod.PUT)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity cancel(@PathVariable("id") Integer id)
     {
         ResponseEntity responseEntity;
@@ -136,6 +142,7 @@ public class DiscountStrategyController
 
     @OperationLog(desc = "删除优惠策略信息")
     @RequestMapping(value = "/api/DiscountStrategies/{id}", method = RequestMethod.DELETE)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity delete(@PathVariable("id") Integer id)
     {
         ResponseEntity responseEntity;

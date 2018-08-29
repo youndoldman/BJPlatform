@@ -1,5 +1,6 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.CustomerCallIn;
@@ -34,6 +35,7 @@ public class CustomerCallInController
 
     @RequestMapping(value = "/api/CustomerCallIn", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取客户呼入信息列表")
+    //@Auth(allowedBizOp = {})
     public ResponseEntity retrieve(@RequestParam(value = "phone", defaultValue = "") String phone,
                                    @RequestParam(value = "userId", defaultValue = "") String userId,
                                             @RequestParam(value = "province", defaultValue = "") String province,
@@ -86,6 +88,7 @@ public class CustomerCallInController
 
     @OperationLog(desc = "创建客户呼入信息")
     @RequestMapping(value = "/api/CustomerCallIn", method = RequestMethod.POST)
+    //@Auth(allowedBizOp = {})
     public ResponseEntity create(@RequestParam(value = "userId", defaultValue = "") String userId,
                                 @RequestBody CustomerCallIn customerCallIn, UriComponentsBuilder ucBuilder)
     {
@@ -104,6 +107,7 @@ public class CustomerCallInController
 
     @OperationLog(desc = "删除用户呼入信息")
     @RequestMapping(value = "/api/CustomerCallIn", method = RequestMethod.DELETE)
+    //@Auth(allowedBizOp = {})
     public ResponseEntity delete(@RequestParam(value = "id",required=false) Integer id,
                                  @RequestParam(value = "userId", defaultValue = "" ) String userId,
                                  @RequestParam(value = "phone", defaultValue = "") String phone

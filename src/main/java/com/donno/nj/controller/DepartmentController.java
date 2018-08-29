@@ -1,9 +1,11 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.CustomerLevel;
 import com.donno.nj.domain.Department;
+import com.donno.nj.domain.ServerConstantValue;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.CustomerLevelService;
@@ -32,6 +34,7 @@ public class DepartmentController
 
     @RequestMapping(value = "/api/Department/Upper", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取部门信息列表(递归含上级部门信息)")
+    //@Auth(allowedBizOp = {})
     public ResponseEntity retrieveParentDep(@RequestParam(value = "code", defaultValue = "") String code,
                                    @RequestParam(value = "name", defaultValue = "") String name,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
@@ -62,6 +65,7 @@ public class DepartmentController
 
     @RequestMapping(value = "/api/Department/Lower", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取部门信息列表(含下级部门信息)")
+    //@Auth(allowedBizOp = {})
     public ResponseEntity retrieveSubDepartment(@RequestParam(value = "code", defaultValue = "") String code,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
@@ -86,6 +90,7 @@ public class DepartmentController
 
     @OperationLog(desc = "创建部门信息")
     @RequestMapping(value = "/api/Department", method = RequestMethod.POST)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN})
     public ResponseEntity create(@RequestBody Department department, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
@@ -102,6 +107,7 @@ public class DepartmentController
 
     @OperationLog(desc = "修改部门信息")
     @RequestMapping(value = "/api/Department", method = RequestMethod.PUT)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN})
     public ResponseEntity update(@RequestParam(value = "code", defaultValue = "",required = true) String code,
                                  @RequestBody Department newDepartment)
     {
@@ -133,6 +139,7 @@ public class DepartmentController
 
     @OperationLog(desc = "删除部门级别信息")
     @RequestMapping(value = "/api/Department", method = RequestMethod.DELETE)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN})
     public ResponseEntity delete(@RequestParam(value = "id", required = false) Integer id,
                                  @RequestParam(value = "code", defaultValue = "") String code,
                                  @RequestParam(value = "name", defaultValue = "") String name

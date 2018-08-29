@@ -6,7 +6,6 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="user_id" property="userId" jdbcType="VARCHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
-        <result column="password" property="password" jdbcType="VARCHAR"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
         <result column="group_id" property="userGroup.id" jdbcType="INTEGER"/>
         <result column="group_code" property="userGroup.code" jdbcType="VARCHAR"/>
@@ -20,10 +19,21 @@
     </sql>
 
     <select id="findByUserId" resultMap="BaseResultMap">
-        SELECT t_user.*,t_group.id as group_id,t_group.code as group_code,t_group.name as group_name
+        SELECT t_user.id,t_user.user_id,t_user.name,t_user.identity,t_user.note,t_user.create_time,t_user.update_time,
+        t_group.id as group_id,t_group.code as group_code,t_group.name as group_name
         FROM t_user,t_group
         WHERE
         user_id = #{userId}
+        and t_user.group_idx = t_group.id
+    </select>
+
+    <select id="findByUserIdPwd" resultMap="BaseResultMap">
+        SELECT t_user.*,
+        t_group.id as group_id,t_group.code as group_code,t_group.name as group_name
+        FROM t_user,t_group
+        WHERE
+        user_id = #{userId}
+        and password = #{password}
         and t_user.group_idx = t_group.id
     </select>
 
@@ -42,10 +52,9 @@
     </select>
 
 
-
-
     <select id="findById" resultMap="BaseResultMap">
-        SELECT t_user.*,t_group.id as group_id,t_group.code as group_code,t_group.name as group_name
+        SELECT t_user.id,t_user.user_id,t_user.name,t_user.identity,t_user.note,t_user.create_time,t_user.update_time,
+        t_group.id as group_id,t_group.code as group_code,t_group.name as group_name
         FROM t_user,t_group
         WHERE
         t_user.id = #{id}

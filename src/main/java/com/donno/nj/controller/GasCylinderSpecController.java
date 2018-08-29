@@ -1,8 +1,10 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.GasCylinderSpec;
+import com.donno.nj.domain.ServerConstantValue;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.GasCylinderSpecService;
 import com.google.common.collect.ImmutableMap;
@@ -28,6 +30,7 @@ public class GasCylinderSpecController
 
     @RequestMapping(value = "/api/GasCylinderSpec", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取钢瓶规格列表")
+    //@Auth(allowedBizOp = {})
     public ResponseEntity retrieve(@RequestParam(value = "code", defaultValue = "") String code,
                                             @RequestParam(value = "name", defaultValue = "") String name,
                                             @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
@@ -55,6 +58,7 @@ public class GasCylinderSpecController
 
     @OperationLog(desc = "创建钢瓶规格")
     @RequestMapping(value = "/api/GasCylinderSpec", method = RequestMethod.POST)
+    //@Auth(allowedBizOp = {})
     public ResponseEntity create(@RequestBody GasCylinderSpec gasCylinderSpec, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
@@ -76,6 +80,7 @@ public class GasCylinderSpecController
 
     @OperationLog(desc = "修改钢瓶规格信息")
     @RequestMapping(value = "/api/GasCylinderSpec/{code}", method = RequestMethod.PUT)
+    //@Auth(allowedBizOp = {})
     public ResponseEntity update(@PathVariable("code") String code, @RequestBody GasCylinderSpec newGasCylinderSpec)
     {
         ResponseEntity responseEntity;
@@ -88,6 +93,7 @@ public class GasCylinderSpecController
 
     @OperationLog(desc = "删除钢瓶规格信息")
     @RequestMapping(value = "/api/GasCylinderSpec/{code}", method = RequestMethod.DELETE)
+    //@Auth(allowedBizOp = {})
     public ResponseEntity delete(@PathVariable("code") String code)
     {
         ResponseEntity responseEntity;

@@ -1,8 +1,10 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.Coupon;
+import com.donno.nj.domain.ServerConstantValue;
 import com.donno.nj.domain.Ticket;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.CouponService;
@@ -28,6 +30,7 @@ public class CouponController
 
     @RequestMapping(value = "/api/Coupon", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取优惠券信息列表")
+    //@Auth(allowedBizOp = { })
     public ResponseEntity retrieve(@RequestParam(value = "couponSn", defaultValue = "") String couponSn,
                                    @RequestParam(value = "customerUserId", defaultValue = "") String customerUserId,
                                    @RequestParam(value = "operatorUserId", defaultValue = "") String operatorUserId,
@@ -87,6 +90,7 @@ public class CouponController
 
     @OperationLog(desc = "增加优惠券信息")
     @RequestMapping(value = "/api/Coupon", method = RequestMethod.POST)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN ,ServerConstantValue.GP_CUSTOMER_SERVICE })
     public ResponseEntity create(@RequestBody Coupon coupon,
                                  @RequestParam(value = "couponCount", required = true) Integer couponCount,
                                  UriComponentsBuilder ucBuilder)
@@ -105,22 +109,22 @@ public class CouponController
 
     @OperationLog(desc = "修改优惠券信息")
     @RequestMapping(value = "/api/Coupon/{id}", method = RequestMethod.PUT)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN ,ServerConstantValue.GP_CUSTOMER_SERVICE })
     public ResponseEntity update(@PathVariable("id") Integer id,
                                  @RequestBody Coupon newCoupon)
     {
         ResponseEntity responseEntity;
 
         couponService.update(id, newCoupon);
-
         responseEntity = ResponseEntity.ok().build();
 
         return responseEntity;
     }
 
 
-
     @OperationLog(desc = "删除优惠券信息")
     @RequestMapping(value = "/api/Coupon/{id}", method = RequestMethod.DELETE)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN ,ServerConstantValue.GP_CUSTOMER_SERVICE })
     public ResponseEntity delete(@PathVariable("id") Integer id)
     {
         ResponseEntity responseEntity;

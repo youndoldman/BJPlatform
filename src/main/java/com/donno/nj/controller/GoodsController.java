@@ -1,10 +1,12 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.AdjustPriceHistory;
 import com.donno.nj.domain.Goods;
 import com.donno.nj.domain.GoodsType;
+import com.donno.nj.domain.ServerConstantValue;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.*;
 import com.donno.nj.util.AppUtil;
@@ -101,6 +103,7 @@ public class GoodsController
 
     @OperationLog(desc = "创建商品")
     @RequestMapping(value = "/api/Goods", method = RequestMethod.POST)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity create(@RequestBody Goods goods, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
@@ -115,6 +118,7 @@ public class GoodsController
 
     @OperationLog(desc = "修改商品信息")
     @RequestMapping(value = "/api/Goods/{code}", method = RequestMethod.PUT)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity update(@PathVariable("code") String code, @RequestBody Goods newGoods)
     {
         ResponseEntity responseEntity;
@@ -127,6 +131,7 @@ public class GoodsController
 
     @OperationLog(desc = "删除商品信息")
     @RequestMapping(value = "/api/Goods/{code}", method = RequestMethod.DELETE)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity delete(@PathVariable("code") String code)
     {
         ResponseEntity responseEntity;

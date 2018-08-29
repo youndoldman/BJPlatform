@@ -25,9 +25,14 @@ public interface ServerConstantValue
 
 
     /*用户组code*/
-    public String GP_CUSTOMER = "00004";
-    public String GP_CUSTOMER_SERVICE = "00002";
-    public String GP_DISPATCH = "00003";
+    public String GP_ADMIN = "00001"; //管理员
+    public String GP_CUSTOMER_SERVICE = "00002";//客服
+    public String GP_DISPATCH = "00003";//派送工
+    public String GP_CUSTOMER = "00004";//客户
+    public String GP_STORE_LEADER = "00005";//门店店长
+    public String GP_GAS_STORE_LEADER= "00006";
+    public String GP_ALLOCATE = "00007";//调拨
+    public String GP_FINANCE = "00008";//财务
 
     /*优惠策略类型*/
     public String DISCOUNT_CONDITION_TYPE_CUSTOMER_LEVEL = "00001";

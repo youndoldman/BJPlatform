@@ -1,8 +1,10 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.ComplaintType;
+import com.donno.nj.domain.ServerConstantValue;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.ComplaintTypeService;
 import com.google.common.collect.ImmutableMap;
@@ -28,6 +30,7 @@ public class ComplaintTypeController
 
     @RequestMapping(value = "/api/ComplaintTypes", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取投诉类型列表")
+    //@Auth(allowedBizOp = {})
     public ResponseEntity retrieve(@RequestParam(value = "code", defaultValue = "") String code,
                                    @RequestParam(value = "name", defaultValue = "") String name,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
@@ -55,6 +58,7 @@ public class ComplaintTypeController
 
     @OperationLog(desc = "创建投诉类型")
     @RequestMapping(value = "/api/ComplaintTypes", method = RequestMethod.POST)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN ,ServerConstantValue.GP_CUSTOMER_SERVICE,ServerConstantValue.GP_GAS_STORE_LEADER})
     public ResponseEntity create(@RequestBody ComplaintType complaintType, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
@@ -76,6 +80,7 @@ public class ComplaintTypeController
 
     @OperationLog(desc = "修改投诉类型信息")
     @RequestMapping(value = "/api/ComplaintTypes/{code}", method = RequestMethod.PUT)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN ,ServerConstantValue.GP_CUSTOMER_SERVICE,ServerConstantValue.GP_GAS_STORE_LEADER})
     public ResponseEntity update(@PathVariable("code") String code, @RequestBody ComplaintType newcomplaintType)
     {
         ResponseEntity responseEntity;
@@ -88,6 +93,7 @@ public class ComplaintTypeController
 
     @OperationLog(desc = "删除投诉类型信息")
     @RequestMapping(value = "/api/ComplaintTypes/{code}", method = RequestMethod.DELETE)
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN ,ServerConstantValue.GP_CUSTOMER_SERVICE,ServerConstantValue.GP_GAS_STORE_LEADER})
     public ResponseEntity delete(@PathVariable("code") String code)
     {
         ResponseEntity responseEntity;

@@ -1,7 +1,9 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
+import com.donno.nj.domain.ServerConstantValue;
 import com.donno.nj.domain.SettlementType;
 import com.donno.nj.domain.Ticket;
 import com.donno.nj.exception.ServerSideBusinessException;
@@ -98,6 +100,7 @@ public class TicketController
 
     @OperationLog(desc = "增加气票信息")
     @RequestMapping(value = "/api/Ticket", method = RequestMethod.POST)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
     public ResponseEntity create(@RequestBody Ticket ticket,
                                  @RequestParam(value = "ticketCount", required = true) Integer ticketCount,
                                  UriComponentsBuilder ucBuilder)
@@ -116,6 +119,7 @@ public class TicketController
 
     @OperationLog(desc = "修改气票信息")
     @RequestMapping(value = "/api/Ticket/{ticketSn}", method = RequestMethod.PUT)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
     public ResponseEntity update(@PathVariable("ticketSn") String ticketSn,
                                  @RequestBody Ticket newTicket)
     {
@@ -132,6 +136,7 @@ public class TicketController
 
     @OperationLog(desc = "删除气票信息")
     @RequestMapping(value = "/api/Ticket/{ticketSn}", method = RequestMethod.DELETE)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
     public ResponseEntity delete(@PathVariable("ticketSn") String ticketSn)
     {
         ResponseEntity responseEntity;
