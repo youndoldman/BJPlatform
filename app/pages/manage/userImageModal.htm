@@ -1,0 +1,30 @@
+<div class="modal" tabindex="-1"  data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <form name="userForm" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="close(false)" data-dismiss="modal"
+                            aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">&nbsp;{{modalTitle}}&nbsp;</h4>
+                </div>
+                <div class="col-md-12">
+                    <div class="modal-body">
+                        <div class="input-group pdb15">
+                            <button type="button" class="btn btn-sm btn-success pull-mid" ngf-select="" ngf-pattern="'image/*'" ngf-multiple="false" ng-model="vm.image"><i class="fa fa-plus"></i> 选 择 图 片 </button>
+                        </div>
+                        <div class="input-group pdb15">
+                            <img ngf-src="vm.image" class="img-responsive" style="width:200px; height: 200px; max-width:500px;"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer" >
+                    <div class="modal-footer" >
+                        <button type="submit" ng-click="submit(vm.user);" class="btn btn-primary"
+                                ng-show="!isModify">上传</button>
+                        <button type="button" ng-click="close(true)" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>

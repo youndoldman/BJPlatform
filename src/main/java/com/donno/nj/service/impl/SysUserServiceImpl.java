@@ -276,4 +276,19 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
 
         return sysUsers;
     }
+
+    @Override
+    public  void uploadPhoto(String userId, byte[] photo)
+    {
+        sysUserDao.uploadPhoto(userId, photo);
+    }
+
+    @Override
+    public  byte[] downloadPhoto(String userId)
+    {
+        Map<String,Object> map = sysUserDao.downloadPhoto(userId);
+        return  (byte[]) map.get("photo");
+    }
+
+
 }

@@ -23,16 +23,35 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
+import java.sql.Blob;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadBase;
+import org.apache.commons.fileupload.ProgressListener;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.File;
+import java.util.Iterator;
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+
 import static com.donno.nj.util.ParamMapBuilder.paginationParams;
 import java.util.Date;
 @RestController
 public class SysUserController
 {
+
+
     @Autowired
     private SysUserService sysUserService;
 
@@ -332,5 +351,85 @@ public class SysUserController
 
         return responseEntity;
     }
+
+    @OperationLog(desc = "上传用户照片")
+    @RequestMapping(value = "/api/sysusers/photo/{userId}", method = RequestMethod.PUT)
+    public ResponseEntity uploadUserPhoto(HttpServletRequest request,@PathVariable("userId") String userId)
+    {
+        ResponseEntity responseEntity;
+
+        Optional<User> user = sysUserService.findByUserId(userId);
+        if (user.isPresent())
+        {
+            MultipartFile file = null;
+            MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+            MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
+            List<MultipartFile> files = multipartRequest.getFiles("file");
+            if(files.size()==0){
+                responseEntity = ResponseEntity.badRequest().build();
+                return responseEntity;
+            }
+
+            for (int i = 0; i < files.size(); ++i) {
+                file = files.get(i);
+                if (!file.isEmpty()) {
+                    try {
+                        byte[] photo = file.getBytes();
+                        sysUserService.uploadPhoto(userId, photo);
+
+                    } catch (Exception e) {
+                        System.out.println("创建失败");
+                        responseEntity = ResponseEntity.badRequest().build();
+                        return responseEntity;
+                    }
+                } else {
+                    responseEntity = ResponseEntity.noContent().build();
+                    return responseEntity;
+                }
+            }
+            responseEntity = ResponseEntity.ok().build();
+
+        }
+        else
+        {
+            responseEntity = ResponseEntity.notFound().build();
+        }
+
+        return responseEntity;
+    }
+
+    @OperationLog(desc = "下载用户照片")
+    @RequestMapping(value = "/api/sysusers/photo/{userId}", method = RequestMethod.GET)
+    public void downloadUserPhoto(HttpServletResponse httpServletResponse, @PathVariable("userId") String userId) throws IOException {
+        //从数据库中获取流程图的二进制数据
+        Optional<User> user = sysUserService.findByUserId(userId);
+        if (user.isPresent())
+        {
+            byte[] photo = sysUserService.downloadPhoto(userId);
+            if(photo==null){
+                httpServletResponse.setStatus(404);
+            }else{
+                httpServletResponse.setContentType("image/png");
+                httpServletResponse.setStatus(200);
+                OutputStream os = httpServletResponse.getOutputStream();
+                os.write(photo);
+                os.flush();
+                os.close();
+            }
+
+
+
+        }
+        else
+        {
+            httpServletResponse.setStatus(404);
+        }
+
+
+
+
+    }
+
+
 
 }

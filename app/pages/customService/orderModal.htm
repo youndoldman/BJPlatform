@@ -1,5 +1,5 @@
 ﻿<div class="modal" tabindex="-1">
-    <div class="modal-dialog"  style=" width: 1000px;">
+    <div class="modal-dialog"  style=" width: 1300px;">
         <div class="modal-content">
             <form name="userForm" novalidate>
                 <div class="modal-header">
@@ -18,14 +18,14 @@
                                 <tr>
                                     <td style="background: lightblue;text-align: center" width="8%">商品号</td>
                                     <td style="background: lightblue;text-align: center" width="12%">商品名称</td>
-                                    <td style="background: lightblue;text-align: center" width="10%">商品类型</td>
-                                    <td style="background: lightblue;text-align: center" width="10%">商品规格</td>
+                                    <td style="background: lightblue;text-align: center" width="5%">商品类型</td>
+                                    <td style="background: lightblue;text-align: center" width="5%">商品规格</td>
                                     <td style="background: lightblue;text-align: center" width="5%">单位</td>
                                     <td style="background: lightblue;text-align: center" width="5%">重量</td>
                                     <td style="background: lightblue;text-align: center" width="9%">价格</td>
-                                    <td style="background: lightblue;text-align: center" width="10%">有效期</td>
+                                    <!--<td style="background: lightblue;text-align: center" width="10%">有效期</td>-->
                                     <td style="background: lightblue;text-align: center" width="5%">状态</td>
-                                    <td style="background: lightblue;text-align: center" width="10%">说明</td>
+                                    <td style="background: lightblue;text-align: center" width="5%">说明</td>
                                     <td style="background: lightblue;text-align: center" width="10%">原始价格</td>
                                     <td style="background: lightblue;text-align: center" width="10%">成交价格</td>
                                     <td style="background: lightblue;text-align: center" width="10%">数量</td>
@@ -41,7 +41,7 @@
                                     <td class="message">{{orderDetail.goods.unit}}</td>
                                     <td class="message">{{orderDetail.goods.weight}}</td>
                                     <td class="message">{{orderDetail.goods.price}}</td>
-                                    <td class="message">{{orderDetail.goods.lifeExpectancy}}</td>
+                                    <!--<td class="message">{{orderDetail.goods.lifeExpectancy}}</td>-->
                                     <td class="message">{{orderDetail.goods.status}}</td>
                                     <td class="message">{{orderDetail.goods.note}}</td>
                                     <td class="message">{{orderDetail.originalPrice}}</td>
@@ -108,6 +108,11 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div id="orderChart" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="height:300px"></div>
+                        </div>
+
+
 
                     </div>
                 </div>

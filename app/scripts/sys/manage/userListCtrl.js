@@ -59,6 +59,20 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
             })
         };
 
+        $scope.uploadImage = function (user) {
+            udcModal.show({
+                templateUrl: "./manage/userImageModal.htm",
+                controller: "UserImageModalCtrl",
+                inputs: {
+                    title: '上传用户照片',
+                    initVal: user
+                }
+            }).then(function (result) {
+                if (result) {
+                }
+            })
+        };
+
         $scope.delete = function (user) {
             udcModal.confirm({"title": "删除用户", "message": "是否永久删除用户信息 " + user.name})
                 .then(function (result) {
@@ -85,7 +99,7 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
             UserService.retrieveUsers(queryParams).then(function (users) {
                 $scope.pager.update($scope.q, users.total, queryParams.pageNo);
                 $scope.vm.userList = users.items;//_.map(users.items, UserService.toViewModel);
-                console.log($scope.vm.userList);
+                //console.log($scope.vm.userList);
             });
         };
 
@@ -269,6 +283,41 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
         delete $scope.vm.user.userPosition;
         delete $scope.vm.user.aliveStatus;
         delete $scope.vm.user.aliveUpdateTime;
+
+    };
+
+    init();
+}]);
+
+manageApp.controller('UserImageModalCtrl', ['$scope', 'close', 'UserService', 'title', 'initVal','$document','$interval', 'udcModal','$timeout','Upload','URI',function ($scope, close, UserService, title, initVal,$document,$interval,udcModal,$timeout,Upload,URI) {
+
+    $scope.modalTitle = title;
+    $scope.vm = {
+        image:null,
+        user: {},
+          };
+
+    $scope.close = function (result) {
+        close(result, 500);
+    };
+
+    $scope.submit = function (user) {
+        var url = URI.resources.SysUserPhoto+"/"+user.userId;  //params是model传的参数，图片上传接口的url
+        Upload.upload({
+            method: 'PUT',
+            url: url,
+            file: $scope.vm.image
+        }).success(function () {
+            udcModal.info({"title": "处理结果", "message": "上传用户照片成功 "});
+        }).error(function () {
+            udcModal.info({"title": "处理结果", "message": "上传用户照片失败 "});
+        });
+    };
+
+    var init = function () {
+
+        $scope.vm.user = _.clone(initVal);
+        $scope.vm.image = URI.resources.SysUserPhoto+"/"+$scope.vm.user.userId;
 
     };
 

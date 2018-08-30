@@ -175,6 +175,10 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
             OrderService.retrieveOrders(queryParams).then(function (orders) {
                 $scope.pager.update($scope.q, orders.total, queryParams.pageNo);
                 $scope.vm.orderList = orders.items;
+
+                for(var i=0; i<$scope.vm.orderList.length; i++){
+                    $scope.vm.orderList[i].deliveryTime = calDeliveryTime($scope.vm.orderList[i].orderStatus, $scope.vm.orderList[i].orderOpHistoryList)
+                }
             });
         };
 
@@ -253,6 +257,33 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
                         searchOrder();
                     }
                 })
+        };
+
+        //计算配送时间
+        var calDeliveryTime = function (orderStatus, orderOpHistoryList) {
+            var deliveryTime = "";
+            if(orderStatus<2){
+                return deliveryTime;
+            }
+            var startTime = null;
+            var endTime = null;
+            for(var j=0; j<orderOpHistoryList.length; j++){
+                var itemorderOp = orderOpHistoryList[j];
+                var indexOrderStatus = itemorderOp.orderStatus.index;
+                if(indexOrderStatus==1){
+                    startTime = Date.parse(new Date(itemorderOp.updateTime));
+                }
+                if(indexOrderStatus==2){
+                    endTime = Date.parse(new Date(itemorderOp.updateTime));
+                }
+            }
+            if(startTime!=null&&endTime!=null){
+                var usedTime = endTime - startTime;  //两个时间戳相差的毫秒数
+                deliveryTime = usedTime/(60*1000);
+                deliveryTime = deliveryTime.toFixed(1)+"分钟";
+
+            }
+            return deliveryTime;
         };
 
 
