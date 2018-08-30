@@ -156,6 +156,10 @@ commonModule.service('promiseWrapper', ['$q', '$rootScope', function ($q, $rootS
 commonModule.controller('CommonModuleCtrl', ['$rootScope','$scope', '$interval','$timeout','sessionStorage', 'URI', 'promiseWrapper','$window','$http',function ($rootScope,$scope,$interval,$timeout,sessionStorage,URI,promise,$window,$http) {
     $scope.currentTime = "";
     $scope.currentUser = {};
+    $scope.currentUserPhoto = "";
+
+
+
     function getDate(){
         var date = new Date();
         var year = date.getFullYear();
@@ -168,6 +172,9 @@ commonModule.controller('CommonModuleCtrl', ['$rootScope','$scope', '$interval',
     }
     var init = function () {
         $scope.currentUser = sessionStorage.getCurUser();
+
+        $scope.currentUserPhoto = URI.resources.SysUserPhoto+"/"+$scope.currentUser.userId;
+        console.log($scope.currentUserPhoto);
         $scope.timer = $interval( function(){
             updateHeartBit();//心跳
         }, 20000);

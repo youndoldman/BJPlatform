@@ -20,7 +20,7 @@ public class AppUtil
     public static HttpSession getCurrentSession()
     {
         HttpSession session = getCurrentRequest().getSession();
-        session.setMaxInactiveInterval(3600);
+        session.setMaxInactiveInterval(86400);//session保持1个小时
         return session;
     }
 

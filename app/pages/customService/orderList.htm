@@ -79,14 +79,15 @@
             <th width="4%">接入方式</th>
             <th width="4%">支付方式</th>
             <th width="5%">订单客户</th>
-            <th width="17%">收货地址</th>
+            <th width="15%">收货地址</th>
             <th width="8%">收货人</th>
             <th width="4%">配送员</th>
             <th width="5%">所属门店</th>
             <th width="4%">金额(元)</th>
-            <th width="5%">优惠券抵扣</th>
+            <th width="4%">优惠券</th>
             <th width="4%">支付状态</th>
             <th width="4%">用户评价</th>
+            <th width="5%">配送时长</th>
             <th width="9%">创建时间</th>
             <!--<th width="9%">预约时间</th>-->
             <th width="3%">发票</th>
@@ -107,13 +108,14 @@
             <td class="message">{{order.recvAddr.province}}{{order.recvAddr.city}}{{order.recvAddr.county}}{{order.recvAddr.detail}}</td>
             <td class="message" title="电话：{{order.recvPhone}}">{{order.recvName}}</td>
 
-            <td class="message" title="ID：{{order.dispatcher.userId}} 电话：{{order.dispatcher.mobilePhone}} 工号：{{order.dispatcher.jobNumber}}">{{order.dispatcher.name}}</td>
+            <td class="message" title="姓名：{{order.dispatcher.name}} 电话：{{order.dispatcher.mobilePhone}} 工号：{{order.dispatcher.jobNumber}}">{{order.dispatcher.userId}}</td>
 
             <td class="message">{{order.dispatcher.department.name}}</td>
             <td class="message">{{order.orderAmount}}</td>
             <td class="message">{{order.couponCount}}张</td>
             <td class="message">{{order.payStatus.name}}</td>
             <td class="message">{{order.orderServiceQuality.name}}</td>
+            <td class="message">{{order.deliveryTime}}</td>
             <td class="message" title="预约时间：{{order.reserveTime}}">{{order.createTime}}</td>
             <!--<td class="message">{{order.reserveTime}}</td>-->
             <td class="message"><input type="checkbox" ng-checked="order.invoiceStatus.index==1" ng-model="order.invoiceStatusFlag" ng-click="invoiceStatusChanged(order)"/></td>

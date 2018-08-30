@@ -33,6 +33,11 @@
         <result column="user_id" property="userId" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <resultMap id="SysUserPhotoMap" type="java.util.Map">
+        <result column="photo" property="photo" jdbcType="BLOB" typeHandler="org.apache.ibatis.type.BlobTypeHandler"/>
+    </resultMap>
+
+
     <sql id="TblSysUser">
         t_sysuser
     </sql>
@@ -240,5 +245,24 @@
         AND
         t_user.id = #{id}
     </select>
+
+
+    <update id="uploadPhoto">
+        UPDATE <include refid="TblSysUser"/>
+        <set>
+            photo = #{photo}
+        </set>
+        WHERE
+        user_idx = (select id from t_user where user_id=#{userId})
+    </update>
+
+
+    <select id="downloadPhoto" resultMap="SysUserPhotoMap">
+        SELECT photo
+        FROM <include refid="TblSysUser"/>
+        WHERE
+        user_idx = (select id from t_user where user_id=#{userId})
+    </select>
+
 
 </mapper>
