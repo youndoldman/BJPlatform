@@ -36,9 +36,9 @@
                             <label class="col-sm-4 control-label input-label">密码：</label>
                             <div class="col-sm-8 input-width">
                                 <input type="text" name="password" class="form-control" ng-model="vm.user.password"
-                                       required>
+                                       onkeyup="this.value=this.value.replace(/^\s+|\s+$/g,'')">
                             </div>
-                            <label class="input-tips" ng-show="userForm.password.$error.required || userForm.password.$invalid">&nbsp;*&nbsp;必填项</label>
+                            <!--<label class="input-tips" ng-show="userForm.password.$error.required || userForm.password.$invalid">&nbsp;*&nbsp;必填项</label>-->
 
                         </div>
                         <div class="input-group pdb15">
@@ -101,7 +101,7 @@
                 <div class="modal-footer" >
                     <div class="modal-footer" >
                         <button type="submit" ng-click="submit(vm.user);" class="btn btn-primary"
-                                ng-disabled="userForm.userId.$error.required || userForm.password.$error.required
+                                ng-disabled="userForm.userId.$error.required
                             || userForm.jobNumber.$error.required|| userForm.department.$error.required" ng-show="isModify">修改</button>
 
                         <button type="submit" ng-click="submit(vm.user);" class="btn btn-primary"

@@ -24,15 +24,15 @@
                             </div>
                         </div>
                         <br>
-                        <div class="row"  ng-if="!isModify">
+                        <div class="row">
                             <div class="col-xs-2 text-left">
                                 <label>账号密码</label>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-10">
-                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.password">
+                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.password" onkeyup="this.value=this.value.replace(/^\s+|\s+$/g,'')">
                             </div>
                         </div>
-                        <br  ng-if="!isModify">
+                        <br>
                         <div class="row">
                             <div class="col-xs-2 text-left">
                                 <label>客户级别</label>

@@ -20,6 +20,7 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
         };
 
         $scope.vm = {
+            customerStatusDesc:["正常","注销"],
             customerList: [],
             gasTicketEditBoolean:true,
             customerTypeList: [{key:null,value:"全部"},{key:"00001",value:"居民客户"},{key:"00002",value:"餐饮客户"}],
@@ -66,6 +67,21 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
                 }
             })
         };
+
+        $scope.showPurchaseHistory = function (customer) {
+            udcModal.show({
+                templateUrl: "./customService/purchaseHistoryModal.htm",
+                controller: "purchaseHistoryModalCtrl",
+                inputs: {
+                    title: '消费记录',
+                    initVal: customer
+                }
+            }).then(function (result) {
+                if (result) {
+                }
+            })
+        };
+
 
         $scope.delete = function (customer) {
             udcModal.confirm({"title": "删除客户", "message": "是否永久删除客户信息 " + customer.name})
