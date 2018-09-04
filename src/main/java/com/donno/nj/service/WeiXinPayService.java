@@ -21,7 +21,7 @@ public interface WeiXinPayService
 
 
     //扫码支付 统一下单接口,返回code_url
-    String doUnifiedOrderForScan(String orderIndex, String totalFee)throws IOException;
+    String doUnifiedOrderForScan(String orderIndex, String totalFee, String payCode)throws IOException;
 
     //退款接口
     boolean doRefundOffical(String out_trade_no, String total_fee);

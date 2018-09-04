@@ -1,7 +1,12 @@
 package com.donno.nj.controller;
 
+import com.donno.nj.domain.Department;
+import com.donno.nj.domain.ServerConstantValue;
+import com.donno.nj.domain.SysUser;
 import com.donno.nj.exception.ServerSideBusinessException;
+import com.donno.nj.service.SysUserService;
 import com.donno.nj.service.WeiXinPayService;
+import com.google.common.base.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +42,10 @@ public class PayController {
 
     @Autowired
     OrderService orderService;
+
+
+    @Autowired
+    SysUserService sysUserService;
 
     private static final Logger logger = LoggerFactory.getLogger(PayController.class);
 
@@ -81,30 +90,60 @@ public class PayController {
     }
 
     @RequestMapping(value = "/api/pay/scan", method = RequestMethod.GET)
-    public ResponseEntity testQRCode(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "totalFee") String totalFee,
-                                     @RequestParam(value = "orderIndex") String orderIndex) throws IOException {
+    public ResponseEntity payOnScan(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "totalFee") String totalFee,
+                                     @RequestParam(value = "orderIndex") String orderIndex,
+                                     @RequestParam(value = "userId") String userId) throws IOException {
         response.setContentType("image/png;charset=UTF-8");
-
         try {
-
-
-            String codeUrl = weiXinPayService.doUnifiedOrderForScan(orderIndex, totalFee);
-
-            if (codeUrl == null)
+            String payCode = null;
+            Optional<SysUser> sysUser = sysUserService.findBySysUserId(userId);
+            if (!sysUser.isPresent())
             {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                throw new ServerSideBusinessException("用户不存在！",HttpStatus.NOT_FOUND);
             }
-            InputStream imageStream = QRCodeUtil.zxingCodeCreate(codeUrl, 500, 500);
+            else
+            {
+                Department department = sysUser.get().getDepartment();
+                boolean findedTarget = false;
+                while(department.getParentDepartment() != null)
+                {
+                    if (department.getCode().endsWith(ServerConstantValue.SUB_COMPANY_PAY_CODE))
+                    {
+                        payCode = department.getCode();
+                        payCode = department.getCode().substring(0,payCode.indexOf("-"))+"-";
+                        payCode = payCode + department.getCode().substring(department.getCode().indexOf(ServerConstantValue.SUB_COMPANY_PAY_CODE),department.getCode().length());
+                        findedTarget = true;
 
-            if (imageStream != null) {
-                int len = 0;
-                byte[] b = new byte[1024];
-                while ((len = imageStream.read(b, 0, 1024)) != -1) {
-                    response.getOutputStream().write(b, 0, len);
+                        break;
+                    }
+                    else
+                    {
+                        department = department.getParentDepartment();
+                    }
                 }
-                return ResponseEntity.status(HttpStatus.OK).build();
+
+                if (!findedTarget)
+                {
+                    throw new ServerSideBusinessException("未找到该用户的支付码！",HttpStatus.NOT_FOUND);
+                }
+                String codeUrl = weiXinPayService.doUnifiedOrderForScan(orderIndex, totalFee, payCode);
+
+                if (codeUrl == null)
+                {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
+                InputStream imageStream = QRCodeUtil.zxingCodeCreate(codeUrl, 500, 500);
+                if (imageStream != null) {
+                    int len = 0;
+                    byte[] b = new byte[1024];
+                    while ((len = imageStream.read(b, 0, 1024)) != -1) {
+                        response.getOutputStream().write(b, 0, len);
+                    }
+                    return ResponseEntity.status(HttpStatus.OK).build();
+                }
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
             }
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (IOException e){
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }

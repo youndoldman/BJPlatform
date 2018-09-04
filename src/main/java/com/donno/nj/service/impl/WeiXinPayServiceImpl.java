@@ -109,11 +109,11 @@ public class WeiXinPayServiceImpl implements WeiXinPayService
 
     //扫码支付 统一下单接口,返回code_url
     @Override
-    public String doUnifiedOrderForScan(String orderIndex, String totalFee)throws IOException
+    public String doUnifiedOrderForScan(String orderIndex, String totalFee, String payCode)throws IOException
     {
         System.out.println("扫码支付 ");
         HashMap<String, String> data = new HashMap<String, String>();
-        data.put("appid", wxPayConfigImpl.getOfficialID());
+
         data.put("body", "云南百江燃气公司订气业务");
         //加上系统时间
         orderIndex = orderIndex+"x"+WXPayUtil.getCurrentTimestamp();
@@ -125,6 +125,9 @@ public class WeiXinPayServiceImpl implements WeiXinPayService
         data.put("trade_type", "NATIVE");
         data.put("product_id", "12");
         data.put("notify_url", wxPayConfigImpl.getNotifyUrl());
+        data.put("mch_id", wxPayConfigImpl.getmachIDByCompanyCode(payCode));
+        data.put("appid", wxPayConfigImpl.getOfficialIDByCompanyCode(payCode));
+        data.put("sub_mch_id", wxPayConfigImpl.getSubMchID());
         // data.put("time_expire", "20170112104120");
 
         try {
@@ -173,6 +176,8 @@ public class WeiXinPayServiceImpl implements WeiXinPayService
             e.printStackTrace();
             return false;
         }
+
+
     }
 
     //小程序退款 out_trade_no-退款订单号 total_fee-退款金额
