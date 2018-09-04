@@ -6,6 +6,7 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="user_id" property="userId" jdbcType="VARCHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="wx_open_id" property="wxOpenId" jdbcType="VARCHAR"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
         <result column="group_id" property="userGroup.id" jdbcType="INTEGER"/>
         <result column="group_code" property="userGroup.code" jdbcType="VARCHAR"/>
@@ -19,7 +20,8 @@
     </sql>
 
     <select id="findByUserId" resultMap="BaseResultMap">
-        SELECT t_user.id,t_user.user_id,t_user.name,t_user.identity,t_user.note,t_user.create_time,t_user.update_time,
+        SELECT t_user.id,t_user.user_id,t_user.name,t_user.identity,
+        left(t_user.wx_open_id,3) as wx_open_id,t_user.note,t_user.create_time,t_user.update_time,
         t_group.id as group_id,t_group.code as group_code,t_group.name as group_name
         FROM t_user,t_group
         WHERE
@@ -27,8 +29,20 @@
         and t_user.group_idx = t_group.id
     </select>
 
+    <select id="findByWxOpenId" resultMap="BaseResultMap">
+        SELECT t_user.id,t_user.user_id,t_user.name,t_user.identity,
+        left(t_user.wx_open_id,3) as wx_open_id ,t_user.note,t_user.create_time,t_user.update_time,
+        t_group.id as group_id,t_group.code as group_code,t_group.name as group_name
+        FROM t_user,t_group
+        WHERE
+        wx_open_id = #{wxOpenId}
+        and t_user.group_idx = t_group.id
+    </select>
+
+
     <select id="findByUserIdPwd" resultMap="BaseResultMap">
-        SELECT t_user.*,
+        SELECT t_user.id,t_user.user_id,t_user.name,t_user.identity,
+        left(t_user.wx_open_id,3) as wx_open_id ,t_user.note,t_user.create_time,t_user.update_time,
         t_group.id as group_id,t_group.code as group_code,t_group.name as group_name
         FROM t_user,t_group
         WHERE
@@ -53,7 +67,8 @@
 
 
     <select id="findById" resultMap="BaseResultMap">
-        SELECT t_user.id,t_user.user_id,t_user.name,t_user.identity,t_user.note,t_user.create_time,t_user.update_time,
+        SELECT t_user.id,t_user.user_id,t_user.name,t_user.identity,
+        left(t_user.wx_open_id,3) as wx_open_id ,t_user.note,t_user.create_time,t_user.update_time,
         t_group.id as group_id,t_group.code as group_code,t_group.name as group_name
         FROM t_user,t_group
         WHERE
@@ -94,7 +109,20 @@
     </update>
 
 
+    <update id="bindWxOpenId">
+        UPDATE <include refid="TblUser"/>
+        <set>
+            wx_open_id = #{wxOpenId}
+        </set>
+        WHERE user_id = #{userId}
+    </update>
 
-
+    <update id="unBindWxOpenId">
+        UPDATE <include refid="TblUser"/>
+        <set>
+            wx_open_id = NULL
+        </set>
+        WHERE user_id = #{userId}
+    </update>
 
 </mapper>

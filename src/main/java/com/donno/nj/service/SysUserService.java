@@ -31,6 +31,8 @@ public interface SysUserService extends UserService
 
     Optional<SysUser> findBySysUserId(String userId);
 
+
+
     /*上传用户照片*/
     void uploadPhoto(String userId, byte[] photo);
     /*获取用户照片*/

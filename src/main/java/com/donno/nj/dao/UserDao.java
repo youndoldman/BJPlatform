@@ -11,4 +11,8 @@ public interface UserDao extends BaseDao<User>
     User findByUserIdPwd(@Param("userId") String userId, @Param("password")String password);
     void deleteByUserId(String userId);
 
+    User findByWxOpenId(String wxOpenId);
+    void bindWxOpenId(@Param("userId") String userId, @Param("wxOpenId")String wxOpenId);
+    void unBindWxOpenId(@Param("userId") String userId, @Param("wxOpenId")String wxOpenId);
+
 }

@@ -4,6 +4,7 @@ import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.*;
+import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.logger.DebugLogger;
 import com.donno.nj.service.*;
 
@@ -41,6 +42,9 @@ public class CustomerController
 
     @Autowired
     CustomerDistrictService customerDistrictService ;
+
+    @Autowired
+    private WeiXinPayService weiXinPayService;
 
     @RequestMapping(value = "/api/customers/findByUserId", method = RequestMethod.GET, produces = "application/json")
     //@Auth(allowedBizOp = {})
@@ -87,20 +91,127 @@ public class CustomerController
                 responseEntity = ResponseEntity.ok(customerOptional.get());
                 AppUtil.setCurrentLoginUser(customerOptional.get());
             }
-//            Map params = new HashMap<String,String>();
-//            params.putAll(ImmutableMap.of("userId", userId));
-//            params.putAll(paginationParams(1, 1, ""));
-//
-//            List<Customer> customerList = customerService.retrieve(params);
-//            if (customerList.size() > 0)
-//            {
-//                responseEntity = ResponseEntity.ok(customerList.get(0));
-//                AppUtil.setCurrentLoginUser(customerList.get(0));
-//            }
-//            else
-//            {
-//                responseEntity =  ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//            }
+
+        }
+
+        return responseEntity;
+    }
+
+
+    @RequestMapping(value = "/api/customers/wx/login", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity login( @RequestParam(value = "userCode", defaultValue = "") String userCode)
+            throws IOException
+    {
+        ResponseEntity responseEntity;
+
+        String wxOpenId = weiXinPayService.getOpenId(userCode);
+        if (wxOpenId == null || wxOpenId.trim().length() == 0)
+        {
+            throw new ServerSideBusinessException("OpenId获取失败！",HttpStatus.NOT_FOUND);
+        }
+        else
+        {
+            Optional<User> userOptional = customerService.findByWxOpenId(wxOpenId);
+
+            if (userOptional.isPresent())
+            {
+                Optional<Customer> customerOptional = customerService.findByCstUserId(userOptional.get().getUserId());
+                if(!customerOptional.isPresent())
+                {
+                    throw new ServerSideBusinessException("客户信息错误！",HttpStatus.UNAUTHORIZED);
+                }
+                else
+                {
+                    responseEntity = ResponseEntity.ok(customerOptional.get());
+                    AppUtil.setCurrentLoginUser(customerOptional.get());
+                }
+            }
+            else
+            {
+                throw new ServerSideBusinessException("客户未绑定微信！",HttpStatus.UNAUTHORIZED);
+            }
+        }
+
+        return responseEntity;
+    }
+
+
+    @RequestMapping(value = "/api/customers/wx/bind", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity bindWxOpenId(@RequestParam(value = "userId", defaultValue = "") String userId,
+                                       @RequestParam(value = "password", defaultValue = "") String password ,
+                                        @RequestParam(value = "userCode", defaultValue = "") String userCode)
+            throws IOException
+    {
+        ResponseEntity responseEntity;
+
+        String wxOpenId = weiXinPayService.getOpenId(userCode);
+        if (wxOpenId == null || wxOpenId.trim().length() == 0)
+        {
+            throw new ServerSideBusinessException("OpenId获取失败！",HttpStatus.NOT_FOUND);
+        }
+        else
+        {
+            //String wxOpenId = "123456789";
+            Optional<User> userOptional = customerService.findByWxOpenId(wxOpenId);
+
+            if (userOptional.isPresent())
+            {
+                throw new ServerSideBusinessException("客户已经绑定微信！",HttpStatus.NOT_ACCEPTABLE);
+            }
+            else
+            {
+                Optional<User> validUser = customerService.findByUserIdPwd(userId,password);
+                if(!validUser.isPresent())
+                {
+                    throw new ServerSideBusinessException("客户名称或密码错误！",HttpStatus.UNAUTHORIZED);
+                }
+                else
+                {
+                    customerService.bindWxOpenId(userId,wxOpenId);
+                    responseEntity = ResponseEntity.ok().build();
+                }
+            }
+        }
+
+        return responseEntity;
+    }
+
+    @RequestMapping(value = "/api/customers/wx/unBind", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity unBindWxOpenId(@RequestParam(value = "userId", defaultValue = "") String userId,
+                                       @RequestParam(value = "password", defaultValue = "") String password ,
+                                       @RequestParam(value = "userCode", defaultValue = "") String userCode)
+            throws IOException
+    {
+        ResponseEntity responseEntity;
+
+        String wxOpenId = weiXinPayService.getOpenId(userCode);
+        if (wxOpenId == null || wxOpenId.trim().length() == 0)
+        {
+            throw new ServerSideBusinessException("OpenId获取失败！",HttpStatus.NOT_FOUND);
+        }
+        else
+        {
+            //String wxOpenId = "123456789";
+
+            Optional<User> userOptional = customerService.findByWxOpenId(wxOpenId);
+
+            if (!userOptional.isPresent())
+            {
+                throw new ServerSideBusinessException("客户未绑定微信！",HttpStatus.NOT_ACCEPTABLE);
+            }
+            else
+            {
+                Optional<User> validUser = customerService.findByUserIdPwd(userId,password);
+                if(!validUser.isPresent())
+                {
+                    throw new ServerSideBusinessException("客户名称或密码错误！",HttpStatus.UNAUTHORIZED);
+                }
+                else
+                {
+                    customerService.unBindWxOpenId(userId,wxOpenId);
+                    responseEntity = ResponseEntity.ok().build();
+                }
+            }
         }
 
         return responseEntity;

@@ -52,6 +52,9 @@ public class SysUserController
     @Autowired
     private SysUserService sysUserService;
 
+    @Autowired
+    private WeiXinPayService weiXinPayService;
+
     private static Timer timer;
 
     public  SysUserController()
@@ -89,6 +92,47 @@ public class SysUserController
         return responseEntity;
     }
 
+    @RequestMapping(value = "/api/sysusers/FindCompanyPayCode", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity FindCompanyPayCode(@RequestParam(value = "userId", defaultValue = "") String userId)
+    {
+        ResponseEntity responseEntity = null;
+
+        Optional<SysUser>  sysUser = sysUserService.findBySysUserId(userId);
+        if (!sysUser.isPresent())
+        {
+            throw new ServerSideBusinessException("用户不存在！",HttpStatus.NOT_FOUND);
+        }
+        else
+        {
+            Department department = sysUser.get().getDepartment();
+            boolean findedTarget = false;
+            while(department.getParentDepartment() != null)
+            {
+                if (department.getCode().endsWith(ServerConstantValue.SUB_COMPANY_PAY_CODE))
+                {
+                    String payCode = department.getCode();
+                    payCode = department.getCode().substring(0,payCode.indexOf("-"))+"-";
+                    payCode = payCode + department.getCode().substring(department.getCode().indexOf(ServerConstantValue.SUB_COMPANY_PAY_CODE),department.getCode().length());
+
+                    responseEntity = ResponseEntity.ok(payCode);
+                    findedTarget = true;
+
+                    break;
+                }
+                else
+                {
+                    department = department.getParentDepartment();
+                }
+            }
+
+            if (!findedTarget)
+            {
+                throw new ServerSideBusinessException("未找到该用户的支付码！",HttpStatus.NOT_FOUND);
+            }
+        }
+
+        return responseEntity;
+    }
 
     @RequestMapping(value = "/api/sysusers/login", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity login(@RequestParam(value = "userId", defaultValue = "") String userId,
@@ -127,6 +171,44 @@ public class SysUserController
         return responseEntity;
     }
 
+//    @RequestMapping(value = "/api/sysusers/wx/login", method = RequestMethod.GET, produces = "application/json")
+//    public ResponseEntity login( @RequestParam(value = "userCode", defaultValue = "") String userCode)
+//            throws IOException
+//    {
+//        ResponseEntity responseEntity;
+//
+//        String wxOpenId = weiXinPayService.getOpenId(userCode);
+//        if (wxOpenId == null || wxOpenId.trim().length() == 0)
+//        {
+//            throw new ServerSideBusinessException("OpenId获取失败！",HttpStatus.NOT_FOUND);
+//        }
+//        else
+//        {
+//            Optional<User> userOptional = sysUserService.findByWxOpenId(wxOpenId);
+//
+//            if (userOptional.isPresent())
+//            {
+//                AppUtil.setCurrentLoginUser(userOptional.get());
+//                responseEntity = ResponseEntity.ok(userOptional.get());
+//
+//                /*设置用户在线*/
+//                Optional<SysUser>  sysUser = sysUserService.findBySysUserId(userOptional.get().getUserId());
+//                SysUser sysUserOnLine = new SysUser();
+//                sysUserOnLine.setId(sysUser.get().getId());
+//                sysUserOnLine.setAliveStatus(AliveStatus.ASOnline);
+//                sysUserOnLine.setUpdateTime(new Date());
+//                sysUserOnLine.setAliveUpdateTime(new Date());
+//                sysUserService.update(sysUserOnLine.getId(),sysUserOnLine);
+//            }
+//            else
+//            {
+//                throw new ServerSideBusinessException("用户未绑定微信！",HttpStatus.UNAUTHORIZED);
+//            }
+//        }
+//
+//        return responseEntity;
+//    }
+
 
     @RequestMapping(value = "/api/sysusers/KeepAlive/{userId}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity keepAlive(@PathVariable("userId") String userId)
@@ -140,17 +222,6 @@ public class SysUserController
             userOptional.get().setAliveUpdateTime(new Date());
             sysUserService.update(userOptional.get().getId(),userOptional.get());
         }
-//
-//        Map params = new HashMap<String,String>();
-//        params.putAll(ImmutableMap.of("userId", userId));
-//        List<SysUser> sysUserList = sysUserService.retrieve(params);
-//        if (sysUserList.size() == 1)
-//        {
-//            sysUserList.get(0).setAliveStatus(AliveStatus.ASOnline);
-//            sysUserList.get(0).setUpdateTime(new Date());
-//            sysUserList.get(0).setAliveUpdateTime(new Date());
-//            sysUserService.update(sysUserList.get(0).getId(),sysUserList.get(0));
-//        }
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -169,19 +240,8 @@ public class SysUserController
             sysUserService.update(userOptional.get().getId(),userOptional.get());
         }
 
-//        Map params = new HashMap<String,String>();
-//        params.putAll(ImmutableMap.of("userId", userId));
-//        List<SysUser> sysUserList = sysUserService.retrieve(params);
-//        if (sysUserList.size() == 1)
-//        {
-//            sysUserList.get(0).setAliveStatus(AliveStatus.ASOffline);
-//            sysUserList.get(0).setUpdateTime(new Date());
-//            sysUserService.update(sysUserList.get(0).getId(),sysUserList.get(0));
-//        }
-
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
 
 
     @RequestMapping(value = "/api/sysusers", method = RequestMethod.GET, produces = "application/json")
@@ -194,7 +254,6 @@ public class SysUserController
                                    @RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
                                    @RequestParam(value = "mobilePhone", defaultValue = "") String mobilePhone,
                                    @RequestParam(value = "officePhone", defaultValue = "") String officePhone,
-//                                   @RequestParam(value = "aliveStatus", required = false) AliveStatus aliveStatus,
                                    @RequestParam(value = "aliveStatus", required = false) Integer aliveStatus,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
@@ -294,15 +353,7 @@ public class SysUserController
     @OperationLog(desc = "删除用户信息")
     @RequestMapping(value = "/api/sysusers", method = RequestMethod.DELETE)
     @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
-    public ResponseEntity delete(
-            //@RequestParam(value = "id", required = false) Integer id,
-                                         @RequestParam(value = "userId", defaultValue = "") String userId
-//                                         @RequestParam(value = "userName", defaultValue = "") String userName,
-//                                         @RequestParam(value = "jobNumber", defaultValue = "") String jobNumber,
-//                                         @RequestParam(value = "identity", defaultValue = "") String identity,
-//                                         @RequestParam(value = "groupIdx", required = false) Integer groupIdx,
-//                                         @RequestParam(value = "departmentIdx", required = false) Integer departmentIdx
-                                         )
+    public ResponseEntity delete(  @RequestParam(value = "userId", defaultValue = "") String userId)
     {
         ResponseEntity responseEntity;
 
@@ -347,6 +398,8 @@ public class SysUserController
 
         return responseEntity;
     }
+
+
 
     @OperationLog(desc = "上传用户照片")
     @RequestMapping(value = "/api/sysusers/photo/{userId}", method = RequestMethod.PUT)
@@ -420,10 +473,6 @@ public class SysUserController
         {
             httpServletResponse.setStatus(404);
         }
-
-
-
-
     }
 
 

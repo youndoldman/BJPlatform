@@ -51,6 +51,8 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
         return Optional.fromNullable(sysUserDao.findBySysUserId(userId));
     }
 
+
+
     @Override
     public List<SysUser> retrieve(Map params) {
         return sysUserDao.getList(params);

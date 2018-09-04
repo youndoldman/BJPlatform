@@ -12,5 +12,10 @@ public interface UserService
     Optional<User> findByUserIdPwd(String userId,String password);
     Optional<User> findById(Integer id);
 
+    Optional<User> findByWxOpenId(String wxOpenId);
+    void bindWxOpenId(String userId,String wxOpenId);
+    void unBindWxOpenId(String userId,String wxOpenId);
+
+
 
 }

@@ -46,4 +46,7 @@ public interface ServerConstantValue
     /*商品类型*/
     public String GOODS_TYPE_GAS  = "0003";
     public String GOODS_TYPE_GAS_CYN  = "0001";
+
+    /*分公司支付码后缀*/
+    public String SUB_COMPANY_PAY_CODE  = "PAY";
 }

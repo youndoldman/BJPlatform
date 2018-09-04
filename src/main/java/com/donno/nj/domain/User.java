@@ -11,6 +11,7 @@ public class User
     protected String name;
     protected String identity;
     protected String password;
+    protected String wxOpenId;
     protected String note;
     protected Date createTime;
     protected Date updateTime;
@@ -45,6 +46,11 @@ public class User
     public String getPassword()
     {
         return password;
+    }
+
+    public String getWxOpenId()
+    {
+        return wxOpenId;
     }
 
     public String getNote()
@@ -90,6 +96,10 @@ public class User
     public void setPassword(String password)
     {
         this.password = password;
+    }
+
+    public void setWxOpenId(String wxOpenId) {
+        this.wxOpenId = wxOpenId;
     }
 
     public  void setNote(String note)

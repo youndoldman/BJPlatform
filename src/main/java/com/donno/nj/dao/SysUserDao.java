@@ -15,6 +15,8 @@ public interface SysUserDao extends BaseDao<SysUser>
 
     void checkAlive(Date now);
 
+
+
     List<SysUser> getDepLeaderByUserId(@Param("userId") String userId, @Param("groupCode" )String groupCode);
     void uploadPhoto(@Param("userId") String userId, @Param("photo") byte[] photo);
 

@@ -36,6 +36,28 @@ public class UserServiceImpl  implements UserService
     }
 
     @Override
+    @OperationLog(desc = "根据wxopenid查询客户信息")
+    public Optional<User> findByWxOpenId(String wxOpenId)
+    {
+        return Optional.fromNullable(userDao.findByWxOpenId(wxOpenId));
+    }
+
+    @Override
+    @OperationLog(desc = "绑定微信openid")
+    public void bindWxOpenId(String userId,String wxOpenId)
+    {
+        userDao.bindWxOpenId(userId,wxOpenId);
+    }
+
+    @Override
+    @OperationLog(desc = "解绑定微信openid")
+    public void unBindWxOpenId(String userId,String wxOpenId)
+    {
+        userDao.unBindWxOpenId(userId,wxOpenId);
+    }
+
+
+    @Override
     @OperationLog(desc = "根据用户ID查询客户信息")
     public Optional<User> findByUserIdPwd(String userId,String password)
     {
