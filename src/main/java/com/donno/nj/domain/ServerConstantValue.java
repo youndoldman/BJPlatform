@@ -49,4 +49,8 @@ public interface ServerConstantValue
 
     /*分公司支付码后缀*/
     public String SUB_COMPANY_PAY_CODE  = "PAY";
+
+    /*推送参数*/
+    public String NEW_ORDER_TITLE = "待抢订单";
+    public String FORCE_ORDER_TITLE = "系统指派订单";
 }

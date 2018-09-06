@@ -14,6 +14,7 @@ import groovy.lang.Tuple;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -688,9 +689,9 @@ public class OrderServiceImpl implements OrderService
         Map findDispatchParams = new HashMap<String,String>();
         findDispatchParams.putAll(ImmutableMap.of("groupCode", ServerConstantValue.GP_DISPATCH));
         List<SysUser> sysUsersList = sysUserDao.getList(findDispatchParams);
+        String candUser = "";
         if (sysUsersList.size() > 0)
         {
-            String candUser = "";
             for (SysUser sysUser:sysUsersList)
             {
                 if (sysUser.getUserPosition() != null)
@@ -718,6 +719,17 @@ public class OrderServiceImpl implements OrderService
         {
             throw new ServerSideBusinessException("流程控制器创建失败！", HttpStatus.NOT_ACCEPTABLE);
         }
+
+        /*发送系统推送消息*/
+        try {
+            MsgPush msgPush = new MsgPush();
+            msgPush.PushNotice(candUser, ServerConstantValue.NEW_ORDER_TITLE,order.getRecvAddr().toString());
+        }
+        catch(Exception e)
+        {
+            //消息推送失败
+        }
+
     }
 
     @Override
@@ -881,13 +893,26 @@ public class OrderServiceImpl implements OrderService
         }
 
         /*订单指派关系*/
-        if (newOrder.getOrderStatus() == OrderStatus.OSDispatching.getIndex())
-        {
-            String strCandiUser =  (String)variables.get(ServerConstantValue.ACT_FW_STG_2_CANDI_USERS);
+        if (newOrder.getOrderStatus() == OrderStatus.OSDispatching.getIndex()) {
+            String strCandiUser = (String) variables.get(ServerConstantValue.ACT_FW_STG_2_CANDI_USERS);
 
             SysUser candiUser = sysUserDao.findBySysUserId(strCandiUser);
-            orderDao.insertDistatcher(newOrder.getId(),candiUser.getId());
+            orderDao.insertDistatcher(newOrder.getId(), candiUser.getId());
+
+            /*订单指派，消息推送*/
+            try
+            {
+                MsgPush msgPush = new MsgPush();
+                Order targetOrder = orderDao.findById(id);
+                msgPush.PushNotice(strCandiUser, ServerConstantValue.FORCE_ORDER_TITLE, targetOrder.getRecvAddr().toString());
+            }
+            catch (Exception e)
+            {
+                //消息推送失败
+            }
+
         }
+
 
         /*订单变更历史记录*/
         OrderOperHistory(newOrder,newOrder.getOrderStatus());

@@ -60,11 +60,15 @@ public class CustomerAddress implements Serializable
     @Override
     public String toString()
     {
-        return MoreObjects.toStringHelper(this)
-                .add("province", province)
-                .add("city", city)
-                .add("county",county)
-                .add("detail", detail)
-                .toString();
+//        return MoreObjects.toStringHelper(this)
+//                .add("province", province)
+//                .add("city", city)
+//                .add("county",county)
+//                .add("detail", detail)
+//                .toString();
+
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append(province).append(city).append(county).append(detail);
+        return  stringBuffer.toString();
     }
 }
