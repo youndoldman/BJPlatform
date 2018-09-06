@@ -404,9 +404,18 @@ public class GasCylinderServiceImpl implements GasCylinderService
         }
 
         /*空瓶回收，更改为轻瓶*/
-        if ( ((gasCylinder.getServiceStatus().getIndex() == GasCynServiceStatus.CustomerUsing.getIndex())
-                && (serviceStatus == GasCynServiceStatus.Dispatching.getIndex())) //用户使用-->回收
-                )
+//        if ( ((gasCylinder.getServiceStatus().getIndex() == GasCynServiceStatus.CustomerUsing.getIndex())
+//                && (serviceStatus == GasCynServiceStatus.EmptyCynRetrieve.getIndex())) //用户使用-->回收
+//                )
+//        {
+//            GasCylinder newGasCylinder = new GasCylinder();
+//            newGasCylinder.setId(gasCylinder.getId());
+//            newGasCylinder.setLoadStatus(LoadStatus.LSEmpty);
+//            gasCylinderDao.update(newGasCylinder);
+//        }
+
+        /*空瓶回收，更改为轻瓶*/
+        if ( serviceStatus == GasCynServiceStatus.EmptyCynRetrieve.getIndex()) //用户使用-->回收
         {
             GasCylinder newGasCylinder = new GasCylinder();
             newGasCylinder.setId(gasCylinder.getId());
