@@ -44,7 +44,9 @@ customServiceApp.controller('OrderModalCtrl', ['$scope', 'close', 'OrderService'
 
 
 
+
     var drawChart = function(orderStatus,orderOpHistoryList) {
+
         var  dataOrderStatus = [{
             value:"",
             name: '开始',
@@ -130,15 +132,54 @@ customServiceApp.controller('OrderModalCtrl', ['$scope', 'close', 'OrderService'
 
         console.log(linkOrderDetail);
 
-        for(var i=orderStatus+2; i<5; i++){
-            dataOrderStatus[i].itemStyle.normal.color = 'rgba(144,144,144,1)';
+        if(orderStatus==4){
+
+        }else{//把未执行的节点调成灰色
+            for(var i=orderStatus+2; i<5; i++){
+                dataOrderStatus[i].itemStyle.normal.color = 'rgba(144,144,144,1)';
+            }
         }
 
+        var lastOpsIndex=0;
         for(var j=0; j<orderOpHistoryList.length; j++){
             var itemorderOp = orderOpHistoryList[j];
             var indexOrderStatus = itemorderOp.orderStatus.index;
+            lastOpsIndex = indexOrderStatus;
             linkOrderDetail[indexOrderStatus].value = itemorderOp.userId+"\r\n"+itemorderOp.updateTime;
-
+        }
+        //在操作记录的末尾加上作废节点
+        if(orderStatus==4){
+            var node  = {
+                value:"",
+                name: '订单作废',
+                x: 100+lastOpsIndex*100,
+                y: 350,
+                itemStyle : {//===============图形样式，有 normal 和 emphasis 两个状态。normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
+                    normal : { //默认样式
+                        color : 'rgba(255,0,0,1)'
+                        // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+                    },
+                    emphasis : {//高亮状态
+                    }
+                }
+            };
+            dataOrderStatus.push(node);
+            var link = {source: lastOpsIndex+1,
+                target: 5,
+                value:"",
+                label : { //=============图形上的文本标签
+                    normal : {
+                        show : true,
+                        formatter: '{c}',
+                        fontSize:15
+                    }
+                }
+            };
+            linkOrderDetail.push(link);
+            //把未执行的节点调成灰色
+            for(var i=lastOpsIndex+2; i<5; i++){
+                dataOrderStatus[i].itemStyle.normal.color = 'rgba(144,144,144,1)';
+            }
         }
 
 

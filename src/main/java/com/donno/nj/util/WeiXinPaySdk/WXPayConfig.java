@@ -42,6 +42,9 @@ public abstract class WXPayConfig {
     abstract String getSubMchID();
 
 
+    abstract String getOfficialIDByCompanyCode(String companyCode);
+
+    abstract String getmachIDByCompanyCode(String companyCode);
     /**
      * 获取 API 密钥
      *
@@ -134,5 +137,7 @@ public abstract class WXPayConfig {
     public int getReportBatchSize() {
         return 10;
     }
+
+
 
 }

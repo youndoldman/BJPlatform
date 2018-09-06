@@ -35,7 +35,7 @@ public class WeiXinPayServiceTest {
     @Test
     public void testdoUnifiedOrderForScan() throws Exception {
         String code_url = weiXinPayService.doUnifiedOrderForScan(
-                "111", "2");
+                "111", "2","111");
         System.out.println("获取code_url： " + code_url);
     }
 
