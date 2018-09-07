@@ -30,7 +30,7 @@ public class PushTest
         {
             String strCandiUser = "pscs";
             MsgPush msgPush = new MsgPush();
-            msgPush.PushNotice(strCandiUser, ServerConstantValue.FORCE_ORDER_TITLE, ServerConstantValue.FORCE_ORDER_BODY);
+            msgPush.PushNotice(strCandiUser, ServerConstantValue.FORCE_ORDER_TITLE, "系统测试");
         }
         catch (Exception e)
         {

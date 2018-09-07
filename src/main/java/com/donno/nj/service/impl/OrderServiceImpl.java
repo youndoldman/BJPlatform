@@ -723,7 +723,8 @@ public class OrderServiceImpl implements OrderService
         /*发送系统推送消息*/
         try {
             MsgPush msgPush = new MsgPush();
-            msgPush.PushNotice(candUser, ServerConstantValue.NEW_ORDER_TITLE,order.getRecvAddr().toString());
+            msgPush.PushNotice(candUser, ServerConstantValue.NEW_ORDER_TITLE,order.getRecvAddr().getCity()
+                    +order.getRecvAddr().getCounty()+order.getRecvAddr().getDetail());
         }
         catch(Exception e)
         {
@@ -904,7 +905,8 @@ public class OrderServiceImpl implements OrderService
             {
                 MsgPush msgPush = new MsgPush();
                 Order targetOrder = orderDao.findById(id);
-                msgPush.PushNotice(strCandiUser, ServerConstantValue.FORCE_ORDER_TITLE, targetOrder.getRecvAddr().toString());
+                msgPush.PushNotice(strCandiUser, ServerConstantValue.FORCE_ORDER_TITLE, targetOrder.getRecvAddr().getCity()
+                        +targetOrder.getRecvAddr().getCounty()+targetOrder.getRecvAddr().getDetail());
             }
             catch (Exception e)
             {
