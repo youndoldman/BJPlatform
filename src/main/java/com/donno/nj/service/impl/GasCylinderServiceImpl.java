@@ -458,7 +458,7 @@ public class GasCylinderServiceImpl implements GasCylinderService
         {
             if ( !gasCylinder.getUser().getId().equals(srcUser.getId()))
             {
-                throw new ServerSideBusinessException("该钢瓶原责任人校验错误！", HttpStatus.NOT_ACCEPTABLE);
+                throw new ServerSideBusinessException("该钢瓶原责任人校验错误！", HttpStatus.CONFLICT);
             }
         }
     }
