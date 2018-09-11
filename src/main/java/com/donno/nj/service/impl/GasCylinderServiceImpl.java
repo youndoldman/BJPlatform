@@ -497,6 +497,7 @@ public class GasCylinderServiceImpl implements GasCylinderService
     {
         GasCylinderSvcStatusOpHis gasCylinderSvcStatusOpHis = new GasCylinderSvcStatusOpHis();
         gasCylinderSvcStatusOpHis.setGasCylinder(gasCylinder);
+        gasCylinderSvcStatusOpHis.setSrcServiceStatus(gasCylinder.getServiceStatus());
         gasCylinderSvcStatusOpHis.setServiceStatus(GasCynServiceStatus.values()[serviceStatus]);
         gasCylinderSvcStatusOpHis.setSrcUser(srcUser);
         gasCylinderSvcStatusOpHis.setTargetUser(targetUser);

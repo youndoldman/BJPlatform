@@ -12,6 +12,7 @@ public class GasCylinderSvcStatusOpHis implements Serializable
 {
     private Integer id;
     private GasCylinder gasCylinder;
+    private GasCynServiceStatus srcServiceStatus;
     private GasCynServiceStatus serviceStatus;
 
     private User srcUser;
@@ -44,6 +45,9 @@ public class GasCylinderSvcStatusOpHis implements Serializable
         return  serviceStatus;
     }
 
+    public GasCynServiceStatus getSrcServiceStatus() {
+        return srcServiceStatus;
+    }
 
     public User getSrcUser()
     {
@@ -94,6 +98,10 @@ public class GasCylinderSvcStatusOpHis implements Serializable
     public void setTargetUser(User targetUser)
     {
         this.targetUser = targetUser;
+    }
+
+    public void setSrcServiceStatus(GasCynServiceStatus srcServiceStatus) {
+        this.srcServiceStatus = srcServiceStatus;
     }
 
     public void  setServiceStatus(GasCynServiceStatus serviceStatus)

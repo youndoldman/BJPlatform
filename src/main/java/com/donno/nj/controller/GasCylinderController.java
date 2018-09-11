@@ -117,7 +117,6 @@ public class GasCylinderController
 
     @OperationLog(desc = "修改钢瓶信息")
     @RequestMapping(value = "/api/GasCylinder/{number}", method = RequestMethod.PUT)
-    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_GAS_STORE_LEADER })
     public ResponseEntity update(@PathVariable("number") String number, @RequestBody GasCylinder newGasCylinder)
     {
         ResponseEntity responseEntity;
