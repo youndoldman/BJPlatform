@@ -1011,7 +1011,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             var queryParams = {
                 phone:callInPhone,
                 pageSize: $scope.pagerCustomer.pageSize,
-                pageNo: 1
+                pageNo: 1,
+                orderBy:"id desc"
             };
 
             CustomerManageService.retrieveCustomerCallin(queryParams).then(function (customers) {
