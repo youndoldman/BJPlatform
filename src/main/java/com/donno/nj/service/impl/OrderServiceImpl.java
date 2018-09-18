@@ -876,6 +876,64 @@ public class OrderServiceImpl implements OrderService
 
     @Override
     @OperationLog(desc = "订单任务更新信息")
+    public void taskModify(String taskId,String orderSn,String  userId)
+    {
+        /*检查订单是否存在*/
+        Order order=  orderDao.findBySn(orderSn);
+        if (order == null)
+        {
+            throw new ServerSideBusinessException("定单不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        /*客户信息检查*/
+        if (userId == null || userId.trim().length() == 0)
+        {
+            throw new ServerSideBusinessException("用户参数不能为空！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        User user = userDao.findByUserId(userId);
+        if (user == null)
+        {
+            throw new ServerSideBusinessException("用户不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+
+        Map<String, Object> variables = new HashMap<String, Object>();
+        if (order.getOrderStatus() == OrderStatus.OSDispatching.getIndex())//只有派送中的才能重新指派
+        {
+            variables.put(ServerConstantValue.ACT_FW_STG_2_CANDI_USERS, userId);
+        }
+        else
+        {
+            throw new ServerSideBusinessException("订单不允许重新指派！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        /*检查任务是否存在，处理订单*/
+        int retCode = workFlowService.modifyTask(taskId,variables);
+        if (retCode != 0 )
+        {
+            throw new ServerSideBusinessException("订单任务更新失败！", HttpStatus.EXPECTATION_FAILED);
+        }
+
+        /*更新订单指派关系*/
+        orderDao.updateDistatcher(order.getId(), user.getId());
+
+         /*订单指派，消息推送*/
+        try
+        {
+            MsgPush msgPush = new MsgPush();
+            msgPush.PushNotice(userId, ServerConstantValue.FORCE_ORDER_TITLE, order.getRecvAddr().getCity()
+                    +order.getRecvAddr().getCounty()+order.getRecvAddr().getDetail());
+        }
+        catch (Exception e)
+        {
+            //消息推送失败
+        }
+
+    }
+
+    @Override
+    @OperationLog(desc = "订单任务更新信息")
     public void update(String taskId,Map<String, Object> variables,Integer id, Order newOrder)
     {
         newOrder.setId(id);

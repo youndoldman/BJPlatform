@@ -90,6 +90,19 @@ public class OrderController
         return ResponseEntity.ok(ListRep.assemble(taskList, totalTaskCount));
     }
 
+
+    @RequestMapping(value = "/api/TaskOrders/Modify/{taskId}", method = RequestMethod.GET, produces = "application/json")
+    @OperationLog(desc = "任务订单修改")
+    public ResponseEntity taskOrderModify( @PathVariable("taskId") String taskId,
+                                            @RequestParam(value = "businessKey", required = true) String businessKey,
+                                            @RequestParam(value = "candiUser", required = true) String candiUser)
+    {
+        orderService.taskModify(taskId,businessKey,candiUser);
+        return ResponseEntity.ok().build();
+    }
+
+
+
     @RequestMapping(value = "/api/TaskOrders/Process/{taskId}", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "任务订单处理")
     public ResponseEntity taskOrderProcess( @PathVariable("taskId") String taskId,

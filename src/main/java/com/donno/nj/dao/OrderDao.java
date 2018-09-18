@@ -10,5 +10,7 @@ public interface OrderDao extends BaseDao<Order>
 
     Long insertDistatcher(@Param("orderIdx") Integer orderIdx,@Param("userIdx") Integer userIdx);
 
+    Long updateDistatcher(@Param("orderIdx") Integer orderIdx,@Param("userIdx") Integer userIdx);
+
     void bindWeixinOrderSn(@Param("orderIdx") Integer orderIdx,@Param("weixinOrderSn") String weixinOrderSn,@Param("amount") Integer amount);
 }

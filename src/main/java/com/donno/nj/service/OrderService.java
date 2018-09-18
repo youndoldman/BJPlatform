@@ -28,6 +28,8 @@ public interface OrderService
 
     void update(String taskId,Map<String, Object> variables,Integer id, Order newOrder);//订单任务更新
 
+    void taskModify(String taskId,String orderSn,String  userId);//订单重新指派
+
     void deleteById(Integer id);
 
     void cancelOrder(String orderSn);
