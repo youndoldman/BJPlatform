@@ -906,6 +906,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         };
 
         $scope.clearWindow = function(){
+            $scope.vm.currentTicketCount = null;
             $scope.vm.currentCustomerCredit= null;
             $scope.vm.callInPhone = null;
             $scope.vm.currentCustomer = null;
@@ -1068,18 +1069,19 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             });
         };
 
-        //查询气票张数
+        //查询剩余气票张数
         var searchTicketCount = function () {
             //清空表格
             $scope.vm.CustomerOrderHistory = [];
             var queryParams = {
                 customerUserId:$scope.vm.currentCustomer.userId,
+                useStatus:0,
+                pageNo: 1,
+                pageSize: 1
             };
             OrderService.retrieveTicket(queryParams).then(function (tickets) {
                 $scope.vm.currentTicketCount = tickets.total;
             });
         };
-
-
 
     }]);

@@ -85,18 +85,38 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
             udcModal.info({"title": "错误信息", "message": "请在地图中选择将要派单的配送工！ "});
             return;
         }
-        var dealparams = {
-            businessKey: $scope.vm.currentOrder.orderSn,
-            candiUser   : $scope.vm.selectedWorker.userId,
-            orderStatus: 1
-        };
-        OrderService.dealDistribution(dealparams,$scope.vm.currentOrder.taskId).then(function () {
-            udcModal.info({"title": "处理结果", "message": "人工指派配送工成功，工号："+$scope.vm.selectedWorker.userId});
-            $scope.close(true);
-        }, function(value) {
-            udcModal.info({"title": "处理结果", "message": "人工指派配送工失败 "+value.message});
-            $scope.close(false);
-        })
+        if($scope.modalTitle=="强派订单"){
+            var dealparams = {
+                businessKey: $scope.vm.currentOrder.orderSn,
+                candiUser   : $scope.vm.selectedWorker.userId,
+                orderStatus: 1
+            };
+            OrderService.dealDistribution(dealparams,$scope.vm.currentOrder.taskId).then(function () {
+                udcModal.info({"title": "处理结果", "message": "人工指派配送工成功，工号："+$scope.vm.selectedWorker.userId});
+                $scope.close(true);
+            }, function(value) {
+                udcModal.info({"title": "处理结果", "message": "人工指派配送工失败 "+value.message});
+                $scope.close(false);
+            })
+        }else{
+            var dealparams = {
+                businessKey: $scope.vm.currentOrder.orderSn,
+                candiUser   : $scope.vm.selectedWorker.userId,
+                orderStatus: 1
+            };
+            OrderService.dealDistribution(dealparams,$scope.vm.currentOrder.taskId).then(function () {
+                udcModal.info({"title": "处理结果", "message": "人工转派配送工成功，工号："+$scope.vm.selectedWorker.userId});
+                $scope.close(true);
+            }, function(value) {
+                udcModal.info({"title": "处理结果", "message": "人工转派配送工失败 "+value.message});
+                $scope.close(false);
+            })
+        }
+
+
+
+
+
 
     };
 

@@ -10,10 +10,10 @@
     <div class="toolbar">
         <form role="form">
             <div class="row">
-                <!--<div class="col-md-2">-->
-                    <!--<label class="input">订单状态：</label>-->
-                    <!--<label class="input"><select  ng-model="q.orderStatus" ng-options="orderStatus.value for orderStatus in vm.orderStatus" class="form-control" ng-selected="" ng-change="orderStatusSearchChange()"></select></label>-->
-                <!--</div>-->
+                <div class="col-md-2">
+                    <label class="input">订单状态：</label>
+                    <label class="input"><select  ng-model="q.orderStatus" ng-options="orderStatus.value for orderStatus in vm.orderStatus" class="form-control" ng-selected="" ng-change="orderStatusSearchChange()"></select></label>
+                </div>
                 <!--<div class="col-md-4">-->
                     <!--<label class="input">时间范围：</label>-->
                     <!--<label class="input"><input type="text"  id="datetimepickerStart" name="productionDate" class="form-control" ng-model="vm.bottle.productionDate" required></label>-->
@@ -67,17 +67,14 @@
             <td class="message">{{order.createTime}}</td>
             <td class="message">{{order.reserveTime}}</td>
             <td class="operate">
-                <button title="详情" ng-click="modify(order)" type="button" class="btn btn-primary btn-outline btn-xs">
+                <button title="详情" ng-click="viewDetails(order)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="">详情</i>
                 </button>
-                <!--<button title="修改" ng-click="modify(order)" type="button" class="btn btn-primary btn-outline btn-xs">-->
-                    <!--<i class="fa fa-edit"></i>-->
-                <!--</button>-->
-                <button title="指派" ng-if="order.taskId" ng-click="assign(order)" type="button" class="btn btn-primary btn-outline btn-xs">
-                    <i class="">指派</i>
+                <button title="强派" ng-if="order.taskId&&order.orderStatus==0" ng-click="assign(order)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <i class="">强派</i>
                 </button>
-                <button title="作废" ng-if="order.orderStatus!=3&&order.orderStatus!=4" ng-click="delete(order)" type="button" class="btn btn-primary btn-outline btn-xs">
-                    <i class="">作废</i>
+                <button title="转派" ng-if="order.taskId&&order.orderStatus==1" ng-click="transfer(order)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <i class="">转派</i>
                 </button>
             </td>
         </tr>
