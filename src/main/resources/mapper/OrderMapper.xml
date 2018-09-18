@@ -313,7 +313,7 @@
         <if test="userIdx != null">dispatcher_idx = #{userIdx},
             dispatcher_dep_idx = (select department_idx FROM t_sysuser where user_idx=#{userIdx})
         </if>
-        <set>
+        </set>
         WHERE order_idx = #{orderIdx}
     </update>
 
