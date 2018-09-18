@@ -240,11 +240,40 @@ public class WorkFlowServiceImpl implements WorkFlowService
     }
 
 
-    //修改流程的处理人 strTaskId－任务ID,variables-处理人的userId
+    //删除流程的候选处理人 strTaskId－任务ID,strUserId-处理人的userId
     @Override
-    public int modifyTask(String strTaskId, Map<String, Object> variables) {
+    public int deleteCandidateUsers(String strTaskId, String strUserId) {
         try {
-            taskService.setVariables(strTaskId, variables);
+            taskService.deleteCandidateUser(strTaskId,strUserId);
+            return 0;
+        } catch (Exception e) {
+            DebugLogger.log(e.getMessage());
+            return -1;
+        }
+    }
+    //获取流程的候选处理人 strTaskId－任务ID
+    @Override
+    public List<String> getCandidateUsers(String strTaskId) {
+    List<String>candidateUsers = new ArrayList<String>();
+        try {
+            Task task = taskService.createTaskQuery().taskId(strTaskId).active().singleResult();
+            //TODO
+            return candidateUsers;
+        } catch (Exception e) {
+            DebugLogger.log(e.getMessage());
+            return null;
+        }
+    }
+
+
+
+
+
+    //增加流程的候选处理人 strTaskId－任务ID,strUserId-处理人的userId
+    @Override
+    public int addCandidateUsers(String strTaskId, String strUserId) {
+        try {
+            taskService.addCandidateUser(strTaskId,strUserId);
             return 0;
         } catch (Exception e) {
             DebugLogger.log(e.getMessage());

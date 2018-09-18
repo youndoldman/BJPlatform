@@ -101,10 +101,9 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
         }else{
             var dealparams = {
                 businessKey: $scope.vm.currentOrder.orderSn,
-                candiUser   : $scope.vm.selectedWorker.userId,
-                orderStatus: 1
+                candiUser   : $scope.vm.selectedWorker.userId
             };
-            OrderService.dealDistribution(dealparams,$scope.vm.currentOrder.taskId).then(function () {
+            OrderService.transferDistribution(dealparams,$scope.vm.currentOrder.taskId).then(function () {
                 udcModal.info({"title": "处理结果", "message": "人工转派配送工成功，工号："+$scope.vm.selectedWorker.userId});
                 $scope.close(true);
             }, function(value) {
@@ -112,11 +111,6 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
                 $scope.close(false);
             })
         }
-
-
-
-
-
 
     };
 

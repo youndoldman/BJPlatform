@@ -34,6 +34,7 @@ commonModule.constant('URI', {
 
         'taskOrders':'../../../api/TaskOrders',//任务订单接口
         'taskOrdersDeal':'../../../api/TaskOrders/Process',//任务订单办理接口
+        'taskOrdersTransfer':'../../../api/TaskOrders/Modify',//任务订单转派接口
         //'goods': '../../../api/Goods',//商品
         //'goodsTypes': '../../../api/GoodsTypes',//商品类型
         'goods': '../../../api/Goods',//商品
@@ -102,6 +103,8 @@ commonModule.constant('URI', {
         'sysUserFindByUserId':'../../../api/sysusers/FindByUserId',//系统用户精确查询
         'DiscountStrategiesCancel':'../../../api/DiscountStrategies/Cancel',//10.8.	作废优惠方案
         'SysUserPhoto': '../../../api/sysusers/photo',//用户照片
+
+
 
 
 

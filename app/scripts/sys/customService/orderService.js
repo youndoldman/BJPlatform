@@ -4,6 +4,8 @@ customServiceApp.service('OrderService', ['$http', 'URI', 'promiseWrapper','MISC
     var ordersUri = URI.resources.orders;
     var taskOrdersUri = URI.resources.taskOrders;
     var taskOrdersDealUri = URI.resources.taskOrdersDeal;
+    var taskOrdersTransferUri = URI.resources.taskOrdersTransfer;
+
     var usersUri = URI.resources.users;
     var orderCancelUri = URI.resources.orderCancel;
     var ticketUri = URI.resources.ticket;
@@ -98,24 +100,30 @@ customServiceApp.service('OrderService', ['$http', 'URI', 'promiseWrapper','MISC
     this.retrieveDistributionworkers = function (params) {
         return promise.wrap($http.get(usersUri, {params: params}));
 
-    }
+    };
 
     //人工派单至配送工
     this.dealDistribution = function (params,taskId) {
         return promise.wrap($http.get(taskOrdersDealUri+'/'+taskId, {params: params}));
 
-    }
+    };
 
     //订单作废
     this.ordelCancel = function (orderSn) {
         return promise.wrap($http.put(orderCancelUri+'/'+orderSn));
 
-    }
+    };
 
     //请求气票表
     this.retrieveTicket = function (params) {
         return promise.wrap($http.get(ticketUri, {params: params}));
     };
+
+    //人工转派至配送工
+    this.transferDistribution = function (params,taskId) {
+        return promise.wrap($http.get(taskOrdersTransferUri+'/'+taskId, {params: params}));
+
+    }
 
 
 }]);
