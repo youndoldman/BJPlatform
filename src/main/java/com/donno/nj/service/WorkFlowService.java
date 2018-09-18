@@ -33,4 +33,7 @@ public interface WorkFlowService
 
     //流程作废 buinessKey-关联用户表的订单号等索键值
     int deleteProcess(String buinessKey);
+
+    //修改流程的处理人 strTaskId－任务ID,variables-处理人的userId
+    int modifyTask(String strTaskId, Map<String, Object> variables);
 }

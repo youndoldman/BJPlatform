@@ -59,13 +59,13 @@ public class MsgPush {
         pushRequest.setAndroidNotifyType("BOTH");//通知的提醒方式 "VIBRATE" : 震动 "SOUND" : 声音 "BOTH" : 声音和震动 NONE : 静音
         pushRequest.setAndroidNotificationBarType(1);//通知栏自定义样式0-100
         pushRequest.setAndroidNotificationBarPriority(1);//通知栏自定义样式0-100
-        pushRequest.setAndroidOpenType("URL"); //点击通知后动作 "APPLICATION" : 打开应用 "ACTIVITY" : 打开AndroidActivity "URL" : 打开URL "NONE" : 无跳转
-        pushRequest.setAndroidOpenUrl("http://www.aliyun.com"); //Android收到推送后打开对应的url,仅当AndroidOpenType="URL"有效
-        pushRequest.setAndroidActivity("com.alibaba.push2.demo.XiaoMiPushActivity"); // 设定通知打开的activity，仅当AndroidOpenType="Activity"有效
+        pushRequest.setAndroidOpenType("ACTIVITY"); //点击通知后动作 "APPLICATION" : 打开应用 "ACTIVITY" : 打开AndroidActivity "URL" : 打开URL "NONE" : 无跳转
+        //pushRequest.setAndroidOpenUrl("https://www.yunnanbaijiang.com"); //Android收到推送后打开对应的url,仅当AndroidOpenType="URL"有效
+        pushRequest.setAndroidActivity("com.gc.nfc.ui.MainlyActivity"); // 设定通知打开的activity，仅当AndroidOpenType="Activity"有效
         pushRequest.setAndroidMusic("default"); // Android通知音乐
-        pushRequest.setAndroidXiaoMiActivity("com.ali.demo.MiActivity");//设置该参数后启动小米托管弹窗功能, 此处指定通知点击后跳转的Activity（托管弹窗的前提条件：1. 集成小米辅助通道；2. StoreOffline参数设为true）
+        pushRequest.setAndroidXiaoMiActivity("com.gc.nfc.ui.MainlyActivity");//设置该参数后启动小米托管弹窗功能, 此处指定通知点击后跳转的Activity（托管弹窗的前提条件：1. 集成小米辅助通道；2. StoreOffline参数设为true）
         pushRequest.setAndroidXiaoMiNotifyTitle("Mi title");
-        pushRequest.setAndroidXiaoMiNotifyBody("MiActivity Body");
+        pushRequest.setAndroidXiaoMiNotifyBody("MainlyActivity Body");
         pushRequest.setAndroidExtParameters("{\"k1\":\"android\",\"k2\":\"v2\"}"); //设定通知的扩展属性。(注意 : 该参数要以 json map 的格式传入,否则会解析出错)
 
 
@@ -76,7 +76,8 @@ public class MsgPush {
         String expireTime = ParameterHelper.getISO8601Time(new Date(System.currentTimeMillis() + 12 * 3600 * 1000)); // 12小时后消息失效, 不会再发送
         pushRequest.setExpireTime(expireTime);
         pushRequest.setStoreOffline(true); // 离线消息是否保存,若保存, 在推送时候，用户即使不在线，下一次上线则会收到
-
+// 指定notificaitonchannel id
+        pushRequest.setAndroidNotificationChannel("1");
 
         PushResponse pushResponse = MsgPushCfg.getClient().getAcsResponse(pushRequest);
         System.out.printf("RequestId: %s, MessageID: %s\n",

@@ -238,4 +238,18 @@ public class WorkFlowServiceImpl implements WorkFlowService
             return -1;
         }
     }
+
+
+    //修改流程的处理人 strTaskId－任务ID,variables-处理人的userId
+    @Override
+    public int modifyTask(String strTaskId, Map<String, Object> variables) {
+        try {
+            taskService.setVariables(strTaskId, variables);
+            return 0;
+        } catch (Exception e) {
+            DebugLogger.log(e.getMessage());
+            return -1;
+        }
+    }
+
 }

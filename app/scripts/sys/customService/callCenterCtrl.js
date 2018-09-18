@@ -357,6 +357,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             //将订单数据提交到后台
             OrderService.createOrder($scope.currentOrder).then(function () {
                 udcModal.info({"title": "处理结果", "message": "创建订单成功 "});
+                //订单完成后清除来电号码
+                $scope.vm.callInPhone = "00000000";
             }, function(value) {
                 udcModal.info({"title": "处理结果", "message": "创建订单失败 "+value.message});
             })
@@ -1011,7 +1013,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             var queryParams = {
                 phone:callInPhone,
                 pageSize: $scope.pagerCustomer.pageSize,
-                pageNo: 1
+                pageNo: 1,
+                orderBy:"id desc"
             };
 
             CustomerManageService.retrieveCustomerCallin(queryParams).then(function (customers) {

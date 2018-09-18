@@ -728,6 +728,7 @@ public class OrderServiceImpl implements OrderService
         }
         catch(Exception e)
         {
+            System.out.print(e.getMessage());
             //消息推送失败
         }
 

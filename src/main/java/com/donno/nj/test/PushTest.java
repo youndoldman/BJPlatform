@@ -28,12 +28,13 @@ public class PushTest
     {
         try
         {
-            String strCandiUser = "pscs";
+            String strCandiUser = "pscs,pscs2";
             MsgPush msgPush = new MsgPush();
             msgPush.PushNotice(strCandiUser, ServerConstantValue.FORCE_ORDER_TITLE, "系统测试");
         }
         catch (Exception e)
         {
+            System.out.print(e.getMessage());
             //消息推送失败
         }
     }
