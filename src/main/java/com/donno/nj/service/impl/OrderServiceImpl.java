@@ -898,22 +898,30 @@ public class OrderServiceImpl implements OrderService
         }
 
 
-        Map<String, Object> variables = new HashMap<String, Object>();
+        String oldUserId = order.getDispatcher().getUserId();
+        if(oldUserId==null){
+            throw new ServerSideBusinessException("未接订单！", HttpStatus.NOT_ACCEPTABLE);
+        }
         if (order.getOrderStatus() == OrderStatus.OSDispatching.getIndex())//只有派送中的才能重新指派
         {
-            variables.put(ServerConstantValue.ACT_FW_STG_2_CANDI_USERS, userId);
+
         }
         else
         {
             throw new ServerSideBusinessException("订单不允许重新指派！", HttpStatus.NOT_ACCEPTABLE);
         }
-
-        /*检查任务是否存在，处理订单*/
-        int retCode = workFlowService.modifyTask(taskId,variables);
-        if (retCode != 0 )
+        /*删除原处理人*/
+        if (workFlowService.deleteCandidateUsers(taskId,oldUserId) != 0 )
         {
-            throw new ServerSideBusinessException("订单任务更新失败！", HttpStatus.EXPECTATION_FAILED);
+            throw new ServerSideBusinessException("订单任务更新失败！原处理人无法移除！", HttpStatus.EXPECTATION_FAILED);
         }
+
+        /*转派处理人*/
+        if (workFlowService.addCandidateUsers(taskId,userId) != 0 )
+        {
+            throw new ServerSideBusinessException("订单任务更新失败！现处理人无法新增！", HttpStatus.EXPECTATION_FAILED);
+        }
+
 
         /*更新订单指派关系*/
         orderDao.updateDistatcher(order.getId(), user.getId());
