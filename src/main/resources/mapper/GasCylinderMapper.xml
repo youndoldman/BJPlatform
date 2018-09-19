@@ -103,8 +103,6 @@
         WHERE id = #{id}
     </update>
 
-
-
     <select id="findById" resultMap="DetailResultMap">
         SELECT *
         FROM <include refid="TblGasCylinder"/>

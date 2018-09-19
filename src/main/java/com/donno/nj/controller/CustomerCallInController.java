@@ -1,37 +1,25 @@
 package com.donno.nj.controller;
-
-import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.CustomerCallIn;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.*;
-import com.donno.nj.util.AppUtil;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import static com.donno.nj.util.ParamMapBuilder.paginationParams;
 
 @RestController
 public class CustomerCallInController
 {
-
     @Autowired
     CustomerCallInService customerCallInService ;
-
 
     @RequestMapping(value = "/api/CustomerCallIn", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取客户呼入信息列表")
@@ -102,8 +90,6 @@ public class CustomerCallInController
 
         return responseEntity;
     }
-
-
 
     @OperationLog(desc = "删除用户呼入信息")
     @RequestMapping(value = "/api/CustomerCallIn", method = RequestMethod.DELETE)
