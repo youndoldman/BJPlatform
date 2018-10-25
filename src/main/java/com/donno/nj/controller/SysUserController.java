@@ -55,23 +55,23 @@ public class SysUserController
     @Autowired
     private WeiXinPayService weiXinPayService;
 
-    private static Timer timer;
-
-    public  SysUserController()
-    {
-        timer = new Timer();
-        timer.schedule(new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                if (sysUserService != null)
-                {
-                    sysUserService.checkAlive();
-                }
-            }
-        }, 0, 20000);
-    }
+//    private static Timer timer;
+//
+//    public  SysUserController()
+//    {
+//        timer = new Timer();
+//        timer.schedule(new TimerTask()
+//        {
+//            @Override
+//            public void run()
+//            {
+//                if (sysUserService != null)
+//                {
+//                    sysUserService.checkAlive();
+//                }
+//            }
+//        }, 0, 20000);
+//    }
 
 
     @RequestMapping(value = "/api/sysusers/FindByUserId", method = RequestMethod.GET, produces = "application/json")
