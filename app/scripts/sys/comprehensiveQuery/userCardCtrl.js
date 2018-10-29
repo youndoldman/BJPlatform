@@ -82,7 +82,7 @@ comprehensiveQueryApp.controller('UserCardCtrl', ['$scope', '$rootScope', '$filt
                 userId:$scope.q.customerUserId,
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize,
-                orderBy:"id desc"
+                orderBy:"number"
             };
 
             TicketService.retrieveUserCard(queryParams).then(function (userCards) {

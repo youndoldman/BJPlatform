@@ -209,6 +209,16 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
             //$scope.q.sumYueleijiCount = null;
             //$scope.q.sumYueleijiSum = null;
             searchData();
+            //传递门店日报表查询事件
+            var queryParamsDailySales = {
+                departmentCode:$scope.q.liableDepartmentCode,
+                dayStartTime:$scope.dailyData.startTime,
+                dayEndTime:$scope.dailyData.endTime,
+                monthStartTime:$scope.monthlyData.startTime,
+                monthEndTime:$scope.monthlyData.endTime,
+            };
+            console.log(queryParamsDailySales);
+            emitDailySalesQuery(queryParamsDailySales);
         };
 
         var searchData = function () {
@@ -769,6 +779,12 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                     }
                 }
             }
+        };
+
+        //传递门店日报表查询事件
+        function emitDailySalesQuery(queryParamsDailySales){
+            //传递门店日报表查询事件
+            $rootScope.$broadcast("Event_DailySalesQuery", queryParamsDailySales);
         };
 
 

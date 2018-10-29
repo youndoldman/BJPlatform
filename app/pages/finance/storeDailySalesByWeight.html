@@ -1,0 +1,227 @@
+
+<style>
+    .tableContentAdjust{
+        text-align: center;
+        vertical-align:middle;
+    }
+    .fontSize{
+        font-size: large;
+        margin-top: 7px;
+    }
+    .bkColor1{
+        background-color:#FFE4E1;
+    }
+    .bkColor2{
+        background-color:#E0EEE0;
+    }
+    .bkColor3{
+        background-color:#B2DFEE;
+    }
+    @media print {
+        .noprint { display: none }
+        table,th,td{
+            border: 1px solid #C7C7C7;
+        }
+        .border1{
+            border:1px solid #C7C7C7;
+        }
+    }
+</style>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<div class="ribbon border1">
+    <a href=""><span class="home fa fa-home"></span></a>
+    <ol class="breadcrumb">
+        <li>直营门店销售日报表(斤)</li>
+    </ol>
+</div>
+
+<div class="table-wrapper">
+    <table class="table table-striped table-hover props table-sm table-bordered table-condensed">
+        <thead>
+        <tr>
+            <td width="5%" colspan="2" class="message tableContentAdjust">{{q.liableDepartmentName}}</td>
+            <!--<td width="8.4%" colspan="3" class="message tableContentAdjust">{{q.liableDepartmentCode}}</td>-->
+            <td width="95%" colspan="30" class="message tableContentAdjust bkColor1">LPG销售情况</td>
+
+        </tr>
+        <tr>
+            <td width="5.6%" colspan="2" class="message tableContentAdjust">品名项目</td>
+            <td width="39.2%" colspan="25" class="message tableContentAdjust bkColor1">今日实际销售(斤)</td>
+
+            <td width="5.6%" colspan="5" class="message tableContentAdjust bkColor1">月累计销售</td>
+        </tr>
+        <tr>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust">品名</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust">用户</td>
+
+            <td width="5.6%" colspan="4" class="message tableContentAdjust bkColor1">现金销售</td>
+            <td width="5.6%" colspan="4" class="message tableContentAdjust bkColor1">微信支付</td>
+            <td width="5.6%" colspan="4" class="message tableContentAdjust bkColor1">支付宝支付</td>
+            <td width="5.6%" colspan="4" class="message tableContentAdjust bkColor1">赊销</td>
+            <td width="5.6%" colspan="4" class="message tableContentAdjust bkColor1">月结</td>
+
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">销售(kg)</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">收款金额(元)</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">退余气(kg)</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">退款金额(元)</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">今均价(元/kg)</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">销售(kg)</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">销售金额(元)</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">退余气(kg)</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">退款金额(元)</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">月均价(元/kg)</td>
+        </tr>
+        <tr>
+
+
+            <td width="2.8%" class="message tableContentAdjust bkColor1">销售(kg)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">销售金额(元)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">退余气(kg)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">退款金额(元)</td>
+
+            <td width="2.8%" class="message tableContentAdjust bkColor1">销售(kg)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">销售金额(元)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">退余气(kg)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">退款金额(元)</td>
+
+            <td width="2.8%" class="message tableContentAdjust bkColor1">销售(kg)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">销售金额(元)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">退余气(kg)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">退款金额(元)</td>
+
+            <td width="2.8%" class="message tableContentAdjust bkColor1">销售(kg)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">销售金额(元)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">退余气(kg)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">退款金额(元)</td>
+
+            <td width="2.8%" class="message tableContentAdjust bkColor1">销售(kg)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">销售金额(元)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">退余气(kg)</td>
+            <td width="2.8%" class="message tableContentAdjust bkColor1">退款金额(元)</td>
+        </tr>
+
+
+        </thead>
+        <tbody>
+        <tr  ng-repeat="item in data.customerTypesList">
+            <td width="2.8%" ng-if="$index ==0" rowspan={{data.customerTypesList.length}} class="message tableContentAdjust">液化气</td>
+            <td width="2.8%"  class="message tableContentAdjust">{{item.name}}</td>
+
+
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+        </tr>
+        <tr>
+            <td width="5.6%" colspan="2" class="message tableContentAdjust">合计</td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+
+        </tr>
+        </tbody>
+        <tbody>
+
+        <tr>
+            <td width="5.6%" colspan="2" class="message tableContentAdjust">专卖瓶</td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust"></td>
+
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+

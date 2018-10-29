@@ -21,6 +21,7 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
     //地图初始化
     var mapInitial = function() {
         $scope.map = new AMap.Map('mapContainer', {
+            resizeEnable: true,
             center: [$scope.vm.currentOrder.recvLongitude, $scope.vm.currentOrder.recvLatitude],
             zoom: 15
         });
@@ -59,17 +60,42 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
     };
 
     var markerWorkersClick = function (e) {
-        var displayInfo = e.target.content.name+"   "+e.target.content.mobilePhone;
-        infoWindow.setContent(displayInfo);
-        infoWindow.open($scope.map, e.target.getPosition());
-        //将这个配送员信息更新至表单
         for (var i=0;i<$scope.vm.onLineWorkersList.length;i++) {
             if(e.target.content.userId == $scope.vm.onLineWorkersList[i].userId){
                 $scope.vm.selectedWorker =  _.clone($scope.vm.onLineWorkersList[i]);
                 break;
             }
         }
-        console.log($scope.vm.selectedWorker);
+        var queryParams = {
+            pageNo: 1,
+            pageSize: 100,
+            liableUserId: $scope.vm.selectedWorker.userId,
+            loadStatus:1
+        };
+        OrderService.retrieveBottles(queryParams).then(function (bottles) {
+            var bottleCount_5 = 0;
+            var bottleCount_15 = 0;
+            var bottleCount_50 = 0;
+            for(var i=0;i<bottles.items.length; i++ ){
+                var bottle = bottles.items[i];
+                if(bottle.spec.code=="0001"){
+                    bottleCount_5++;
+                }else if(bottle.spec.code=="0002") {
+                    bottleCount_15++;
+                }else if(bottle.spec.code=="0003") {
+                    bottleCount_50++;
+                }
+            }
+            var info=[];
+            info.push("<div><div><img style=\"flow:left;width: 25px;height: 25px\" src=\"../images/icon/bottle.ico\"/>"+"<b style='font-size: 21px'>"+"直销员  |  "+$scope.vm.selectedWorker.userId+"</b></div>");
+            info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>"+"姓名:   "+$scope.vm.selectedWorker.name+"</b>");
+            info.push("<b>5公斤(重瓶) :   "+bottleCount_5+"</b>");
+            info.push("<b>15公斤(重瓶):   "+bottleCount_15+"</b>");
+            info.push("<b>50公斤(重瓶):   "+bottleCount_50+"</b>");
+            info.push("</div></div>");
+            infoWindow.setContent(info.join("<br/>"));
+            infoWindow.open($scope.map, e.target.getPosition());
+        });
 
     };
 
@@ -154,16 +180,36 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
             if($scope.vm.onLineWorkersList[i].userPosition==null){
                 continue;
             }
+
             var markerDest = new AMap.Marker({
                 icon : iconWorker,//24px*24px
                 position : [$scope.vm.onLineWorkersList[i].userPosition.longitude, $scope.vm.onLineWorkersList[i].userPosition.latitude],
                 offset : new AMap.Pixel(0,0),
-                map : $scope.map
+                label:{content:$scope.vm.onLineWorkersList[i].name, offset:new AMap.Pixel(0,40)}
+
             });
+            markerDest.setMap($scope.map);
+            // 设置鼠标划过点标记显示的文字提示
+            markerDest.setTitle('我是marker的title');
+
+            // 设置label标签
+            // label默认蓝框白底左上角显示，样式className为：amap-marker-label
+            //markerDest.setLabel({
+            //    //修改label相对于maker的位置
+            //    offset: new AMap.Pixel(20, 20),
+            //    content:"111"
+            //});
 
 
             markerDest.content = {userId:$scope.vm.onLineWorkersList[i].userId,
                 name:$scope.vm.onLineWorkersList[i].name, mobilePhone:$scope.vm.onLineWorkersList[i].mobilePhone};
+
+
+
+
+            //var displayInfo = markerDest.content.name+"   "+markerDest.content.mobilePhone;
+            //infoWindow.setContent(displayInfo);
+            //infoWindow.open($scope.map, markerDest.getPosition());
 
             //给Marker绑定单击事件
             markerDest.on('click', markerWorkersClick);
@@ -182,8 +228,10 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
     };
 
     var refleshWorkerInfo = function () {
-        console.log("refleshWorkerInfo");
+        //console.log("refleshWorkerInfo");
         $scope.vm.selectedWorker=$scope.vm.selectedWorker;
     };
+
+
     init();
 }]);
