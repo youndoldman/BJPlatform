@@ -21,6 +21,12 @@ var financeApp = angular.module('FinanceApp', ['ui.router', 'CommonModule', 'ang
                         templateUrl: '../pages/finance/storeDailySales.html',
                         controller: 'storeDailySalesCtrl',
                         resolve: {}
+                    },
+
+                    "description@finance": {
+                        templateUrl: '../pages/finance/storeDailySalesByWeight.html',
+                        controller: 'storeDailySalesByWeightCtrl',
+                        resolve: {}
                     }
                 },
                 onEnter: function (rootService, NavItem) {

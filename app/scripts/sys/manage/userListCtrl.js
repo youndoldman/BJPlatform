@@ -12,6 +12,7 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
         var historyQ = $scope.pager.getQ();
 
         $scope.q = {
+            userId: null,
             userName: null,
             userGroup:{name:"全选",code:null}
         };
@@ -89,7 +90,8 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
 
         var searchUsers = function () {
             var queryParams = {
-                userId: $scope.q.userName,
+                userId: $scope.q.userId,
+                userName: $scope.q.userName,
                 pageNo: $scope.pager.getCurPageNo(),
                 orderBy:"alive_status desc",
                 pageSize: $scope.pager.pageSize,

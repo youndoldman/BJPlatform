@@ -15,7 +15,9 @@
                 <label class="input"><select  ng-model="q.serviceStatus" ng-options="serviceStatus.name for serviceStatus in vm.serviceStatusList" class="form-control" ng-selected="" ng-change="search()"></select></label>
                 <label class="input"><input type="text" class="form-control input-sm" ng-model="q.liableUserId" ng-change="search()" placeholder="责任人"> </label>
                 <label class="input"><input type="text" class="form-control input-sm" ng-model="q.liableDepartmentCode" ng-change="search()" placeholder="责任部门"> </label>
+
                 <span class="glyphicon glyphicon-calendar" ng-click="initDepartmentSelect()"></span>
+                <label class="input"><select  ng-model="q.spec" ng-options="spec.name for spec in vm.specList" class="form-control" ng-selected="" ng-change="search()"></select></label>
                 <button type="submit" class="btn btn-sm btn-primary" ng-click="search()"><i class="fa fa-search"></i> 搜索 </button>
 
                 <!--<button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUp()"><i class="fa fa-plus"></i> 新增钢瓶 </button>-->

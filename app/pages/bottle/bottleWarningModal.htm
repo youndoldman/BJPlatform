@@ -30,7 +30,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="history in vm.historyListSplitByPage">
+                                    <tr ng-repeat="history in vm.historyListSplitByPage" ng-class="{danger:history.id==vm.warning.gasCylinderSvcStatusOpHis.id}">
                                         <td></td>
                                         <td class="message">{{$index+1+pagerOpsLog.pageSize*(pagerOpsLog.getCurPageNo()-1)}}</td>
                                         <td class="message">{{history.srcUser}}</td>
