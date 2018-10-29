@@ -298,6 +298,7 @@ bottleApp.controller('BottleWarningModalCtrl', ['$scope', 'close', 'BottleServic
                         longititude: "",
                         latitude: ""
                     };
+                    tempHistory.id = historys.items[i].id;
                     tempHistory.srcUser = historys.items[i].srcUser.userId + "(" + historys.items[i].srcUser.name + ")";
                     tempHistory.destUser = historys.items[i].targetUser.userId + "(" + historys.items[i].targetUser.name + ")";
                     tempHistory.detail = historys.items[i].note;

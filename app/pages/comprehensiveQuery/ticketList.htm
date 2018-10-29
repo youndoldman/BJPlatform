@@ -31,6 +31,9 @@
                         <button title="删除时间" ng-click="deleteTimeRange()" type="button" class="btn btn-primary btn-outline btn-xs">
                             <i class="fa fa-trash-o"></i>
                         </button>
+                        <label class="input">状态：</label>
+                        <label class="input"><select  ng-model="q.validStatus" ng-options="validStatus.name for validStatus in vm.validStatusList" class="form-control" ng-selected="" ng-change="vaildStatusChange()"></select></label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -75,7 +78,7 @@
             <td class="message">{{ticket.startDate}}</td>
             <td class="message">{{ticket.endDate}}</td>
             <td class="message">{{ticket.createTime}}</td>
-            <td class="operate text-center">
+            <td class="operate">
                 <button title="修改" ng-click="modify(ticket)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="fa fa-edit"></i>
                 </button>

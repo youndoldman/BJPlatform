@@ -332,9 +332,6 @@ financeApp.controller('dailyMonthlySalesCtrl', ['$scope', '$rootScope', '$filter
             console.info("行数"+rows+"列数"+cells);
         };
         init();
-
-
-
         /*
          * 表格求和。
          * table 表示当前求和的表格

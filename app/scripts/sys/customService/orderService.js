@@ -5,6 +5,7 @@ customServiceApp.service('OrderService', ['$http', 'URI', 'promiseWrapper','MISC
     var taskOrdersUri = URI.resources.taskOrders;
     var taskOrdersDealUri = URI.resources.taskOrdersDeal;
     var taskOrdersTransferUri = URI.resources.taskOrdersTransfer;
+    var bottlesUri = URI.resources.bottle;//钢瓶接口
 
     var usersUri = URI.resources.users;
     var orderCancelUri = URI.resources.orderCancel;
@@ -124,7 +125,9 @@ customServiceApp.service('OrderService', ['$http', 'URI', 'promiseWrapper','MISC
         return promise.wrap($http.get(taskOrdersTransferUri+'/'+taskId, {params: params}));
 
     }
-
+    this.retrieveBottles = function (params) {
+        return promise.wrap($http.get(bottlesUri, {params: params}));
+    };
 
 }]);
 

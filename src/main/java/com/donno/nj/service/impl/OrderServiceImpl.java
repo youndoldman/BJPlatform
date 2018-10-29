@@ -1231,7 +1231,6 @@ public class OrderServiceImpl implements OrderService
         }
 
         String message = "";
-
         /*优惠券*/
         String[] couponList = coupuns.split(",");
         Float couponSum = 0f;
@@ -1281,7 +1280,6 @@ public class OrderServiceImpl implements OrderService
                 }
 
                 checkTicket(order,target);
-
                 /*将气票状态设置为已使用*/
                 target.setTicketStatus(TicketStatus.TSUsed);
                 target.setUseTime(new Date());

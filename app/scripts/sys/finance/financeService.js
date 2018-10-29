@@ -113,5 +113,7 @@ financeApp.service('FinanceService', ['$http', 'URI', 'promiseWrapper', function
     this.searchGasCyrChargeSpec  = function (params) {
         return promise.wrap($http.get(gasCyrChargeSpecUri, {params: params}));
     };
+
+
 }]);
 

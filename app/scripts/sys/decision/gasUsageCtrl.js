@@ -77,7 +77,6 @@ decisionApp.controller('GasUsageCtrl', ['$scope', '$rootScope', '$filter', '$loc
                         saveAsImage : {show: true}
                     }
                 },
-
                 // 图例
                 legend: {
                     data: legend,
@@ -90,20 +89,20 @@ decisionApp.controller('GasUsageCtrl', ['$scope', '$rootScope', '$filter', '$loc
                         return params.value[0] + ' : ' + params.value[1];
                     },
                     axisPointer: {
-                        animation: false
+                        animation: true
                     }
                 },
                 xAxis: {
                     type: 'time',
                     splitLine: {
-                        show: false
+                        show: true
                     }
                 },
                 yAxis: {
                     type: 'value',
                     boundaryGap: [0, '100%'],
                     splitLine: {
-                        show: false
+                        show: true
                     }
                 },
                 // 数据内容数组
