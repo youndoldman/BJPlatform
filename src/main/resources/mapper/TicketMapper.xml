@@ -86,17 +86,27 @@
                 and t_ticket.spec_idx = (SELECT  id from t_goods where code = #{specCode})
             </if>
 
-            <if test="expireType != null">
-                <if test="expireType == 0">
-                  and  t_ticket.exp_time_end  >=  DATE_FORMAT(now(), '%Y-%m-%d')
-                </if>
-                <if test="expireType == 1">
-                  and  ( TO_DAYS(NOW()) -  TO_DAYS(t_ticket.exp_time_end) ) > 0
-                </if>
-                <!--<if test="expireType == 2">-->
-                    <!--and  DATE_FORMAT(now(), '%Y-%m-%d')  BETWEEN t_ticket.exp_time_start AND  t_ticket.exp_time_end-->
+            <!--<if test="expireType != null">-->
+                <!--<if test="expireType == 0">-->
+                  <!--and  t_ticket.exp_time_end  >=  DATE_FORMAT(now(), '%Y-%m-%d')-->
                 <!--</if>-->
+                <!--<if test="expireType == 1">-->
+                  <!--and  ( TO_DAYS(NOW()) -  TO_DAYS(t_ticket.exp_time_end) ) > 0-->
+                <!--</if>-->
+                <!--&lt;!&ndash;<if test="expireType == 2">&ndash;&gt;-->
+                    <!--&lt;!&ndash;and  DATE_FORMAT(now(), '%Y-%m-%d')  BETWEEN t_ticket.exp_time_start AND  t_ticket.exp_time_end&ndash;&gt;-->
+                <!--&lt;!&ndash;</if>&ndash;&gt;-->
+            <!--</if>-->
+
+            <if test="expired != null">
+              <if test="expired == true">
+                  and   (DATE_FORMAT(now(), '%Y-%m-%d') >= t_ticket.exp_time_end)
+              </if>
+              <if test="expired != true">
+                  and  t_ticket.exp_time_end  >=  DATE_FORMAT(now(), '%Y-%m-%d')
+              </if>
             </if>
+
 
             <if test="saleStartTime != null">
                 and t_ticket.create_time >= #{saleStartTime}

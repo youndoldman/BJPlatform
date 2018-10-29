@@ -43,6 +43,7 @@ public class TicketController
                                    @RequestParam(value = "useStatus", required = false) Integer useStatus,
                                    @RequestParam(value = "saleStartTime", defaultValue = "") String saleStartTime,
                                    @RequestParam(value = "saleEndTime", defaultValue = "") String saleEndTime,
+                                   @RequestParam(value = "expired", required = false) Boolean expired,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
@@ -77,6 +78,11 @@ public class TicketController
         if (useStatus != null)
         {
             params.putAll(ImmutableMap.of("useStatus", useStatus));
+        }
+
+        if (expired != null)
+        {
+            params.putAll(ImmutableMap.of("expired", expired));
         }
 
         if (saleStartTime.trim().length() > 0)

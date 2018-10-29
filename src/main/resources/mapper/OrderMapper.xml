@@ -145,7 +145,7 @@
     <sql id = "getListCondition">
         <where>
             <if test="orderSn != null">
-                AND  order_sn  like CONCAT( #{orderSn}, '%')
+                AND LOCATE(#{orderSn}, `order_sn`)>0
             </if>
 
             <if test="callInPhone != null">
@@ -206,7 +206,7 @@
             </if>
 
             <if test="addrDetail != null">
-                AND  addr_detail like CONCAT(CONCAT('%', #{addrDetail}), '%')
+                AND LOCATE(#{addrDetail}, `addr_detail`)>0
             </if>
 
             <if test="startTime != null"  >
@@ -325,4 +325,12 @@
         #{orderIdx},#{weixinOrderSn},#{amount}
         )
     </insert>
+
+
+    <select id="findOrderSnById" resultType="java.lang.String">
+        SELECT <include refid="TblOrder"/>.order_sn
+        FROM <include refid="TblOrder"/>
+        WHERE
+        id = #{id}
+    </select>
 </mapper>
