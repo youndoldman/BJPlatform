@@ -52,7 +52,7 @@
                 and code = #{code}
             </if>
             <if test="name != null">
-                and  name LIKE CONCAT('%',#{name},'%')
+                and LOCATE(#{name},`name`)>0
             </if>
 
         </where>
@@ -80,7 +80,7 @@
                 and code = #{code}
             </if>
             <if test="name != null">
-                and  name LIKE CONCAT('%',#{name},'%')
+                and LOCATE(#{name},`name`)>0
             </if>
             <if test="orderBy != null">
                 <if test="orderBy != ''">
@@ -106,7 +106,7 @@
             and code = #{code}
         </if>
         <if test="name != null">
-            and  name LIKE CONCAT('%',#{name},'%')
+            and LOCATE(#{name},`name`)>0
         </if>
     </delete>
 

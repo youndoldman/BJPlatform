@@ -158,20 +158,19 @@
         (<include refid="JoinWhereCondition"/>)
 
         <if test="userId != null">
-            AND t_user.user_id like CONCAT(#{userId}, '%')
+            AND  LOCATE(#{userId},`user_id`)>0
         </if>
 
         <if test="userName != null">
-
-            AND t_user.name like CONCAT( #{userName}, '%')
+            AND  LOCATE(#{userName},`name`)>0
         </if>
 
         <if test="identity != null">
-            AND  t_user.identity = #{identity}
+            AND  LOCATE(#{identity},`identity`)>0
         </if>
 
         <if test="number != null">
-            AND cst_number like CONCAT( #{number}, '%')
+            AND  LOCATE(#{number},`cst_number`)>0
         </if>
 
         <if test="groupCode != null">
@@ -203,7 +202,7 @@
         </if>
 
         <if test="phone != null">
-            AND phone like CONCAT( #{phone}, '%')
+            AND  LOCATE(#{phone},`phone`)>0
         </if>
 
         <if test="addrProvince != null">
@@ -219,7 +218,7 @@
         </if>
 
         <if test="addrDetail != null">
-            AND  addr_detail like CONCAT(CONCAT('%', #{addrDetail}), '%')
+            AND  LOCATE(#{addrDetail},`addr_detail`)>0
         </if>
     </sql>
 

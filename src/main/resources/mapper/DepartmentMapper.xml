@@ -78,7 +78,7 @@
             </if>
 
             <if test="name != null">
-                and  name LIKE CONCAT('%',#{name},'%')
+                and LOCATE(#{name},`name`)>0
             </if>
 
             <if test="orderBy != null">
@@ -107,7 +107,7 @@
 
 
             <if test="name != null">
-                and  name LIKE CONCAT('%',#{name},'%')
+                and LOCATE(#{name},`name`)>0
             </if>
         </where>
     </select>
@@ -128,7 +128,7 @@
             </if>
 
             <if test="name != null">
-                and  name LIKE CONCAT('%',#{name},'%')
+                and LOCATE(#{name},`name`)>0
             </if>
             <!--<if test="code != null">-->
                 <!--and parent_idx = ( SELECT id from t_department where code = #{code} )-->

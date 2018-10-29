@@ -96,7 +96,7 @@
 
             <if test="code != null">AND  code = #{code}</if>
             <if test="name != null">
-                AND  name like CONCAT(CONCAT('%', #{name}), '%')
+                AND  LOCATE(#{name},`name`)>0
             </if>
             <if test="specifications != null">AND  specifications = #{specifications}</if>
             <if test="weight != null">AND  weight = #{weight}</if>

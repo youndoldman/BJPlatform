@@ -71,7 +71,7 @@
     <sql id = "getListCondition">
         <where>
             <if test="orderSn != null">
-                AND  order_sn  like CONCAT( #{orderSn}, '%')
+                AND  LOCATE(#{orderSn},`order_sn`)>0
             </if>
 
             <if test="userId != null">

@@ -57,7 +57,7 @@
         </if>
 
         <if test="detail != null">
-            AND  addr_detail like CONCAT(CONCAT('%', #{detail}), '%')
+            AND  LOCATE(#{detail},`addr_detail`)>0
         </if>
 
       <if test="orderBy != null">
@@ -101,7 +101,7 @@
         </if>
 
         <if test="detail != null">
-            AND  addr_detail like CONCAT(CONCAT('%', #{detail}), '%')
+            AND  LOCATE(#{detail},`addr_detail`)>0
         </if>
     </select>
 

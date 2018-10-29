@@ -120,11 +120,15 @@
     <sql id = "getListCondition">
         <where>
 
-            <if test="number != null"> number like CONCAT( #{number}, '%')  </if>
+            <if test="number != null">
+                 LOCATE(#{number},`number`)>0   </if>
 
-            <if test="publicNumber != null"> number like CONCAT( #{public_number}, '%')  </if>
+            <if test="publicNumber != null">
+                AND LOCATE(#{publicNumber},`public_number`)>0
+            </if>
 
-            <if test="specCode != null">AND  spec_idx =  ( select id from t_gas_cylinder_spec where code = #{specCode} ) </if>
+            <if test="specCode != null">
+                AND  spec_idx =  ( select id from t_gas_cylinder_spec where code = #{specCode} ) </if>
 
             <if test="factoryCode != null">AND  factory_idx =  ( select id from t_gas_cyn_factory where code = #{factoryCode} ) </if>
 

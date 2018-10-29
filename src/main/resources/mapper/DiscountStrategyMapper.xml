@@ -60,7 +60,7 @@
         id > 0
 
         <if test="name != null">
-        AND  name like CONCAT(CONCAT('%', #{name}), '%')
+            and   LOCATE(#{name},`name`)>0
         </if>
 
 
@@ -112,7 +112,7 @@
 
 
         <if test="name != null">
-            AND  name like CONCAT(CONCAT('%', #{name}), '%')
+            and   LOCATE(#{name},`name`)>0
         </if>
 
 

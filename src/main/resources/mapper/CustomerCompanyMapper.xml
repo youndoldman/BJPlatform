@@ -61,7 +61,7 @@
         <where>
             <if test="name != null">
             <if test="name != ''">
-                name LIKE CONCAT('%',#{name},'%')
+                LOCATE(#{name},`name`)>0
             </if>
             </if>
         </where>
@@ -84,7 +84,7 @@
         FROM  <include refid="TableName"/>
         <where>
             <if test="name != ''">
-                name LIKE CONCAT('%',#{name},'%')
+                LOCATE(#{name},`name`)>0
             </if>
         </where>
     </select>

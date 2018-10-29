@@ -97,20 +97,20 @@
         (<include refid="JoinWhereCondition"/>)
 
         <if test="userId != null">
-            AND t_user.user_id like CONCAT(CONCAT('%', #{userId}), '%')
+            AND LOCATE(#{userId},`user_id`)>0
         </if>
 
         <if test="userName != null">
-            AND t_user.name like CONCAT(CONCAT('%', #{userName}), '%')
+            AND LOCATE(#{userName},`name`)>0
         </if>
 
         <if test="identity != null">
-            and (t_user.identity = '${identity}')
+            AND  LOCATE(#{identity},`identity`)>0
         </if>
 
 
         <if test="jobNumber != null">
-            AND t_sysuser.job_number like CONCAT(CONCAT('%', #{jobNumber}), '%')
+            AND  LOCATE(#{jobNumber},`job_number`)>0
         </if>
 
         <if test="groupCode != null">
@@ -122,11 +122,11 @@
         </if>
 
         <if test="mobilePhone != null">
-            AND t_sysuser.mobile_phone like CONCAT(CONCAT('%', #{mobilePhone}), '%')
+            AND  LOCATE(#{mobilePhone},`mobile_phone`)>0
         </if>
 
         <if test="officePhone != null">
-            AND t_sysuser.office_phone like CONCAT(CONCAT('%', #{officePhone}), '%')
+            AND  LOCATE(#{officePhone},`office_phone`)>0
         </if>
 
         <if test="aliveStatus != null">

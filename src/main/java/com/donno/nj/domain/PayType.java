@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum PayType implements IEnum
 {
-    PTOnLine("扫码支付", 0), PTCash("现金支付", 1),PTDebtCredit("赊销", 2),PTMonthlyCredit("月结", 3),
+    PTOnLine("微信扫码支付", 0), PTCash("现金支付", 1),PTDebtCredit("赊销", 2),PTMonthlyCredit("月结", 3),
     PTTicket("气票", 4),PTCoupon("优惠券票",5),PTCheck("支票",6)    ;
 
     // 成员变量

@@ -54,7 +54,7 @@
         FROM  <include refid="TableName"/>
         <where>
             <if test="name != ''">
-                name LIKE CONCAT('%',#{name},'%')
+                AND  LOCATE(#{name},`name`)>0
             </if>
         </where>
     </select>

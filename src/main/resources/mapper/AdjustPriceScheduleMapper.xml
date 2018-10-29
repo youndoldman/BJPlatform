@@ -58,7 +58,7 @@
         id > 0
 
         <if test="name != null">
-        AND  name like CONCAT(CONCAT('%', #{name}), '%')
+            AND  LOCATE(#{name},`name`)>0
         </if>
 
         <if test="status != null">
@@ -95,9 +95,8 @@
         FROM <include refid="TblAdjustPriceSchedule"/>
         WHERE
         id > 0
-
         <if test="name != null">
-            AND  name like CONCAT(CONCAT('%', #{name}), '%')
+            AND  LOCATE(#{name},`name`)>0
         </if>
 
         <if test="status != null">

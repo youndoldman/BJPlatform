@@ -53,7 +53,7 @@
                 and code = #{code}
             </if>
             <if test="name != null">
-                and  name LIKE CONCAT('%',#{name},'%')
+                and LOCATE(#{name},`name`)>0
             </if>
 
         </where>
@@ -79,7 +79,7 @@
                 and code = #{code}
             </if>
             <if test="name != null">
-                and  name LIKE CONCAT('%',#{name},'%')
+                and LOCATE(#{name},`name`)>0
             </if>
         </where>
     </select>
@@ -100,7 +100,7 @@
             and code = #{code}
         </if>
         <if test="name != null">
-            and  name LIKE CONCAT('%',#{name},'%')
+            and LOCATE(#{name},`name`)>0
         </if>
     </delete>
 
