@@ -57,6 +57,7 @@
 			<list>
 				<ref bean="userAliveCheckJobsScheduler"/>
 				<ref bean="adjustPriceJobsScheduler"/>
+				<ref bean="overtimeJobsScheduler"/>
 			</list>
 		</property>
 
@@ -64,6 +65,7 @@
 			<list>
 				<ref bean="userAliveCheckJobs"/>
 				<ref bean="adjustPriceJobs"/>
+				<ref bean="overtimeJobs"/>
 			</list>
 		</property>
 
@@ -87,6 +89,15 @@
 		<property name="requestsRecovery" value="true" />
 	</bean>
 
+	<bean name="overtimeJobs"
+		  class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+				  value="com.donno.nj.task.OrderOvertimeJobs" />
+		<property name="durability" value="true" />
+		<property name="requestsRecovery" value="true" />
+	</bean>
+
+
 	<!-- 配置触发时间 -->
 	<bean name="userAliveCheckJobsScheduler" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="userAliveCheckJobs"/>
@@ -103,6 +114,17 @@
 		<property name="jobDetail" ref="adjustPriceJobs"/>
 		<property name="cronExpression">
 			<value>0/20 * * * * ?</value>
+		</property>
+		<property name="timeZone">
+			<value>GMT+8:00</value>
+		</property>
+	</bean>
+
+	<!-- 配置触发时间 -->
+	<bean name="overtimeJobsScheduler" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="overtimeJobs"/>
+		<property name="cronExpression">
+			<value>0/300 * * * * ?</value>
 		</property>
 		<property name="timeZone">
 			<value>GMT+8:00</value>

@@ -22,12 +22,11 @@ public interface OrderService
 
     void update(Order srcOrder, Order newOrder);
 
-
     void orderPay(Order order, PayType payType);
     void ticketPay(Order order,String coupuns,String tickets);
 
-    void update(String taskId,Map<String, Object> variables,Integer id, Order newOrder);//订单任务更新
 
+    void taskUpdate(String taskId,String orderSn,Integer newOrderStatus,String candiUser,Boolean forceDispatch);//订单任务更新
     void taskModify(String taskId,String orderSn,String  userId);//订单重新指派
 
     void deleteById(Integer id);
@@ -39,6 +38,8 @@ public interface OrderService
     void weixinPayOk(String orderSn,String weixinSn,Integer amount);
 
     Order caculate(String orderSn,String gasCynNumbers);
+
+    void checkOverTime();
 
 
 }

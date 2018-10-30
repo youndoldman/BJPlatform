@@ -43,6 +43,7 @@ public class Order implements Serializable
     private String comment; //订单附言
 
     private SysUser dispatcher;//订单派送人
+    private Date dispatcherStartTime;
 
     private OrderServiceQuality orderServiceQuality;//服务质量
     private String  recycleGasCylinder;//回收的钢瓶号   zy添加
@@ -92,6 +93,11 @@ public class Order implements Serializable
     public SysUser getDispatcher()
     {
         return  dispatcher;
+    }
+
+    public Date getDispatcherStartTime()
+    {
+        return dispatcherStartTime;
     }
 
     public Float getOrderAmount()
@@ -280,6 +286,10 @@ public class Order implements Serializable
     public void setDispatcher(SysUser dispatcher)
     {
         this.dispatcher = dispatcher;
+    }
+
+    public void setDispatcherStartTime(Date dispatcherStartTime) {
+        this.dispatcherStartTime = dispatcherStartTime;
     }
 
     public void setOrderAmount(Float orderAmount)

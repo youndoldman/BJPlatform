@@ -53,4 +53,8 @@ public interface ServerConstantValue
     /*推送参数*/
     public String NEW_ORDER_TITLE = "待抢订单";
     public String FORCE_ORDER_TITLE = "系统指派订单";
+    public String CANCEL_ORDER_TITLE = "作废订单";
+    public String OVERTIME_ORDER_TITLE = "订单超时";
+
+    public String URGENT_ORDER_TITLE = "订单加急";
 }

@@ -7,6 +7,7 @@
         <id column="alive_expire_time" property="aliveExpireTime" jdbcType="INTEGER"/>
         <id column="alive_check_time" property="aliveCheckTime" jdbcType="INTEGER"/>
         <id column="push_order_range" property="pushOrderRange" jdbcType="INTEGER"/>
+        <id column="order_overtime" property="orderOvertime" jdbcType="INTEGER"/>
         <id column="tray_warning_weight" property="trayWarningWeight" jdbcType="INTEGER"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
@@ -36,6 +37,15 @@
         FROM <include refid="TableName"/>
     </select>
 
+    <select id="getOrderOverTime" resultType="Integer">
+        SELECT  order_overtime
+        FROM <include refid="TableName"/>
+    </select>
+
+    <select id="getMaxDispatchRange" resultType="Integer">
+        SELECT  push_order_max_range
+        FROM <include refid="TableName"/>
+    </select>
 
 
 

@@ -5,6 +5,7 @@ import com.donno.nj.dao.*;
 import com.donno.nj.domain.*;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.service.OrderService;
+import com.donno.nj.service.SmsService;
 import com.donno.nj.service.WorkFlowService;
 import com.donno.nj.util.AppUtil;
 import com.donno.nj.util.DistanceHelper;
@@ -18,6 +19,7 @@ import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import com.donno.nj.util.Clock;
 
 
 import java.util.List;
@@ -88,6 +90,9 @@ public class OrderServiceImpl implements OrderService
 
     @Autowired
     private DiscountDetailDao discountDetailDao;
+
+    @Autowired
+    private SmsService smsService;
 
     @Override
     public Optional<Order> findBySn(String sn) {
@@ -778,14 +783,20 @@ public class OrderServiceImpl implements OrderService
             throw new ServerSideBusinessException("创建定单失败，系统用户组信息错误！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        /*指定可办理的组*/
+        /*指定可办理的组，客服组都可以办理*/
         variables.put(ServerConstantValue.ACT_FW_STG_1_CANDI_GROUPS,String.valueOf(group.getId()));
 
          /*取系统中可推送派送员的范围参数*/
-        Integer dispatchRange = systemParamDao.getDispatchRange();
-        if (dispatchRange == null)
+        Integer sysDispatchRange = systemParamDao.getDispatchRange();
+        if (sysDispatchRange == null)
         {
-            dispatchRange = 5;
+            sysDispatchRange = 5;
+        }
+
+        Integer maxDistance = systemParamDao.getMaxDispatchRange();
+        if (maxDistance == null || maxDistance == 0)
+        {
+            maxDistance = 10;
         }
 
         /*指定可办理该流程用户,根据经纬度寻找合适的派送工*/
@@ -795,27 +806,52 @@ public class OrderServiceImpl implements OrderService
         String candUser = "";
         if (sysUsersList.size() > 0)
         {
-            for (SysUser sysUser:sysUsersList)
+            Integer dispatchRange = sysDispatchRange;
+            while (candUser.trim().length() == 0)
             {
-                if (sysUser.getUserPosition() != null)
+                for (SysUser sysUser:sysUsersList)
                 {
-                    Double distance = DistanceHelper.Distance(order.getRecvLatitude(),order.getRecvLongitude(),sysUser.getUserPosition().getLatitude(),sysUser.getUserPosition().getLongitude());
-                    if ( distance < dispatchRange)
+                    if (sysUser.getUserPosition() != null)
                     {
-                        if (candUser.trim().length() > 0 )
+                        Double distance = DistanceHelper.Distance(order.getRecvLatitude(),order.getRecvLongitude(),sysUser.getUserPosition().getLatitude(),sysUser.getUserPosition().getLongitude());
+                        if ( distance < dispatchRange)
                         {
-                            candUser = candUser + ",";
+                            if (candUser.trim().length() > 0 )
+                            {
+                                candUser = candUser + ",";
+                            }
+                            candUser = candUser + sysUser.getUserId();
                         }
-                        candUser = candUser + sysUser.getUserId();
                     }
+                }
+
+                if (candUser.trim().length() > 0)
+                {
+                    break;
+                }
+                else
+                {
+                    dispatchRange = dispatchRange +  1;
+                }
+
+                if (dispatchRange > maxDistance)
+                {
+                    break;
                 }
             }
 
-            variables.put(ServerConstantValue.ACT_FW_STG_1_CANDI_USERS,candUser);
+            if (candUser.trim().length() > 0 )
+            {
+                variables.put(ServerConstantValue.ACT_FW_STG_1_CANDI_USERS,candUser);
+            }
+            else
+            {
+                throw new ServerSideBusinessException("附近没有配送人员，无法创建订单！", HttpStatus.NOT_ACCEPTABLE);
+            }
         }
         else
         {
-            throw new ServerSideBusinessException("系统暂无配送人员，无法创建订单！", HttpStatus.NOT_ACCEPTABLE);
+            throw new ServerSideBusinessException("系统尚无配送人员，无法创建订单！", HttpStatus.NOT_ACCEPTABLE);
         }
 
         if (workFlowService.createWorkFlow(WorkFlowTypes.GAS_ORDER_FLOW,order.getCustomer().getUserId(),variables,order.getOrderSn()) < 0)
@@ -824,15 +860,19 @@ public class OrderServiceImpl implements OrderService
         }
 
         /*发送系统推送消息*/
-        try {
-            MsgPush msgPush = new MsgPush();
-            msgPush.PushNotice(candUser, ServerConstantValue.NEW_ORDER_TITLE,order.getRecvAddr().getCity()
-                    +order.getRecvAddr().getCounty()+order.getRecvAddr().getDetail());
-        }
-        catch(Exception e)
+        if (candUser.trim().length() > 0)
         {
-            System.out.print(e.getMessage());
-            //消息推送失败
+            try
+            {
+                MsgPush msgPush = new MsgPush();
+                msgPush.PushNotice(candUser, ServerConstantValue.NEW_ORDER_TITLE,order.getRecvAddr().getCity()
+                        +order.getRecvAddr().getCounty()+order.getRecvAddr().getDetail());
+            }
+            catch(Exception e)
+            {
+                System.out.print(e.getMessage());
+                //消息推送失败
+            }
         }
 
     }
@@ -1043,52 +1083,228 @@ public class OrderServiceImpl implements OrderService
 
     }
 
+
     @Override
     @OperationLog(desc = "订单任务更新信息")
-    public void update(String taskId,Map<String, Object> variables,Integer id, Order newOrder)
+    public void taskUpdate(String taskId,String orderSn,Integer newOrderStatus,String candiUser,Boolean forceDispatch)
     {
-        newOrder.setId(id);
-
-        /*更新数据*/
-        if (newOrder.getOrderStatus() == OrderStatus.OSCompleted.getIndex())
+        /*检查订单是否存在，更新订单状态*/
+        Order srcOrder =  orderDao.findBySn(orderSn);
+        if ( srcOrder == null)
         {
-            newOrder.setCompleteTime(new Date());
+            throw new ServerSideBusinessException("定单不存在！", HttpStatus.NOT_ACCEPTABLE);
         }
+
+        Order newOrder = new Order();
+        newOrder.setId(srcOrder.getId());
+        newOrder.setOrderStatus(newOrderStatus);
+
+        /*检查candiuser是否存在*/
+        SysUser targetUser = sysUserDao.findBySysUserId(candiUser);
+        if (targetUser == null)
+        {
+            throw new ServerSideBusinessException("用户不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        Map<String, Object> variables = new HashMap<String, Object>();//任务变量
+        Group  group = groupDao.findByCode(ServerConstantValue.GP_CUSTOMER_SERVICE);//始终将客服加入组，客服始终能具有处理权限
+        if(group == null)
+        {
+            throw new ServerSideBusinessException("用户组信息错误！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        /*抢单或指派订单*/
+        if (newOrderStatus == OrderStatus.OSDispatching.getIndex())
+        {
+            variables.put(ServerConstantValue.ACT_FW_STG_2_CANDI_USERS,candiUser);
+            variables.put(ServerConstantValue.ACT_FW_STG_2_CANDI_GROUPS,String.valueOf(group.getId()));
+
+            if (!forceDispatch) //抢单
+            {
+                /*获取该派送工当前正在派送的订单*/
+                Integer sysOverTime = systemParamDao.getOrderOverTime();
+                Map params = new HashMap<String,String>();
+                params.putAll(ImmutableMap.of("userId", candiUser));
+                params.putAll(ImmutableMap.of("orderSn",orderSn));
+                params.putAll(ImmutableMap.of("orderStatus", OrderStatus.OSDispatching.getIndex()));
+                List<OrderOpHistory> orderOpHistories = orderOpHistoryDao.getList(params);
+                for (OrderOpHistory orderOpHistory :orderOpHistories)
+                {
+                    if ( Clock.differMinute(orderOpHistory.getUpdateTime(),new Date()) >= sysOverTime)
+                    {
+                        throw new ServerSideBusinessException("抢单失败，请先完成当前已超时配送的订单！", HttpStatus.FORBIDDEN);
+                    }
+                }
+            }
+            else  /*订单指派，消息推送*/
+            {
+                try
+                {
+                    MsgPush msgPush = new MsgPush();
+                    msgPush.PushNotice(candiUser, ServerConstantValue.FORCE_ORDER_TITLE, srcOrder.getRecvAddr().getCity()
+                            +srcOrder.getRecvAddr().getCounty()+srcOrder.getRecvAddr().getDetail());
+                }
+                catch (Exception e)
+                {
+                    //消息推送失败
+                }
+            }
+
+            orderDao.insertDistatcher(srcOrder.getId(), targetUser.getId());
+        }
+        else if (newOrderStatus == OrderStatus.OSSigned.getIndex())//客户签收
+        {
+            variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_USERS,candiUser);
+            variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_GROUPS,String.valueOf(group.getId()));
+
+            //发送短信告知用户服务成功
+            try
+            {
+                smsService.sendDispatchOk(srcOrder.getCustomer().getPhone(), srcOrder.getCustomer().getName(),srcOrder.getOrderSn(),srcOrder.getOrderAmount() );
+            }
+            catch (Exception exception)
+            {
+                exception.printStackTrace();
+            }
+
+        }
+        else if (newOrderStatus == OrderStatus.OSCompleted.getIndex())//核单
+        {
+            newOrder.setCompleteTime(new Date());//记录核单时间
+        }
+        else if (newOrderStatus == OrderStatus.OSCanceled.getIndex())//订单作废
+        {
+            /*作废订单如果已经在派送，则将派送记录删除，并通知派送工该订单已作废*/
+            if (srcOrder.getOrderStatus() == OrderStatus.OSDispatching.getIndex())
+            {
+                Map params = new HashMap<String,String>();
+                params.putAll(ImmutableMap.of("userId", candiUser));
+                params.putAll(ImmutableMap.of("orderSn",orderSn));
+                params.putAll(ImmutableMap.of("orderStatus", OrderStatus.OSDispatching.getIndex()));
+                List<OrderOpHistory> orderOpHistories = orderOpHistoryDao.getList(params);
+                for (OrderOpHistory orderOpHistory :orderOpHistories)
+                {
+                    try
+                    {
+                        MsgPush msgPush = new MsgPush();
+                        StringBuilder strBuilder = new StringBuilder();
+                        strBuilder.append(ServerConstantValue.CANCEL_ORDER_TITLE);
+                        strBuilder.append(",订单号：");
+                        strBuilder.append(srcOrder.getOrderSn());
+                        strBuilder.append(",");
+                        strBuilder.append("地址：");
+                        strBuilder.append(srcOrder.getRecvAddr().getCity());
+                        strBuilder.append(srcOrder.getRecvAddr().getCounty());
+                        strBuilder.append(srcOrder.getRecvAddr().getDetail());
+                        msgPush.PushNotice(candiUser, ServerConstantValue.CANCEL_ORDER_TITLE,strBuilder.toString());
+                    }
+                    catch (Exception e)
+                    {
+                        //消息推送失败
+                    }
+                    orderOpHistoryDao.delete(orderOpHistory.getId());
+                }
+            }
+        }
+        else
+        {
+            throw new ServerSideBusinessException("查询参数错误，订单状态不正确！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+         /*更新数据*/
         orderDao.update(newOrder);
 
-        /*检查任务是否存在，处理订单*/
+        /*检查任务是否存在，处理任务*/
         int retCode = workFlowService.completeTask(taskId,variables);
         if (retCode != 0 )
         {
             throw new ServerSideBusinessException("订单处理失败！", HttpStatus.EXPECTATION_FAILED);
         }
 
-        /*订单指派关系*/
-        if (newOrder.getOrderStatus() == OrderStatus.OSDispatching.getIndex()) {
-            String strCandiUser = (String) variables.get(ServerConstantValue.ACT_FW_STG_2_CANDI_USERS);
-
-            SysUser candiUser = sysUserDao.findBySysUserId(strCandiUser);
-            orderDao.insertDistatcher(newOrder.getId(), candiUser.getId());
-
-            /*订单指派，消息推送*/
-            try
-            {
-                MsgPush msgPush = new MsgPush();
-                Order targetOrder = orderDao.findById(id);
-                msgPush.PushNotice(strCandiUser, ServerConstantValue.FORCE_ORDER_TITLE, targetOrder.getRecvAddr().getCity()
-                        +targetOrder.getRecvAddr().getCounty()+targetOrder.getRecvAddr().getDetail());
-            }
-            catch (Exception e)
-            {
-                //消息推送失败
-            }
-
-        }
-
-
         /*订单变更历史记录*/
         OrderOperHistory(newOrder,newOrder.getOrderStatus());
+
+
     }
+
+
+//    @Override
+//    @OperationLog(desc = "订单任务更新信息")
+//    public void update(String taskId,Map<String, Object> variables,Integer id, Order newOrder,Boolean forceDispatch)
+//    {
+//        newOrder.setId(id);
+//
+//        /*抢单或指派订单*/
+//        if (newOrder.getOrderStatus() == OrderStatus.OSDispatching.getIndex())
+//        {
+//            String strCandiUser = (String) variables.get(ServerConstantValue.ACT_FW_STG_2_CANDI_USERS);
+//
+//            SysUser candiUser = sysUserDao.findBySysUserId(strCandiUser);
+//            if (!forceDispatch) //抢单
+//            {
+//                /*获取该派送工当前正在派送的订单*/
+//                Integer sysOverTime = systemParamDao.getOrderOverTime();
+//                Map params = new HashMap<String,String>();
+//                params.putAll(ImmutableMap.of("userId", candiUser.getId()));
+//                params.putAll(ImmutableMap.of("orderSn",newOrder.getOrderSn()));
+//                params.putAll(ImmutableMap.of("orderStatus", OrderStatus.OSDispatching.getIndex()));
+//                List<OrderOpHistory> orderOpHistories = orderOpHistoryDao.getList(params);
+//                for (OrderOpHistory orderOpHistory :orderOpHistories)
+//                {
+//                    if ( Clock.differMinute(orderOpHistory.getUpdateTime(),new Date()) >= sysOverTime)
+//                    {
+//                        throw new ServerSideBusinessException("抢单失败，请先完成当前已超时配送的订单！", HttpStatus.FORBIDDEN);
+//                    }
+//                }
+//            }
+//            else  /*订单指派，消息推送*/
+//            {
+//                try
+//                {
+//                    MsgPush msgPush = new MsgPush();
+//                    Order targetOrder = orderDao.findById(id);
+//                    msgPush.PushNotice(strCandiUser, ServerConstantValue.FORCE_ORDER_TITLE, targetOrder.getRecvAddr().getCity()
+//                            +targetOrder.getRecvAddr().getCounty()+targetOrder.getRecvAddr().getDetail());
+//                }
+//                catch (Exception e)
+//                {
+//                    //消息推送失败
+//                }
+//            }
+//
+//            orderDao.insertDistatcher(newOrder.getId(), candiUser.getId());
+//        }
+//        else if (newOrder.getOrderStatus() == OrderStatus.OSSigned.getIndex())//客户签收
+//        {
+//            //发送短信告知用户服务成功
+//        }
+//        else if (newOrder.getOrderStatus() == OrderStatus.OSCanceled.getIndex())//订单作废
+//        {
+//            /*作废订单如果已经在派送，则将派送记录删除，并通知派送工该订单已作废*/
+//
+//        }
+//        else if (newOrder.getOrderStatus() == OrderStatus.OSCompleted.getIndex())//核单
+//        {
+//            newOrder.setCompleteTime(new Date());//记录核单时间
+//        }
+//        else
+//        {
+//            // to do nothing
+//        }
+//
+//         /*更新数据*/
+//        orderDao.update(newOrder);
+//
+//        /*检查任务是否存在，处理任务*/
+//        int retCode = workFlowService.completeTask(taskId,variables);
+//        if (retCode != 0 )
+//        {
+//            throw new ServerSideBusinessException("订单处理失败！", HttpStatus.EXPECTATION_FAILED);
+//        }
+//
+//        /*订单变更历史记录*/
+//        OrderOperHistory(newOrder,newOrder.getOrderStatus());
+//    }
 
 
     @Override
@@ -1297,9 +1513,7 @@ public class OrderServiceImpl implements OrderService
         /*更改订单支付状态为已支付*/
         order.setPayStatus(PayStatus.PSPaied);
         order.setPayType(PayType.PTTicket);
-
         order.setOrderAmount(order.getOrderAmount() - couponSum);//交掉优惠卷抵扣金额
-
 
         order.setPayTime(new Date());
         if (message.trim().length() >0 )
@@ -1309,5 +1523,46 @@ public class OrderServiceImpl implements OrderService
         }
 
         orderDao.update(order);
+    }
+
+    @Override
+    @OperationLog(desc = "订单超时检查")
+    public void checkOverTime()
+    {
+        /*查找处于派送状态，超时的订单关联的派送工*/
+        Map params = new HashMap<String,String>();
+        params.putAll(ImmutableMap.of("orderStatus", OrderStatus.OSDispatching.getIndex()));
+        List<Order> orders =  orderDao.getList(params);
+
+        Integer overTime = systemParamDao.getOrderOverTime();
+
+        for (Order order:orders)
+        {
+            if ( (order.getDispatcher() != null) &&  (order.getDispatcherStartTime() != null))
+            {
+                if (Clock.differMinute(order.getDispatcherStartTime(),(new Date())) >= overTime)
+                {
+                    try
+                    {
+                        MsgPush msgPush = new MsgPush();
+                        StringBuilder stringBuilder = new StringBuilder();
+                        stringBuilder.append(ServerConstantValue.OVERTIME_ORDER_TITLE);
+                        stringBuilder.append(",订单号：");
+                        stringBuilder.append(order.getOrderSn());
+                        stringBuilder.append(",");
+                        stringBuilder.append("地址：");
+                        stringBuilder.append(order.getRecvAddr().getCity());
+                        stringBuilder.append(order.getRecvAddr().getCounty());
+                        stringBuilder.append(order.getRecvAddr().getDetail());
+                        msgPush.PushNotice(order.getDispatcher().getUserId(), ServerConstantValue.OVERTIME_ORDER_TITLE,stringBuilder.toString());
+                    }
+                    catch (Exception e)
+                    {
+                        //消息推送失败
+                    }
+                }
+            }
+
+        }
     }
 }

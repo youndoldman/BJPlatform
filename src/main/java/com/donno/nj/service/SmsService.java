@@ -14,5 +14,7 @@ public interface SmsService {
     //发送短信
     SendSmsResponse sendGasLeakSms(String phoneNumber, String userName, String address) throws ClientException;
 
+    SendSmsResponse sendDispatchOk(String phoneNumber, String userName, String  orderSn,Float amount) throws ClientException;
+
     SendSmsResponse sendGasLeakSmsToFireDepartment(String phoneNumber, String userName, String address, String userPhone) throws ClientException;
 }

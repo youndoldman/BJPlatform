@@ -64,4 +64,12 @@ public class Clock {
         }
         return before;
     }
+
+    public static Integer differMinute(Date Date1, Date Date2)
+    {
+        long d1 = Date1.getTime();
+        long d2 = Date2.getTime();
+        Integer minutes = (int) ((d2 - d1) / (1000 * 60));
+        return minutes;
+    }
 }

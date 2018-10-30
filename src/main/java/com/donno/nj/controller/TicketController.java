@@ -106,7 +106,7 @@ public class TicketController
 
     @OperationLog(desc = "增加气票信息")
     @RequestMapping(value = "/api/Ticket", method = RequestMethod.POST)
-    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
     public ResponseEntity create(@RequestBody Ticket ticket,
                                  @RequestParam(value = "ticketCount", required = true) Integer ticketCount,
                                  UriComponentsBuilder ucBuilder)

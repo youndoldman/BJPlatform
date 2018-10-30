@@ -299,7 +299,7 @@ public class TicketServiceImpl implements TicketService
         }
 
         //设置价格
-        ticket.setPrice(targetGoods.getPrice());
+        //ticket.setPrice(targetGoods.getPrice());
 
         /*生效日期检查*/
         checkStartDate(ticket.getStartDate());

@@ -12,6 +12,7 @@ public class SystemParam implements Serializable
     protected Integer aliveCheckTime;
     protected Integer pushOrderRange;
     protected Integer trayWarningWeight;
+    protected Integer  orderOvertime;//订单派送超时时长
     protected String  note;
     protected Date createTime;
     protected Date updateTime;
@@ -48,6 +49,10 @@ public class SystemParam implements Serializable
 
     public Integer getTrayWarningWeight() {
         return trayWarningWeight;
+    }
+
+    public Integer getOrderOvertime() {
+        return orderOvertime;
     }
 
     public String getNote()
@@ -87,6 +92,10 @@ public class SystemParam implements Serializable
 
     public void setTrayWarningWeight(Integer trayWarningWeight) {
         this.trayWarningWeight = trayWarningWeight;
+    }
+
+    public void setOrderOvertime(Integer orderOvertime) {
+        this.orderOvertime = orderOvertime;
     }
 
     public void setNote(String Note)

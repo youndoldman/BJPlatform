@@ -92,7 +92,7 @@ public class OrderController
 
 
     @RequestMapping(value = "/api/TaskOrders/Modify/{taskId}", method = RequestMethod.GET, produces = "application/json")
-    @OperationLog(desc = "任务订单修改")
+    @OperationLog(desc = "任务订单修改,订单转派等")
     public ResponseEntity taskOrderModify( @PathVariable("taskId") String taskId,
                                             @RequestParam(value = "businessKey", required = true) String businessKey,
                                             @RequestParam(value = "candiUser", required = true) String candiUser)
@@ -101,82 +101,107 @@ public class OrderController
         return ResponseEntity.ok().build();
     }
 
-
-
     @RequestMapping(value = "/api/TaskOrders/Process/{taskId}", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "任务订单处理")
     public ResponseEntity taskOrderProcess( @PathVariable("taskId") String taskId,
                                             @RequestParam(value = "businessKey", required = true) String businessKey,
                                             @RequestParam(value = "candiUser", required = true) String candiUser,
-                                            @RequestParam(value = "orderStatus", required = true) Integer orderStatus)
+                                            @RequestParam(value = "orderStatus", required = true) Integer orderStatus,
+                                            @RequestParam(value = "forceDispatch", required = false) Boolean forceDispatch )
     {
         /*orderStatus校验*/
         if(OrderStatus.getName(orderStatus) == null)
         {
-            throw new ServerSideBusinessException("定单不存在！", HttpStatus.NOT_ACCEPTABLE);
+            throw new ServerSideBusinessException("定单状态错误！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        /*检查订单是否存在，更新订单状态*/
-        Optional<Order> orderOptional=  orderService.findBySn(businessKey);
-        if (!orderOptional.isPresent())
+        if (forceDispatch == null)
         {
-            throw new ServerSideBusinessException("定单不存在！", HttpStatus.NOT_ACCEPTABLE);
+            forceDispatch = false;
         }
-        else
-        {
-            //orderOptional.get().setOrderStatus(orderStatus);
 
-            Map<String, Object> variables = new HashMap<String, Object>();
-
-            Optional<Group>  group = groupService.findByCode(ServerConstantValue.GP_CUSTOMER_SERVICE);
-            if(group == null)
-            {
-                throw new ServerSideBusinessException("用户组信息错误！", HttpStatus.NOT_ACCEPTABLE);
-            }
-
-            if (orderStatus == OrderStatus.OSDispatching.getIndex())//派送
-            {
-                if(candiUser == null || candiUser.trim().length() == 0)
-                {
-                    throw new ServerSideBusinessException("用户不存在！", HttpStatus.NOT_ACCEPTABLE);
-                }
-
-                variables.put(ServerConstantValue.ACT_FW_STG_2_CANDI_USERS,candiUser);
-                variables.put(ServerConstantValue.ACT_FW_STG_2_CANDI_GROUPS,String.valueOf(group.get().getId()));
-            }
-            else if (orderStatus == OrderStatus.OSSigned.getIndex())//签收
-            {
-                if(candiUser == null || candiUser.trim().length() == 0)
-                {
-                    throw new ServerSideBusinessException("用户不存在！", HttpStatus.NOT_ACCEPTABLE);
-                }
-
-                variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_USERS,candiUser);
-                variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_GROUPS,String.valueOf(group.get().getId()));
-            }
-            else if (orderStatus == OrderStatus.OSCompleted.getIndex())//结束
-            {
-                // to don nothing
-            }
-            else
-            {
-                throw new ServerSideBusinessException("查询参数错误，订单状态不正确！", HttpStatus.NOT_ACCEPTABLE);
-            }
-
-            Order newOrder = new Order();
-            newOrder.setId(orderOptional.get().getId());
-            newOrder.setOrderStatus(orderStatus);
-            orderService.update(taskId,variables,orderOptional.get().getId(),newOrder);
-        }
+        orderService.taskUpdate(taskId,businessKey,orderStatus,candiUser,forceDispatch);
 
         return ResponseEntity.ok().build();
     }
+
+//    @RequestMapping(value = "/api/TaskOrders/Process/{taskId}", method = RequestMethod.GET, produces = "application/json")
+//    @OperationLog(desc = "任务订单处理")
+//    public ResponseEntity taskOrderProcess( @PathVariable("taskId") String taskId,
+//                                            @RequestParam(value = "businessKey", required = true) String businessKey,
+//                                            @RequestParam(value = "candiUser", required = true) String candiUser,
+//                                            @RequestParam(value = "orderStatus", required = true) Integer orderStatus,
+//                                            @RequestParam(value = "forceDispatch", required = false) Boolean forceDispatch )
+//    {
+//        /*orderStatus校验*/
+//        if(OrderStatus.getName(orderStatus) == null)
+//        {
+//            throw new ServerSideBusinessException("定单不存在！", HttpStatus.NOT_ACCEPTABLE);
+//        }
+//
+//        /*检查订单是否存在，更新订单状态*/
+//        Optional<Order> orderOptional=  orderService.findBySn(businessKey);
+//        if (!orderOptional.isPresent())
+//        {
+//            throw new ServerSideBusinessException("定单不存在！", HttpStatus.NOT_ACCEPTABLE);
+//        }
+//        else
+//        {
+//            //orderOptional.get().setOrderStatus(orderStatus);
+//
+//            Map<String, Object> variables = new HashMap<String, Object>();
+//
+//            Optional<Group>  group = groupService.findByCode(ServerConstantValue.GP_CUSTOMER_SERVICE);
+//            if(group == null)
+//            {
+//                throw new ServerSideBusinessException("用户组信息错误！", HttpStatus.NOT_ACCEPTABLE);
+//            }
+//
+//            if (orderStatus == OrderStatus.OSDispatching.getIndex())//派送
+//            {
+//                if(candiUser == null || candiUser.trim().length() == 0)
+//                {
+//                    throw new ServerSideBusinessException("用户不存在！", HttpStatus.NOT_ACCEPTABLE);
+//                }
+//
+//                variables.put(ServerConstantValue.ACT_FW_STG_2_CANDI_USERS,candiUser);
+//                variables.put(ServerConstantValue.ACT_FW_STG_2_CANDI_GROUPS,String.valueOf(group.get().getId()));
+//            }
+//            else if (orderStatus == OrderStatus.OSSigned.getIndex())//签收
+//            {
+//                if(candiUser == null || candiUser.trim().length() == 0)
+//                {
+//                    throw new ServerSideBusinessException("用户不存在！", HttpStatus.NOT_ACCEPTABLE);
+//                }
+//
+//                variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_USERS,candiUser);
+//                variables.put(ServerConstantValue.ACT_FW_STG_3_CANDI_GROUPS,String.valueOf(group.get().getId()));
+//            }
+//            else if (orderStatus == OrderStatus.OSCompleted.getIndex())//结束
+//            {
+//                // to don nothing
+//            }
+//            else
+//            {
+//                throw new ServerSideBusinessException("查询参数错误，订单状态不正确！", HttpStatus.NOT_ACCEPTABLE);
+//            }
+//
+//            Order newOrder = new Order();
+//            newOrder.setId(orderOptional.get().getId());
+//            newOrder.setOrderSn(orderOptional.get().getOrderSn());
+//            newOrder.setOrderStatus(orderStatus);
+//            orderService.update(taskId,variables,orderOptional.get().getId(),newOrder,forceDispatch);
+//        }
+//
+//        return ResponseEntity.ok().build();
+//    }
 
 
     @RequestMapping(value = "/api/TaskOrders/OpHistory", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取任务订单更改历史")
     public ResponseEntity retrieveTaskOrderOpHis(@RequestParam(value = "orderSn", defaultValue = "") String orderSn,
                                                  @RequestParam(value = "userId", defaultValue = "") String userId,
+                                                 @RequestParam(value = "orderStatus", required = false) OrderStatus orderStatus,
                                                  @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                                  @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                                  @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
@@ -191,6 +216,12 @@ public class OrderController
         {
             params.putAll(ImmutableMap.of("userId", userId));
         }
+
+        if (orderStatus != null)
+        {
+            params.putAll(ImmutableMap.of("orderStatus", orderStatus.getIndex()));
+        }
+
 
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
 

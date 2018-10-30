@@ -2,15 +2,18 @@ package com.donno.nj.service.impl;
 
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.dao.OrderDao;
+import com.donno.nj.dao.OrderOpHistoryDao;
 import com.donno.nj.dao.OrderUrgencyDao;
-import com.donno.nj.domain.Order;
-import com.donno.nj.domain.OrderUrgency;
+import com.donno.nj.domain.*;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.service.OrderUrgencyService;
+import com.google.common.collect.ImmutableMap;
+import org.apache.http.annotation.Immutable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +25,9 @@ public class OrderUrgencyServiceImpl implements OrderUrgencyService
 
     @Autowired
     private OrderDao orderDao;
+
+    @Autowired
+    private OrderOpHistoryDao orderOpHistoryDao;
 
     @Override
     @OperationLog(desc = "查询催单信息")
@@ -59,7 +65,38 @@ public class OrderUrgencyServiceImpl implements OrderUrgencyService
             throw new ServerSideBusinessException("订单不存在！", HttpStatus.NOT_ACCEPTABLE);
         }
 
+        /*设置订单为加急*/
+        Order newOrder = new Order();
+        newOrder.setId(order.getId());
+        newOrder.setUrgent(true);
+        orderDao.update(newOrder);
+
+        /*如果该订单已经在派送，向派送工发送通知*/
+        if (order.getOrderStatus() == OrderStatus.OSDispatching.getIndex())
+        {
+            Map params = new HashMap();
+            params.putAll(ImmutableMap.of("orderSn", orderUrgency.getOrderSn()));
+            params.putAll(ImmutableMap.of("orderStatus", OrderStatus.OSDispatching.getIndex()));
+            List<OrderOpHistory> orderOpHistories = orderOpHistoryDao.getList(params);
+
+            for (OrderOpHistory orderOpHistory :orderOpHistories )
+            {
+                try
+                {
+                    MsgPush msgPush = new MsgPush();
+                    msgPush.PushNotice(orderOpHistory.getUserId(), ServerConstantValue.URGENT_ORDER_TITLE, order.getRecvAddr().getCity()
+                            +order.getRecvAddr().getCounty()+order.getRecvAddr().getDetail());
+                }
+                catch (Exception e)
+                {
+                    //消息推送失败
+                }
+            }
+        }
+
         orderUrgencyDao.insert(orderUrgency);
+
+
     }
 
     @Override

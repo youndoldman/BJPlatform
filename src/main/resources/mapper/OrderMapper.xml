@@ -47,13 +47,14 @@
         <association property="dispatcher" column="id" select="com.donno.nj.dao.SysUserDao.findByOrderIdx">
         </association>
 
+        <association property="dispatcherStartTime" column="id" select="com.donno.nj.dao.OrderDao.findDispatchStartTime">
+        </association>
+
         <collection property="orderOpHistoryList" column="id" ofType="com.donno.nj.domain.OrderOpHistory" select="com.donno.nj.dao.OrderOpHistoryDao.findByOrderIdx">
         </collection>
 
         <collection property="orderDetailList" column="id" ofType="com.donno.nj.domain.OrderDetail" select="com.donno.nj.dao.OrderDetailDao.findByOrderIdx">
         </collection>
-
-
     </resultMap>
 
 
@@ -326,11 +327,18 @@
         )
     </insert>
 
-
     <select id="findOrderSnById" resultType="java.lang.String">
         SELECT <include refid="TblOrder"/>.order_sn
         FROM <include refid="TblOrder"/>
         WHERE
         id = #{id}
     </select>
+
+    <select id="findDispatchStartTime" resultType="java.util.Date">
+        SELECT create_time
+        FROM t_order_dispatcher
+        WHERE
+        order_idx = #{id}
+    </select>
+
 </mapper>
