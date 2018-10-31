@@ -64,8 +64,8 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
                 ,{key:"PSRefounding",value:"退款中"},{key:"PSRefounded",value:"已退款"}],
             accessType: [{key:null,value:"全部来源"},{key:"ATWeixin",value:"微信"},{key:"ATCustomService",value:"客服"}],
 
-            payType: [{key:null,value:"全部方式"},{key:"PTOnLine",value:"扫码支付"},{key:"PTCash",value:"现金支付"}
-                ,{key:"PTDebtCredit",value:"赊销"},{key:"PTMonthlyCredit ",value:"月结"},{key:"PTTicket ",value:"气票"}],
+            payType: [{key:null,value:"全部支付方式"},{key:"PTOnLine",value:"微信扫码线上支付"},{key:"PTCash",value:"现金支付"}
+                ,{key:"PTDebtCredit",value:"赊销支付"},{key:"PTMonthlyCredit ",value:"月结支付"},{key:"PTTicket ",value:"气票支付"},{key:"PTWxOffLine ",value:"微信扫码线下支付"}],
             orderStatus:[{key:null,value:"全部订单"},{key:0,value:"待派送"},{key:1,value:"派送中"},{key:2,value:"待核单"},
                 {key:3,value:"已完成"},{key:4,value:"已作废"}],
             orderStatusDisplay:["待派送","派送中","待核单","已完成","已作废"],

@@ -15,13 +15,13 @@
                                 <label>客户编号</label><span style="color:red">*</span>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.userId">
+                                <input type="text" name="userId" class="form-control input-sm" ng-model="vm.currentCustomer.userId" required>
                             </div>
                             <div style="margin-left: 20px;" class="col-xs-2 text-left">
                                 <label>客户姓名</label><span style="color:red">*</span>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.name">
+                                <input name="name" type="text" class="form-control input-sm" ng-model="vm.currentCustomer.name" required>
                             </div>
                         </div>
                         <br>
@@ -36,7 +36,7 @@
                                 <label>规格代码</label><span style="color:red">*</span>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">
-                                <select name="specCode" ng-model="vm.selectedGoods" ng-options="goods.name for goods in vm.goodsList" class="form-control" ng-selected="" ng-change="specCodeChange()"></select>
+                                <select name="specCode" ng-model="vm.selectedGoods" ng-options="goods.name for goods in vm.goodsList" class="form-control" ng-selected="" ng-change="specCodeChange()" required></select>
 
                             </div>
                             <div style="margin-left: 20px;" class="col-xs-2 text-left">
@@ -44,7 +44,7 @@
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">
                                 <!--<input type="text" class="form-control input-sm" ng-model="q.ticketSn">-->
-                                <input type="text" class="form-control input-sm" ng-model="q.ticketQuantity">
+                                <input name="ticketQuantity" type="number" class="form-control input-sm" ng-model="q.ticketQuantity" ng-change="calUnitPrice()"　min="1" onkeyup="this.value=this.value.replace(/\-/g,'');" required>
                             </div>
                         </div>
                         <br>
@@ -53,13 +53,13 @@
                                 <label>有效期起始</label><span style="color:red">*</span>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <label class="input"><input type="text"  id="startTimePicker"  class="form-control" ng-model="q.startDate"></label>
+                                <label class="input"><input name="startDate" type="text"  id="startTimePicker"  class="form-control" ng-model="q.startDate" required></label>
                             </div>
                             <div style="margin-left: 20px;" class="col-xs-2 text-left">
                                 <label>有效期终止</label><span style="color:red">*</span>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <label class="input"><input type="text"  id="endTimePicker"  class="form-control" ng-model="q.endDate"></label>
+                                <label class="input"><input name="endDate" type="text"  id="endTimePicker"  class="form-control" ng-model="q.endDate" required></label>
                             </div>
                         </div>
                         <br>
@@ -68,14 +68,30 @@
                                 <label>销售员工ID</label><span style="color:red">*</span>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <input type="text" class="form-control input-sm" ng-model="q.salemanId" ng-change="getSalesManName()">
+                                <input type="text" name="salemanId" class="form-control input-sm" ng-model="q.salemanId" ng-change="getSalesManName()" required>
                             </div>
                             <div style="margin-left: 20px;" class="col-xs-2 text-left">
                                 <label>销售员工姓名</label><span style="color:red">*</span>
                             </div>
                             <div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">
                                 <!--<input type="text" class="form-control input-sm" ng-model="q.ticketSn">-->
-                                <input type="text" class="form-control input-sm" ng-model="q.salemanName" ng-disabled="true">
+                                <input type="text" name="salemanName" class="form-control input-sm" ng-model="q.salemanName" ng-disabled="true" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row"  ng-if="!isModify">
+                            <div class="col-xs-2 text-left">
+                                <label>气票总价(元)</label><span style="color:red">*</span>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
+                                <input type="number" name="totalPrice" class="form-control input-sm" ng-model="q.totalPrice" ng-change="calUnitPrice()" min="1" onkeyup="this.value=this.value.replace(/\-/g,'');" required>
+                            </div>
+                            <div style="margin-left: 20px;" class="col-xs-2 text-left">
+                                <label>气票单价(元)</label><span style="color:red">*</span>
+                            </div>
+                            <div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">
+                                <!--<input type="text" class="form-control input-sm" ng-model="q.ticketSn">-->
+                                <input type="number" name="unitPrice" class="form-control input-sm" ng-model="q.unitPrice" ng-disabled="true" required>
                             </div>
                         </div>
                         <br>
@@ -99,7 +115,14 @@
 
                     </div>
                 </div>
+                <div class="modal-footer">
 
+                <button type="submit" ng-click="ticketcouponSubmit()" class="btn btn-primary" data-dismiss="modal" ng-disabled="userForm.userId.$error.required || userForm.name.$error.required
+                            || userForm.ticketQuantity.$error.required|| userForm.startDate.$error.required|| userForm.endDate.$error.required
+                            || userForm.salemanName.$error.required|| userForm.salemanId.$error.required|| userForm.totalPrice.$error.required
+                            || userForm.unitPrice.$error.required|| userForm.specCode.$error.required">保存</button>
+                <button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
 
                 <!--<div class="modal-footer">-->
                     <!--<button type="submit" ng-click="ticketSubmit()" class="btn btn-primary" data-dismiss="modal">保存</button>-->
@@ -107,106 +130,106 @@
                 <!--</div>-->
             </form>
 
-            <form style="margin-top: -30px" name="userForm" novalidate>
-                <div class="modal-header">
-                    <!--<button type="button" class="close" ng-click="close(false)" data-dismiss="modal"-->
-                            <!--aria-hidden="true">&times;</button>-->
-                    <h4 class="modal-title">&nbsp;增加优惠券&nbsp;</h4>
-                </div>
+            <!--<form style="margin-top: -30px" name="userForm" novalidate>-->
+                <!--<div class="modal-header">-->
+                    <!--&lt;!&ndash;<button type="button" class="close" ng-click="close(false)" data-dismiss="modal"&ndash;&gt;-->
+                            <!--&lt;!&ndash;aria-hidden="true">&times;</button>&ndash;&gt;-->
+                    <!--<h4 class="modal-title">&nbsp;增加优惠券&nbsp;</h4>-->
+                <!--</div>-->
 
-                <div class="modal-body">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-2 text-left">
-                                <label>客户编号</label><span style="color:red">*</span>
-                            </div>
-                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.userId">
-                            </div>
-                            <div style="margin-left: 20px;" class="col-xs-2 text-left">
-                                <label>客户姓名</label><span style="color:red">*</span>
-                            </div>
-                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.name">
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row"  ng-if="!isModify">
-                            <div class="col-xs-2 text-left">
-                                <label>办理人编号</label><span style="color:red">*</span>
-                            </div>
-                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <input type="text" class="form-control input-sm" ng-model="currentUser.userId">
-                            </div>
-                            <div style="margin-left: 20px;" class="col-xs-2 text-left">
-                                <label>数量</label><span style="color:red">*</span>
-                            </div>
-                            <div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">
-                                <!--<input type="text" class="form-control input-sm" ng-model="q.ticketSn">-->
-                                <input type="number" min="1" class="form-control input-sm" ng-model="q.quantity">
-                            </div>
-                        </div>
-                        <br >
-                        <div class="row">
-                            <div class="col-xs-2 text-left">
-                                <label>规格代码</label><span style="color:red">*</span>
-                            </div>
-                            <div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">
-                                <select name="specCode1" ng-model="vm.selectedGoods1" ng-options="goods.name for goods in vm.goodsList" class="form-control" ng-selected="" ng-change="specCodeChange1()"></select>
-                            </div>
+                <!--<div class="modal-body">-->
+                    <!--<div class="panel-body">-->
+                        <!--<div class="row">-->
+                            <!--<div class="col-xs-2 text-left">-->
+                                <!--<label>客户编号</label><span style="color:red">*</span>-->
+                            <!--</div>-->
+                            <!--<div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">-->
+                                <!--<input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.userId">-->
+                            <!--</div>-->
                             <!--<div style="margin-left: 20px;" class="col-xs-2 text-left">-->
-                                <!--<label>使用状态</label><span style="color:red">*</span>-->
+                                <!--<label>客户姓名</label><span style="color:red">*</span>-->
+                            <!--</div>-->
+                            <!--<div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">-->
+                                <!--<input type="text" class="form-control input-sm" ng-model="vm.currentCustomer.name">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<br>-->
+                        <!--<div class="row"  ng-if="!isModify">-->
+                            <!--<div class="col-xs-2 text-left">-->
+                                <!--<label>办理人编号</label><span style="color:red">*</span>-->
+                            <!--</div>-->
+                            <!--<div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">-->
+                                <!--<input type="text" class="form-control input-sm" ng-model="currentUser.userId">-->
+                            <!--</div>-->
+                            <!--<div style="margin-left: 20px;" class="col-xs-2 text-left">-->
+                                <!--<label>数量</label><span style="color:red">*</span>-->
                             <!--</div>-->
                             <!--<div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">-->
-                                <!--<select  ng-model="state" ng-options="ticketStatus for ticketStatus in vm.ticketStates" class="form-control" ng-selected="" ng-change="ticketStatusChange()"></select>-->
+                                <!--&lt;!&ndash;<input type="text" class="form-control input-sm" ng-model="q.ticketSn">&ndash;&gt;-->
+                                <!--<input type="number" min="1" class="form-control input-sm" ng-model="q.quantity">-->
                             <!--</div>-->
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-xs-2 text-left">
-                                <label>有效期起始</label><span style="color:red">*</span>
-                            </div>
-                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <label class="input"><input type="text"  id="startTimePicker1"  class="form-control" ng-model="q.startDate1"></label>
-                            </div>
-                            <div style="margin-left: 20px;" class="col-xs-2 text-left">
-                                <label>有效期终止</label><span style="color:red">*</span>
-                            </div>
-                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">
-                                <label class="input"><input type="text"  id="endTimePicker1"  class="form-control" ng-model="q.endDate1"></label>
-                            </div>
-                        </div>
-                        <br>
+                        <!--</div>-->
+                        <!--<br >-->
+                        <!--<div class="row">-->
+                            <!--<div class="col-xs-2 text-left">-->
+                                <!--<label>规格代码</label><span style="color:red">*</span>-->
+                            <!--</div>-->
+                            <!--<div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">-->
+                                <!--<select name="specCode1" ng-model="vm.selectedGoods1" ng-options="goods.name for goods in vm.goodsList" class="form-control" ng-selected="" ng-change="specCodeChange1()"></select>-->
+                            <!--</div>-->
+                            <!--&lt;!&ndash;<div style="margin-left: 20px;" class="col-xs-2 text-left">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<label>使用状态</label><span style="color:red">*</span>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div style="margin-left: -20px;margin-top: -8px;"  class="col-xs-4">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<select  ng-model="state" ng-options="ticketStatus for ticketStatus in vm.ticketStates" class="form-control" ng-selected="" ng-change="ticketStatusChange()"></select>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--</div>-->
+                        <!--<br>-->
+                        <!--<div class="row">-->
+                            <!--<div class="col-xs-2 text-left">-->
+                                <!--<label>有效期起始</label><span style="color:red">*</span>-->
+                            <!--</div>-->
+                            <!--<div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">-->
+                                <!--<label class="input"><input type="text"  id="startTimePicker1"  class="form-control" ng-model="q.startDate1"></label>-->
+                            <!--</div>-->
+                            <!--<div style="margin-left: 20px;" class="col-xs-2 text-left">-->
+                                <!--<label>有效期终止</label><span style="color:red">*</span>-->
+                            <!--</div>-->
+                            <!--<div style="margin-left: -20px;margin-top: -8px;" class="col-xs-4">-->
+                                <!--<label class="input"><input type="text"  id="endTimePicker1"  class="form-control" ng-model="q.endDate1"></label>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<br>-->
 
-                        <div class="row">
-                            <div  class="col-xs-2 text-left">
-                                <label>备注</label>
-                            </div>
-                            <div style="margin-left: -20px;margin-top: -8px;" class="col-xs-10">
-                                <input type="text" class="form-control  input-sm" ng-model="q.note1">
-                            </div>
-                        </div>
+                        <!--<div class="row">-->
+                            <!--<div  class="col-xs-2 text-left">-->
+                                <!--<label>备注</label>-->
+                            <!--</div>-->
+                            <!--<div style="margin-left: -20px;margin-top: -8px;" class="col-xs-10">-->
+                                <!--<input type="text" class="form-control  input-sm" ng-model="q.note1">-->
+                            <!--</div>-->
+                        <!--</div>-->
 
-                        <div class="row">
-                        </div>
+                        <!--<div class="row">-->
+                        <!--</div>-->
 
-                        <div class="row">
-                            <div  class="col-xs-4 text-left">
-                                <label style="color:red">带*是必填项</label>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
+                        <!--<div class="row">-->
+                            <!--<div  class="col-xs-4 text-left">-->
+                                <!--<label style="color:red">带*是必填项</label>-->
+                            <!--</div>-->
+                        <!--</div>-->
 
 
-                <div class="modal-footer">
+                    <!--</div>-->
+                <!--</div>-->
 
-                    <button type="submit" ng-click="ticketcouponSubmit()" class="btn btn-primary" data-dismiss="modal">保存</button>
-                    <button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">关闭</button>
-                </div>
-            </form>
+
+                <!--<div class="modal-footer">-->
+
+                    <!--<button type="submit" ng-click="ticketcouponSubmit()" class="btn btn-primary" data-dismiss="modal">保存</button>-->
+                    <!--<button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+                <!--</div>-->
+            <!--</form>-->
         </div>
     </div>
 

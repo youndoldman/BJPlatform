@@ -115,7 +115,8 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
             var dealparams = {
                 businessKey: $scope.vm.currentOrder.orderSn,
                 candiUser   : $scope.vm.selectedWorker.userId,
-                orderStatus: 1
+                orderStatus: 1,
+                forceDispatch:true
             };
             OrderService.dealDistribution(dealparams,$scope.vm.currentOrder.taskId).then(function () {
                 udcModal.info({"title": "处理结果", "message": "人工指派配送工成功，工号："+$scope.vm.selectedWorker.userId});

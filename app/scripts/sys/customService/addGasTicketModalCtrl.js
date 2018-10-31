@@ -3,7 +3,7 @@
  */
 'use strict';
 
-customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'CustomerManageService', 'title', 'initVal','udcModal','sessionStorage','$timeout',function ($scope, close, CustomerManageService, title, initVal, udcModal,sessionStorage,$timeout) {
+customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'CustomerManageService', 'title', 'initVal','udcModal','sessionStorage','$timeout','$filter',function ($scope, close, CustomerManageService, title, initVal, udcModal,sessionStorage,$timeout,$filter) {
     $scope.modalTitle = title;
 
     $scope.currentUser = {};
@@ -89,7 +89,9 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
         endDate1:null,
         note1:null,
         salemanId:null,//销售员工ID
-        salemanName:null//销售员工姓名
+        salemanName:null,//销售员工姓名
+        totalPrice:null,//气票总价
+        unitPrice:null//气票单价
     };
 
     $scope.vm = {
@@ -140,6 +142,7 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
             endDate:$scope.q.endDate,
             note:$scope.q.note,
             salemanId:$scope.q.salemanId,
+            price:$scope.q.unitPrice
 
         };
 
@@ -350,6 +353,15 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
         }, function(value) {
             $scope.q.salemanName = null;
         })
+    };
+    //就算气票单价
+    $scope.calUnitPrice = function () {
+        if($scope.q.ticketQuantity>0&&$scope.q.totalPrice>0){
+            var unitPrice = $scope.q.totalPrice/$scope.q.ticketQuantity;
+
+            $scope.q.unitPrice = Number($filter('number')(unitPrice, 2));
+        }
+
     };
 
     init();

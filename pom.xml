@@ -159,10 +159,6 @@
             <artifactId>quartz-jobs</artifactId>
             <version>2.2.1</version>
         </dependency>
-
-
-
-
         <!-- activiti依赖 -->
         <!-- activiti -->
         <dependency>
@@ -304,6 +300,9 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/aliyun-java-sdk-core-3.3.1.jar</systemPath>
         </dependency>
+
+
+
 
     </dependencies>
     <profiles>

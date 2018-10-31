@@ -32,6 +32,12 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             $scope.pagerGasCynTrayWarning.setCurPageNo(pageNo);
             $scope.searchUninterruptCustomers();
         };
+
+        //客户意见
+        var gotoPageAdvice = function (pageNo) {
+            $scope.pagerAdvice.setCurPageNo(pageNo);
+            $scope.searchAdvice();
+        };
         $scope.pagerCallReport = pager.init('CustomerListCtrl', gotoPageCallReport);
 
         $scope.pagerMissedCallReport = pager.init('CustomerListCtrl', gotoPageMissedCallReport);
@@ -42,6 +48,9 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
 
         $scope.pagerGasCynTrayWarning = pager.init('CustomerListCtrl', gotoPageGasCynTrayWarning);
+
+        $scope.pagerAdvice = pager.init('CustomerListCtrl', gotoPageAdvice);
+
 
         $(function () {
             $('#datetimepickerOrder').datetimepicker({
@@ -215,7 +224,9 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             callReportList:[],
             missedCallReportList:[],
             orderStatusDisplay:["待派送","派送中","待核单","已完成","已作废"],
-            missCallCount:0
+            missCallCount:0,
+            currentAdvice:{userId:null,advice:null},//当前的客户的意见
+            adviceHistorylList:[]//当前的客户的意见历史
         };
 
         //当前订单信息
@@ -575,11 +586,25 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             var queryParams = {
                 userId:$scope.vm.currentCustomer.userId,
                 pageNo: $scope.pagerHistory.getCurPageNo(),
-                pageSize: $scope.pagerHistory.pageSize
+                pageSize: $scope.pagerHistory.pageSize,
+                orderBy: "id desc"
             }
             OrderService.retrieveOrders(queryParams).then(function (orders) {
                 $scope.pagerHistory.update($scope.qHistory, orders.total, queryParams.pageNo);
                 $scope.vm.CustomerOrderHistory = orders.items;
+                //添加订单详情概要
+                for(var i=0; i<$scope.vm.CustomerOrderHistory.length;i++){
+                    var description ="地址："+$scope.vm.CustomerOrderHistory[i].recvAddr.province+
+                        $scope.vm.CustomerOrderHistory[i].recvAddr.city+
+                        $scope.vm.CustomerOrderHistory[i].recvAddr.county+
+                        $scope.vm.CustomerOrderHistory[i].recvAddr.detail+"\r\n规格：";
+                    for(var j=0;j<$scope.vm.CustomerOrderHistory[i].orderDetailList.length;j++){
+                        description = description+$scope.vm.CustomerOrderHistory[i].orderDetailList[j].goods.name
+                        +" × "+ $scope.vm.CustomerOrderHistory[i].orderDetailList[j].quantity+"\r\n           ";
+                    }
+                    $scope.vm.CustomerOrderHistory[i].description = description;
+                    console.log($scope.vm.CustomerOrderHistory);
+                }
             });
         };
 
@@ -663,6 +688,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             //查询当前用户欠款
             retrieveCustomerCredit();
             //查询当前客户的订气记录
+            $scope.pagerHistory.setCurPageNo(1);
             searchOrderHistory();
             //刷新订单
             refleshOrder();
@@ -678,6 +704,9 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
             //查询气票张数
             searchTicketCount();
+            //查询客户建议
+            $scope.pagerAdvice.setCurPageNo(1);
+            $scope.searchAdvice();
         };
 
 //商品类型改变
@@ -756,6 +785,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             $scope.pagerHistory.pageSize=2;
             $scope.pagerCustomer.update($scope.qCustomer, 0, 1);
             $scope.pagerHistory.update($scope.qHistory, 0, 1);
+
+            $scope.pagerAdvice.pageSize = 5;
             //查询商品类型
             var queryParams = {
 
@@ -957,10 +988,17 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             $scope.pagerCustomer.update($scope.qCustomer, 0, 1);
             $scope.pagerHistory.update($scope.qHistory, 0, 1);
         };
+        //快捷键
         $document.bind("keypress", function(event) {
-
             if(event.keyCode==10){//ctrl+enter
                 $scope.clearWindow();
+                $scope.$apply();
+            }
+        });
+
+        $document.bind("keypress", function(event) {
+            if(event.keyCode==13){//enter
+                $scope.search();
                 $scope.$apply();
             }
         });
@@ -989,6 +1027,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             $scope.clearWindow();
             $scope.vm.callInPhone = m;
             //查询相关联的客户
+            $scope.pagerCustomer.setCurPageNo(1);
             searchCallInCustomer($scope.vm.callInPhone);
         });
 
@@ -1071,8 +1110,6 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
         //查询剩余气票张数
         var searchTicketCount = function () {
-            //清空表格
-            $scope.vm.CustomerOrderHistory = [];
             var queryParams = {
                 customerUserId:$scope.vm.currentCustomer.userId,
                 useStatus:0,
@@ -1083,5 +1120,71 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 $scope.vm.currentTicketCount = tickets.total;
             });
         };
+
+        //催气窗口
+        $scope.pressedOrder = function (CustomerOrder) {
+            udcModal.show({
+                templateUrl: "./customService/pressedOrderHistoryModal.htm",
+                controller: "PressedOrderHistoryModalCtrl",
+                inputs: {
+                    title: '催气提醒',
+                    initVal: CustomerOrder
+                }
+            }).then(function (result) {
+                if (result) {
+                }
+            })
+        };
+
+        //查询客户意见
+        $scope.searchAdvice = function(){
+            //清空表格
+            $scope.vm.adviceHistorylList = [];
+            var queryParams = {
+                userId:$scope.vm.currentCustomer.userId,
+                pageNo: $scope.pagerAdvice.getCurPageNo(),
+                pageSize:$scope.pagerAdvice.pageSize,
+                orderBy:"id desc"
+            };
+            CustomerManageService.retrieveAdvice(queryParams).then(function (advices) {
+                $scope.vm.adviceHistorylList = advices.items;
+                $scope.pagerAdvice.update($scope.q, advices.total, queryParams.page);
+            });
+        };
+
+        //创建客户意见
+        $scope.createAdvice = function () {
+            if($scope.vm.currentCustomer==null){
+                udcModal.info({"title": "错误提示", "message": "请选择客户！"});
+                return;
+            }
+            if($scope.vm.currentAdvice.advice==null){
+                udcModal.info({"title": "错误提示", "message": "请填写客户建议！"});
+                return;
+            }
+            //设置客户
+            $scope.vm.currentAdvice.userId = $scope.vm.currentCustomer.userId;
+
+            //将订单数据提交到后台
+            CustomerManageService.createAdvice($scope.vm.currentAdvice).then(function () {
+                udcModal.info({"title": "处理结果", "message": "提交客户意见成功 "});
+                $scope.searchAdvice();
+            }, function(value) {
+                udcModal.info({"title": "处理结果", "message": "提交客户意见失败 "+value.message});
+            })
+        };
+
+        //删除客户意见
+        $scope.deleteAdvice = function (advice) {
+            //将订单数据提交到后台
+            CustomerManageService.deleteAdvice(advice).then(function () {
+                udcModal.info({"title": "处理结果", "message": "删除客户意见成功 "});
+                $scope.searchAdvice();
+            }, function(value) {
+                udcModal.info({"title": "处理结果", "message": "删除客户意见失败 "+value.message});
+            })
+        };
+
+
 
     }]);

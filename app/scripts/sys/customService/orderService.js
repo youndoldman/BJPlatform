@@ -11,6 +11,9 @@ customServiceApp.service('OrderService', ['$http', 'URI', 'promiseWrapper','MISC
     var orderCancelUri = URI.resources.orderCancel;
     var ticketUri = URI.resources.ticket;
     var sysUserFindByUserIdUri = URI.resources.sysUserFindByUserId;
+
+
+    var orderUrgencyUri = URI.resources.OrderUrgency;
     this.toViewModelTaskOrders = function (taskOrdersFromApi) {
         if(taskOrdersFromApi.object==null)
         {
@@ -127,6 +130,16 @@ customServiceApp.service('OrderService', ['$http', 'URI', 'promiseWrapper','MISC
     }
     this.retrieveBottles = function (params) {
         return promise.wrap($http.get(bottlesUri, {params: params}));
+    };
+
+    //提交催气记录
+    this.createOrderUrgency = function (orderUrgency){
+        return promise.wrap($http.post(orderUrgencyUri, orderUrgency));
+    };
+
+    //查询催气记录
+    this.retrieveOrderUrgency = function (params) {
+        return promise.wrap($http.get(orderUrgencyUri, {params: params}));
     };
 
 }]);

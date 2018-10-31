@@ -103,7 +103,8 @@ commonModule.constant('URI', {
         'sysUserFindByUserId':'../../../api/sysusers/FindByUserId',//系统用户精确查询
         'DiscountStrategiesCancel':'../../../api/DiscountStrategies/Cancel',//10.8.	作废优惠方案
         'SysUserPhoto': '../../../api/sysusers/photo',//用户照片
-
+        'OrderUrgency': '../../../api/OrderUrgency',//催单信息
+        'Advice': '../../../api/Advice',//客户意见
 
 
 

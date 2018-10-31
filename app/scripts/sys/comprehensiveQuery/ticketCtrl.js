@@ -58,7 +58,7 @@ comprehensiveQueryApp.controller('TicketCtrl', ['$scope', '$rootScope', '$filter
         $scope.vm = {
             ticketList: [],
             useStatusList:[{index:null,name:"全部"},{index:"0",name:"待使用"},{index:"1",name:"已使用"}],
-            validStatusList:[{index:null,name:"全部"},{index:"0",name:"未过期"},{index:"1",name:"已过期"}]
+            validStatusList:[{index:null,name:"全部"},{index:false,name:"未过期"},{index:true,name:"已过期"}]
         };
         $scope.q = {
             startTime:null,
@@ -91,7 +91,8 @@ comprehensiveQueryApp.controller('TicketCtrl', ['$scope', '$rootScope', '$filter
                 saleUserId:$scope.q.saleUserId,
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize,
-                orderBy:"id desc"
+                orderBy:"id desc",
+                expired:$scope.q.validStatus.index
             };
 
             TicketService.retrieveTicket(queryParams).then(function (complaints) {
@@ -136,7 +137,7 @@ comprehensiveQueryApp.controller('TicketCtrl', ['$scope', '$rootScope', '$filter
 
         //气票有效期状态查询改变
         $scope.validStatusChange = function () {
-            if ($scope.q.useStatus==null) {
+            if ($scope.q.validStatus==null) {
                 return;
             };
             $scope.pager.setCurPageNo(1);

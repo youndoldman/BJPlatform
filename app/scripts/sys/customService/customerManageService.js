@@ -34,6 +34,8 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     var sysUserUri = URI.resources.users;
     var sysUserFindByUserIdUri = URI.resources.sysUserFindByUserId;
 
+    var adviceUri = URI.resources.Advice;//客户意见
+
     this.retrieveGoods = function (params) {
         return promise.wrap($http.get(goodsUri, {params: params}));
     };
@@ -235,6 +237,21 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
         return promise.wrap($http.get(sysUserFindByUserIdUri, {params: params}));
     };
 
+
+    //查询客户意见
+    this.retrieveAdvice = function (params) {
+        return promise.wrap($http.get(adviceUri, {params: params}));
+    };
+
+   //创建客户意见
+    this.createAdvice = function (advice) {
+        return promise.wrap($http.post(adviceUri, advice));
+    };
+
+    //删除客户意见
+    this.deleteAdvice = function (advice) {
+        return promise.wrap($http.delete(adviceUri + "/" + advice.id));
+    };
 
 }]);
 
