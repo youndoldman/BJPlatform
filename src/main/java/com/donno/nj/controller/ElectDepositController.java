@@ -78,7 +78,7 @@ public class ElectDepositController
 
     @OperationLog(desc = "增加电子押金单信息")
     @RequestMapping(value = "/api/ElectDeposit", method = RequestMethod.POST)
-    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
     public ResponseEntity create(@RequestBody ElectDeposit electDeposit,
                                  UriComponentsBuilder ucBuilder)
     {
@@ -96,7 +96,7 @@ public class ElectDepositController
 
     @OperationLog(desc = "修改电子押金单信息")
     @RequestMapping(value = "/api/ElectDeposit/{id}", method = RequestMethod.PUT)
-    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
     public ResponseEntity update(@PathVariable("id") Integer id,
                                  @RequestBody ElectDeposit electDeposit)
     {
@@ -113,7 +113,7 @@ public class ElectDepositController
 
     @OperationLog(desc = "删除电子押金单信息")
     @RequestMapping(value = "/api/ElectDeposit/{id}", method = RequestMethod.DELETE)
-    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
     public ResponseEntity delete(@PathVariable("id") Integer id)
     {
         ResponseEntity responseEntity;

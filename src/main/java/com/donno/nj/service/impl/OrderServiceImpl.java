@@ -1121,6 +1121,12 @@ public class OrderServiceImpl implements OrderService
 
             if (!forceDispatch) //抢单
             {
+                /*如果当前派送工状态已经被禁用，不允许抢单*/
+                if (targetUser.getServiceStatus() == SysUserServiceStatus.SUSForbidden)
+                {
+                    throw new ServerSideBusinessException("抢单失败，您已被系统禁止订单！", HttpStatus.FORBIDDEN);
+                }
+
                 /*获取该派送工当前正在派送的订单*/
                 Integer sysOverTime = systemParamDao.getOrderOverTime();
                 Map params = new HashMap<String,String>();

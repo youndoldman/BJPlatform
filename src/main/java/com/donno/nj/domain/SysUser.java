@@ -12,6 +12,7 @@ public class SysUser extends User implements Serializable
     private String mobilePhone;
     private String officePhone;
     private String email;
+    private  SysUserServiceStatus serviceStatus;
     private AliveStatus aliveStatus;
     private Date aliveUpdateTime;
 
@@ -48,6 +49,10 @@ public class SysUser extends User implements Serializable
     public String getEmail()
     {
         return email;
+    }
+
+    public SysUserServiceStatus getServiceStatus() {
+        return serviceStatus;
     }
 
     public AliveStatus getAliveStatus()
@@ -88,6 +93,12 @@ public class SysUser extends User implements Serializable
     public  void setEmail(String  email)
     {
         this.email = email;
+    }
+
+
+
+    public void setServiceStatus(SysUserServiceStatus serviceStatus) {
+        this.serviceStatus = serviceStatus;
     }
 
     public void  setAliveStatus(AliveStatus aliveStatus)
