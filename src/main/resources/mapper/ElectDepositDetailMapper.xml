@@ -35,7 +35,7 @@
         DELETE FROM <include refid="Table"/> WHERE id= #{id}
     </delete>
 
-    <delete id="deleteDepositIdx" parameterType="java.lang.Integer">
+    <delete id="deleteByElectDepositIdx" parameterType="java.lang.Integer">
         DELETE FROM <include refid="Table"/> WHERE deposit_idx= #{id}
     </delete>
 

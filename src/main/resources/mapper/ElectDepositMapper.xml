@@ -5,7 +5,7 @@
     <resultMap id="BaseResultMap" type="com.donno.nj.domain.ElectDeposit">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="deposit_sn" property="depositSn" jdbcType="VARCHAR"/>
-        <result column="electDepositStatus" property="deposit_status" jdbcType="INTEGER" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+        <result column="status" property="electDepositStatus" jdbcType="INTEGER" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
         <result column="amount_receivable" property="amountReceivable" jdbcType="FLOAT"/>
         <result column="actual_amount" property="actualAmount" jdbcType="FLOAT"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
@@ -118,13 +118,13 @@
         t_elect_deposit.deposit_sn = #{sn}
     </select>
 
-    <insert id="insert">
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         INSERT  INTO <include refid="TableName"/>(<include refid="InsertColumnList"/>)
         VALUES( #{depositSn},
         (select id from t_user where user_id = #{customerId} ),
         (select id from t_user where user_id = #{operId} ),
-        #{amountReceivable},#{actualAmount},#{electDepositStatus} ,
-        #{note})
+        (select department_idx from t_sysuser where user_idx =(select id from t_user where user_id = #{operId} )),
+        #{amountReceivable},#{actualAmount},#{electDepositStatus.index}, #{note})
     </insert>
 
     <delete id="delete" parameterType="Integer">

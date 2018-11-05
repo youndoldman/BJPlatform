@@ -191,6 +191,11 @@ public class OrderServiceImpl implements OrderService
         Date curDate = new Date();
         String dateFmt =  new SimpleDateFormat("yyyyMMddHHmmssSSS").format(curDate);
         order.setOrderSn(dateFmt);
+        /*避免重复编号*/
+        if (orderDao.findBySn(dateFmt) != null)
+        {
+            throw new ServerSideBusinessException("订单生成失败，请重新提交！", HttpStatus.NOT_ACCEPTABLE);
+        }
 
         order.setOriginalAmount(0f);
         order.setOrderAmount(0f);

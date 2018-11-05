@@ -63,12 +63,13 @@ public class ElectDepositServiceImpl implements ElectDepositService
             throw new ServerSideBusinessException("客户不存在！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        /*客户信息校验*/
+        /*派送工信息校验*/
         User operator =  userDao.findByUserId(electDeposit.getOperId());
         if (operator == null)
         {
             throw new ServerSideBusinessException("直销员信息不存在！", HttpStatus.NOT_ACCEPTABLE);
         }
+
 
          /*押金单信息校验*/
         if (electDeposit.getElectDepositDetails().size() == 0)
@@ -114,8 +115,8 @@ public class ElectDepositServiceImpl implements ElectDepositService
 
             /*类型校验*/
             if (electDepositDetail.getElectDepositType() == null ||
-                    electDepositDetail.getElectDepositType().getIndex() < 0
-                    || electDepositDetail.getElectDepositType().getIndex() >= ElectDepositType.EDepositTypeEnd.getIndex())
+                    electDepositDetail.getElectDepositType().getIndex() <= ElectDepositType.ElectDepositTypeStart.getIndex()
+                    || electDepositDetail.getElectDepositType().getIndex() >= ElectDepositType.ElectDepositTypeEnd.getIndex())
             {
                 throw new ServerSideBusinessException("电子押金单类型信息错误！", HttpStatus.NOT_ACCEPTABLE);
             }

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ElectDepositType implements IEnum
 {
-    EBottleChanging("瓶换瓶", 0), EDepositBottle("押金瓶", 1),EDepositTypeEnd("押金瓶", 1);
+    ElectDepositTypeStart("开始", -1),EBottleChanging("瓶换瓶", 0), EDepositBottle("押金瓶", 1),ElectDepositTypeEnd("结束", 2);
 
     // 成员变量
     private String name;
