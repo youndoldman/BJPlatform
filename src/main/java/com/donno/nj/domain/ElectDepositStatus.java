@@ -3,23 +3,23 @@ package com.donno.nj.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum ElectDepositType implements IEnum
+public enum ElectDepositStatus implements IEnum
 {
-    EBottleChanging("瓶换瓶", 0), EDepositBottle("押金瓶", 1),EDepositTypeEnd("押金瓶", 1);
+    EDSInit("已创建", 0), EDSChecked("已核单", 1),EDSEnd("状态结束", 1);
 
     // 成员变量
     private String name;
     private int index;
 
     // 构造方法
-    ElectDepositType(String name, int index) {
+    ElectDepositStatus(String name, int index) {
         this.name = name;
         this.index = index;
     }
 
     // 普通方法
     public static String getName(int index) {
-        for (ElectDepositType c : ElectDepositType.values()) {
+        for (ElectDepositStatus c : ElectDepositStatus.values()) {
             if (c.getIndex() == index) {
                 return c.name;
             }

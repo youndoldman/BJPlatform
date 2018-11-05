@@ -16,7 +16,7 @@ public interface ElectDepositService
 
     void create(ElectDeposit electDeposit);
 
-    void update(Integer id, ElectDeposit electDeposit);
+//    void update(Integer id, ElectDeposit electDeposit);
 
     void deleteById(Integer id);
 

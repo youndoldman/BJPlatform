@@ -6,5 +6,5 @@ import com.donno.nj.domain.ElectDeposit;
 
 public interface ElectDepositDao extends BaseDao<ElectDeposit>
 {
-
+    ElectDeposit findBySn(String sn);
 }

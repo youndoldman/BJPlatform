@@ -4,17 +4,21 @@ import com.google.common.base.MoreObjects;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class ElectDeposit implements Serializable
 {
     private Integer id;
-    private String userId;
-    private String userName;
+    private String depositSn;//押金单编号
+    private String customerId; //客户userID
+    private String customerName;//客户userName
+    private String operId;//操作员userId（派送工）
+    private String operName;//操作员userName（派送工）
+    private Department operDep;//操作员所属部门（当前部门）
 
-    private  GasCylinderSpec  gasCylinderSpec;  //钢瓶规格
-    private  ElectDepositType electDepositType; //押金单类型
+    private  ElectDepositStatus electDepositStatus;//押金单状态
 
-    private Integer quantity;//数量
+    List<ElectDepositDetail>  electDepositDetails;//押金单明细
     private Float amountReceivable;//应收金额
     private Float actualAmount;//实收金额
 
@@ -35,24 +39,36 @@ public class ElectDeposit implements Serializable
         return id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getDepositSn() {
+        return depositSn;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getCustomerId() {
+        return customerId;
     }
 
-    public GasCylinderSpec getGasCylinderSpec() {
-        return gasCylinderSpec;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public ElectDepositType getElectDepositType() {
-        return electDepositType;
+    public String getOperId() {
+        return operId;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public String getOperName() {
+        return operName;
+    }
+
+    public Department getOperDep() {
+        return operDep;
+    }
+
+    public ElectDepositStatus getElectDepositStatus() {
+        return electDepositStatus;
+    }
+
+    public List<ElectDepositDetail> getElectDepositDetails() {
+        return electDepositDetails;
     }
 
     public Float getAmountReceivable() {
@@ -87,20 +103,36 @@ public class ElectDeposit implements Serializable
         this.id = id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setDepositSn(String depositSn) {
+        this.depositSn = depositSn;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
-    public void setGasCylinderSpec(GasCylinderSpec gasCylinderSpec) {
-        this.gasCylinderSpec = gasCylinderSpec;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setOperId(String operId) {
+        this.operId = operId;
+    }
+
+    public void setOperName(String operName) {
+        this.operName = operName;
+    }
+
+    public void setOperDep(Department operDep) {
+        this.operDep = operDep;
+    }
+
+    public void setElectDepositStatus(ElectDepositStatus electDepositStatus) {
+        this.electDepositStatus = electDepositStatus;
+    }
+
+    public void setElectDepositDetails(List<ElectDepositDetail> electDepositDetails) {
+        this.electDepositDetails = electDepositDetails;
     }
 
     public void setAmountReceivable(Float amountReceivable) {
@@ -109,10 +141,6 @@ public class ElectDeposit implements Serializable
 
     public void setActualAmount(Float actualAmount) {
         this.actualAmount = actualAmount;
-    }
-
-    public void setElectDepositType(ElectDepositType electDepositType) {
-        this.electDepositType = electDepositType;
     }
 
     public void setNote(String note) {

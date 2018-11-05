@@ -31,9 +31,10 @@ public class ElectDepositController
 
     @RequestMapping(value = "/api/ElectDeposit", method = RequestMethod.GET, produces = "application/json")
     @OperationLog(desc = "获取电子押金单列表")
-    public ResponseEntity retrieve(@RequestParam(value = "userId", defaultValue = "") String userId,
-                                   @RequestParam(value = "electDepositType", required = false) ElectDepositType electDepositType,
-                                   @RequestParam(value = "specCode", defaultValue = "") String specCode,
+    public ResponseEntity retrieve(@RequestParam(value = "customerId", defaultValue = "") String customerId,
+                                   @RequestParam(value = "depositSn", defaultValue = "") String depositSn,
+                                   @RequestParam(value = "dispatchId", defaultValue = "") String dispatchId,
+                                   @RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
                                    @RequestParam(value = "startTime", defaultValue = "") String startTime,
                                    @RequestParam(value = "endTime", defaultValue = "") String endTime,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
@@ -42,19 +43,24 @@ public class ElectDepositController
     {
         Map params = new HashMap<String,String>();
 
-        if (userId.trim().length() > 0)
+        if (customerId.trim().length() > 0)
         {
-            params.putAll(ImmutableMap.of("userId", userId));
+            params.putAll(ImmutableMap.of("customerId", customerId));
         }
 
-        if (electDepositType != null)
+        if (depositSn.trim().length() > 0)
         {
-            params.putAll(ImmutableMap.of("electDepositType", electDepositType));
+            params.putAll(ImmutableMap.of("depositSn", depositSn));
         }
 
-        if (specCode.trim().length() > 0)
+        if (dispatchId.trim().length() > 0)
         {
-            params.putAll(ImmutableMap.of("specCode", specCode));
+            params.putAll(ImmutableMap.of("dispatchId", dispatchId));
+        }
+
+        if (departmentCode.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("departmentCode", departmentCode));
         }
 
         if (startTime.trim().length() > 0)
@@ -94,20 +100,20 @@ public class ElectDepositController
     }
 
 
-    @OperationLog(desc = "修改电子押金单信息")
-    @RequestMapping(value = "/api/ElectDeposit/{id}", method = RequestMethod.PUT)
-    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
-    public ResponseEntity update(@PathVariable("id") Integer id,
-                                 @RequestBody ElectDeposit electDeposit)
-    {
-        ResponseEntity responseEntity;
-
-        electDepositService.update(id, electDeposit);
-
-        responseEntity = ResponseEntity.ok().build();
-
-        return responseEntity;
-    }
+//    @OperationLog(desc = "修改电子押金单信息")
+//    @RequestMapping(value = "/api/ElectDeposit/{id}", method = RequestMethod.PUT)
+//    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
+//    public ResponseEntity update(@PathVariable("id") Integer id,
+//                                 @RequestBody ElectDeposit electDeposit)
+//    {
+//        ResponseEntity responseEntity;
+//
+//        electDepositService.update(id, electDeposit);
+//
+//        responseEntity = ResponseEntity.ok().build();
+//
+//        return responseEntity;
+//    }
 
 
 

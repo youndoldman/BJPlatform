@@ -4,19 +4,30 @@
 <mapper namespace="com.donno.nj.dao.ElectDepositDao">
     <resultMap id="BaseResultMap" type="com.donno.nj.domain.ElectDeposit">
         <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="deposit_type" property="electDepositType" jdbcType="INTEGER" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
-        <result column="quantity" property="quantity" jdbcType="INTEGER"/>
+        <result column="deposit_sn" property="depositSn" jdbcType="VARCHAR"/>
+        <result column="electDepositStatus" property="deposit_status" jdbcType="INTEGER" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
         <result column="amount_receivable" property="amountReceivable" jdbcType="FLOAT"/>
         <result column="actual_amount" property="actualAmount" jdbcType="FLOAT"/>
         <result column="note" property="note" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
-        <association property="userId" column="user_idx" select="com.donno.nj.dao.UserDao.findUserIdById">
+
+        <association property="customerId" column="customer_idx" select="com.donno.nj.dao.UserDao.findUserIdById">
         </association>
-        <association property="userName" column="user_idx" select="com.donno.nj.dao.UserDao.findUserNameById">
+        <association property="customerName" column="customer_idx" select="com.donno.nj.dao.UserDao.findUserNameById">
         </association>
-        <association property="gasCylinderSpec" column="gyn_spec_idx" select="com.donno.nj.dao.GasCylinderSpecDao.findById">
+        <association property="operId" column="oper_idx" select="com.donno.nj.dao.UserDao.findUserIdById">
         </association>
+        <association property="operName" column="oper_idx" select="com.donno.nj.dao.UserDao.findUserNameById">
+        </association>
+
+        <association property="operDep" column="oper_dep_idx" select="com.donno.nj.dao.DepartmentDao.findById">
+        </association>
+
+        <association property="electDepositDetails" column="id" select="com.donno.nj.dao.ElectDepositDetailDao.findByDepositIdx">
+        </association>
+
+
     </resultMap>
 
     <sql id="TableName">
@@ -34,22 +45,26 @@
     </sql>
 
     <sql id="InsertColumnList">
-       user_idx,gyn_spec_idx,deposit_type,quantity,amount_receivable,actual_amount,note
+       deposit_sn,customer_idx,oper_idx,oper_dep_idx,amount_receivable,actual_amount,status,note
     </sql>
 
 
     <sql id="getListCondition">
         <where>
-            <if test="userId != null">
-                and t_elect_deposit.user_idx = (SELECT  id from t_user where user_id = #{userId})
+            <if test="customerId != null">
+                and t_elect_deposit.customer_idx = (SELECT  id from t_user where user_id = #{customerId})
             </if>
 
-            <if test="specCode != null">
-                and t_elect_deposit.gyn_spec_idx = (SELECT  id from t_gas_cylinder_spec where code = #{specCode})
+            <if test="dispatchId != null">
+                and t_elect_deposit.oper_idx = (SELECT  id from t_user where user_id = #{dispatchId})
             </if>
 
-            <if test="electDepositType != null">
-                and t_elect_deposit.deposit_type =  #{electDepositType.index} )
+            <if test="depositSn != null">
+                and t_elect_deposit.deposit_sn = #{depositSn}
+            </if>
+
+            <if test="departmentCode != null">
+                and t_elect_deposit.oper_dep_idx = (SELECT  id from t_department where code = #{departmentCode})
             </if>
 
             <if test="startTime != null">
@@ -96,12 +111,19 @@
         t_elect_deposit.id = #{id}
     </select>
 
+    <select id="findBySn" resultMap="BaseResultMap">
+        SELECT <include refid="QueryColumnList"/>
+        FROM <include refid="QryFromTable"/>
+        WHERE
+        t_elect_deposit.deposit_sn = #{sn}
+    </select>
+
     <insert id="insert">
-        INSERT IGNORE INTO <include refid="TableName"/>(<include refid="InsertColumnList"/>)
-        VALUES((select id from t_user where user_id = #{userId} ),
-        (select id from t_gas_cylinder_spec where code = #{gasCylinderSpec.code} ),
-        #{electDepositType.index},
-        #{quantity},#{amountReceivable},#{actualAmount},
+        INSERT  INTO <include refid="TableName"/>(<include refid="InsertColumnList"/>)
+        VALUES( #{depositSn},
+        (select id from t_user where user_id = #{customerId} ),
+        (select id from t_user where user_id = #{operId} ),
+        #{amountReceivable},#{actualAmount},#{electDepositStatus} ,
         #{note})
     </insert>
 
