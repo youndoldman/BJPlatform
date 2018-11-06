@@ -93,6 +93,11 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
     {
         newUser.setId(id);
 
+        if (newUser.getNote() == null )
+        {
+            newUser.setNote("");
+        }
+
          /*校验源信息是否合法*/
         User oldCustomer = userDao.findById(id);
         if ( oldCustomer == null)

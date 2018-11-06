@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.ElectDepositDao">
+    <resultMap id="BaseResultMap" type="com.donno.nj.domain.ElectDeposit">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="deposit_sn" property="depositSn" jdbcType="VARCHAR"/>
+        <result column="status" property="electDepositStatus" jdbcType="INTEGER" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+        <result column="amount_receivable" property="amountReceivable" jdbcType="FLOAT"/>
+        <result column="actual_amount" property="actualAmount" jdbcType="FLOAT"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+
+        <association property="customerId" column="customer_idx" select="com.donno.nj.dao.UserDao.findUserIdById">
+        </association>
+        <association property="customerName" column="customer_idx" select="com.donno.nj.dao.UserDao.findUserNameById">
+        </association>
+        <association property="operId" column="oper_idx" select="com.donno.nj.dao.UserDao.findUserIdById">
+        </association>
+        <association property="operName" column="oper_idx" select="com.donno.nj.dao.UserDao.findUserNameById">
+        </association>
+
+        <association property="operDep" column="oper_dep_idx" select="com.donno.nj.dao.DepartmentDao.findById">
+        </association>
+
+        <association property="electDepositDetails" column="id" select="com.donno.nj.dao.ElectDepositDetailDao.findByDepositIdx">
+        </association>
+
+
+    </resultMap>
+
+    <sql id="TableName">
+        t_elect_deposit
+    </sql>
+
+    <sql id="QryFromTable">
+        t_elect_deposit
+    </sql>
+
+
+
+    <sql id="QueryColumnList">
+       *
+    </sql>
+
+    <sql id="InsertColumnList">
+       deposit_sn,customer_idx,oper_idx,oper_dep_idx,amount_receivable,actual_amount,status,note
+    </sql>
+
+
+    <sql id="getListCondition">
+        <where>
+            <if test="customerId != null">
+                and t_elect_deposit.customer_idx = (SELECT  id from t_user where user_id = #{customerId})
+            </if>
+
+            <if test="dispatchId != null">
+                and t_elect_deposit.oper_idx = (SELECT  id from t_user where user_id = #{dispatchId})
+            </if>
+
+            <if test="depositSn != null">
+                and t_elect_deposit.deposit_sn = #{depositSn}
+            </if>
+
+            <if test="departmentCode != null">
+                and t_elect_deposit.oper_dep_idx = (SELECT  id from t_department where code = #{departmentCode})
+            </if>
+
+            <if test="startTime != null">
+                and t_advice.create_time >= #{startTime}
+            </if>
+
+            <if test="endTime != null">
+                and #{endTime}  >= t_advice.create_time
+            </if>
+
+        </where>
+    </sql>
+
+    <select id="getList" resultMap="BaseResultMap">
+        SELECT <include refid="QueryColumnList"/>
+        FROM <include refid="QryFromTable"/>
+        <include refid="getListCondition"/>
+
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+
+    </select>
+
+    <select id="count" resultType="Integer">
+        SELECT COUNT(*)
+        FROM  <include refid="QryFromTable"/>
+        <include refid="getListCondition"/>
+    </select>
+
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT <include refid="QueryColumnList"/>
+        FROM <include refid="QryFromTable"/>
+        WHERE
+        t_elect_deposit.id = #{id}
+    </select>
+
+    <select id="findBySn" resultMap="BaseResultMap">
+        SELECT <include refid="QueryColumnList"/>
+        FROM <include refid="QryFromTable"/>
+        WHERE
+        t_elect_deposit.deposit_sn = #{sn}
+    </select>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        INSERT  INTO <include refid="TableName"/>(<include refid="InsertColumnList"/>)
+        VALUES( #{depositSn},
+        (select id from t_user where user_id = #{customerId} ),
+        (select id from t_user where user_id = #{operId} ),
+        (select department_idx from t_sysuser where user_idx =(select id from t_user where user_id = #{operId} )),
+        #{amountReceivable},#{actualAmount},#{electDepositStatus.index}, #{note})
+    </insert>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM <include refid="TableName"/>
+        WHERE
+        id = #{id}
+    </delete>
+
+
+</mapper>

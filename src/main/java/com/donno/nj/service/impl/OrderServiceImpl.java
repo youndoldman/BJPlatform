@@ -191,6 +191,11 @@ public class OrderServiceImpl implements OrderService
         Date curDate = new Date();
         String dateFmt =  new SimpleDateFormat("yyyyMMddHHmmssSSS").format(curDate);
         order.setOrderSn(dateFmt);
+        /*避免重复编号*/
+        if (orderDao.findBySn(dateFmt) != null)
+        {
+            throw new ServerSideBusinessException("订单生成失败，请重新提交！", HttpStatus.NOT_ACCEPTABLE);
+        }
 
         order.setOriginalAmount(0f);
         order.setOrderAmount(0f);
@@ -1121,6 +1126,12 @@ public class OrderServiceImpl implements OrderService
 
             if (!forceDispatch) //抢单
             {
+                /*如果当前派送工状态已经被禁用，不允许抢单*/
+                if (targetUser.getServiceStatus() == SysUserServiceStatus.SUSForbidden)
+                {
+                    throw new ServerSideBusinessException("抢单失败，您已被系统禁止订单！", HttpStatus.FORBIDDEN);
+                }
+
                 /*获取该派送工当前正在派送的订单*/
                 Integer sysOverTime = systemParamDao.getOrderOverTime();
                 Map params = new HashMap<String,String>();
