@@ -105,6 +105,7 @@ commonModule.constant('URI', {
         'SysUserPhoto': '../../../api/sysusers/photo',//用户照片
         'OrderUrgency': '../../../api/OrderUrgency',//催单信息
         'Advice': '../../../api/Advice',//客户意见
+        'ElectDeposit': '../../../api/ElectDeposit',//电子押金单
 
 
 
@@ -221,49 +222,54 @@ commonModule.constant('NavItem', {
             href: "./shopCenter.htm#/ShopManage/orderCheck",
             icon: "fa-group"
         }, {
+            index: 1,
+            name: "电子押金",
+            href: "./shopCenter.htm#/ShopManage/electDepositCheck",
+            icon: "fa-group"
+        }, {
             index: 2,
             name: "订单管理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/orderList",
             icon: "fa-gears"
         }, {
-            index: 1,
+            index: 3,
             name: "库存管理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/stockControl",
             icon: "fa-gears"
         },{
-            index: 3,
+            index: 4,
             name: "报修处理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/Mend",
             icon: "fa-gears"
         }, {
-            index: 4,
+            index: 5,
             name: "安检处理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/Security",
             icon: "fa-gears"
         }, {
-            index: 5,
+            index: 6,
             name: "投诉处理",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/Complaint",
             icon: "fa-gears"
         }, {
-            index: 6,
+            index: 7,
             name: "回款操作",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/MoneyReturn",
             icon: "fa-edit"
         }, {
-            index: 7,
+            index: 8,
             name: "钢检瓶操作",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/checkBottle",
             icon: "fa-edit"
         },{
-            index: 8,
+            index: 9,
             name: "配送统计",
             target: "_blank",
             href: "./shopCenter.htm#/ShopManage/calculateDelivery",

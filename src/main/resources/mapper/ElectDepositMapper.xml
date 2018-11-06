@@ -59,6 +59,12 @@
                 and t_elect_deposit.oper_idx = (SELECT  id from t_user where user_id = #{dispatchId})
             </if>
 
+            <if test="electDepositStatus != null">
+                and t_elect_deposit.status =  #{electDepositStatus}
+            </if>
+
+
+
             <if test="depositSn != null">
                 and t_elect_deposit.deposit_sn = #{depositSn}
             </if>
@@ -132,6 +138,15 @@
         WHERE
         id = #{id}
     </delete>
+
+    <update id="update">
+        UPDATE <include refid="TableName"/>
+        <set>
+            <if test="electDepositStatus != null">status = #{electDepositStatus.index}</if>
+
+        </set>
+        WHERE id = #{id}
+    </update>
 
 
 </mapper>

@@ -3,10 +3,7 @@ package com.donno.nj.controller;
 import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
-import com.donno.nj.domain.Advice;
-import com.donno.nj.domain.ElectDeposit;
-import com.donno.nj.domain.ElectDepositType;
-import com.donno.nj.domain.ServerConstantValue;
+import com.donno.nj.domain.*;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.AdviceService;
 import com.donno.nj.service.ElectDepositService;
@@ -35,6 +32,7 @@ public class ElectDepositController
                                    @RequestParam(value = "depositSn", defaultValue = "") String depositSn,
                                    @RequestParam(value = "dispatchId", defaultValue = "") String dispatchId,
                                    @RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
+                                   @RequestParam(value = "status", required = false ) ElectDepositStatus electDepositStatus,
                                    @RequestParam(value = "startTime", defaultValue = "") String startTime,
                                    @RequestParam(value = "endTime", defaultValue = "") String endTime,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
@@ -63,6 +61,13 @@ public class ElectDepositController
             params.putAll(ImmutableMap.of("departmentCode", departmentCode));
         }
 
+        if (electDepositStatus != null)
+        {
+            params.putAll(ImmutableMap.of("electDepositStatus", electDepositStatus.getIndex()));
+        }
+
+
+
         if (startTime.trim().length() > 0)
         {
             params.putAll(ImmutableMap.of("startTime", startTime));
@@ -84,7 +89,7 @@ public class ElectDepositController
 
     @OperationLog(desc = "增加电子押金单信息")
     @RequestMapping(value = "/api/ElectDeposit", method = RequestMethod.POST)
-    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
     public ResponseEntity create(@RequestBody ElectDeposit electDeposit,
                                  UriComponentsBuilder ucBuilder)
     {
@@ -100,20 +105,20 @@ public class ElectDepositController
     }
 
 
-//    @OperationLog(desc = "修改电子押金单信息")
-//    @RequestMapping(value = "/api/ElectDeposit/{id}", method = RequestMethod.PUT)
-//    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
-//    public ResponseEntity update(@PathVariable("id") Integer id,
-//                                 @RequestBody ElectDeposit electDeposit)
-//    {
-//        ResponseEntity responseEntity;
-//
-//        electDepositService.update(id, electDeposit);
-//
-//        responseEntity = ResponseEntity.ok().build();
-//
-//        return responseEntity;
-//    }
+    @OperationLog(desc = "修改电子押金单信息")
+    @RequestMapping(value = "/api/ElectDeposit/{id}", method = RequestMethod.PUT)
+    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
+    public ResponseEntity update(@PathVariable("id") Integer id,
+                                 @RequestBody ElectDeposit electDeposit)
+    {
+        ResponseEntity responseEntity;
+
+        electDepositService.update(id, electDeposit);
+
+        responseEntity = ResponseEntity.ok().build();
+
+        return responseEntity;
+    }
 
 
 

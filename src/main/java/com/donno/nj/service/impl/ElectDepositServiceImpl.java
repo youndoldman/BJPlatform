@@ -128,32 +128,34 @@ public class ElectDepositServiceImpl implements ElectDepositService
                 throw new ServerSideBusinessException("电子押金单数量信息错误！", HttpStatus.NOT_ACCEPTABLE);
             }
 
+            electDeposit.setElectDepositStatus(ElectDepositStatus.EDSInit);
+
             electDepositDetail.setElectDepositIdx(electDeposit.getId());
             electDepositDetailDao.insert(electDepositDetail);
         }
     }
 
-//    @Override
-//    @OperationLog(desc = "修改电子押金单")
-//    public void update(Integer id, ElectDeposit electDeposit)
-//    {
-//        /*参数校验*/
-//        if (electDeposit == null)
-//        {
-//            throw new ServerSideBusinessException("缺少电子押金单信息，请补充！", HttpStatus.NOT_ACCEPTABLE);
-//        }
-//
-//
-//        ElectDeposit oriElectDeposit = electDepositDao.findById(id);
-//        if (oriElectDeposit == null)
-//        {
-//            throw new ServerSideBusinessException("电子押金单信息不存在！", HttpStatus.NOT_ACCEPTABLE);
-//        }
-//
-//        /*更新数据*/
-//        electDeposit.setId(id);
-//        electDepositDao.update(electDeposit);
-//    }
+    @Override
+    @OperationLog(desc = "修改电子押金单")
+    public void update(Integer id, ElectDeposit electDeposit)
+    {
+        /*参数校验*/
+        if (electDeposit == null)
+        {
+            throw new ServerSideBusinessException("缺少电子押金单信息，请补充！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+
+        ElectDeposit oriElectDeposit = electDepositDao.findById(id);
+        if (oriElectDeposit == null)
+        {
+            throw new ServerSideBusinessException("电子押金单信息不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        /*更新数据*/
+        electDeposit.setId(id);
+        electDepositDao.update(electDeposit);
+    }
 
     @Override
     @OperationLog(desc = "删除电子押金单")

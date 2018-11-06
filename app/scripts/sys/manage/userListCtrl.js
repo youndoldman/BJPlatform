@@ -125,6 +125,32 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
             retrieveUserGroups();
         };
 
+        //修改用户的权限状态
+        $scope.changeServiceStatus = function (user) {
+            var messageDesc = "";
+            var newUser = {userId:user.userId, serviceStatus:null};
+            if(user.serviceStatus.index==0){
+                messageDesc="是否禁用用户抢单权限！";
+                newUser.serviceStatus = "SUSForbidden";
+            }else{
+                messageDesc="是否恢复用户抢单权限！";
+                newUser.serviceStatus = "SUSNormal";
+            }
+
+            udcModal.confirm({"title": "权限变更", "message": messageDesc + user.name})
+                .then(function (result) {
+                    if (result) {
+                        UserService.modifyUser(newUser).then(function () {
+                            udcModal.info({"title": "处理结果", "message": "权限变更成功 "});
+                            searchUsers();
+                        }, function (value) {
+                            udcModal.info({"title": "处理结果", "message": "权限变更失败 " + value.message});
+                        })
+                    }
+                })
+        };
+
+
 
         init();
 

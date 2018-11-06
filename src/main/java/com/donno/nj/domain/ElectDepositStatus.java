@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ElectDepositStatus implements IEnum
 {
-    EDSInit("已创建", 0), EDSChecked("已核单", 1),EDSEnd("状态结束", 1);
+    EDSInit("已创建", 0), EDSChecked("已核单", 1),EDSEnd("状态结束", 2);
 
     // 成员变量
     private String name;

@@ -34,7 +34,8 @@
             <th width="8%">手机号</th>
             <th width="8%">座机</th>
             <th width="8%">邮箱</th>
-            <th width="8%">状态</th>
+            <th width="8%">在线状态</th>
+            <th width="8%">抢单权限</th>
             <th width="15%">操作</th>
         </tr>
         </thead>
@@ -53,6 +54,7 @@
             <td class="message">{{user.officePhone}}</td>
             <td class="message">{{user.email}}</td>
             <td class="message">{{user.aliveStatus.name}}</td>
+            <td class="message">{{user.serviceStatus.name}}</td>
             <td class="operate">
                 <!--<button title="详情" ng-click="viewDetails(user)" type="button" class="btn btn-primary btn-outline btn-xs">-->
                     <!--<i class="fa fa-info-circle"></i>-->
@@ -63,8 +65,12 @@
                 <button title="删除" ng-click="delete(user)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="fa fa-trash-o"></i>
                 </button>
-                <button title="上传照片" ng-click="uploadImage(user)" type="button" class="btn btn-primary btn-outline btn-xs">
-                    <i class="">上传照片</i>
+                <button title="照片" ng-click="uploadImage(user)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <i class="">照片</i>
+                </button>
+                <button ng-click="changeServiceStatus(user)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <i class="" ng-if="user.serviceStatus.index==0">禁用</i>
+                    <i class="" ng-if="user.serviceStatus.index!=0">恢复</i>
                 </button>
             </td>
         </tr>

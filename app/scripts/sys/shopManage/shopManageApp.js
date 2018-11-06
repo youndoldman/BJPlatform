@@ -29,6 +29,19 @@ var shopManageApp = angular.module('ShopManageApp', ['ui.router', 'CommonModule'
                     rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[0]);
                 }
             })
+            .state('ShopManage.electDepositCheck',{
+                url:'/electDepositCheck',
+                views: {
+                    "content@ShopManage": {
+                        templateUrl: '../pages/shopManage/electDepositCheckList.htm',
+                        controller: 'ElectDepositCheckCtrl',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[1]);
+                }
+            })
             .state('ShopManage.orderList',{
                 url:'/orderList',
                 views: {
@@ -39,7 +52,7 @@ var shopManageApp = angular.module('ShopManageApp', ['ui.router', 'CommonModule'
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[1]);
+                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[2]);
                 }
             })
             .state('ShopManage.stockControl',{
@@ -52,7 +65,7 @@ var shopManageApp = angular.module('ShopManageApp', ['ui.router', 'CommonModule'
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[2]);
+                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[3]);
                 }
             })
             .state('ShopManage.Mend',{
@@ -65,7 +78,7 @@ var shopManageApp = angular.module('ShopManageApp', ['ui.router', 'CommonModule'
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[3]);
+                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[4]);
                 }
             })
             .state('ShopManage.Security',{
@@ -78,7 +91,7 @@ var shopManageApp = angular.module('ShopManageApp', ['ui.router', 'CommonModule'
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[4]);
+                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[5]);
                 }
             })
             .state('ShopManage.Complaint',{
@@ -91,7 +104,7 @@ var shopManageApp = angular.module('ShopManageApp', ['ui.router', 'CommonModule'
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[5]);
+                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[6]);
                 }
             })
             .state('ShopManage.MoneyReturn',{
@@ -104,7 +117,7 @@ var shopManageApp = angular.module('ShopManageApp', ['ui.router', 'CommonModule'
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[6]);
+                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[7]);
                 }
             })
             .state('ShopManage.checkBottle',{
@@ -117,7 +130,7 @@ var shopManageApp = angular.module('ShopManageApp', ['ui.router', 'CommonModule'
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[7]);
+                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[8]);
                 }
             })
             .state('ShopManage.calculateDelivery',{
@@ -130,7 +143,7 @@ var shopManageApp = angular.module('ShopManageApp', ['ui.router', 'CommonModule'
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[8]);
+                    rootService.updateActiveNavL2(NavItem.ShopCenter.menuItems[9]);
                 }
             });
         $httpProvider.interceptors.push('HttpInterceptor');

@@ -4,6 +4,8 @@ shopManageApp.service('OrderCheckService', ['$http', 'URI', 'promiseWrapper','MI
     var ordersUri = URI.resources.orders;
     var taskOrdersUri = URI.resources.taskOrders;
     var taskOrdersDealUri = URI.resources.taskOrdersDeal;
+    var electDepositUri = URI.resources.ElectDeposit;
+
 
     this.toViewModelTaskOrders = function (taskOrdersFromApi) {
         if(taskOrdersFromApi.object==null)
@@ -84,5 +86,15 @@ shopManageApp.service('OrderCheckService', ['$http', 'URI', 'promiseWrapper','MI
         return promise.wrap($http.get(taskOrdersDealUri+'/'+taskId, {params: params}));
 
     }
+
+    //查询电子押金单
+    this.retrieveElectDeposit = function (params) {
+        return promise.wrap($http.get(electDepositUri, {params: params}));
+    };
+
+    //修改电子押金单
+    this.modifyElectDeposit = function (electDeposit) {
+        return promise.wrap($http.put(electDepositUri + "/" + electDeposit.id, electDeposit));
+    };
 }]);
 

@@ -1,0 +1,63 @@
+<div class="ribbon">
+    <a href=""><span class="home fa fa-home"></span></a>
+    <ol class="breadcrumb">
+        <li>押金单列表</li>
+    </ol>
+</div>
+
+<div class="table-wrapper">
+
+    <div class="toolbar">
+        <form role="form">
+            <div class="">
+
+                <div class="col-sm-8 input-width">
+                    <label class="input">押金单状态：</label>
+                    <label class="input"><select  ng-model="q.electDepositStatus" ng-options="electDepositStatus.value for electDepositStatus in vm.electDepositStatusList" class="form-control" ng-selected="" ng-change="electDepositStatusSearchChange()"></select></label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <table class="table table-striped table-hover props table-sm">
+        <thead>
+        <tr>
+            <th width="1%"></th>
+            <th width="3%">序号</th>
+            <th width="8%">押金单编号</th>
+            <th width="5%">客户id</th>
+            <th width="5%">客户名称</th>
+            <th width="5%">直销员id</th>
+            <th width="5%">直销员部门</th>
+            <th width="5%">应收金额(元)</th>
+            <th width="5%">实收金额(元)</th>
+            <th width="30%">明细</th>
+            <th width="5%">状态</th>
+            <th width="9%">创建时间</th>
+            <th width="15%">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="electDeposit in vm.electDepositList">
+            <td></td>
+            <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
+            <td class="message">{{electDeposit.depositSn}}</td>
+            <td class="message">{{electDeposit.customerId}}</td>
+            <td class="message">{{electDeposit.customerName}}</td>
+            <td class="message">{{electDeposit.operId}}</td>
+            <td class="message">{{electDeposit.operDep.name}}</td>
+            <td class="message">{{electDeposit.amountReceivable}}</td>
+            <td class="message">{{electDeposit.actualAmount}}</td>
+            <td class="message">{{electDeposit.detailModified}}</td>
+            <td class="message">{{electDeposit.electDepositStatus.name}}</td>
+            <td class="message">{{electDeposit.createTime}}</td>
+            <td class="operate">
+                <button title="核单"  ng-click="check(electDeposit)" type="button" class="btn btn-primary btn-outline btn-xs" ng-if="electDeposit.electDepositStatus.index==0">
+                    <i class="">核单</i>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div ng-if="vm.electDepositList.length == 0" nj-table-no-data></div>
+    <div nj-pager pager="pager"></div>
+</div>
