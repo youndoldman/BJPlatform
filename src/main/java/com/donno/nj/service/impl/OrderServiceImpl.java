@@ -10,6 +10,7 @@ import com.donno.nj.service.WorkFlowService;
 import com.donno.nj.util.AppUtil;
 import com.donno.nj.util.DistanceHelper;
 import com.donno.nj.activiti.WorkFlowTypes;
+import com.donno.nj.util.RandomHelper;
 import com.google.common.base.Optional;
 import groovy.lang.Tuple;
 import org.aspectj.weaver.ast.Or;
@@ -189,8 +190,10 @@ public class OrderServiceImpl implements OrderService
 
         //生成定单编号
         Date curDate = new Date();
-        String dateFmt =  new SimpleDateFormat("yyyyMMddHHmmssSSS").format(curDate);
+        String dateFmt =  new SimpleDateFormat("yyyyMMddHHmmssSSS-").format(curDate);
+        dateFmt = dateFmt + RandomHelper.getRandomNumber();
         order.setOrderSn(dateFmt);
+
         /*避免重复编号*/
         if (orderDao.findBySn(dateFmt) != null)
         {
