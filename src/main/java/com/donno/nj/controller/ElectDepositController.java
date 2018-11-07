@@ -32,7 +32,7 @@ public class ElectDepositController
                                    @RequestParam(value = "depositSn", defaultValue = "") String depositSn,
                                    @RequestParam(value = "dispatchId", defaultValue = "") String dispatchId,
                                    @RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
-                                   @RequestParam(value = "status", required = false ) ElectDepositStatus electDepositStatus,
+                                   @RequestParam(value = "electDepositStatus", required = false ) ElectDepositStatus electDepositStatus,
                                    @RequestParam(value = "startTime", defaultValue = "") String startTime,
                                    @RequestParam(value = "endTime", defaultValue = "") String endTime,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
@@ -107,7 +107,7 @@ public class ElectDepositController
 
     @OperationLog(desc = "修改电子押金单信息")
     @RequestMapping(value = "/api/ElectDeposit/{id}", method = RequestMethod.PUT)
-    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })
     public ResponseEntity update(@PathVariable("id") Integer id,
                                  @RequestBody ElectDeposit electDeposit)
     {

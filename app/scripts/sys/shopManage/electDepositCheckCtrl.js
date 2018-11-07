@@ -18,7 +18,7 @@ shopManageApp.controller('ElectDepositCheckCtrl', ['$scope', '$rootScope', '$fil
 
         $scope.vm = {
             electDepositList: [],
-            electDepositStatusList:[{key:null,value:"全部"},{key:0,value:"待核单"},{key:1,value:"已核单"}],
+            electDepositStatusList:[{key:null,value:"全部"},{key:"EDSInit",value:"待核单"},{key:"EDSChecked",value:"已核单"}],
         };
         $scope.q = {
             electDepositStatus:null,
@@ -60,6 +60,20 @@ shopManageApp.controller('ElectDepositCheckCtrl', ['$scope', '$rootScope', '$fil
                 $scope.pager.update($scope.q, electDeposit.total, queryParams.pageNo);
                 $scope.vm.electDepositList= electDeposit.items;
 
+                //更新押金单详情
+                for(var i=0;i<$scope.vm.electDepositList.length;i++){
+                    var detailModified = [];
+                    for(var j=0;j<$scope.vm.electDepositList[i].electDepositDetails.length;j++){
+                        var electDepositDetail = $scope.vm.electDepositList[i].electDepositDetails[j];
+                        var detailModifiedTemp = electDepositDetail.electDepositType.name+"   "+
+                            electDepositDetail.gasCylinderSpec.name+" × "+electDepositDetail.quantity;
+                        detailModified.push(detailModifiedTemp);
+                    }
+                    $scope.vm.electDepositList[i].detailModified = detailModified;
+                }
+
+
+
             });
         };
 
@@ -67,9 +81,15 @@ shopManageApp.controller('ElectDepositCheckCtrl', ['$scope', '$rootScope', '$fil
         var init = function () {
             var curUser = sessionStorage.getCurUser();
             $scope.q.department = curUser.department;
-            $scope.q.electDepositStatus = $scope.vm.electDepositStatusList[2];
+            $scope.q.electDepositStatus = $scope.vm.electDepositStatusList[1];
             searchElectDeposit();
         };
+
+        //押金单状态查询改变
+        $scope.electDepositStatusSearchChange = function () {
+            searchElectDeposit();
+        };
+
 
         init();
 

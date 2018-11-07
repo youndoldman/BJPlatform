@@ -99,6 +99,7 @@ public class ElectDepositServiceImpl implements ElectDepositService
             throw new ServerSideBusinessException("押金单创建失败，请重新提交！", HttpStatus.NOT_ACCEPTABLE);
         }
 
+        electDeposit.setElectDepositStatus(ElectDepositStatus.EDSInit);
         electDepositDao.insert(electDeposit);
 
         for (ElectDepositDetail electDepositDetail : electDeposit.getElectDepositDetails())
@@ -128,7 +129,7 @@ public class ElectDepositServiceImpl implements ElectDepositService
                 throw new ServerSideBusinessException("电子押金单数量信息错误！", HttpStatus.NOT_ACCEPTABLE);
             }
 
-            electDeposit.setElectDepositStatus(ElectDepositStatus.EDSInit);
+
 
             electDepositDetail.setElectDepositIdx(electDeposit.getId());
             electDepositDetailDao.insert(electDepositDetail);
