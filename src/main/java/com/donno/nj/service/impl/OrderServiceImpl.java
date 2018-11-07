@@ -848,20 +848,22 @@ public class OrderServiceImpl implements OrderService
                 }
             }
 
-            if (candUser.trim().length() > 0 )
-            {
-                variables.put(ServerConstantValue.ACT_FW_STG_1_CANDI_USERS,candUser);
-            }
-            else
-            {
-                throw new ServerSideBusinessException("附近没有配送人员，无法创建订单！", HttpStatus.NOT_ACCEPTABLE);
-            }
+//            if (candUser.trim().length() > 0 )
+//            {
+//                variables.put(ServerConstantValue.ACT_FW_STG_1_CANDI_USERS,candUser);
+//            }
+//            else
+//            {
+//                throw new ServerSideBusinessException("附近没有配送人员，无法创建订单！", HttpStatus.NOT_ACCEPTABLE);
+//            }
         }
-        else
-        {
-            throw new ServerSideBusinessException("系统尚无配送人员，无法创建订单！", HttpStatus.NOT_ACCEPTABLE);
-        }
+//        else
+//        {
+//            variables.put(ServerConstantValue.ACT_FW_STG_1_CANDI_USERS,candUser);
+//            //throw new ServerSideBusinessException("系统尚无配送人员，无法创建订单！", HttpStatus.NOT_ACCEPTABLE);
+//        }
 
+        variables.put(ServerConstantValue.ACT_FW_STG_1_CANDI_USERS,candUser);
         if (workFlowService.createWorkFlow(WorkFlowTypes.GAS_ORDER_FLOW,order.getCustomer().getUserId(),variables,order.getOrderSn()) < 0)
         {
             throw new ServerSideBusinessException("流程控制器创建失败！", HttpStatus.NOT_ACCEPTABLE);
@@ -1137,16 +1139,24 @@ public class OrderServiceImpl implements OrderService
 
                 /*获取该派送工当前正在派送的订单*/
                 Integer sysOverTime = systemParamDao.getOrderOverTime();
+
                 Map params = new HashMap<String,String>();
-                params.putAll(ImmutableMap.of("userId", candiUser));
-                params.putAll(ImmutableMap.of("orderSn",orderSn));
                 params.putAll(ImmutableMap.of("orderStatus", OrderStatus.OSDispatching.getIndex()));
-                List<OrderOpHistory> orderOpHistories = orderOpHistoryDao.getList(params);
-                for (OrderOpHistory orderOpHistory :orderOpHistories)
+                params.putAll(ImmutableMap.of("dispatcherId", candiUser));
+                List<Order> orderList = orderDao.getList(params);
+                for (Order dispatchingOrder : orderList)
                 {
-                    if ( Clock.differMinute(orderOpHistory.getUpdateTime(),new Date()) >= sysOverTime)
+                    Map paramsDispatch = new HashMap<String,String>();
+                    paramsDispatch.putAll(ImmutableMap.of("userId", candiUser));
+                    paramsDispatch.putAll(ImmutableMap.of("orderSn",dispatchingOrder.getOrderSn()));
+                    paramsDispatch.putAll(ImmutableMap.of("orderStatus", OrderStatus.OSDispatching.getIndex()));
+                    List<OrderOpHistory> orderOpHistories = orderOpHistoryDao.getList(paramsDispatch);
+                    for (OrderOpHistory orderOpHistory :orderOpHistories)
                     {
-                        throw new ServerSideBusinessException("抢单失败，请先完成当前已超时配送的订单！", HttpStatus.FORBIDDEN);
+                        if ( Clock.differMinute(orderOpHistory.getUpdateTime(),new Date()) >= sysOverTime)
+                        {
+                            throw new ServerSideBusinessException("抢单失败，请先完成当前已超时配送的订单！", HttpStatus.FORBIDDEN);
+                        }
                     }
                 }
             }
