@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.GasRefoundDetailDao">
+
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.GasRefoundDetail">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="refound_weight" property="refoundWeight" jdbcType="FLOAT"/>
+        <result column="stand_weight" property="standWeight" jdbcType="FLOAT"/>
+        <result column="deal_price" property="dealPrice" jdbcType="FLOAT"/>
+        <result column="tare_weight" property="tareWeight" jdbcType="FLOAT"/>
+        <result column="unit_price" property="unitPrice" jdbcType="FLOAT"/>
+        <result column="remain_gas" property="remainGas" jdbcType="FLOAT"/>
+        <result column="refound_sum" property="refoundSum" jdbcType="FLOAT"/>
+        <result column="cacl_type" property="forceCaculate" jdbcType="BOOLEAN"/>
+
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+
+        <association property="orderSn" column="order_idx" select="com.donno.nj.dao.OrderDao.findOrderSnById">
+        </association>
+
+        <association property="gasCynNumber" column="gas_cyn_idx" select="com.donno.nj.dao.GasCylinderDao.getNumberByIdx">
+        </association>
+
+        <association property="prevOrder" column="prev_order_idx" select="com.donno.nj.dao.OrderDao.findOrderSnById">
+        </association>
+
+        <association property="prevGoodsCode" column="prev_goods_idx" select="com.donno.nj.dao.GoodsDao.getCodeByIdx">
+        </association>
+
+    </resultMap>
+
+    <sql id="TblOrderRefoundDetail">
+        t_order_refound_detail
+    </sql>
+
+    <sql id="InsertColumnList">
+       order_idx, gas_cyn_idx ,prev_order_idx,prev_goods_idx,refound_weight,
+       stand_weight,tare_weight,deal_price,unit_price,remain_gas,
+       refound_sum,cacl_type,note
+    </sql>
+
+    <insert id="insert">
+        INSERT INTO <include refid="TblOrderRefoundDetail"/>(<include refid="InsertColumnList"/>)
+        VALUES(
+        (select id from t_order where order_sn = #{orderSn}),
+        (select id from t_gas_cylinder where number = #{gasCynNumber}),
+        (select id from t_order where order_sn = #{prevOrder}),
+        (select id from t_goods where code = #{prevGoodsCode}),
+        #{refoundWeight},
+        #{standWeight} ,
+        #{tareWeight},
+        #{dealPrice},
+        #{unitPrice},
+        #{remainGas},
+        #{refoundSum},
+        #{forceCaculate},
+        #{note})
+    </insert>
+
+
+
+    <sql id="getListCondition">
+        <where>
+            <if test="orderSn != null">AND  order_idx = (select id from t_order where order_sn = #{orderSn})</if>
+         </where>
+    </sql>
+
+    <select id="getList" resultMap="DetailResultMap">
+    SELECT *
+    FROM <include refid="TblOrderRefoundDetail"/>
+        <include refid="getListCondition"/>
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+
+    <select id="count" resultType="Integer">
+        SELECT COUNT(*)
+        FROM <include refid="TblOrderRefoundDetail"/>
+        <include refid="getListCondition"/>
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM <include refid="TblOrderRefoundDetail"/> WHERE id= #{id}
+    </delete>
+
+</mapper>

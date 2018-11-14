@@ -327,12 +327,43 @@
         )
     </insert>
 
+
+    <insert id="bindGasCynNumber" >
+        INSERT INTO  t_order_gas_cyn(order_idx,gas_cyn_idx)
+        VALUES
+        (
+        #{orderIdx},#{gasCynIdx}
+        )
+    </insert>
+
+    <select id="ifBindGasCynNumber" resultType="java.lang.Integer">
+        SELECT id from t_order_gas_cyn
+        WHERE
+        order_idx = #{orderIdx} and gas_cyn_idx = #{gasCynIdx}
+    </select>
+
+
     <select id="findOrderSnById" resultType="java.lang.String">
         SELECT <include refid="TblOrder"/>.order_sn
         FROM <include refid="TblOrder"/>
         WHERE
         id = #{id}
     </select>
+
+
+    <select id="findByGasCynNumber" resultMap="DetailResultMap">
+        SELECT *,TIMESTAMPDIFF(MINUTE,t_order.create_time, now()) as time_span
+        FROM <include refid="TblOrder"/>
+        WHERE
+        id =
+        (
+           select order_idx from t_order_gas_cyn where gas_cyn_idx =
+           (
+               select id from t_gas_cylinder where number = #{gasCynNumer}
+            )
+        )
+    </select>
+
 
     <select id="findDispatchStartTime" resultType="java.util.Date">
         SELECT create_time

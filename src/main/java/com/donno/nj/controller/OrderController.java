@@ -376,17 +376,33 @@ public class OrderController
         return responseEntity;
     }
 
-    @OperationLog(desc = "计算订单价格")
-    @RequestMapping(value = "/api/Orders/Caculate", method = RequestMethod.GET)
-    public ResponseEntity caculate(@RequestParam(value = "orderSn", defaultValue = "") String orderSn,
+    @OperationLog(desc = "订单关联钢瓶号")
+    @RequestMapping(value = "/api/Orders/Bind/GasCynNumber", method = RequestMethod.PUT)
+    public ResponseEntity orderBindGasCynNumber(@RequestParam(value = "orderSn", defaultValue = "") String orderSn,
                                    @RequestParam(value = "gasCynNumbers", defaultValue = "") String gasCynNumbers
     )
     {
         ResponseEntity responseEntity;
 
-        Order order = orderService.caculate(orderSn,gasCynNumbers);
+        orderService.orderBindGasCynNumber(orderSn,gasCynNumbers);
 
-        responseEntity = ResponseEntity.ok(order);
+        responseEntity = ResponseEntity.ok().build();
+
+        return responseEntity;
+    }
+
+    @OperationLog(desc = "计算订单价格")
+    @RequestMapping(value = "/api/Orders/Caculate/{orderSn}", method = RequestMethod.PUT)
+    public ResponseEntity caculate(@PathVariable("orderSn") String orderSn,
+                                   @RequestParam(value = "customerId", defaultValue = "") String customerId,
+                                   @RequestBody List<OrderCaculator> orderCaculators
+    )
+    {
+        ResponseEntity responseEntity;
+
+        List<GasCalcResult> gasCalcResults = orderService.caculate(orderSn,customerId,orderCaculators);
+
+        responseEntity = ResponseEntity.ok(ListRep.assemble(gasCalcResults, gasCalcResults.size()));
 
         return responseEntity;
     }

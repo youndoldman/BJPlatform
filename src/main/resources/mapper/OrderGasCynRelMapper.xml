@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.donno.nj.dao.OrderGasCynRelDao">
+
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.OrderGasCynRel">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="status" property="orderGasCynRelStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
+
+
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+
+        <association property="orderSn" column="order_idx" select="com.donno.nj.dao.OrderDao.findOrderSnById">
+        </association>
+
+        <association property="gasCynNumber" column="gas_cyn_idx" select="com.donno.nj.dao.GasCylinderDao.getNumberByIdx">
+        </association>
+
+
+    </resultMap>
+
+    <sql id="TblOrderGasCynRel">
+        t_order_gas_cyn
+    </sql>
+
+    <sql id="InsertColumnList">
+       order_idx, gas_cyn_idx ,prev_order_idx,prev_goods_idx,refound_weight,stand_weight,tare_weight,deal_price,unit_price,remain_gas,
+       refound_sum,cacl_type,note
+    </sql>
+
+    <insert id="insert">
+        INSERT IGNORE INTO <include refid="TblOrderGasCynRel"/>(<include refid="InsertColumnList"/>)
+        VALUES(
+        (select id from t_order where order_sn = #{orderSn}),
+        (select id from t_gas_cylinder where number = #{gasCynNumber}),
+        #{orderGasCynRelStatus.index},
+        #{refoundWeight},
+        #{standWeight} ,
+        #{tareWeight},
+        #{dealPrice},
+        #{unitPrice},
+        #{remainGas},
+        #{forceCaculate},
+        #{note})
+    </insert>
+
+
+
+    <sql id="getListCondition">
+        <where>
+            <if test="orderSn != null">AND  order_idx = (select id from t_order where order_sn = #{orderSn})</if>
+            <if test="gasCynNumber != null">AND  gas_cyn_idx = (select id from t_gas_cylinder where number = #{gasCynNumber})</if>
+            <if test="status != null">AND  #{orderGasCynRelStatus.index})</if>
+        </where>
+    </sql>
+
+    <select id="getList" resultMap="DetailResultMap">
+    SELECT *
+    FROM <include refid="TblOrderGasCynRel"/>
+        <include refid="getListCondition"/>
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+
+    <select id="count" resultType="Integer">
+        SELECT COUNT(*)
+        FROM <include refid="TblOrderGasCynRel"/>
+        <include refid="getListCondition"/>
+    </select>
+
+
+
+    <update id="update">
+        UPDATE <include refid="TblOrderGasCynRel"/>
+        <set>
+
+            <if test="orderGasCynRelStatus != null">status = #{orderGasCynRelStatus.index},</if>
+
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+</mapper>

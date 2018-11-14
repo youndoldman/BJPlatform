@@ -20,6 +20,9 @@
         <association property="goodsType" column="type_idx" select="com.donno.nj.dao.GoodsTypeDao.findById">
         </association>
 
+        <association property="gasCylinderSpec" column="spec_idx" select="com.donno.nj.dao.GasCylinderSpecDao.findById">
+        </association>
+
         <association property="area" column="area_idx" select="com.donno.nj.dao.AreaDao.findById">
         </association>
 
@@ -142,5 +145,12 @@
         <if test="code != null">AND  code = #{code}</if>
         ORDER BY code,effect_time
     </select>
+
+    <select id="getCodeByIdx" resultType="String">
+        SELECT code
+        FROM <include refid="TblGoods"/>
+        WHERE id = #{id}
+    </select>
+
 
 </mapper>

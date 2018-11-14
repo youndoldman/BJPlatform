@@ -4,6 +4,7 @@ import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.dao.*;
 import com.donno.nj.domain.*;
 import com.donno.nj.exception.ServerSideBusinessException;
+import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.OrderService;
 import com.donno.nj.service.SmsService;
 import com.donno.nj.service.WorkFlowService;
@@ -18,15 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
-import java.util.Date;
+
+import java.util.*;
 import java.text.SimpleDateFormat;
 import com.donno.nj.util.Clock;
 
 
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 import com.google.common.collect.ImmutableMap;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 @Service
 public class OrderServiceImpl implements OrderService
@@ -94,6 +94,15 @@ public class OrderServiceImpl implements OrderService
 
     @Autowired
     private SmsService smsService;
+
+    @Autowired
+    private GasRefoundDetailDao gasRefoundDetailDao;
+
+    @Autowired
+    private GasCylinderSpecDao gasCylinderSpecDao;
+
+    @Autowired
+    private OrderGasCynRelDao orderGasCynRelDao;
 
     @Override
     public Optional<Order> findBySn(String sn) {
@@ -386,12 +395,52 @@ public class OrderServiceImpl implements OrderService
         return dealPrice;
     }
 
+    @Override
+    @OperationLog(desc = "订单关联钢瓶号")
+    public void orderBindGasCynNumber(String orderSn,String gasCynNumbers)
+    {
+        /*订单号校验*/
+        Order order = orderDao.findBySn(orderSn);
+        if(order == null)
+        {
+            throw new ServerSideBusinessException("订单不存在", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (gasCynNumbers == null || gasCynNumbers.trim().length() == 0)
+        {
+            throw new ServerSideBusinessException("缺少钢瓶号信息", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        String[] gasCynNumberArray = gasCynNumbers.split(",");
+        for (String gasCynNumber :gasCynNumberArray)
+        {
+            /*钢瓶号校验*/
+            GasCylinder gasCylinder = gasCylinderDao.findByNumber(gasCynNumber);
+            if (gasCylinder == null) {
+                throw new ServerSideBusinessException("钢瓶不存在", HttpStatus.NOT_ACCEPTABLE);
+            }
+
+            /*记录唯一*/
+            if(orderDao.ifBindGasCynNumber(order.getId(),gasCylinder.getId()) != null)
+            {
+                //避免重复绑定
+            }
+            else
+            {
+                /*记录关联订单-钢瓶信息*/
+                orderDao.bindGasCynNumber(order.getId(),gasCylinder.getId());
+            }
+        }
+    }
 
 
     @Override
     @OperationLog(desc = "计算订单价格")
-    public Order caculate(String orderSn,String gasCynNumbers)
+    public  List<GasCalcResult> caculate(String orderSn,String customerId,List<OrderCaculator> orderCaculators)
     {
+        List<GasCalcResult> gasCalcResults = new ArrayList<GasCalcResult>() ;
+
+        StringBuilder stringBuilder = new StringBuilder();
         if (orderSn == null || orderSn.trim().length() == 0 )
         {
             throw new ServerSideBusinessException("缺少订单号", HttpStatus.NOT_ACCEPTABLE);
@@ -402,10 +451,22 @@ public class OrderServiceImpl implements OrderService
         {
             throw new ServerSideBusinessException("订单不存在", HttpStatus.NOT_ACCEPTABLE);
         }
-
-        if (gasCynNumbers == null || gasCynNumbers.trim().length() == 0 )
+        if (order.getOrderStatus() != OrderStatus.OSDispatching.getIndex())//其他状态不允许执行
         {
-            throw new ServerSideBusinessException("缺少钢瓶编号", HttpStatus.NOT_ACCEPTABLE);
+            throw new ServerSideBusinessException("当前订单状态不允许执行该操作", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        /*不需要计算残液回收*/
+        if (orderCaculators == null || orderCaculators.size() == 0 )
+        {
+            return gasCalcResults;
+        }
+
+        /*客户校验*/
+        User user = userDao.findByUserId(customerId);
+        if (user == null)
+        {
+            throw new ServerSideBusinessException("未查询到客户信息", HttpStatus.NOT_ACCEPTABLE);
         }
 
         /*避免接口重复调用时重复计算，重置订单实际价格*/
@@ -414,74 +475,225 @@ public class OrderServiceImpl implements OrderService
         {
             amount = amount + orderDetail.getDealPrice();
         }
-
-        order.setId(order.getId());
-        order.setRefoundSum(0f);
         order.setOrderAmount(amount);
 
-
-        /*查订单地址对应的燃气价格*/
-        CustomerAddress customerAddress = order.getRecvAddr();
-        Map params = new HashMap<String,String>();
-        params.putAll(ImmutableMap.of("province", customerAddress.getProvince()));
-        params.putAll(ImmutableMap.of("city", customerAddress.getCity()));
-        params.putAll(ImmutableMap.of("county", customerAddress.getCounty()));
-        params.putAll(ImmutableMap.of("typeCode", ServerConstantValue.GOODS_TYPE_GAS));
-        List<Goods> goodsList =  goodsDao.getList(params);
-        Float gasPrice = Float.POSITIVE_INFINITY;
-        if (goodsList.size() > 0)
+        /*接口可能重复调用，查询gasRefoundDetail1表，如果当前订单的回款详情存在，则找到对应的prevOrderIdx，
+        * 重置 订单-钢瓶关联表中 prevOrder 记录的标记为 未计算，待所有计算工作完成后，标记为 已计算
+        * */
+        Map paramsGasRefoundDetail = new HashMap<String,String>();
+        paramsGasRefoundDetail.putAll(ImmutableMap.of("orderSn", orderSn));
+        List<GasRefoundDetail>  gasRefoundDetails = gasRefoundDetailDao.getList(paramsGasRefoundDetail);
+        if (gasRefoundDetails.size() > 0)
         {
-            for (Goods goods : goodsList) {
-                if (Math.round(goods.getPrice() * 100) / 100.0 < Math.round(gasPrice * 100) / 100.0) {
-                    gasPrice = goods.getPrice();
+            for (GasRefoundDetail gasRefoundDetail:gasRefoundDetails)
+            {
+                if (gasRefoundDetail.getPrevOrder() != null)
+                {
+                    Map paramsOrderGasCyn = new HashMap<String,String>();
+                    paramsOrderGasCyn.putAll(ImmutableMap.of("orderSn", gasRefoundDetail.getPrevOrder()));
+                    List<OrderGasCynRel>  orderGasCynRels = orderGasCynRelDao.getList(paramsOrderGasCyn);
+
+                    if (orderGasCynRels.size() > 0)
+                    {
+                        for (OrderGasCynRel orderGasCynRel : orderGasCynRels)
+                        {
+                            orderGasCynRel.setOrderGasCynRelStatus(OrderGasCynRelStatus.OGRSUnused);
+                            orderGasCynRelDao.update(orderGasCynRel);
+                        }
+                    }
                 }
+                gasRefoundDetailDao.delete(gasRefoundDetail.getId());
             }
         }
-        else
-        {
-            throw new ServerSideBusinessException("缺少本区域燃气价格信息，请系统管理员先进行添加", HttpStatus.NOT_ACCEPTABLE);
-        }
 
-        String[] gasCynNumberArray = gasCynNumbers.split(",");
-        for (String gasCynNumber :gasCynNumberArray)
+
+        Boolean needUpdateOrder =  true;
+        Float refoundSum = 0.0f;
+        for (OrderCaculator caculator :orderCaculators)
         {
-            GasCylinder gasCylinder = gasCylinderDao.findByNumber(gasCynNumber);
+            GasCalcResult gasCalcResult = new GasCalcResult();
+
+            /*空瓶重量数据校验*/
+            if (caculator.getRefoundWeight() == null)
+            {
+                stringBuilder.append("钢瓶");
+                stringBuilder.append(caculator.getGasCynNumber());
+                stringBuilder.append("缺少回收重量数据");
+                throw new ServerSideBusinessException(stringBuilder.toString(), HttpStatus.NOT_ACCEPTABLE);
+            }
+
+            /*钢瓶校验*/
+            GasCylinder gasCylinder = gasCylinderDao.findByNumber(caculator.getGasCynNumber());
             if (gasCylinder == null)
             {
-                throw new ServerSideBusinessException("钢瓶不存在", HttpStatus.NOT_ACCEPTABLE);
+                gasCalcResult.setGasCynNumber(caculator.getGasCynNumber());
+                gasCalcResult.setSuccess(false);
+                gasCalcResult.setNote("系统没有该钢瓶信息");
+                gasCalcResults.add(gasCalcResult);
+                continue;
             }
 
-            gasCylinder.setGasPrice(gasPrice);
-            gasCylinderDao.update(gasCylinder);
-
-            Float maxGasWeight = 10f;
-
-                /*临时对应规格的气量*/
-            if (gasCylinder.getSpec().getCode().equals("0001") )
+            Float unitPrice = 0.0f;//单价
+            GasRefoundDetail gasRefoundDetailInfo = new GasRefoundDetail();
+            if (caculator.getForceCaculate() == null)
             {
-                maxGasWeight = 4f;
+                caculator.setForceCaculate(false);
             }
-            else if(gasCylinder.getSpec().getCode().equals("0002") )
+            if (!caculator.getForceCaculate())
             {
-                maxGasWeight = 12f;
+                /*从钢瓶-订单对应表 查找钢瓶对应的订单*/
+                Order prevOrder = orderDao.findByGasCynNumber(caculator.getGasCynNumber());
+                if (prevOrder == null)
+                {
+                    gasCalcResult.setGasCynNumber(caculator.getGasCynNumber());
+                    gasCalcResult.setSuccess(false);
+                    gasCalcResult.setNote("系统无该钢瓶关联订单信息");
+                    gasCalcResults.add(gasCalcResult);
+                    continue;
+                }
+
+                if (prevOrder.getCustomer().getId() != user.getId())
+                {
+                    gasCalcResult.setGasCynNumber(caculator.getGasCynNumber());
+                    gasCalcResult.setSuccess(false);
+                    gasCalcResult.setNote("客户关联订单信息错误");
+                    gasCalcResults.add(gasCalcResult);
+                    continue;
+                }
+
+                /*把订单-钢瓶关联信息的状态改为已使用*/
+                {
+                    Map paramsOrderGasCyn = new HashMap<String,String>();
+                    paramsOrderGasCyn.putAll(ImmutableMap.of("orderSn", prevOrder.getOrderSn()));
+                    paramsOrderGasCyn.putAll(ImmutableMap.of("gasCynNumber", caculator.getGasCynNumber()));
+                    List<OrderGasCynRel>  orderGasCynRels = orderGasCynRelDao.getList(paramsOrderGasCyn);
+                    if (orderGasCynRels.size() > 0)
+                    {
+                        for (OrderGasCynRel orderGasCynRel : orderGasCynRels)
+                        {
+                            orderGasCynRel.setOrderGasCynRelStatus(OrderGasCynRelStatus.OGRSUsed);
+                            orderGasCynRelDao.update(orderGasCynRel);
+                        }
+                    }
+                }
+
+                 /*对订单中的每个商品，查找与钢瓶规格一致的商品的价格*/
+                Boolean bFindTarget = false;
+                for (OrderDetail orderDetail:prevOrder.getOrderDetailList())
+                {
+                    if (orderDetail.getGoods().getGasCylinderSpec().getId() == gasCylinder.getSpec().getId())
+                    {
+                        unitPrice = orderDetail.getDealPrice() / orderDetail.getGoods().getWeight();//成交价/重量
+
+                        /*回款详情*/
+                        gasRefoundDetailInfo.setOrderSn(orderSn);
+                        gasRefoundDetailInfo.setGasCynNumber(caculator.getGasCynNumber());
+                        gasRefoundDetailInfo.setForceCaculate(false);
+                        gasRefoundDetailInfo.setStandWeight(orderDetail.getGoods().getWeight());
+                        gasRefoundDetailInfo.setRefoundWeight(caculator.getRefoundWeight());
+                        gasRefoundDetailInfo.setTareWeight( gasCylinder.getTareWeight().floatValue());
+                        gasRefoundDetailInfo.setRemainGas( gasRefoundDetailInfo.getRefoundWeight() - gasRefoundDetailInfo.getTareWeight() );
+                        gasRefoundDetailInfo.setUnitPrice(unitPrice);
+                        gasRefoundDetailInfo.setDealPrice( orderDetail.getDealPrice());
+                        gasRefoundDetailInfo.setRefoundSum( gasRefoundDetailInfo.getRemainGas() * gasRefoundDetailInfo.getUnitPrice());
+                        refoundSum = gasRefoundDetailInfo.getRefoundSum() + refoundSum;//回款总价
+                        gasRefoundDetailInfo.setPrevOrder(prevOrder.getOrderSn());
+                        gasRefoundDetailInfo.setPrevGoodsCode(orderDetail.getGoods().getCode());
+                        gasRefoundDetailInfo.setNote("");
+                        gasRefoundDetailDao.insert(gasRefoundDetailInfo);
+
+                        /*返回结果信息*/
+                        gasCalcResult.setGasCynNumber(caculator.getGasCynNumber());
+                        gasCalcResult.setSuccess(true);
+                        gasCalcResult.setNote("系统关联订单信息");
+                        gasCalcResult.setGasRefoundDetail(gasRefoundDetailInfo);
+                        gasCalcResults.add(gasCalcResult);
+                        bFindTarget = true;
+                        break;
+                    }
+                }
+
+                /*订单中无该规格商品*/
+                if (!bFindTarget)
+                {
+                    gasCalcResult.setGasCynNumber(caculator.getGasCynNumber());
+                    gasCalcResult.setSuccess(false);
+                    gasCalcResult.setNote("系统关联订单无该规格商品信息");
+                    gasCalcResults.add(gasCalcResult);
+                }
             }
-            else
+            else//强制输入信息
             {
-                maxGasWeight = 48f;
+
+                /*标称重量校验*/
+                if(caculator.getStandWeight() == null)
+                {
+                    stringBuilder.append("钢瓶");
+                    stringBuilder.append(caculator.getGasCynNumber());
+                    stringBuilder.append("缺少该钢瓶规格液化气重量数据");
+                    throw new ServerSideBusinessException(stringBuilder.toString(), HttpStatus.NOT_ACCEPTABLE);
+                }
+
+                /*价格数据校验*/
+                if(caculator.getDealPrice() == null)
+                {
+                    stringBuilder.append("钢瓶");
+                    stringBuilder.append(caculator.getGasCynNumber());
+                    stringBuilder.append("缺少该钢瓶上次交付价格数据");
+                    throw new ServerSideBusinessException(stringBuilder.toString(), HttpStatus.NOT_ACCEPTABLE);
+                }
+
+                unitPrice = caculator.getDealPrice() / caculator.getStandWeight();
+
+                /*回款详情*/
+                gasRefoundDetailInfo.setOrderSn(orderSn);
+                gasRefoundDetailInfo.setGasCynNumber(caculator.getGasCynNumber());
+                gasRefoundDetailInfo.setForceCaculate(true);
+                gasRefoundDetailInfo.setStandWeight(caculator.getStandWeight());
+                gasRefoundDetailInfo.setRefoundWeight(caculator.getRefoundWeight());
+                gasRefoundDetailInfo.setTareWeight( gasCylinder.getTareWeight().floatValue());
+                gasRefoundDetailInfo.setRemainGas( gasRefoundDetailInfo.getRefoundWeight() - gasRefoundDetailInfo.getTareWeight() );
+                gasRefoundDetailInfo.setUnitPrice(unitPrice);
+                gasRefoundDetailInfo.setDealPrice( caculator.getDealPrice());
+                gasRefoundDetailInfo.setRefoundSum( gasRefoundDetailInfo.getRemainGas() * gasRefoundDetailInfo.getUnitPrice());
+                refoundSum = gasRefoundDetailInfo.getRefoundSum() + refoundSum;//回款总价
+                gasRefoundDetailDao.insert(gasRefoundDetailInfo);
+
+                /*返回结果信息*/
+                gasCalcResult.setGasCynNumber(caculator.getGasCynNumber());
+                gasCalcResult.setSuccess(true);
+                gasCalcResult.setNote("系统关联订单信息");
+                gasCalcResult.setGasRefoundDetail(gasRefoundDetailInfo);
+                gasCalcResults.add(gasCalcResult);
             }
 
-            Float refoundSum = gasPrice * ( maxGasWeight -( gasCylinder.getFullWeight() - gasCylinder.getEmptyWeight()));
+
+        }
+
+        for(GasCalcResult gasCalcResultCheck:gasCalcResults)
+        {
+            if(!gasCalcResultCheck.getSuccess())
+            {
+                needUpdateOrder = false;
+            }
+        }
 
 
-            order.setId(order.getId());
-            order.setRefoundSum(order.getRefoundSum() + refoundSum);
+        if (needUpdateOrder)
+        {
+            Order opderUpd = new Order();
+            opderUpd.setId(order.getId());
+            order.setRefoundSum(refoundSum);
             order.setOrderAmount(order.getOrderAmount() - refoundSum);
-
             orderDao.update(order);
 
         }
+        else
+        {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
 
-        return  order;
+        return  gasCalcResults;
     }
 
 /*

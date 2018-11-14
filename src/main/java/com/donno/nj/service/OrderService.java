@@ -1,8 +1,6 @@
 package com.donno.nj.service;
 
-import com.donno.nj.domain.Order;
-import com.donno.nj.domain.PayType;
-import com.donno.nj.domain.Ticket;
+import com.donno.nj.domain.*;
 import com.google.common.base.Optional;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,9 +35,11 @@ public interface OrderService
 
     void weixinPayOk(String orderSn,String weixinSn,Integer amount);
 
-    Order caculate(String orderSn,String gasCynNumbers);
+    List<GasCalcResult> caculate(String orderSn, String customerId, List<OrderCaculator> orderCaculators);
 
     void checkOverTime();
+
+    void orderBindGasCynNumber(String orderSn,String gasCynNumbers);
 
 
 }
