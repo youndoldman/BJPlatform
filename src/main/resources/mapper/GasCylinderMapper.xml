@@ -134,7 +134,7 @@
 
             <if test="lifeStatus != null">AND  life_status = #{lifeStatus}</if>
 
-            <if test="loadStatus != null">AND  load_status = #{loadStatus}</if>
+            <if test="loadStatus != null">AND  load_status = #{loadStatus.index}</if>
 
             <if test="serviceStatus != null">AND  service_status = #{serviceStatus}</if>
 

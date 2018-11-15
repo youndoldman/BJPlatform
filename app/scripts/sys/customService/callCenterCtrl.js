@@ -827,6 +827,9 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             $scope.timerSearchMissedCall = $interval( function(){
                 searchMissedCall();
             }, 5000);
+            //初始化订单类型为普通订单
+            $scope.currentOrder.orderTriggerType = "OTTNormal";
+
         };
 
         init();
@@ -939,12 +942,15 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         $scope.clearWindow = function(){
             $scope.vm.currentTicketCount = null;
             $scope.vm.currentCustomerCredit= null;
-            $scope.vm.callInPhone = null;
+            //订单完成后清除来电号码
+            $scope.vm.callInPhone = "00000000";
             $scope.vm.currentCustomer = null;
             $scope.vm.CustomerList = [];
             $scope.vm.CustomerOrderHistory = [];
+
             $scope.currentOrder = {
-                orderDetailList:[]
+                orderDetailList:[],
+                orderTriggerType:"OTTNormal"//普通订单
             };
             $scope.vm.callReportList=[];
             //当前报修信息

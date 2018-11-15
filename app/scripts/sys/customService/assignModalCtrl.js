@@ -70,7 +70,7 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
             pageNo: 1,
             pageSize: 100,
             liableUserId: $scope.vm.selectedWorker.userId,
-            loadStatus:1
+            loadStatus:"LSHeavy"
         };
         OrderService.retrieveBottles(queryParams).then(function (bottles) {
             var bottleCount_5 = 0;
@@ -191,7 +191,7 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
             });
             markerDest.setMap($scope.map);
             // 设置鼠标划过点标记显示的文字提示
-            markerDest.setTitle('我是marker的title');
+            //markerDest.setTitle('我是marker的title');
 
             // 设置label标签
             // label默认蓝框白底左上角显示，样式className为：amap-marker-label

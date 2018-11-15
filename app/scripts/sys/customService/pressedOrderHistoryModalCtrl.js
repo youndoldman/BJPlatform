@@ -125,7 +125,7 @@ customServiceApp.controller('PressedOrderHistoryModalCtrl', ['$scope', 'close', 
                 pageNo: 1,
                 pageSize: 100,
                 liableUserId: userId,
-                loadStatus:1
+                loadStatus:"LSHeavy"
             };
             OrderService.retrieveBottles(queryParams).then(function (bottles) {
                 var bottleCount_5 = 0;
