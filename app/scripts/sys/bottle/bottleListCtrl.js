@@ -20,7 +20,8 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
             liableUserId: null,
             liableDepartmentCode: null,
             serviceStatus:null,
-            spec: null
+            spec: null,
+            loadStatus: null,
         };
 
         $scope.vm = {
@@ -38,6 +39,10 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
                 {value:"0002",name:"15公斤"},
                 {value:"0003",name:"50公斤"}
                ],
+            loadStatusList:[{value:null,name:"空重瓶"},
+                {value:"LSEmpty",name:"空瓶"},
+                {value:"LSHeavy",name:"重瓶"}
+            ],
         };
 
         $scope.search = function () {
@@ -117,6 +122,7 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
                 liableDepartmentCode: $scope.q.liableDepartmentCode,
                 serviceStatus:$scope.q.serviceStatus.value,
                 specCode:$scope.q.spec.value,
+                loadStatus:$scope.q.loadStatus.value,
                 orderBy:"number"
             };
             BottleService.retrieveBottles(queryParams).then(function (bottles) {
@@ -134,6 +140,7 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
             //查询钢瓶
             $scope.q.serviceStatus = $scope.vm.serviceStatusList[0];
             $scope.q.spec = $scope.vm.specList[0];
+            $scope.q.loadStatus = $scope.vm.loadStatusList[0];
             searchBottles();
         };
 

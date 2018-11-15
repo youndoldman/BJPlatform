@@ -241,6 +241,8 @@ manageApp.controller('UserModalCtrl', ['$scope', 'close', 'UserService', 'title'
 
     var init = function () {
         $scope.vm.user = _.clone(initVal);
+        //删除抢单权限状态
+        delete $scope.vm.user.serviceStatus;
         //删除多余元素
         deleteUserRedundance();
         if ($scope.vm.user.department == null) {
@@ -346,6 +348,8 @@ manageApp.controller('UserImageModalCtrl', ['$scope', 'close', 'UserService', 't
 
         $scope.vm.user = _.clone(initVal);
         $scope.vm.image = URI.resources.SysUserPhoto+"/"+$scope.vm.user.userId;
+
+
 
     };
 
