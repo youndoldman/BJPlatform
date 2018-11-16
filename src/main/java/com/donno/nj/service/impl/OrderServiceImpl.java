@@ -552,6 +552,20 @@ public class OrderServiceImpl implements OrderService
                     continue;
                 }
 
+                /*
+                * 关联订单校验：
+                *避免误操作将空瓶号与重瓶号输入成一样，
+                *判断当前订单号应与关联订单号不一样，确保关联订单为上一单单号
+                * */
+                if (prevOrder.getId() == order.getId())
+                {
+                    gasCalcResult.setGasCynNumber(caculator.getGasCynNumber());
+                    gasCalcResult.setSuccess(false);
+                    gasCalcResult.setNote("客户关联订单信息错误，钢瓶信息为当前订单");
+                    gasCalcResults.add(gasCalcResult);
+                    continue;
+                }
+
                 if (prevOrder.getCustomer().getId() != user.getId())
                 {
                     gasCalcResult.setGasCynNumber(caculator.getGasCynNumber());
@@ -581,35 +595,47 @@ public class OrderServiceImpl implements OrderService
                 Boolean bFindTarget = false;
                 for (OrderDetail orderDetail:prevOrder.getOrderDetailList())
                 {
-                    if (orderDetail.getGoods().getGasCylinderSpec().getId() == gasCylinder.getSpec().getId())
+                    if ((orderDetail.getGoods() == null) ||
+                            (orderDetail.getGoods().getGasCylinderSpec() == null) )
                     {
-                        unitPrice = orderDetail.getDealPrice() / orderDetail.getGoods().getWeight();//成交价/重量
+                        gasCalcResult.setGasCynNumber(caculator.getGasCynNumber());
+                        gasCalcResult.setSuccess(false);
+                        gasCalcResult.setNote("客户关联订单信息商品或规格信息错误");
+                        gasCalcResults.add(gasCalcResult);
+                        continue;
+                    }
+                    else
+                    {
+                        if (orderDetail.getGoods().getGasCylinderSpec().getId() == gasCylinder.getSpec().getId())
+                        {
+                            unitPrice = orderDetail.getDealPrice() / orderDetail.getGoods().getWeight();//成交价/重量
 
                         /*回款详情*/
-                        gasRefoundDetailInfo.setOrderSn(orderSn);
-                        gasRefoundDetailInfo.setGasCynNumber(caculator.getGasCynNumber());
-                        gasRefoundDetailInfo.setForceCaculate(false);
-                        gasRefoundDetailInfo.setStandWeight(orderDetail.getGoods().getWeight());
-                        gasRefoundDetailInfo.setRefoundWeight(caculator.getRefoundWeight());
-                        gasRefoundDetailInfo.setTareWeight( gasCylinder.getTareWeight().floatValue());
-                        gasRefoundDetailInfo.setRemainGas( gasRefoundDetailInfo.getRefoundWeight() - gasRefoundDetailInfo.getTareWeight() );
-                        gasRefoundDetailInfo.setUnitPrice(unitPrice);
-                        gasRefoundDetailInfo.setDealPrice( orderDetail.getDealPrice());
-                        gasRefoundDetailInfo.setRefoundSum( gasRefoundDetailInfo.getRemainGas() * gasRefoundDetailInfo.getUnitPrice());
-                        refoundSum = gasRefoundDetailInfo.getRefoundSum() + refoundSum;//回款总价
-                        gasRefoundDetailInfo.setPrevOrder(prevOrder.getOrderSn());
-                        gasRefoundDetailInfo.setPrevGoodsCode(orderDetail.getGoods().getCode());
-                        gasRefoundDetailInfo.setNote("");
-                        gasRefoundDetailDao.insert(gasRefoundDetailInfo);
+                            gasRefoundDetailInfo.setOrderSn(orderSn);
+                            gasRefoundDetailInfo.setGasCynNumber(caculator.getGasCynNumber());
+                            gasRefoundDetailInfo.setForceCaculate(false);
+                            gasRefoundDetailInfo.setStandWeight(orderDetail.getGoods().getWeight());
+                            gasRefoundDetailInfo.setRefoundWeight(caculator.getRefoundWeight());
+                            gasRefoundDetailInfo.setTareWeight( gasCylinder.getTareWeight().floatValue());
+                            gasRefoundDetailInfo.setRemainGas( gasRefoundDetailInfo.getRefoundWeight() - gasRefoundDetailInfo.getTareWeight() );
+                            gasRefoundDetailInfo.setUnitPrice(unitPrice);
+                            gasRefoundDetailInfo.setDealPrice( orderDetail.getDealPrice());
+                            gasRefoundDetailInfo.setRefoundSum( gasRefoundDetailInfo.getRemainGas() * gasRefoundDetailInfo.getUnitPrice());
+                            refoundSum = gasRefoundDetailInfo.getRefoundSum() + refoundSum;//回款总价
+                            gasRefoundDetailInfo.setPrevOrder(prevOrder.getOrderSn());
+                            gasRefoundDetailInfo.setPrevGoodsCode(orderDetail.getGoods().getCode());
+                            gasRefoundDetailInfo.setNote("");
+                            gasRefoundDetailDao.insert(gasRefoundDetailInfo);
 
-                        /*返回结果信息*/
-                        gasCalcResult.setGasCynNumber(caculator.getGasCynNumber());
-                        gasCalcResult.setSuccess(true);
-                        gasCalcResult.setNote("系统关联订单信息");
-                        gasCalcResult.setGasRefoundDetail(gasRefoundDetailInfo);
-                        gasCalcResults.add(gasCalcResult);
-                        bFindTarget = true;
-                        break;
+                            /*返回结果信息*/
+                            gasCalcResult.setGasCynNumber(caculator.getGasCynNumber());
+                            gasCalcResult.setSuccess(true);
+                            gasCalcResult.setNote("系统关联订单信息");
+                            gasCalcResult.setGasRefoundDetail(gasRefoundDetailInfo);
+                            gasCalcResults.add(gasCalcResult);
+                            bFindTarget = true;
+                            break;
+                        }
                     }
                 }
 
