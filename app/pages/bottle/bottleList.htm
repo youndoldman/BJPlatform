@@ -18,6 +18,9 @@
 
                 <span class="glyphicon glyphicon-calendar" ng-click="initDepartmentSelect()"></span>
                 <label class="input"><select  ng-model="q.spec" ng-options="spec.name for spec in vm.specList" class="form-control" ng-selected="" ng-change="search()"></select></label>
+
+                <label class="input"><select  ng-model="q.loadStatus" ng-options="loadStatus.name for loadStatus in vm.loadStatusList" class="form-control" ng-selected="" ng-change="search()"></select></label>
+
                 <button type="submit" class="btn btn-sm btn-primary" ng-click="search()"><i class="fa fa-search"></i> 搜索 </button>
 
                 <!--<button type="button" class="btn btn-sm btn-success pull-right" ng-click="initPopUp()"><i class="fa fa-plus"></i> 新增钢瓶 </button>-->

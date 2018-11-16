@@ -5,6 +5,7 @@ import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.domain.GasCylinder;
 import com.donno.nj.domain.GasCylinderSvcStatusOpHis;
+import com.donno.nj.domain.LoadStatus;
 import com.donno.nj.domain.ServerConstantValue;
 import com.donno.nj.logger.DebugLogger;
 import com.donno.nj.representation.ListRep;
@@ -42,6 +43,7 @@ public class GasCylinderController
                                    @RequestParam(value = "specCode", defaultValue = "") String specCode,
                                    @RequestParam(value = "lifeStatus", required = false) Integer lifeStatus,
                                    @RequestParam(value = "serviceStatus", required = false) Integer serviceStatus,
+                                   @RequestParam(value = "loadStatus", required = false) LoadStatus loadStatus,
                                    @RequestParam(value = "liableUserId", defaultValue = "") String liableUserId,
                                    @RequestParam(value = "liableDepartmentCode", defaultValue = "") String liableDepartmentCode,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
@@ -73,6 +75,13 @@ public class GasCylinderController
         {
             params.putAll(ImmutableMap.of("lifeStatus", lifeStatus));
         }
+
+        if (loadStatus != null)
+        {
+            params.putAll(ImmutableMap.of("loadStatus", loadStatus));
+        }
+
+
 
         if (serviceStatus != null)
         {
