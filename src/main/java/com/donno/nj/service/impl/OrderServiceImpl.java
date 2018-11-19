@@ -424,6 +424,7 @@ public class OrderServiceImpl implements OrderService
             if(orderDao.ifBindGasCynNumber(order.getId(),gasCylinder.getId()) != null)
             {
                 //避免重复绑定
+                orderDao.unBindGasCynNumber(order.getId(),gasCylinder.getId());
             }
             else
             {

@@ -336,6 +336,13 @@
         )
     </insert>
 
+
+    <delete id="unBindGasCynNumber" parameterType="java.lang.Integer">
+        DELETE FROM t_order_gas_cyn WHERE order_idx = #{orderIdx} AND gas_cyn_idx = #{gasCynIdx}
+    </delete>
+
+
+
     <select id="ifBindGasCynNumber" resultType="java.lang.Integer">
         SELECT id from t_order_gas_cyn
         WHERE
