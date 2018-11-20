@@ -426,11 +426,9 @@ public class OrderServiceImpl implements OrderService
                 //避免重复绑定
                 orderDao.unBindGasCynNumber(order.getId(),gasCylinder.getId());
             }
-            else
-            {
-                /*记录关联订单-钢瓶信息*/
-                orderDao.bindGasCynNumber(order.getId(),gasCylinder.getId());
-            }
+
+            /*记录关联订单-钢瓶信息*/
+            orderDao.bindGasCynNumber(order.getId(),gasCylinder.getId());
         }
     }
 
