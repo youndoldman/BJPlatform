@@ -421,10 +421,10 @@ public class OrderServiceImpl implements OrderService
             }
 
             /*记录唯一*/
-            if(orderDao.ifBindGasCynNumber(order.getId(),gasCylinder.getId()) != null)
+            if(orderDao.ifBindGasCynNumber(gasCylinder.getId()) != null)
             {
                 //避免重复绑定
-                orderDao.unBindGasCynNumber(order.getId(),gasCylinder.getId());
+                orderDao.unBindGasCynNumber(gasCylinder.getId());
             }
 
             /*记录关联订单-钢瓶信息*/

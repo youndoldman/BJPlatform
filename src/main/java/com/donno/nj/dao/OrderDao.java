@@ -15,9 +15,9 @@ public interface OrderDao extends BaseDao<Order>
     void bindWeixinOrderSn(@Param("orderIdx") Integer orderIdx,@Param("weixinOrderSn") String weixinOrderSn,@Param("amount") Integer amount);
 
     void bindGasCynNumber(@Param("orderIdx") Integer orderIdx,@Param("gasCynIdx") Integer gasCynIdx);
-    void unBindGasCynNumber(@Param("orderIdx") Integer orderIdx,@Param("gasCynIdx") Integer gasCynIdx);
+    void unBindGasCynNumber(@Param("gasCynIdx") Integer gasCynIdx);
 
-    Integer ifBindGasCynNumber(@Param("orderIdx") Integer orderIdx,@Param("gasCynIdx") Integer gasCynIdx);
+    Integer ifBindGasCynNumber(@Param("gasCynIdx") Integer gasCynIdx);
 
     Order findByGasCynNumber(String gasCynNumer);
 
