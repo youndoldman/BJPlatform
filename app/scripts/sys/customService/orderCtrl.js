@@ -184,7 +184,13 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
 
 
         var init = function () {
+            //初始化时间为当天
+            var date = new Date();
+            var month = date.getMonth()+1;
+            $scope.q.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" 00:00:00";
+            $scope.q.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" 23:59:59";
             searchOrder();
+
         };
 
         init();

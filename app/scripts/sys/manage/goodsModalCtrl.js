@@ -8,6 +8,7 @@ manageApp.controller('GoodsModalCtrl', ['$scope', 'close', 'GoodsService', 'titl
             "county":"",
             }
         },
+        gasCylinderSpecList:[],
         goodsTypesList:[],
         //currentGoods: {
         //    address:{
@@ -151,6 +152,22 @@ manageApp.controller('GoodsModalCtrl', ['$scope', 'close', 'GoodsService', 'titl
                     }
                 }
 
+            }
+        });
+
+        //查询钢瓶规格
+        var queryParams = {
+        };
+        GoodsService.retrieveBottleSpecs(queryParams).then(function (specs) {
+            $scope.vm.gasCylinderSpecList = specs.items;
+            if(!$scope.isModify){
+                $scope.vm.goods.gasCylinderSpec = $scope.vm.gasCylinderSpecList[0];
+            }else{
+                for(var tempGoods in $scope.vm.gasCylinderSpecList){
+                    if($scope.vm.goods.gasCylinderSpec.code==$scope.vm.gasCylinderSpecList[tempGoods].code){
+                        $scope.vm.goods.gasCylinderSpec = $scope.vm.gasCylinderSpecList[tempGoods];
+                    }
+                }
             }
         });
     };

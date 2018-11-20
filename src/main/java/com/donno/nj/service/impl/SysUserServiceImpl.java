@@ -298,8 +298,15 @@ public class SysUserServiceImpl extends UserServiceImpl implements SysUserServic
     @Override
     public  byte[] downloadPhoto(String userId)
     {
-        Map<String,Object> map = sysUserDao.downloadPhoto(userId);
-        return  (byte[]) map.get("photo");
+        try {
+
+            Map<String, Object> map = sysUserDao.downloadPhoto(userId);
+            return (byte[]) map.get("photo");
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
     }
 
 
