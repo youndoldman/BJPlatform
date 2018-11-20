@@ -115,5 +115,7 @@ financeApp.service('FinanceService', ['$http', 'URI', 'promiseWrapper', function
     };
 
 
+
+
 }]);
 

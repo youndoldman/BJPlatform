@@ -20,7 +20,7 @@ manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper','MISC', func
 
     var DiscountStrategiesCancelUri = URI.resources.DiscountStrategiesCancel;//10.8.	作废优惠方案
 
-
+    var bottleSpecQueryUri = URI.resources.bottleSpecQuery;//钢瓶规格查询
 
 
     //行政区域查询
@@ -158,6 +158,12 @@ manageApp.service('GoodsService', ['$http', 'URI', 'promiseWrapper','MISC', func
     //查询钢瓶厂家
     this.retrieveFactorys = function (params) {
         return promise.wrap($http.get(gasCynFactoryUri,{params: params}));
+    };
+
+
+    //钢瓶规格查询
+    this.retrieveBottleSpecs = function () {
+        return promise.wrap($http.get(bottleSpecQueryUri));
     };
 
 

@@ -173,11 +173,17 @@ commonModule.controller('CommonModuleCtrl', ['$rootScope','$scope', '$interval',
     var init = function () {
         $scope.currentUser = sessionStorage.getCurUser();
 
-        $scope.currentUserPhoto = URI.resources.SysUserPhoto+"/"+$scope.currentUser.userId;
-        console.log($scope.currentUserPhoto);
-        $scope.timer = $interval( function(){
-            updateHeartBit();//心跳
-        }, 20000);
+        if($scope.currentUser == null){
+            $window.location.href = URI.resources.loginPage;
+        }else{
+            $scope.currentUserPhoto = URI.resources.SysUserPhoto+"/"+$scope.currentUser.userId;
+            console.log($scope.currentUserPhoto);
+            $scope.timer = $interval( function(){
+                updateHeartBit();//心跳
+            }, 20000);
+        }
+
+
     };
     $scope.inRoles = function(roles)
     {

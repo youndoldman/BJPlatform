@@ -455,16 +455,20 @@ public class SysUserController
         if (user.isPresent())
         {
             byte[] photo = sysUserService.downloadPhoto(userId);
+            //如果是空，就选取admin的头像
             if(photo==null){
-                httpServletResponse.setStatus(404);
-            }else{
-                httpServletResponse.setContentType("image/png");
-                httpServletResponse.setStatus(200);
-                OutputStream os = httpServletResponse.getOutputStream();
-                os.write(photo);
-                os.flush();
-                os.close();
+                photo = sysUserService.downloadPhoto("admin");
             }
+            if(photo==null) {
+                httpServletResponse.setStatus(404);
+            }
+            httpServletResponse.setContentType("image/png");
+            httpServletResponse.setStatus(200);
+            OutputStream os = httpServletResponse.getOutputStream();
+            os.write(photo);
+            os.flush();
+            os.close();
+
 
 
 

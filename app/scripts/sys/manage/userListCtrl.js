@@ -332,15 +332,22 @@ manageApp.controller('UserImageModalCtrl', ['$scope', 'close', 'UserService', 't
     };
 
     $scope.submit = function (user) {
-        var url = URI.resources.SysUserPhoto+"/"+user.userId;  //params是model传的参数，图片上传接口的url
-        Upload.upload({
-            method: 'PUT',
-            url: url,
-            file: $scope.vm.image
-        }).success(function () {
-            udcModal.info({"title": "处理结果", "message": "上传用户照片成功 "});
-        }).error(function () {
-            udcModal.info({"title": "处理结果", "message": "上传用户照片失败 "});
+        console.log($scope.vm.image);
+        UserService.resizeFile($scope.vm.image).then(function(url_compressed) {
+            var url = URI.resources.SysUserPhoto+"/"+user.userId;  //params是model传的参数，图片上传接口的url
+
+
+            Upload.upload({
+                method: 'PUT',
+                url: url,
+                file: url_compressed
+            }).success(function () {
+                udcModal.info({"title": "处理结果", "message": "上传用户照片成功 "});
+            }).error(function () {
+                udcModal.info({"title": "处理结果", "message": "上传用户照片失败 "});
+            });
+        }, function(err_reason) {
+            console.log(err_reason);
         });
     };
 
@@ -352,6 +359,7 @@ manageApp.controller('UserImageModalCtrl', ['$scope', 'close', 'UserService', 't
 
 
     };
+
 
     init();
 }]);

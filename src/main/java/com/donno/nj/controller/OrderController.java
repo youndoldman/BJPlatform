@@ -383,11 +383,8 @@ public class OrderController
     )
     {
         ResponseEntity responseEntity;
-
         orderService.orderBindGasCynNumber(orderSn,gasCynNumbers);
-
         responseEntity = ResponseEntity.ok().build();
-
         return responseEntity;
     }
 

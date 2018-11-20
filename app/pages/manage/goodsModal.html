@@ -114,6 +114,17 @@
                         <label class="input-tips" ng-show="isCreate">&nbsp;*&nbsp;必填项</label>
                     </div>
 
+                    <p></p>
+                    <p></p>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label">钢瓶规格:</label>
+                        <div class="col-sm-8 input-width">
+                            <select name="gasCylinderSpec" ng-model="vm.goods.gasCylinderSpec" ng-options="gasCylinderSpec.name  for gasCylinderSpec in vm.gasCylinderSpecList" class="form-control" ng-selected="" required></select>
+                        </div>
+                        <label class="input-tips" ng-show="isCreate">&nbsp;*&nbsp;必填项</label>
+                        <!--<label class="input-tips" ng-show="goodsForm.status.$error.required || goodsForm.status.$invalid">&nbsp;*&nbsp;必填项</label>-->
+                    </div>
+
                     <!--<div class="row">-->
                         <!--<div style="margin-left: 25px;" class="col-xs-2 text-left">-->
                         <!--</div>-->

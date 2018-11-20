@@ -87,7 +87,7 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
                 }
             }
             var info=[];
-            info.push("<div><div><img style=\"flow:left;width: 25px;height: 25px\" src=\"../images/icon/bottle.ico\"/>"+"<b style='font-size: 21px'>"+"直销员  |  "+$scope.vm.selectedWorker.userId+"</b></div>");
+            info.push("<div><div><img style=\"flow:left;width: 40px;height: 40px\" src=\"../api/sysusers/photo/"+$scope.vm.selectedWorker.userId+"\"/>"+"<b style='font-size: 21px'>"+"直销员  |  "+$scope.vm.selectedWorker.userId+"</b></div>");
             info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>"+"姓名:   "+$scope.vm.selectedWorker.name+"</b>");
             info.push("<b>5公斤(重瓶) :   "+bottleCount_5+"</b>");
             info.push("<b>15公斤(重瓶):   "+bottleCount_15+"</b>");
@@ -171,16 +171,18 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
     };
     //地图上标绘配送工
     var markOnlineWorkers = function(){
-        var iconWorker = new AMap.Icon({
-            image : '../images/icon/worker.ico',//24px*24px
-            //icon可缺省，缺省时为默认的蓝色水滴图标，
-            size : new AMap.Size(50,50),
-            imageSize : new AMap.Size(50,50)
-        });
+
         for (var i=0;i<$scope.vm.onLineWorkersList.length;i++){
             if($scope.vm.onLineWorkersList[i].userPosition==null){
                 continue;
             }
+            var imageName = "../api/sysusers/photo/"+$scope.vm.onLineWorkersList[i].userId;
+            var iconWorker = new AMap.Icon({
+                image : imageName,//24px*24px
+                //icon可缺省，缺省时为默认的蓝色水滴图标，
+                size : new AMap.Size(50,50),
+                imageSize : new AMap.Size(50,50)
+            });
 
             var markerDest = new AMap.Marker({
                 icon : iconWorker,//24px*24px
