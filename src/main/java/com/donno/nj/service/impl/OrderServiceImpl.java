@@ -556,7 +556,7 @@ public class OrderServiceImpl implements OrderService
                 *避免误操作将空瓶号与重瓶号输入成一样，
                 *判断当前订单号应与关联订单号不一样，确保关联订单为上一单单号
                 * */
-                if (prevOrder.getId() == order.getId())
+                if (prevOrder.getId().equals(order.getId()))
                 {
                     gasCalcResult.setGasCynNumber(caculator.getGasCynNumber());
                     gasCalcResult.setSuccess(false);
@@ -565,7 +565,7 @@ public class OrderServiceImpl implements OrderService
                     continue;
                 }
 
-                if (prevOrder.getCustomer().getId() != user.getId())
+                if (!prevOrder.getCustomer().getId().equals(user.getId()))
                 {
                     gasCalcResult.setGasCynNumber(caculator.getGasCynNumber());
                     gasCalcResult.setSuccess(false);

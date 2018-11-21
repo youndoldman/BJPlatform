@@ -156,7 +156,6 @@ public class WeiXinPayServiceImpl implements WeiXinPayService
         data.put("appid", wxPayConfigImpl.getOfficialID());
         data.put("out_refund_no", WXPayUtil.generateNonceStr());
 
-
         data.put("out_trade_no", out_trade_no);
         data.put("out_refund_no", out_trade_no);
         data.put("total_fee", total_fee);
