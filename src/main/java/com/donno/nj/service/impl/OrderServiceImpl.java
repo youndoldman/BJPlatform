@@ -472,7 +472,7 @@ public class OrderServiceImpl implements OrderService
         Float amount = 0f;
         for(OrderDetail orderDetail : order.getOrderDetailList())
         {
-            amount = amount + orderDetail.getDealPrice();
+            amount = amount + orderDetail.getSubtotal() ;
         }
         order.setOrderAmount(amount);
 
@@ -691,8 +691,6 @@ public class OrderServiceImpl implements OrderService
                 gasCalcResult.setGasRefoundDetail(gasRefoundDetailInfo);
                 gasCalcResults.add(gasCalcResult);
             }
-
-
         }
 
         for(GasCalcResult gasCalcResultCheck:gasCalcResults)
@@ -711,7 +709,6 @@ public class OrderServiceImpl implements OrderService
             order.setRefoundSum(refoundSum);
             order.setOrderAmount(order.getOrderAmount() - refoundSum);
             orderDao.update(order);
-
         }
         else
         {
