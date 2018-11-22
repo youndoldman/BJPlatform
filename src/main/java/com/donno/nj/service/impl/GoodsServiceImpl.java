@@ -39,6 +39,8 @@ public class GoodsServiceImpl implements GoodsService
     @Autowired
     private DiscountStrategyDao   discountStrategyDao;
 
+    @Autowired
+    private GasCylinderSpecDao   gasCylinderSpecDao;
 
     @Override
     public Optional<Goods> findByCode(String code) {
@@ -198,6 +200,21 @@ public class GoodsServiceImpl implements GoodsService
             throw new ServerSideBusinessException("商品信息不能为空！", HttpStatus.NOT_ACCEPTABLE);
         }
 
+        /*商品规格校验*/
+        if (goods.getGasCylinderSpec() == null || goods.getGasCylinderSpec().getCode() == null ||
+                goods.getGasCylinderSpec().getCode().trim().length() == 0)
+        {
+            throw new ServerSideBusinessException("商品规格信息缺失，请补充！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        GasCylinderSpec gasCylinderSpec = gasCylinderSpecDao.findByCode(goods.getGasCylinderSpec().getCode());
+        if (gasCylinderSpec == null )
+        {
+            throw new ServerSideBusinessException("商品规格信息错误 ！", HttpStatus.NOT_ACCEPTABLE);
+        }
+        goods.setGasCylinderSpec(gasCylinderSpec);
+
+
         /*商品是否已经存在*/
         if (findByCode(goods.getCode()).isPresent())
         {
@@ -253,6 +270,24 @@ public class GoodsServiceImpl implements GoodsService
         else
         {
             newGoods.setCode(null);
+        }
+
+        /*商品规格*/
+        if (newGoods.getGasCylinderSpec() != null && newGoods.getGasCylinderSpec().getCode() != null && newGoods.getGasCylinderSpec().getCode().trim().length() > 0)
+        {
+            GasCylinderSpec gasCylinderSpec = gasCylinderSpecDao.findByCode(newGoods.getGasCylinderSpec().getCode());
+            if (gasCylinderSpec != null)
+            {
+                newGoods.setGasCylinderSpec(gasCylinderSpec);
+            }
+            else
+            {
+                throw new ServerSideBusinessException("规格信息不存在！", HttpStatus.NOT_ACCEPTABLE);
+            }
+        }
+        else
+        {
+            newGoods.setGasCylinderSpec(null);
         }
 
         /*商品类型*/

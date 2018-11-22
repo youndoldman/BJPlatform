@@ -51,6 +51,8 @@ public class Order implements Serializable
 
     private List<OrderOpHistory> orderOpHistoryList;
 
+    private List<GasRefoundDetail> gasRefoundDetailList;
+
     private String  note;
 
     private Date payTime;//支付时间
@@ -193,6 +195,10 @@ public class Order implements Serializable
     public List<OrderDetail> getOrderDetailList()
     {
         return orderDetailList;
+    }
+
+    public List<GasRefoundDetail> getGasRefoundDetailList() {
+        return gasRefoundDetailList;
     }
 
     public List<OrderOpHistory> getOrderOpHistoryList() {
@@ -352,6 +358,10 @@ public class Order implements Serializable
 
     public void setOrderOpHistoryList(List<OrderOpHistory> orderOpHistoryList) {
         this.orderOpHistoryList = orderOpHistoryList;
+    }
+
+    public void setGasRefoundDetailList(List<GasRefoundDetail> gasRefoundDetailList) {
+        this.gasRefoundDetailList = gasRefoundDetailList;
     }
 
     public void setComment(String comment)

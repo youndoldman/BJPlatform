@@ -55,6 +55,9 @@
 
         <collection property="orderDetailList" column="id" ofType="com.donno.nj.domain.OrderDetail" select="com.donno.nj.dao.OrderDetailDao.findByOrderIdx">
         </collection>
+
+        <collection property="gasRefoundDetailList" column="id" ofType="com.donno.nj.domain.GasRefoundDetail" select="com.donno.nj.dao.GasRefoundDetailDao.findByOrderIdx">
+        </collection>
     </resultMap>
 
 

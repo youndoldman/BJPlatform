@@ -33,12 +33,12 @@
     </sql>
 
     <sql id="InsertColumnList">
-       code, name ,type_idx,area_idx,specifications,unit,weight,life_expectancy,price,status,note
+       code, name ,type_idx,area_idx,specifications,spec_idx,unit,weight,life_expectancy,price,status,note
     </sql>
 
     <insert id="insert">
         INSERT IGNORE INTO <include refid="TblGoods"/>(<include refid="InsertColumnList"/>)
-        VALUES( #{code}, #{name} , #{goodsType.id},#{area.id},#{specifications},#{unit},#{weight},#{lifeExpectancy},#{price}, #{status}, #{note})
+        VALUES( #{code}, #{name} , #{goodsType.id},#{area.id},#{specifications},#{gasCylinderSpec.id},#{unit},#{weight},#{lifeExpectancy},#{price}, #{status}, #{note})
     </insert>
 
     <delete id="deleteByIdx" parameterType="java.lang.Integer">
@@ -63,6 +63,9 @@
 
         <if test="goodsType != null">
           <if test="goodsType.id != null">type_idx = #{goodsType.id},</if>
+        </if>
+        <if test="gasCylinderSpec != null">
+            <if test="gasCylinderSpec.id != null">spec_idx = #{gasCylinderSpec.id},</if>
         </if>
     </set>
     WHERE id = #{id}

@@ -103,7 +103,7 @@ public class GoodsController
 
     @OperationLog(desc = "创建商品")
     @RequestMapping(value = "/api/Goods", method = RequestMethod.POST)
-    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
+   // @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity create(@RequestBody Goods goods, UriComponentsBuilder ucBuilder)
     {
         ResponseEntity responseEntity;
@@ -118,7 +118,7 @@ public class GoodsController
 
     @OperationLog(desc = "修改商品信息")
     @RequestMapping(value = "/api/Goods/{code}", method = RequestMethod.PUT)
-    @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
+    //@Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN })
     public ResponseEntity update(@PathVariable("code") String code, @RequestBody Goods newGoods)
     {
         ResponseEntity responseEntity;

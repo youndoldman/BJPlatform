@@ -96,4 +96,11 @@
         DELETE FROM <include refid="TblOrderRefoundDetail"/> WHERE id= #{id}
     </delete>
 
+
+    <select id="findByOrderIdx" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblOrderRefoundDetail"/>
+        WHERE
+        order_idx =  #{orderIdx}
+    </select>
 </mapper>
