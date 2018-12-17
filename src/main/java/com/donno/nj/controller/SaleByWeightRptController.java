@@ -43,8 +43,8 @@ public class SaleByWeightRptController
     public ResponseEntity retrieveByWeightPayType(@RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
                                             @RequestParam(value = "startTime", defaultValue = "") String startTime,
                                             @RequestParam(value = "endTime", defaultValue = "") String endTime,
-                                            @RequestParam(value = "payStatus", required = false) Integer payStatus,
-                                            @RequestParam(value = "payType", required = false) Integer payType,
+                                            @RequestParam(value = "payStatus", required = false) PayStatus payStatus,
+                                            @RequestParam(value = "payType", required = false) PayType payType,
                                             @RequestParam(value = "dispatchUserId", defaultValue = "") String dispatchUserId,
                                             @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                             @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
@@ -87,7 +87,7 @@ public class SaleByWeightRptController
 
         if (payType != null)
         {
-            if (payType >= PayType.PTOnLine.getIndex() && payType <= PayType.PTCoupon.getIndex() )
+            if (payType.getIndex() >= PayType.PTOnLine.getIndex() && payType.getIndex() <= PayType.PTCoupon.getIndex() )
             {
                 params.putAll(ImmutableMap.of("payType", payType));
             }

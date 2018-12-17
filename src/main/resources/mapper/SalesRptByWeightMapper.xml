@@ -44,7 +44,7 @@
         <!--</if>-->
 
         <if test="payType != null">
-            and t_order.pay_type = #{payType}
+            and t_order.pay_type = #{payType.index}
         </if>
         group by t_department.id,t_customer_type.code
     </sql>
