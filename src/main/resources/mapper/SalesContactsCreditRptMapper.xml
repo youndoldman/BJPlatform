@@ -18,6 +18,8 @@
         and   t_sysuser.department_idx = t_department.id
         and   t_customer_credit_detail.order_idx = t_order.id
 
+
+
         <if test="departmentCode != null">
             and (t_department.code = #{departmentCode})
         </if>

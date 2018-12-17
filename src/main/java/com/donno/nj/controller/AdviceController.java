@@ -61,7 +61,6 @@ public class AdviceController
         return ResponseEntity.ok(ListRep.assemble(advices, count));
     }
 
-
     @OperationLog(desc = "增加客户建议信息")
     @RequestMapping(value = "/api/Advice", method = RequestMethod.POST)
     @Auth(allowedBizOp = {ServerConstantValue.GP_ADMIN,ServerConstantValue.GP_CUSTOMER_SERVICE })

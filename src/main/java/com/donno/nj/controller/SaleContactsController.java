@@ -19,7 +19,7 @@ import java.util.Map;
 
 import static com.donno.nj.util.ParamMapBuilder.paginationParams;
 
-/*销售往来报表*/
+/*按瓶结算业务销售往来报表*/
 
 @RestController
 public class SaleContactsController

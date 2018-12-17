@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.donno.nj.dao.SalesByCstTypeRptDao">
-    <resultMap id="DetailResultMap" type="com.donno.nj.domain.SalesRpt">
+<mapper namespace="com.donno.nj.dao.SalesByWeightRptDao">
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.SalesRptByWeight">
         <result column="department_code" property="departmentCode" jdbcType="VARCHAR"/>
         <result column="department_name" property="departmentName" jdbcType="VARCHAR"/>
-        <result column="spec_code" property="specCode" jdbcType="VARCHAR"/>
-        <result column="spec_name" property="specName" jdbcType="VARCHAR"/>
-        <result column="count" property="count" jdbcType="INTEGER"/>
-        <result column="sum" property="sum" jdbcType="DOUBLE"/>
+        <result column="sale_weight" property="saleWeight" jdbcType="FLOAT"/>
+        <result column="sale_sum" property="saleSum" jdbcType="FLOAT"/>
+        <result column="refound_weight" property="refoundWeight" jdbcType="FLOAT"/>
+        <result column="refound_sum" property="refoundSum" jdbcType="FLOAT"/>
     </resultMap>
 
-    <sql id="qrySaleRptByCstType">
+    <!--销售公斤数及金额-->
+    <sql id="qrySaleRptByWeight">
         select t_department.id as department_id, t_department.name as department_name, t_department.code as department_code,
         t_gas_cylinder_spec.id as spec_id,t_gas_cylinder_spec.name as spec_name,t_gas_cylinder_spec.code as spec_code,
-        sum(t_order_detail.subtotal) as sum ,sum(t_order_detail.quantity) as count
+        sum(t_order_detail.subtotal) as sale_sum ,sum(t_goods.weight) as sale_weight
         from t_order_detail,t_order ,t_order_dispatcher,t_sysuser,t_department,t_customer,t_customer_type,t_goods,t_gas_cylinder_spec
         where
         t_order_detail.order_idx = t_order.id
@@ -25,38 +26,34 @@
         and   t_order.customer_idx	= t_customer.user_idx
         and   t_customer.cst_type = t_customer_type.id
         and   t_gas_cylinder_spec.id = t_goods.spec_idx
-
-        and t_order.order_trigger_type = 0
+        and t_order.order_trigger_type = 1
 
         <if test="departmentCode != null">
             and (t_department.code = #{departmentCode})
         </if>
 
-        <!--<if test="startDate != null">-->
-            <!--and ( DATE_FORMAT(t_order.pay_time,'%Y-%m-%d') >= DATE_FORMAT(#{startDate},'%Y-%m-%d')  )-->
-        <!--</if>-->
-        <!--<if test="endDate != null">-->
-            <!--and ( DATE_FORMAT(#{endDate},'%Y-%m-%d')  >= DATE_FORMAT(t_order.pay_time,'%Y-%m-%d')    )-->
-        <!--</if>-->
-
         <if test="startTime != null">
-        and ( t_order.pay_time >= #{startTime}  )
+            and ( t_order.pay_time >= #{startTime}  )
         </if>
         <if test="endTime != null">
-        and ( #{endTime}  >= t_order.pay_time )
+            and ( #{endTime}  >= t_order.pay_time )
         </if>
 
-        <if test="cstTypeCode != null">
-            and t_customer_type.code = #{cstTypeCode}
+        <!--<if test="cstTypeCode != null">-->
+            <!--and t_customer_type.code = #{cstTypeCode}-->
+        <!--</if>-->
+
+        <if test="payType != null">
+            and t_order.pay_type = #{payType}
         </if>
-        group by t_department.id,t_gas_cylinder_spec.id
+        group by t_department.id,t_customer_type.code
     </sql>
 
 
 
-    <!--销售报表查询，按客户类型查询-->
-    <select id="getSaleRptByCstType" resultMap="DetailResultMap">
-        <include refid="qrySaleRptByCstType"/>
+    <!--销售报表查询-->
+    <select id="getSaleRptByWeight" resultMap="DetailResultMap">
+        <include refid="qrySaleRptByWeight"/>
 
         <if test="orderBy != null">
             <if test="orderBy != ''">
@@ -71,13 +68,15 @@
         </if>
     </select>
 
-    <select id="countSaleRptByCstType" resultType="Integer">
-      SELECT COUNT(*)
-        from
-        (
-        <include refid="qrySaleRptByCstType"/>
-        )
-        as b
-    </select>
+
+
+    <!--<select id="countSaleRptByCstType" resultType="Integer">-->
+        <!--SELECT COUNT(*)-->
+        <!--from-->
+        <!--(-->
+        <!--<include refid="qrySaleRptByCstType"/>-->
+        <!--)-->
+        <!--as b-->
+    <!--</select>-->
 
 </mapper>

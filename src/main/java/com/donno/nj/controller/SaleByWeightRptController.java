@@ -3,18 +3,20 @@ package com.donno.nj.controller;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
 import com.donno.nj.dao.UserDao;
-import com.donno.nj.domain.EByType;
-import com.donno.nj.domain.PayType;
-import com.donno.nj.domain.SalesRpt;
-import com.donno.nj.domain.User;
+import com.donno.nj.domain.*;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.representation.ListRep;
+import com.donno.nj.service.RefoundByWeightRptService;
+import com.donno.nj.service.SalesByWeightRptService;
 import com.donno.nj.service.SalesRptService;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,18 +27,20 @@ import static com.donno.nj.util.ParamMapBuilder.paginationParams;
 /*按瓶业务销售报表*/
 
 @RestController
-public class SaleRptController
+public class SaleByWeightRptController
 {
     @Autowired
-    private SalesRptService salesRptService;
+    private SalesByWeightRptService salesByWeightRptService;
 
+    @Autowired
+    private RefoundByWeightRptService refoundByWeightRptService;
 
     @Autowired
     private UserDao userDao;
 
-    @RequestMapping(value = "/api/Report/Sales/ByPayType", method = RequestMethod.GET, produces = "application/json")
-    @OperationLog(desc = "获取门店销售报表（按支付方式）")
-    public ResponseEntity retrieveByPayType(@RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
+    @RequestMapping(value = "/api/Report/SaleByWeight/ByPayType", method = RequestMethod.GET, produces = "application/json")
+    @OperationLog(desc = "获取门店销售报表（按公斤销售，按支付方式）")
+    public ResponseEntity retrieveByWeightPayType(@RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
                                             @RequestParam(value = "startTime", defaultValue = "") String startTime,
                                             @RequestParam(value = "endTime", defaultValue = "") String endTime,
                                             @RequestParam(value = "payStatus", required = false) Integer payStatus,
@@ -94,49 +98,24 @@ public class SaleRptController
         }
 
         params.putAll(paginationParams(pageNo, pageSize, orderBy));
+        List<SalesRptByWeight> salesRptList = salesByWeightRptService.retrieveSaleRpt(params);
+        List<SalesRptByWeight> refoudRptList = refoundByWeightRptService.retrieveRefoundRpt(params);
 
-        List<SalesRpt> salesRptList = salesRptService.retrieveSaleRpt(params, EByType.EByPayType);
+        for (SalesRptByWeight salesRptByWeight :salesRptList)
+        {
+            for (SalesRptByWeight refoundRptByWeight:refoudRptList)
+            {
+                if (salesRptByWeight.getCustomerTypeCode().equals(refoundRptByWeight.getCustomerTypeCode()))
+                {
+                    salesRptByWeight.setRefoundWeight(salesRptByWeight.getRefoundWeight() + refoundRptByWeight.getRefoundWeight() );
+                    salesRptByWeight.setRefoundSum(salesRptByWeight.getRefoundSum() + refoundRptByWeight.getRefoundSum() );
+                }
+            }
+        }
+
         return ResponseEntity.ok(ListRep.assemble(salesRptList, salesRptList.size()));
     }
 
 
 
-    @RequestMapping(value = "/api/Report/Sales/ByCustomerType", method = RequestMethod.GET, produces = "application/json")
-    @OperationLog(desc = "获取门店销售报表(按用户类型)")
-    public ResponseEntity retrieveByCstType(@RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
-                                            @RequestParam(value = "startTime", defaultValue = "") String startTime,
-                                            @RequestParam(value = "endTime", defaultValue = "") String endTime,
-                                            @RequestParam(value = "cstTypeCode", defaultValue = "") String cstTypeCode,
-                                            @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
-                                            @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
-                                            @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
-    {
-        Map params = new HashMap<String,String>();
-
-        if (departmentCode.trim().length() > 0)
-        {
-            params.putAll(ImmutableMap.of("departmentCode", departmentCode));
-        }
-
-
-        if (startTime.trim().length() > 0)
-        {
-            params.putAll(ImmutableMap.of("startTime", startTime));
-        }
-
-        if (endTime.trim().length() > 0)
-        {
-            params.putAll(ImmutableMap.of("endTime", endTime));
-        }
-
-        if (cstTypeCode.trim().length() > 0)
-        {
-            params.putAll(ImmutableMap.of("cstTypeCode", cstTypeCode));
-        }
-
-        params.putAll(paginationParams(pageNo, pageSize, orderBy));
-
-        List<SalesRpt> salesRptList = salesRptService.retrieveSaleRpt(params, EByType.EByCstType);
-        return ResponseEntity.ok(ListRep.assemble(salesRptList, salesRptList.size()));
-    }
 }

@@ -26,7 +26,7 @@ import java.util.Map;
 
 import static com.donno.nj.util.ParamMapBuilder.paginationParams;
 
-/*销售现金日报表*/
+/*按瓶结算业务销售现金日报表*/
 
 @RestController
 public class SaleCashRptController
@@ -51,7 +51,7 @@ public class SaleCashRptController
     @OperationLog(desc = "获取门店销售销售现金报表(现金销款、往日赊销、往日月结、气票款、今日存银行款、今日结存现金)")
     public ResponseEntity retrieve(@RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
                                    @RequestParam(value = "startTime", defaultValue = "") String startTime,
-                                    @RequestParam(value = "endTime", defaultValue = "") String endTime)
+                                   @RequestParam(value = "endTime", defaultValue = "") String endTime)
     {
         Map params = new HashMap<String,String>();
 
