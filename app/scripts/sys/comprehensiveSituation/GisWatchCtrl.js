@@ -355,7 +355,7 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
             for(var i=0; i<paths.length; i++){
                 var userType = paths[i].name.split('|')[0];
                 var userId = paths[i].name.split('|')[1];
-                var imageName = "../api/sysusers/photo/"+userId;
+                var imageName = "../../api/sysusers/photo/"+userId;
                 //if(userType=="配送员"){
                 //    imageName = "../images/icon/worker.png";
                 //}else{
@@ -466,7 +466,7 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
             GisWatchService.retrieveBottles(queryParams).then(function (bottles) {
                 var bottlesCount = bottles.total;
                 var info=[];
-                info.push("<div><div><img style=\"flow:left;width: 40px;height: 40px;border-radius: 50%;\" src=\"../api/sysusers/photo/"+userId+"\"/>"+"<b style='font-size: 21px'>"+groupName+"  |  "+userId+"</b></div>");
+                info.push("<div><div><img style=\"flow:left;width: 40px;height: 40px;border-radius: 50%;\" src=\"../../api/sysusers/photo/"+userId+"\"/>"+"<b style='font-size: 21px'>"+groupName+"  |  "+userId+"</b></div>");
                 info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>"+"姓名:   "+userName+"</b>");
                 info.push("<b>电话:   "+phone+"</b>")
                 info.push("<b>部门:   "+departmentName+"</b>")

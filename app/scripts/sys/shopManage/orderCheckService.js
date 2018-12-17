@@ -35,6 +35,7 @@ shopManageApp.service('OrderCheckService', ['$http', 'URI', 'promiseWrapper','MI
                 updateTime: null,
                 dispatcher:null,
                 payStatus:null,
+                gasRefoundDetailList:null,
                 taskId: taskOrdersFromApi.id
             }
         }
@@ -64,7 +65,8 @@ shopManageApp.service('OrderCheckService', ['$http', 'URI', 'promiseWrapper','MI
             timeSpan:taskOrdersFromApi.object.timeSpan,
             taskId: taskOrdersFromApi.id,
             dispatcher:taskOrdersFromApi.object.dispatcher,
-            payStatus:taskOrdersFromApi.object.payStatus
+            payStatus:taskOrdersFromApi.object.payStatus,
+            gasRefoundDetailList:taskOrdersFromApi.object.gasRefoundDetailList
         }
     };
 

@@ -85,10 +85,11 @@ public class MsgPush {
 //                pushResponse.getRequestId(), pushResponse.getMessageId());
 //
 //
+//
 
 
 
-
+//end
 //        PushNoticeToAndroidRequest androidRequest = new PushNoticeToAndroidRequest();
 //        //安全性比较高的内容建议使用HTTPS
 //        androidRequest.setProtocol(ProtocolType.HTTPS);
@@ -96,7 +97,7 @@ public class MsgPush {
 //        androidRequest.setMethod(MethodType.POST);
 //        androidRequest.setAppKey(MsgPushCfg.getAppKey());
 //        androidRequest.setTarget("ALIAS");
-//
+
 //        androidRequest.setTargetValue(targetVal);
 //        androidRequest.setTitle(title);
 //        androidRequest.setBody(body);

@@ -89,8 +89,8 @@
 
 <div class="container main">
     <div class="row">
-        <div class="col-xs-12 col-sm-2 col-md-1 col-lg-1" nj-menu></div>
-        <div class="col-xs-12 col-sm-10 col-md-11 col-lg-11 ">
+        <div ng-mouseover="hover = true" ng-mouseleave="hover = false" class="col-xs-12 col-sm-2 col-md-1 col-lg-1" ng-class="{width_3_percent:!hover}" nj-menu></div>
+        <div class="col-xs-12 col-sm-10 col-md-11 col-lg-11" ng-class="{width_97_percent:!hover}">
             <div ui-view></div>
         </div>
     </div>

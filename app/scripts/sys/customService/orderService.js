@@ -42,6 +42,7 @@ customServiceApp.service('OrderService', ['$http', 'URI', 'promiseWrapper','MISC
                 updateTime: null,
                 dispatcher:null,
                 payStatus:null,
+                gasRefoundDetailList:null,
                 taskId: taskOrdersFromApi.id
             }
         }
@@ -71,9 +72,11 @@ customServiceApp.service('OrderService', ['$http', 'URI', 'promiseWrapper','MISC
             timeSpan:taskOrdersFromApi.object.timeSpan,
             taskId: taskOrdersFromApi.id,
             dispatcher:taskOrdersFromApi.object.dispatcher,
-            payStatus:taskOrdersFromApi.object.payStatus
+            payStatus:taskOrdersFromApi.object.payStatus,
+            gasRefoundDetailList:taskOrdersFromApi.object.gasRefoundDetailList
         }
     };
+
 
 
 

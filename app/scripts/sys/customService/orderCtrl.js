@@ -190,7 +190,6 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
             $scope.q.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" 00:00:00";
             $scope.q.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" 23:59:59";
             searchOrder();
-
         };
 
         init();

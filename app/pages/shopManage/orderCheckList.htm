@@ -55,7 +55,8 @@
         <tr>
             <th width="1%"></th>
             <th width="3%">序号</th>
-            <th width="8%">订单编号</th>
+            <th width="3%">类型</th>
+            <th width="5%">订单编号</th>
             <th width="4%">订单状态</th>
             <th width="4%">接入方式</th>
             <th width="4%">支付方式</th>
@@ -79,6 +80,15 @@
         <tr ng-repeat="order in vm.orderList" ng-class="{danger:order.timeSpan>10&&order.orderStatus==0}">
             <td></td>
             <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
+            <td ng-if="order.orderTriggerType.index==1">
+                <div style="width:40px;height:40px;background-color:#F0F; border-radius: 50%;color:#FFF;text-align:center;line-height:40px;:middle;font-size: large">斤
+                </div>
+            </td>
+            </td>
+            <td ng-if="order.orderTriggerType.index!=1" >
+                <div style="width:40px;height:40px;background-color:#00F; border-radius: 50%;color:#FFF;text-align:center;line-height:40px;:middle;font-size: large">瓶
+                </div>
+            </td>
             <td class="message">{{order.orderSn}}</td>
             <td class="message">{{vm.orderStatusDisplay[order.orderStatus]}}</td>
             <td class="message">{{order.accessType.name}}</td>
