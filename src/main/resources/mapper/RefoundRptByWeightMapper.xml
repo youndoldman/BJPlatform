@@ -5,7 +5,6 @@
     <resultMap id="DetailResultMap" type="com.donno.nj.domain.SalesRptByWeight">
         <result column="department_code" property="departmentCode" jdbcType="VARCHAR"/>
         <result column="department_name" property="departmentName" jdbcType="VARCHAR"/>
-
         <result column="customer_type_code" property="customerTypeCode" jdbcType="VARCHAR"/>
         <result column="customer_type_name" property="customerTypeName" jdbcType="VARCHAR"/>
         <result column="sale_weight" property="saleWeight" jdbcType="FLOAT"/>
@@ -16,9 +15,10 @@
 
     <!--退残公斤数及金额-->
     <sql id="qryRefoundRptByWeight">
-        select t_department.id as department_id, t_department.name as department_name, t_department.code as department_code,
+        select t_department.id as department_id, t_department.name as department_name,
+        t_department.code as department_code,
         t_customer_type.code as customer_type_code,t_customer_type.name as customer_type_name,
-        sum(t_order_refound_detail.refound_sum) as sale_sum ,sum(t_order_refound_detail.refound_weight) as refound_weight
+        sum(t_order_refound_detail.refound_sum) as refound_sum ,sum(t_order_refound_detail.refound_weight) as refound_weight
         from t_order ,t_order_dispatcher,t_sysuser,t_department,t_customer,t_customer_type,t_order_refound_detail
         where
            t_order.id = t_order_dispatcher.order_idx
@@ -34,14 +34,17 @@
         </if>
 
         <if test="startTime != null">
-            and ( t_order.pay_time >= #{startTime}  )
+            and ( t_order.complete_time >= #{startTime}  )
         </if>
         <if test="endTime != null">
-            and ( #{endTime}  >= t_order.pay_time )
+            and ( #{endTime}  >= t_order.complete_time )
         </if>
 
         <if test="payType != null">
-            and t_order.pay_type = #{payType}
+            and t_order.pay_type = #{payType.index}
+        </if>
+        <if test="payStatus != null">
+            and t_order.pay_status = #{payStatus.index}
         </if>
         group by t_department.id,t_customer_type.code
     </sql>

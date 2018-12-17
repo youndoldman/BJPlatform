@@ -5,6 +5,8 @@
     <resultMap id="DetailResultMap" type="com.donno.nj.domain.SalesRptByWeight">
         <result column="department_code" property="departmentCode" jdbcType="VARCHAR"/>
         <result column="department_name" property="departmentName" jdbcType="VARCHAR"/>
+        <result column="customer_type_code" property="customerTypeCode" jdbcType="VARCHAR"/>
+        <result column="customer_type_name" property="customerTypeName" jdbcType="VARCHAR"/>
         <result column="sale_weight" property="saleWeight" jdbcType="FLOAT"/>
         <result column="sale_sum" property="saleSum" jdbcType="FLOAT"/>
         <result column="refound_weight" property="refoundWeight" jdbcType="FLOAT"/>
@@ -14,7 +16,8 @@
     <!--销售公斤数及金额-->
     <sql id="qrySaleRptByWeight">
         select t_department.id as department_id, t_department.name as department_name, t_department.code as department_code,
-        t_gas_cylinder_spec.id as spec_id,t_gas_cylinder_spec.name as spec_name,t_gas_cylinder_spec.code as spec_code,
+        t_customer_type.code as customer_type_code,t_customer_type.name as customer_type_name,
+         t_gas_cylinder_spec.id as spec_id,t_gas_cylinder_spec.name as spec_name,t_gas_cylinder_spec.code as spec_code,
         sum(t_order_detail.subtotal) as sale_sum ,sum(t_goods.weight) as sale_weight
         from t_order_detail,t_order ,t_order_dispatcher,t_sysuser,t_department,t_customer,t_customer_type,t_goods,t_gas_cylinder_spec
         where
@@ -33,10 +36,10 @@
         </if>
 
         <if test="startTime != null">
-            and ( t_order.pay_time >= #{startTime}  )
+            and ( t_order.complete_time >= #{startTime}  )
         </if>
         <if test="endTime != null">
-            and ( #{endTime}  >= t_order.pay_time )
+            and ( #{endTime}  >= t_order.complete_time )
         </if>
 
         <!--<if test="cstTypeCode != null">-->
@@ -45,6 +48,10 @@
 
         <if test="payType != null">
             and t_order.pay_type = #{payType.index}
+        </if>
+
+        <if test="payStatus != null">
+            and t_order.pay_status = #{payStatus.index}
         </if>
         group by t_department.id,t_customer_type.code
     </sql>

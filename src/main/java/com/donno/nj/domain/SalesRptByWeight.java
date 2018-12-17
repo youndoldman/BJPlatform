@@ -22,6 +22,10 @@ public class SalesRptByWeight implements Serializable
 
     public SalesRptByWeight()
     {
+        saleWeight = 0.0f;
+        saleSum = 0.0f;
+        refoundWeight = 0.0f;
+        refoundSum = 0.0f;
     }
 
     public String getDepartmentCode() {
