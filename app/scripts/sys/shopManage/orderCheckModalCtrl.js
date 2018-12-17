@@ -1,12 +1,13 @@
 'use strict';
 
-shopManageApp.controller('OrderCheckModalCtrl', ['$scope', 'close', 'OrderCheckService', 'title', 'initVal','udcModal',function ($scope, close, OrderCheckService, title, initVal, udcModal) {
+shopManageApp.controller('OrderCheckModalCtrl', ['$scope', 'close', 'OrderCheckService', 'title', 'initVal','udcModal','sessionStorage',function ($scope, close, OrderCheckService, title, initVal, udcModal,sessionStorage) {
     $scope.modalTitle = title;
 
 
     $scope.vm = {
         currentOrder: {
-        }
+        },
+        curUser:null
     };
 
     $scope.isModify = false;
@@ -17,14 +18,12 @@ shopManageApp.controller('OrderCheckModalCtrl', ['$scope', 'close', 'OrderCheckS
 
     $scope.submit = function (order) {
 
-        console.log(order);
         if ($scope.isModify) {
             var dealparams = {
                 businessKey: $scope.vm.currentOrder.orderSn,
-                candiUser   : "",
+                candiUser   : $scope.vm.curUser.userId,
                 orderStatus: 3
             };
-
             OrderCheckService.checkOrder(dealparams,$scope.vm.currentOrder.taskId).then(function () {
                 udcModal.info({"title": "处理结果", "message": "订单确认成功："});
                 $scope.close(true);
@@ -43,7 +42,7 @@ shopManageApp.controller('OrderCheckModalCtrl', ['$scope', 'close', 'OrderCheckS
         else {
             $scope.isModify = false;
         }
-        console.log($scope.vm.currentOrder);
+        $scope.vm.curUser = sessionStorage.getCurUser();
     };
     init();
 }]);

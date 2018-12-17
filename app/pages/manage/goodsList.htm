@@ -85,14 +85,15 @@
                 <td width="9%">商品号</td>
                 <td width="9%">商品名称</td>
                 <td width="7%">商品类型</td>
-                <td width="7%">商品规格</td>
+                <!--<td width="7%">商品规格</td>-->
                 <td width="5%">单位</td>
-                <td width="8%">重量(公斤)</td>
-                <td width="7%">价格(元)</td>
-                <td width="8%">有效期(天)</td>
+                <td width="5%">重量</td>
+                <td width="8%">钢瓶规格</td>
+                <!--<td width="7%">价格(元)</td>-->
+                <!--<td width="8%">有效期(天)</td>-->
                 <td width="8%">状态</td>
-                <td width="10%">所属区域</td>
-                <td width="10%">说明</td>
+                <td width="12%">所属区域</td>
+                <td width="5%">说明</td>
                 <td width="7%">操 作</td>
             </tr>
             </thead>
@@ -103,11 +104,12 @@
                 <td class="message">{{good.code}}</td>
                 <td class="message">{{good.name}}</td>
                 <td class="message">{{good.goodsType.name}}</td>
-                <td class="message">{{good.specifications}}</td>
+                <!--<td class="message">{{good.specifications}}</td>-->
                 <td class="message">{{good.unit}}</td>
                 <td class="message">{{good.weight}}</td>
-                <td class="message">{{good.price}}</td>
-                <td class="message">{{good.lifeExpectancy}}</td>
+                <td class="message">{{good.gasCylinderSpec.name}}</td>
+                <!--<td class="message">{{good.price}}</td>-->
+                <!--<td class="message">{{good.lifeExpectancy}}</td>-->
                 <td class="message">{{config.goodsStatusList[good.status].name}}</td>
                 <td class="message">{{good.area.province}}{{good.area.city}}{{good.area.county}}</td>
                 <td class="message">{{good.note}}</td>

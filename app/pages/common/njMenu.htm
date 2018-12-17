@@ -1,11 +1,11 @@
-<aside class="">
+<aside class="" ng-mouseover="hover = true" ng-mouseleave="hover = false">
     <nav >
         <ul>
             <li ng-repeat="item in activeNav.lv1.menuItems" ng-class="getMenuItemClass(item, activeNav)"
                 ng-init="shouldDisplaySubMenu = hasSubMenuItems(item)">
                 <a ng-href="{{item.href}}" ng-click="shouldDisplaySubMenu = !shouldDisplaySubMenu;">
                     <i class="fa fa-lg fa-fw" ng-class="item.icon"></i>
-                    <span class="menu-item-parent">{{item.name}}</span>
+                    <span class="menu-item-parent" ng-if="hover">{{item.name}}</span>
                     <b class="collapse-sign" ng-show="hasSubMenuItems(item)">
                         <em class="fa fa-expand-o" ng-show="!shouldDisplaySubMenu"></em>
                         <em class="fa fa-collapse-o" ng-show="shouldDisplaySubMenu"></em>

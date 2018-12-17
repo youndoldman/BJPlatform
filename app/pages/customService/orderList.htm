@@ -10,14 +10,13 @@
     <div class="toolbar">
         <form role="form">
             <div class="row">
-                <div class="col-md-11">
                     <div class="col-md-8">
                         <label class="input">订单状态：</label>
                         <label class="input"><select  ng-model="q.orderStatus" ng-options="orderStatus.value for orderStatus in vm.orderStatus" class="form-control" ng-selected="" ng-change="orderStatusSearchChange()"></select></label>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <label class="input">订单来源：</label>
                         <label class="input"><select  ng-model="q.accessType" ng-options="accessType.value for accessType in vm.accessType" class="form-control" ng-selected="" ng-change="accessTypeSearchChange()"></select></label>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <label class="input">订单编号：</label>
                         <label class="input"><input type="text"  class="form-control" ng-model="q.orderSn"></label>
                         &nbsp;&nbsp;&nbsp;&nbsp;
@@ -47,11 +46,10 @@
                         <button title="删除时间" ng-click="deleteTimeRange()" type="button" class="btn btn-primary btn-outline btn-xs">
                             <i class="fa fa-trash-o"></i>
                         </button>
+                        <button  ng-click="search()" class="btn btn-md btn-primary pull-right"><i class="fa fa-search"></i> 搜索 </button>
                     </div>
                 </div>
-                <div class="col-md-1">
-                    <button  ng-click="search()" class="btn btn-md btn-primary pull-right"><i class="fa fa-search"></i> 搜索 </button>
-                </div>
+
             </div>
             <!--<div class="row" style="margin-top: 10px">-->
             <!--<div class="inline-group col-md-12">-->
@@ -74,7 +72,8 @@
         <tr>
             <th width="1%"></th>
             <th width="3%">序号</th>
-            <th width="8%">订单编号</th>
+            <th width="3%">类型</th>
+            <th width="5%">订单编号</th>
             <th width="4%">订单状态</th>
             <th width="4%">接入方式</th>
             <th width="4%">支付方式</th>
@@ -98,6 +97,15 @@
         <tr ng-repeat="order in vm.orderList" ng-class="{danger:order.timeSpan>10&&order.orderStatus==0}">
             <td></td>
             <td class="message">{{$index+1+pager.pageSize*(pager.getCurPageNo()-1)}}</td>
+            <td ng-if="order.orderTriggerType.index==1">
+                <div style="width:40px;height:40px;background-color:#F0F; border-radius: 50%;color:#FFF;text-align:center;line-height:40px;:middle;font-size: large">斤
+                </div>
+            </td>
+            </td>
+            <td ng-if="order.orderTriggerType.index!=1" >
+                <div style="width:40px;height:40px;background-color:#00F; border-radius: 50%;color:#FFF;text-align:center;line-height:40px;:middle;font-size: large">瓶
+                </div>
+            </td>
             <td class="message">{{order.orderSn}}</td>
             <td class="message">{{vm.orderStatusDisplay[order.orderStatus]}}</td>
             <td class="message">{{order.accessType.name}}</td>
