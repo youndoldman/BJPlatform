@@ -18,7 +18,7 @@
         select t_department.id as department_id, t_department.name as department_name,
         t_department.code as department_code,
         t_customer_type.code as customer_type_code,t_customer_type.name as customer_type_name,
-        sum(t_order_refound_detail.refound_sum) as refound_sum ,sum(t_order_refound_detail.refound_weight) as refound_weight
+        sum(t_order_refound_detail.refound_sum) as refound_sum ,sum(t_order_refound_detail.remain_gas) as refound_weight
         from t_order ,t_order_dispatcher,t_sysuser,t_department,t_customer,t_customer_type,t_order_refound_detail
         where
            t_order.id = t_order_dispatcher.order_idx
