@@ -142,7 +142,7 @@ public class UninterruptOrderController
         Optional<UninterruptedGasOrder> orderOptional = uninterruptGasOrderService.findBySn(orderSn);
         if (orderOptional.isPresent())
         {
-            if((payType < PayType.PTOnLine.getIndex()) || (payType > PayType.PTCheck.getIndex() ))
+            if((payType < PayType.PTOnLine.getIndex()) || (payType > PayType.PTWxOffLine.getIndex() ))
             {
                 throw new ServerSideBusinessException("支付类型错误！", HttpStatus.NOT_ACCEPTABLE);
             }

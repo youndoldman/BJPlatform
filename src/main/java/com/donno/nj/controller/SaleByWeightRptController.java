@@ -87,7 +87,7 @@ public class SaleByWeightRptController
 
         if (payType != null)
         {
-            if (payType.getIndex() >= PayType.PTOnLine.getIndex() && payType.getIndex() <= PayType.PTCoupon.getIndex() )
+            if (payType.getIndex() >= PayType.PTOnLine.getIndex() && payType.getIndex() <= PayType.PTWxOffLine.getIndex() )
             {
                 params.putAll(ImmutableMap.of("payType", payType));
             }

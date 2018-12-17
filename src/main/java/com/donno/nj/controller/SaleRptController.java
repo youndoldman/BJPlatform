@@ -83,7 +83,7 @@ public class SaleRptController
 
         if (payType != null)
         {
-            if (payType >= PayType.PTOnLine.getIndex() && payType <= PayType.PTCoupon.getIndex() )
+            if (payType >= PayType.PTOnLine.getIndex() && payType <= PayType.PTWxOffLine.getIndex() )
             {
                 params.putAll(ImmutableMap.of("payType", payType));
             }
