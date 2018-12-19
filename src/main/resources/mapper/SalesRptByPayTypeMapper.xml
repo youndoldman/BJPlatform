@@ -60,7 +60,7 @@
             and t_order.pay_type = 4
         </if>
         ) b
-        group by department_id,spec_id
+        group by department_code,spec_code
     </sql>
 
     <!--电子支付、现金、赊销 月结-->
@@ -81,7 +81,7 @@
         <if test="payType != null">
             and t_order.pay_type = #{payType}
         </if>
-        group by t_department.id,t_goods.id
+        group by department_code,spec_code
     </sql>
 
     <!--气票支付-->
@@ -111,7 +111,7 @@
             and t_order.pay_type = #{payType}
         </if>
         ) b
-        group by department_id,spec_id
+        group by department_code,spec_code
     </sql>
 
 

@@ -53,7 +53,7 @@
         <if test="payStatus != null">
             and t_order.pay_status = #{payStatus.index}
         </if>
-        group by t_department.id,t_customer_type.code
+        group by department_code,customer_type_code
     </sql>
 
 
