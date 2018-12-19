@@ -27,7 +27,7 @@ public class TicketServiceImpl implements TicketService
     private CustomerDao customerDao;
 
     @Autowired
-    private GoodsDao goodsDao;
+    private GasCylinderSpecDao gasCylinderSpecDao;
 
     @Autowired
     private DepartmentDao departmentDao;
@@ -235,7 +235,7 @@ public class TicketServiceImpl implements TicketService
             throw new ServerSideBusinessException("缺少规格信息！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        Goods target = goodsDao.findByCode(specCode);
+        GasCylinderSpec target = gasCylinderSpecDao.findByCode(specCode);
         if (target == null)
         {
             throw new ServerSideBusinessException("规格信息不存在！", HttpStatus.NOT_ACCEPTABLE);
@@ -292,8 +292,8 @@ public class TicketServiceImpl implements TicketService
             throw new ServerSideBusinessException("缺少规格信息！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        Goods targetGoods = goodsDao.findByCode(specCode);
-        if (targetGoods == null)
+        GasCylinderSpec target = gasCylinderSpecDao.findByCode(specCode);
+        if (target == null)
         {
             throw new ServerSideBusinessException("规格信息不存在！", HttpStatus.NOT_ACCEPTABLE);
         }
@@ -416,9 +416,4 @@ public class TicketServiceImpl implements TicketService
 
         ticketDao.delete(id);
     }
-
-
-
-
-
 }

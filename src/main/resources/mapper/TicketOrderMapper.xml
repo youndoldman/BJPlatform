@@ -26,12 +26,12 @@
     </sql>
 
     <sql id="QryFromTableName">
-        t_ticket_order,t_order,t_user,t_ticket,t_goods
+        t_ticket_order,t_order,t_user,t_ticket,t_gas_cylinder_spec
     </sql>
 
     <sql id="QueryColumnList">
         t_ticket_order.id, t_ticket_order.ticket_idx,t_ticket.ticket_sn as  ticket_sn ,t_user.user_id as user_id,t_order.order_sn as order_sn,
-         t_goods.name as spec_name,
+         t_gas_cylinder_spec.name as spec_name,
         t_ticket.price,t_ticket.use_time as use_Time ,t_ticket.exp_time_start as exp_start_date,t_ticket.exp_time_end as exp_end_date,
         t_ticket_order.note,t_ticket_order.create_time,t_ticket_order.update_time
     </sql>
@@ -46,7 +46,7 @@
             AND
             t_ticket_order.order_idx = t_order.id
             AND
-            t_ticket.spec_idx = t_goods.id
+            t_ticket.spec_idx = t_gas_cylinder_spec.id
             <if test="userId != null">
                 and t_ticket.customer_idx = (SELECT  id from t_user where user_id = #{userId})
             </if>
@@ -83,7 +83,7 @@
             AND
             t_ticket_order.ticket_idx = t_ticket.id
             AND
-            t_ticket.spec_idx = t_goods.id
+            t_ticket.spec_idx = t_gas_cylinder_spec.id
             AND
             t_ticket_order.id = #{id}
         </where>
@@ -103,7 +103,7 @@
             AND
             t_ticket_order.ticket_idx = t_ticket.id
             AND
-            t_ticket.spec_idx = t_goods.id
+            t_ticket.spec_idx = t_gas_cylinder_spec.id
             AND
             t_ticket_order.ticket_idx = #{ticketIdx}
         </where>

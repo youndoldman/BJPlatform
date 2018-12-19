@@ -46,14 +46,14 @@
     </sql>
 
     <sql id="QryFromTable">
-        t_ticket,t_goods
+        t_ticket,t_gas_cylinder_spec
     </sql>
 
 
 
     <sql id="QueryColumnList">
        t_ticket.id,t_ticket.ticket_sn, t_ticket.customer_idx, t_ticket.saleman_idx,t_ticket.sale_dep_idx,t_ticket.price,  t_ticket.exp_time_start,t_ticket.exp_time_end,t_ticket.use_status,t_ticket.use_time, t_ticket.note,t_ticket.create_time,t_ticket.update_time,
-        t_goods.specifications as spec_name, t_goods.code as spec_code
+       t_gas_cylinder_spec.name as spec_name,t_gas_cylinder_spec.code as spec_code
     </sql>
 
     <sql id="InsertColumnList">
@@ -65,7 +65,7 @@
         <where>
             t_ticket.id > 0
             AND
-            t_ticket.spec_idx = t_goods.id
+            t_ticket.spec_idx = t_gas_cylinder_spec.id
             <if test="ticketSn != null">
                 and t_ticket.ticket_sn =  #{ticketSn}
             </if>
@@ -83,20 +83,8 @@
             <!--</if>-->
 
             <if test="specCode != null">
-                and t_ticket.spec_idx = (SELECT  id from t_goods where code = #{specCode})
+                and t_ticket.spec_idx = (SELECT  id from t_gas_cylinder_spec where code = #{specCode})
             </if>
-
-            <!--<if test="expireType != null">-->
-                <!--<if test="expireType == 0">-->
-                  <!--and  t_ticket.exp_time_end  >=  DATE_FORMAT(now(), '%Y-%m-%d')-->
-                <!--</if>-->
-                <!--<if test="expireType == 1">-->
-                  <!--and  ( TO_DAYS(NOW()) -  TO_DAYS(t_ticket.exp_time_end) ) > 0-->
-                <!--</if>-->
-                <!--&lt;!&ndash;<if test="expireType == 2">&ndash;&gt;-->
-                    <!--&lt;!&ndash;and  DATE_FORMAT(now(), '%Y-%m-%d')  BETWEEN t_ticket.exp_time_start AND  t_ticket.exp_time_end&ndash;&gt;-->
-                <!--&lt;!&ndash;</if>&ndash;&gt;-->
-            <!--</if>-->
 
             <if test="expired != null">
               <if test="expired == true">
@@ -159,7 +147,7 @@
         SELECT <include refid="QueryColumnList"/>
         FROM <include refid="QryFromTable"/>
         WHERE
-        t_ticket.spec_idx = t_goods.id
+        t_ticket.spec_idx = t_gas_cylinder_spec.id
         AND
         t_ticket.id = #{id}
     </select>
@@ -168,7 +156,7 @@
         SELECT <include refid="QueryColumnList"/>
         FROM <include refid="QryFromTable"/>
         WHERE
-        t_ticket.spec_idx = t_goods.id
+        t_ticket.spec_idx = t_gas_cylinder_spec.id
         AND
         t_ticket.ticket_sn = #{ticketSn}
     </select>
@@ -177,7 +165,7 @@
         INSERT IGNORE INTO <include refid="TableName"/>(<include refid="InsertColumnList"/>)
         VALUES( #{ticketSn},
         (select id from t_user where user_id = #{customer.userId} ),
-        (select id from t_goods where code = #{specCode} ),
+        (select id from t_gas_cylinder_spec where code = #{specCode} ),
         (select id from t_user where user_id = #{salemanId} ),
         (select department_idx from t_sysuser where user_idx = (select id from t_user where user_id = #{salemanId})),
         #{price},#{startDate},#{endDate},#{ticketStatus.index},#{useTime},#{note})
@@ -198,7 +186,7 @@
                 saleman_idx = (SELECT  id from t_user where user_id = #{salemanId}),
                 sale_dep_idx = (select department_idx from t_sysuser where user_idx = (select id from t_user where user_id = #{salemanId})),
             </if>
-            <if test="specCode != null">spec_idx = (SELECT  id from t_goods where code = #{specCode}),</if>
+            <if test="specCode != null">spec_idx = (SELECT  id from t_gas_cylinder_spec where code = #{specCode}),</if>
             <if test="price != null">price = #{price},</if>
             <if test="ticketStatus != null">use_status = #{ticketStatus.index},</if>
             <if test="useTime != null">use_time = #{useTime},</if>

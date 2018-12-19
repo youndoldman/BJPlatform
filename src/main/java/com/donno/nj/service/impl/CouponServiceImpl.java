@@ -30,7 +30,7 @@ public class CouponServiceImpl implements CouponService
     private CustomerDao customerDao;
 
     @Autowired
-    private GoodsDao goodsDao;
+    private GasCylinderSpecDao gasCylinderSpecDao;
 
     @Override
     @OperationLog(desc = "查询优惠券信息")
@@ -92,7 +92,7 @@ public class CouponServiceImpl implements CouponService
             throw new ServerSideBusinessException("缺少规格信息！", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        Goods target = goodsDao.findByCode(specCode);
+        GasCylinderSpec target = gasCylinderSpecDao.findByCode(specCode);
         if (target == null)
         {
             throw new ServerSideBusinessException("规格信息不存在！", HttpStatus.NOT_ACCEPTABLE);
@@ -147,14 +147,15 @@ public class CouponServiceImpl implements CouponService
         {
             throw new ServerSideBusinessException("缺少规格信息！", HttpStatus.NOT_ACCEPTABLE);
         }
-        Goods targetGoods = goodsDao.findByCode(specCode);
-        if (targetGoods == null)
+
+        GasCylinderSpec target = gasCylinderSpecDao.findByCode(specCode);
+        if (target == null)
         {
             throw new ServerSideBusinessException("规格信息不存在！", HttpStatus.NOT_ACCEPTABLE);
         }
 
         //设置价格
-        coupon.setPrice(targetGoods.getPrice());
+//        coupon.setPrice(target.getPrice());
 
         /*生效日期检查*/
         checkStartDate(coupon.getStartDate());

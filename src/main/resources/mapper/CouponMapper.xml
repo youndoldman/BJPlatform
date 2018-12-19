@@ -30,13 +30,13 @@
     </sql>
 
     <sql id="QryFromTable">
-        t_coupon,t_goods
+        t_coupon,t_gas_cylinder_spec
     </sql>
 
 
     <sql id="QueryColumnList">
        t_coupon.id,t_coupon.coupon_sn, t_coupon.customer_idx, t_coupon.oper_idx,t_coupon.price,  t_coupon.exp_time_start,t_coupon.exp_time_end,t_coupon.use_status,t_coupon.use_time, t_coupon.note,t_coupon.create_time,t_coupon.update_time,
-        t_goods.specifications as spec_name, t_goods.code as spec_code
+       t_gas_cylinder_spec.name as spec_name,t_gas_cylinder_spec.code as spec_code
     </sql>
 
     <sql id="InsertColumnList">
@@ -47,7 +47,7 @@
         <where>
             t_coupon.id > 0
             AND
-            t_coupon.spec_idx = t_goods.id
+            t_coupon.spec_idx = t_gas_cylinder_spec.id
 
             <if test="couponSn != null">
                 and t_coupon.coupon_sn =  #{couponSn}
@@ -66,7 +66,7 @@
 
 
             <if test="specCode != null">
-                and t_coupon.spec_idx = (SELECT  id from t_goods where code = #{specCode})
+                and t_coupon.spec_idx = (SELECT  id from t_gas_cylinder_spec where code = #{specCode})
             </if>
 
             <if test="expireType != null">
@@ -121,7 +121,7 @@
         SELECT <include refid="QueryColumnList"/>
         FROM <include refid="QryFromTable"/>
         WHERE
-        t_coupon.spec_idx = t_goods.id
+        t_coupon.spec_idx = t_gas_cylinder_spec.id
         AND
         t_coupon.id = #{id}
     </select>
@@ -131,7 +131,7 @@
         VALUES(
         (select id from t_user where user_id = #{customer.userId} ),
         #{couponSn},
-        (select id from t_goods where code = #{specCode} ),
+        (select id from t_gas_cylinder_spec where code = #{specCode} ),
         (select id from t_user where user_id = #{operator.userId} ),
         #{price},#{startDate},#{endDate},#{couponStatus.index},#{useTime},#{note})
     </insert>
@@ -147,7 +147,7 @@
         <set>
             <if test="customer != null">customer_idx = (SELECT  id from t_user where user_id = #{customer.userId}),</if>
             <if test="operator != null">oper_idx = (SELECT  id from t_user where user_id = #{operator.userId}),</if>
-            <if test="specCode != null">spec_idx = (SELECT  id from t_goods where code = #{specCode}),</if>
+            <if test="specCode != null">spec_idx = (SELECT  id from t_gas_cylinder_spec where code = #{specCode}),</if>
             <if test="price != null">price = #{price},</if>
             <if test="couponStatus != null">use_status = #{couponStatus.index},</if>
             <if test="useTime != null">use_time = #{useTime},</if>
