@@ -119,7 +119,7 @@
             <td class="message" title="姓名：{{order.dispatcher.name}} 电话：{{order.dispatcher.mobilePhone}} 工号：{{order.dispatcher.jobNumber}}">{{order.dispatcher.userId}}</td>
 
             <td class="message">{{order.dispatcher.department.name}}</td>
-            <td class="message">{{order.orderAmount}}</td>
+            <td class="message">{{getFixData(order.orderAmount)}}</td>
             <td class="message">{{order.couponCount}}张</td>
             <td class="message">{{order.payStatus.name}}</td>
             <td class="message">{{order.orderServiceQuality.name}}</td>

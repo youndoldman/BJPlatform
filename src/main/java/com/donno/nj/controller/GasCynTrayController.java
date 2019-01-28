@@ -7,6 +7,7 @@ import com.donno.nj.dao.GasCynTrayDao;
 import com.donno.nj.domain.AdjustPriceHistory;
 import com.donno.nj.domain.GasCynTray;
 import com.donno.nj.domain.Goods;
+import com.donno.nj.domain.WarnningStatus;
 import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.GasCynTrayService;
@@ -135,6 +136,8 @@ public class GasCynTrayController
     {
         ResponseEntity responseEntity;
 
+
+
         gasCynTrayService.update(number,newGasCynTray);
         responseEntity = ResponseEntity.ok().build();
 
@@ -164,7 +167,6 @@ public class GasCynTrayController
 
         gasCynTrayService.bind(number,userId);
         responseEntity = ResponseEntity.ok().build();
-
         return responseEntity;
     }
 
@@ -179,6 +181,35 @@ public class GasCynTrayController
         responseEntity = ResponseEntity.ok().build();
 
         return responseEntity;
+    }
+
+
+    @RequestMapping(value = "/api/GasCynTray/WarningStatusDelete", method = RequestMethod.GET, produces = "application/json")
+    @OperationLog(desc = "将用户的托盘状态进行修改")
+    public ResponseEntity WarningStatusDelete(
+            @RequestParam(value = "userId", defaultValue = "") String userId)
+    {
+        Map params = new HashMap<String,String>();
+
+        if (userId.trim().length() == 0)
+        {
+            throw new ServerSideBusinessException("缺少用户信息！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (userId.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("userId", userId));
+        }
+
+        List<GasCynTray> gasCynTrays = gasCynTrayService.retrieve(params);
+        Integer count = gasCynTrayService.count(params);
+
+        for(GasCynTray tempGasCynTray:gasCynTrays){
+            tempGasCynTray.setWarnningStatus(WarnningStatus.WSNormal);
+            gasCynTrayService.update(tempGasCynTray.getNumber(),tempGasCynTray);
+
+        }
+        return ResponseEntity.ok().build();
     }
 
 }

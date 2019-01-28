@@ -28,6 +28,17 @@ comprehensiveQueryApp.service('TicketService', ['$http', 'URI', 'promiseWrapper'
         return promise.wrap($http.get(gasCynTrayUri, {params: params}));
     };
 
+    //删除托盘信息
+    this.deleteGasCynTray = function (gasCynTray) {
+        return promise.wrap($http.delete(gasCynTrayUri + "/" + gasCynTray.id));
+    };
+
+    //修改托盘信息
+    this.modifyGasCynTray = function (gasCynTray) {
+        return promise.wrap($http.put(gasCynTrayUri + "/" + gasCynTray.number, gasCynTray));
+    };
+
+
     //修改气票表
     this.modifyTicket = function (ticket) {
         return promise.wrap($http.put(ticketUri + "/" + ticket.ticketSn, ticket));

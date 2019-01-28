@@ -53,7 +53,8 @@ shopManageApp.controller('ElectDepositCheckCtrl', ['$scope', '$rootScope', '$fil
                 electDepositStatus:$scope.q.electDepositStatus.key,
                 departmentCode:$scope.q.department.code,
                 pageNo: $scope.pager.getCurPageNo(),
-                pageSize: $scope.pager.pageSize
+                pageSize: $scope.pager.pageSize,
+                orderBy:"id desc"
             };
 
             OrderCheckService.retrieveElectDeposit(queryParams).then(function (electDeposit) {

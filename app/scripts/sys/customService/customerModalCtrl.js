@@ -257,7 +257,10 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
     //托盘查询
     $scope.retrievePallets = function () {
         var queryParams = {
-            userId:$scope.vm.currentCustomer.userId
+            userId:$scope.vm.currentCustomer.userId,
+            pageNo:1,
+            pageSize:50
+
         };
         CustomerManageService.retrievePallets(queryParams).then(function (pallets) {
             $scope.vm.palletList = pallets.items;

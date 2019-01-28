@@ -142,9 +142,9 @@
 
 
         </thead>
-        <tbody  ng-repeat="firstArray in data.goodsList">
-        <tr  ng-repeat="item in firstArray.detail track by $index">
-            <td width="2.8%" ng-if="$index ==0" rowspan={{firstArray.detail.length}}>{{item.goodsType.name}}</td>
+        <tbody>
+        <tr  ng-repeat="item in data.specTypesList">
+            <td width="2.8%" ng-if="$index ==0" rowspan={{data.specTypesList.length}}>液化气</td>
             <td width="2.8%"  class="message tableContentAdjust">{{item.name}}</td>
 
             <!--<td width="2.8%"  class="message tableContentAdjust">{{(item.currentKucun.amount + item.todayStockIn.amount - item.todayStockOut.amount) > 0 ? (item.currentKucun.amount + item.todayStockIn.amount - item.todayStockOut.amount) : null}}</td>-->
@@ -189,8 +189,7 @@
             <td width="2.8%" class="message tableContentAdjust"></td>
             <td width="2.8%" class="message tableContentAdjust"></td>
         </tr>
-        </tbody>
-        <tbody>
+
 
         <tr>
             <td width="5.6%" colspan="2" class="message tableContentAdjust">合计</td>

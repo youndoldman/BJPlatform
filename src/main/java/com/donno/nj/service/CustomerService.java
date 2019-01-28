@@ -22,4 +22,6 @@ public interface CustomerService extends UserService
 
     Optional<Customer> findByCstUserId(String userId);
 
+    List<String> getPhones(Map params);
+
 }

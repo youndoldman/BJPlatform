@@ -1,0 +1,39 @@
+<div class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="cloudUserForm" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="close(false)" data-dismiss="modal"
+                            aria-hidden="true">&times;</button> <h4 class="modal-title">&nbsp;{{modalTitle}}&nbsp;</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label-large">推送省份：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="text" name="password" class="form-control" ng-model="vm.province" required/>
+                        </div>
+                    </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label-large">推送城市：</label>
+                        <div class="col-sm-8 input-width">
+                            <input type="text" name="password" class="form-control" ng-model="vm.city" required/>
+                        </div>
+                    </div>
+                    <div class="input-group pdb15">
+                        <label class="col-sm-4 control-label input-label-large">推送内容：</label>
+                        <div class="col-sm-8 input-width">
+                            <textarea type="text" name="password" class="form-control" ng-model="vm.text" required/>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="submit" ng-click="submit();" class="btn btn-primary" data-dismiss="modal">推送</button>
+                    <button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

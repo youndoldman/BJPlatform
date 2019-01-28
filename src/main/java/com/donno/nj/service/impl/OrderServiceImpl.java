@@ -27,6 +27,7 @@ import com.donno.nj.util.Clock;
 
 import com.google.common.collect.ImmutableMap;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import java.math.BigDecimal;
 
 @Service
 public class OrderServiceImpl implements OrderService
@@ -707,7 +708,13 @@ public class OrderServiceImpl implements OrderService
             Order opderUpd = new Order();
             opderUpd.setId(order.getId());
             order.setRefoundSum(refoundSum);
-            order.setOrderAmount(order.getOrderAmount() - refoundSum);
+            Float lastAmount = order.getOrderAmount() - refoundSum;
+            int   scale   =  1;//设置位数
+            int   roundingMode   =   4;//表示四舍五入，可以选择其他舍值方式，例如去尾，等等.
+            BigDecimal   bd   =   new   BigDecimal((double)lastAmount);
+            bd   =   bd.setScale(scale,roundingMode);
+            lastAmount   =   bd.floatValue();
+            order.setOrderAmount(lastAmount);
             orderDao.update(order);
         }
         else
@@ -941,7 +948,7 @@ public class OrderServiceImpl implements OrderService
             List<OrderDetail> orderDetails = order.getOrderDetailList();//当前订单详情
             for(OrderDetail orderDetail : orderDetails)
             {
-                String specCode = orderDetail.getGoods().getCode();
+                String specCode = orderDetail.getGoods().getGasCylinderSpec().getCode();
                 params.putAll(ImmutableMap.of("specCode", specCode));
 
                 /*优惠券*/
@@ -1345,10 +1352,12 @@ public class OrderServiceImpl implements OrderService
 
         /*检查candiuser是否存在*/
         SysUser targetUser = sysUserDao.findBySysUserId(candiUser);
-        if (targetUser == null)
-        {
-            throw new ServerSideBusinessException("用户不存在！", HttpStatus.NOT_ACCEPTABLE);
-        }
+
+        //这个地方有问题，多门店情况要考虑
+//        if (targetUser == null)
+//        {
+//            throw new ServerSideBusinessException("用户不存在！", HttpStatus.NOT_ACCEPTABLE);
+//        }
 
         Map<String, Object> variables = new HashMap<String, Object>();//任务变量
         Group  group = groupDao.findByCode(ServerConstantValue.GP_CUSTOMER_SERVICE);//始终将客服加入组，客服始终能具有处理权限

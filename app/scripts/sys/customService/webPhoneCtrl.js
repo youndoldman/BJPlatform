@@ -68,6 +68,7 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
             //var password = "123456";
             var name = $scope.vm.cloudUser.userId;
             var password = $scope.vm.cloudUser.password;
+            var url = "https://zx.ketianyun.com";
 
 
 
@@ -79,7 +80,9 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
                 forceAnswerWhenRing: false,
                 autoReady: false,
                 stateListenerCallBack: foo,
-                popScreanCallback: popScrean};
+                popScreanCallback: popScrean,
+                url:url
+            };
             CallHelper.init(config, initCallback);
 
             document.getElementById('register').addEventListener('click', function () {
@@ -405,7 +408,6 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
         function time_stop() {
             clearInterval(timer);
         }
-
 
 
 

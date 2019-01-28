@@ -13,7 +13,7 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     var customerCallinUri = URI.resources.customerCallin;
     var key = MISC.keys.gaodeKey;
     var CloudUserUri = URI.resources.cloudUser;
-
+    var gasCylinderSpecUri = URI.resources.gasCylinderSpec;//钢瓶规格
     var settlementTypeUri = URI.resources.settlementType;
 
     var goodsUri = URI.resources.goods;
@@ -36,8 +36,20 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
 
     var adviceUri = URI.resources.Advice;//客户意见
 
+    var gasCynTrayWarningStatusDeleteUri = URI.resources.WarningStatusDelete;//托盘告警解除
+
+    //托盘告警解除
+    this.gasCynTrayWarningStatusDelete = function (params) {
+        return promise.wrap($http.get(gasCynTrayWarningStatusDeleteUri, {params: params}));
+    };
+
     this.retrieveGoods = function (params) {
         return promise.wrap($http.get(goodsUri, {params: params}));
+    };
+
+    //查询钢瓶规格
+    this.retrieveGasCylinderSpecUri = function (params) {
+        return promise.wrap($http.get(gasCylinderSpecUri, {params: params}));
     };
 
 

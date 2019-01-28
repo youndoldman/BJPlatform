@@ -2,6 +2,8 @@ package com.donno.nj.util;
 
 import org.junit.Test;
 
+import java.math.BigDecimal;
+
 public class TempTest {
     @Test
     public void testJoin() throws Exception {
@@ -21,7 +23,16 @@ public class TempTest {
         System.out.println("JoinTestDemo: "+threadName + " end!");
 
     }
-
+    @Test
+    public void testFloatCut() throws Exception {
+        Float lastAmount = 2.445f;
+        int scale = 1;//设置位数
+        int roundingMode = 4;//表示四舍五入，可以选择其他舍值方式，例如去尾，等等.
+        BigDecimal bd = new BigDecimal((double) lastAmount);
+        bd = bd.setScale(scale, roundingMode);
+        lastAmount = bd.floatValue();
+        Float aaaa =lastAmount;
+    }
 
     @Test
     public void testWhile() throws Exception {

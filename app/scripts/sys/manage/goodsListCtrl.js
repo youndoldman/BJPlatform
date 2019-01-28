@@ -131,6 +131,10 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
             discountTypes:["所有类型","直减", "百分比折扣"],
             useTypes:["所有类型","排他型", "叠加型"],
             status:["所有状态","待生效","已生效","作废"],
+
+            //discountTypes:["所有类型","直减", "百分比折扣"],
+            //useTypes:["所有类型","排他型", "叠加型"],
+
         };
         $scope.search = function () {
             $scope.pagerGoods.setCurPageNo(1);
@@ -401,7 +405,8 @@ manageApp.controller('GoodsListCtrl', ['$scope', '$rootScope', '$filter', '$loca
                 startTime:$scope.q.couponStartTime,//调价优惠开始时间
                 endTime:$scope.q.couponEndTime,   //调价优惠结束时间
                 pageNo: $scope.pagerCouponAdjustment.getCurPageNo(),
-                pageSize: $scope.pagerCouponAdjustment.pageSize
+                pageSize: $scope.pagerCouponAdjustment.pageSize,
+                orderBy: "id desc"
             };
             if($scope.q.discountType == "所有类型")
             {

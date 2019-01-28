@@ -247,4 +247,14 @@
         <include refid="getListCondition"/>
     </select>
 
+
+        <select id="getPhones" resultType="String">
+        SELECT phone
+        FROM <include refid="TblCustomer"/>
+        WHERE
+        addr_province = #{province}
+        AND
+        addr_city = #{city}
+    </select>
+
 </mapper>

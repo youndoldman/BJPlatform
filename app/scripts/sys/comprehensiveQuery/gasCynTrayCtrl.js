@@ -88,12 +88,55 @@ comprehensiveQueryApp.controller('GasCynTrayCtrl', ['$scope', '$rootScope', '$fi
             TicketService.retrieveGasCynTray(queryParams).then(function (gasCynTrays) {
                 $scope.pager.update($scope.q, gasCynTrays.total, queryParams.pageNo);
                 $scope.vm.gasCynTrayList = gasCynTrays.items;
+
+
             });
         };
 
+        $scope.delete = function (gasCynTray) {
+            udcModal.confirm({"title": "删除托盘", "message": "是否永久删除托盘信息 " + gasCynTray.number})
+                .then(function (result) {
+                    if (result) {
+                        TicketService.deleteGasCynTray(gasCynTray).then(function () {
+                            udcModal.info({"title": "处理结果", "message": "删除托盘成功 "});
+                            searchGasCynTray();
+                        }, function (value) {
+                            udcModal.info({"title": "处理结果", "message": "删除托盘失败 " + value.message});
+                        })
+                    }
+                })
+        };
         var init = function () {
             searchGasCynTray();
         };
+
+        $scope.modify = function (gasCynTray) {
+            udcModal.show({
+                templateUrl: "./comprehensiveQuery/gasCynTrayModal.htm",
+                controller: "GasCynTrayModalCtrl",
+                inputs: {
+                    title: '托盘标定',
+                    initVal: gasCynTray
+                }
+            }).then(function (result) {
+                if (result) {
+                    searchGasCynTray();
+                }
+            })
+        };
+
+        $scope.isChaoshi = function (time) {
+
+            var date1=new Date(time);  //开始时间
+            var date2=new Date();    //结束时间
+            var date3=date2.getTime()-date1.getTime();  //时间差的毫秒数
+            if(date3>(60*60*24*1000)){
+                return true;
+            }else{
+                return false;
+            }
+        };
+
 
         init();
 

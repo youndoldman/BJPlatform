@@ -318,9 +318,8 @@ customServiceApp.controller('AddGasTicketModalCtrl', ['$scope', 'close', 'Custom
     $scope.searchGoods = function () {
         //查询商品名字为液化气的规格
         var queryParams = {
-            typeName: "液化气",
         };
-        CustomerManageService.retrieveGoods(queryParams).then(function (goods) {
+        CustomerManageService.retrieveGasCylinderSpecUri(queryParams).then(function (goods) {
             $scope.vm.goodsList = goods.items;
 
             $scope.vm.selectedGoods = $scope.vm.goodsList[0];

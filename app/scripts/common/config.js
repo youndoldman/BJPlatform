@@ -111,6 +111,10 @@ commonModule.constant('URI', {
 
 
 
+        'SaleByWeight':'../../../api/Report/SaleByWeight/ByPayType',//按斤销售方式
+        'sendMs':'../../../api/Untils/SendBatchSms',//短信推送
+
+        'WarningStatusDelete':'../../../api/GasCynTray/WarningStatusDelete',//托盘告警解除
 
 
 
@@ -209,6 +213,12 @@ commonModule.constant('NavItem', {
             name: "钢瓶厂家",
             target: "_blank",
             href: "./manageCenter.htm#/manage/factoryManage",
+            icon: "fa-gears"
+        }, {
+            index: 5,
+            name: "短信推送",
+            target: "_blank",
+            href: "./manageCenter.htm#/manage/sendMs",
             icon: "fa-gears"
         }]
     },
@@ -500,7 +510,7 @@ commonModule.constant('NavItem', {
         }]
     },
     'ComprehensiveQueryCenter': {
-        roles:[],
+        roles:[1,2],
         name: "综合查询",
         href: "./comprehensiveQueryCenter.htm",
         menuItems: [{

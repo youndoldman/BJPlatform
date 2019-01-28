@@ -14,7 +14,8 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
         $scope.q = {
             userId: null,
             userName: null,
-            userGroup:{name:"全选",code:null}
+            userGroup:{name:"全选",code:null},
+            liableDepartmentCode: null,
         };
 
         $scope.vm = {
@@ -95,7 +96,8 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
                 pageNo: $scope.pager.getCurPageNo(),
                 orderBy:"alive_status desc",
                 pageSize: $scope.pager.pageSize,
-                groupCode:$scope.q.userGroup.code
+                groupCode:$scope.q.userGroup.code,
+                departmentCode:$scope.q.liableDepartmentCode
             };
 
             UserService.retrieveUsers(queryParams).then(function (users) {
@@ -150,7 +152,22 @@ manageApp.controller('UserListCtrl', ['$scope', '$rootScope', '$filter', '$locat
                 })
         };
 
-
+        $scope.initDepartmentSelect = function () {
+            udcModal.show({
+                templateUrl: "./manage/departmentSelectModal.htm",
+                controller: "DepartmentSelectModalCtrl",
+                inputs: {
+                    title: '百江燃气组织架构',
+                    initVal: {}
+                }
+            }).then(function (result) {
+                if (result!=null) {
+                    $scope.q.liableDepartmentCode = result.code;
+                    //console.info($scope.q.liableDepartmentCode);
+                    searchUsers();
+                }
+            })
+        };
 
         init();
 

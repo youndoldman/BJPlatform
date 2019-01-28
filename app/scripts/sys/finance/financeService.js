@@ -28,6 +28,10 @@ financeApp.service('FinanceService', ['$http', 'URI', 'promiseWrapper', function
 
     var gasCyrChargeSpecUri = URI.resources.gasCyrChargeSpec;//钢瓶收费标准查询
 
+
+    var SaleByWeightUri = URI.resources.SaleByWeight    ;//按斤销售方式日报表
+
+
     //增加回款
     this.addWriteOff = function (params) {
         return promise.wrap($http.post(writeOffUri, params));
@@ -112,6 +116,13 @@ financeApp.service('FinanceService', ['$http', 'URI', 'promiseWrapper', function
     //钢瓶收费标准查询
     this.searchGasCyrChargeSpec  = function (params) {
         return promise.wrap($http.get(gasCyrChargeSpecUri, {params: params}));
+    };
+
+
+
+    //按斤销售方式日报表
+    this.retrieveSaleByWeightReport  = function (params) {
+        return promise.wrap($http.get(SaleByWeightUri, {params: params}));
     };
 
 

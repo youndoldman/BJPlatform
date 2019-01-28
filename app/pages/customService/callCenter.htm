@@ -416,11 +416,14 @@
                     <td class="message">{{$index+1+pagerGasCynTrayWarning.pageSize*(pagerGasCynTrayWarning.getCurPageNo()-1)}}</td>
                     <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{warning.user.userId}}</td>
                     <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{warning.number}}</td>
-                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{warning.weight}}</td>
+                    <td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">{{warning.validWeight}}</td>
                   </tr>
                 </table>
                 <div ng-if="vm.CustomerAutoReportList.length == 0" nj-table-no-data></div>
                 <div nj-pager pager="pagerGasCynTrayWarning"  ></div>
+
+                <label class="input" style="margin-top:100px"><input type="text" class="form-control input-sm" ng-model="q.userIdUninteruptDealed" placeholder="用户编号"> </label>
+                <button type="button" style="margin-top:100px" class="btn btn-sm btn-success pull-right" ng-click="GasCynTrayWarningDealed(q.userIdUninteruptDealed)"><i class="fa fa-sun-o"></i> 已经处理 </button>
               </div>
             </div>
 
@@ -572,14 +575,14 @@
               <div class="col-md-2" style="margin-top: 5px">
                 <div class="input-group has-success">
                   <span class="input-group-addon ">订单总额</span>
-                  <input type="number"  class="form-control" ng-model="currentOrder.orderAmount" ></input>
+                  <input type="number"  class="form-control" ng-model="currentOrder.orderAmount" ng-disabled="true"></input>
                 </div>
 
               </div>
               <div class="col-md-2" style="margin-top: 5px">
                 <div class="input-group has-error">
                   <span class="input-group-addon">标记</span>
-                  <select name="orderType" ng-model="currentOrder.orderTriggerType" ng-options="orderType.key as orderType.value for orderType in temp.orderTypesConfig" class="form-control" ng-selected="" ng-disabled="true"></select>
+                  <select name="orderType" ng-model="currentOrder.orderTriggerType" ng-options="orderType.key as orderType.value for orderType in temp.orderTypesConfig" class="form-control" ng-selected=""></select>
                 </div>
               </div>
 

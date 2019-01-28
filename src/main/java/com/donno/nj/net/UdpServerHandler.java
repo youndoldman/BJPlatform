@@ -81,9 +81,15 @@ public class UdpServerHandler
             }
             else
             {
+                //无效经纬度
+                if((gasCynTray.getLatitude()<0.00001)||(gasCynTray.getLongitude()<0.00001)){
+                    gasCynTray.setLatitude(target.getLatitude());
+                    gasCynTray.setLongitude(target.getLongitude());
+                }
                 gasCynTray.setId(target.getId());
+                gasCynTray.setValidWeight(gasCynTray.getWeight()+target.getCalibration());
                 Integer warningWeight = systemParamDao.getTrayWarningWeight();
-                if (gasCynTray.getWeight() <= warningWeight)
+                if (gasCynTray.getValidWeight() <= warningWeight)
                 {
                     gasCynTray.setWarnningStatus(WarnningStatus.WSWarnning1);
                 }

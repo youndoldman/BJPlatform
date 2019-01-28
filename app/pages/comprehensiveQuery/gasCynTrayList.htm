@@ -46,12 +46,16 @@
             <th width="5%">客户姓名</th>
             <th width="5%">缺气告警</th>
             <th width="5%">漏气告警</th>
-            <th width="5%">测量重量(公斤)</th>
+            <th width="8%">测量重量(公斤)</th>
+            <th width="8%">标定重量(公斤)</th>
+            <th width="8%">最终重量(公斤)</th>
             <th width="5%">经度</th>
             <th width="5%">纬度</th>
             <th width="5%">使用状态</th>
             <th width="10%">创建时间</th>
-            <!--<th width="15%">操作</th>-->
+            <th width="10%">更新时间</th>
+            <th width="5%">状态</th>
+            <th width="15%">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -64,10 +68,31 @@
             <td class="message">{{gasCynTray.warnningStatus.name}}</td>
             <td class="message">{{gasCynTray.leakStatus.name}}</td>
             <td class="message">{{gasCynTray.weight}}</td>
+            <td class="message">{{gasCynTray.calibration}}</td>
+            <td class="message">{{gasCynTray.validWeight}}</td>
             <td class="message">{{gasCynTray.longitude}}</td>
             <td class="message">{{gasCynTray.latitude}}</td>
+
             <td class="message">{{gasCynTray.deviceStatus.name}}</td>
             <td class="message">{{gasCynTray.createTime}}</td>
+            <td class="message">{{gasCynTray.updateTime}}</td>
+            <td ng-if="!isChaoshi(gasCynTray.updateTime)">
+                <div style="width:30px;height:30px;background-color:#0F0; border-radius: 50%;color:#FFF;text-align:center;line-height:40px;:middle;font-size: large">
+                </div>
+            </td>
+            </td>
+            <td ng-if="isChaoshi(gasCynTray.updateTime)" >
+                <div style="width:30px;height:30px;background-color:#F00; border-radius: 50%;color:#FFF;text-align:center;line-height:40px;:middle;font-size: large">
+                </div>
+            </td>
+            <td class="operate">
+                <button title="修改" ng-click="modify(gasCynTray)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <i class="fa fa-edit"></i>
+                </button>
+                <button title="删除" ng-click="delete(gasCynTray)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <i class="fa fa-trash-o"></i>
+                </button>
+            </td>
         </tr>
         </tbody>
     </table>

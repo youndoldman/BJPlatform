@@ -619,6 +619,13 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
 //        }
     }
 
+    public List<String> getPhones(Map params)
+    {
+        return  customerDao.getPhones(params);
+    }
+
+
+
 
 
 

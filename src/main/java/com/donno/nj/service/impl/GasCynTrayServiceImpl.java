@@ -21,6 +21,9 @@ import java.util.Map;
 @Service
 public class GasCynTrayServiceImpl implements GasCynTrayService
 {
+    @Autowired
+    private SystemParamDao systemParamDao;
+
 
     @Autowired
     private GasCynTrayDao gasCynTrayDao;
@@ -98,10 +101,21 @@ public class GasCynTrayServiceImpl implements GasCynTrayService
         /*托盘新编号是否存在*/
         if (newGasCynTray.getNumber() != null && newGasCynTray.getNumber().trim().length() > 0)
         {
-            if (gasCynTrayDao.findByNumber(newGasCynTray.getNumber()) != null)
+            if (gasCynTrayDao.findByNumber(newGasCynTray.getNumber()) == null)
             {
                 throw new ServerSideBusinessException("托盘不存在！", HttpStatus.NOT_ACCEPTABLE);
             }
+        }
+        //增加了标定功能
+        newGasCynTray.setValidWeight(gasCynTray.getWeight()+newGasCynTray.getCalibration());
+        Integer warningWeight = systemParamDao.getTrayWarningWeight();
+        if (newGasCynTray.getValidWeight() <= warningWeight)
+        {
+            newGasCynTray.setWarnningStatus(WarnningStatus.WSWarnning1);
+        }
+        else
+        {
+            newGasCynTray.setWarnningStatus(WarnningStatus.WSNormal);
         }
 
         /*更新数据*/

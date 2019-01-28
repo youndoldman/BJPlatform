@@ -45,4 +45,23 @@ shopManageApp.controller('OrderCheckModalCtrl', ['$scope', 'close', 'OrderCheckS
         $scope.vm.curUser = sessionStorage.getCurUser();
     };
     init();
+
+    //四舍五入，取两位小数
+    $scope.getFixData = function (data) {
+        if(data==null){
+            return "";
+        }
+        var f =  Math.round(data * 100) / 100;
+        var s = f.toString();
+        var rs = s.indexOf('.');
+        if (rs < 0) {
+            rs = s.length;
+            s += '.';
+        }
+        while (s.length <= rs + 2) {
+            s += '0';
+        }
+        return s;
+
+    };
 }]);

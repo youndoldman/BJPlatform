@@ -73,7 +73,7 @@
             <td class="message" title="电话：{{order.dispatcher.mobilePhone}} 工号：{{order.dispatcher.jobNumber}}">{{order.dispatcher.name}}</td>
 
             <td class="message">{{order.payStatus.name}}</td>
-            <td class="message">{{order.orderAmount}}</td>
+            <td class="message">{{getFixData(order.orderAmount)}}</td>
             <td class="message">{{order.createTime}}</td>
             <td class="message">{{order.reserveTime}}</td>
             <td class="operate">

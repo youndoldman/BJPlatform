@@ -87,7 +87,7 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
                 }
             }
             var info=[];
-            info.push("<div><div><img style=\"flow:left;width: 40px;height: 40px\" src=\"../api/sysusers/photo/"+$scope.vm.selectedWorker.userId+"\"/>"+"<b style='font-size: 21px'>"+"直销员  |  "+$scope.vm.selectedWorker.userId+"</b></div>");
+            info.push("<div><div><img style=\"flow:left;width: 40px;height: 40px\" src=\"../../api/sysusers/photo/"+$scope.vm.selectedWorker.userId+"\"/>"+"<b style='font-size: 21px'>"+"直销员  |  "+$scope.vm.selectedWorker.userId+"</b></div>");
             info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>"+"姓名:   "+$scope.vm.selectedWorker.name+"</b>");
             info.push("<b>5公斤(重瓶) :   "+bottleCount_5+"</b>");
             info.push("<b>15公斤(重瓶):   "+bottleCount_15+"</b>");
@@ -176,7 +176,7 @@ customServiceApp.controller('AssignModalCtrl', ['$scope', 'close', 'OrderService
             if($scope.vm.onLineWorkersList[i].userPosition==null){
                 continue;
             }
-            var imageName = "../api/sysusers/photo/"+$scope.vm.onLineWorkersList[i].userId;
+            var imageName = "../../api/sysusers/photo/"+$scope.vm.onLineWorkersList[i].userId;
             var iconWorker = new AMap.Icon({
                 image : imageName,//24px*24px
                 //icon可缺省，缺省时为默认的蓝色水滴图标，

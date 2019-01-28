@@ -7,11 +7,19 @@ decisionApp.controller('GasUsageCtrl', ['$scope', '$rootScope', '$filter', '$loc
         $scope.q = {
             code: null,
             startTime:"",
-            endTime:""
+            endTime:"",
+
+        };
+
+        $scope.vm = {
+            dataDealed:[],
+            unitData : {legend:null, items:[]}
         };
         $scope.search = function () {
             //启动绘制托盘重量的定时器
-            retrieveGasCynTrayHistory();
+            $scope.vm.dataDealed = [];//结果数据
+            $scope.vm.unitData = {legend:null, items:[]};
+            retrieveGasCynTrayHistory($scope.q.startTime, $scope.q.endTime,$scope.q.code);
             //$interval.cancel($scope.timer);
             //$scope.timer = $interval( function(){
             //    retrieveGasCynTrayHistory();
@@ -128,19 +136,19 @@ decisionApp.controller('GasUsageCtrl', ['$scope', '$rootScope', '$filter', '$loc
                 myChart.resize();
             });
         };
-        var retrieveGasCynTrayHistory = function () {
+        var retrieveGasCynTrayHistory = function (startTime, endTime, code) {
             var gasCynTrayHistoryList = [];
             var queryParams = {
-                startTime: $scope.q.startTime,
-                endTime: $scope.q.endTime,
-                number: $scope.q.code
+                startTime: startTime,
+                endTime: endTime,
+                number: code
             };
             DecisionService.retrieveGasCynTrayHistory(queryParams).then(function (gasCynTrayHistory) {
-                var dataDealed = [];//结果数据
+
                 //加工数据，按商品号分开
                 gasCynTrayHistoryList = gasCynTrayHistory.items;
                 var name = null;
-                var unitData = {legend:null, items:[]};
+
                 if(gasCynTrayHistoryList.length==0){
                     //$interval.cancel($scope.timer);
                     udcModal.info({"title": "查询结果", "message": "无数据"});
@@ -152,15 +160,20 @@ decisionApp.controller('GasUsageCtrl', ['$scope', '$rootScope', '$filter', '$loc
                     var date = new Date(gasCynTrayHistoryList[i].timestamp);
                     tempData.name = date.toString();
                     tempData.value = [gasCynTrayHistoryList[i].timestamp,gasCynTrayHistoryList[i].weight];
-                    unitData.items.push(tempData);
+                    $scope.vm.unitData.items.push(tempData);
                     name = gasCynTrayHistoryList[i].number;
                 }
 
-                if(unitData.items.length!=0){
-                    unitData.legend = name;
-                    dataDealed.push(unitData);
+                if(gasCynTrayHistory.items.length == 5000){
+                    retrieveGasCynTrayHistory(gasCynTrayHistoryList[gasCynTrayHistoryList.length-1].timestamp, $scope.q.endTime, code);
+                }else{
+                    if($scope.vm.unitData.items.length!=0){
+                        $scope.vm.unitData.legend = name;
+                        $scope.vm.dataDealed.push($scope.vm.unitData);
+                    }
+                    console.log($scope.vm.dataDealed);
+                    drawChart($scope.vm.dataDealed);
                 }
-                drawChart(dataDealed);
             });
         };
         var init = function () {

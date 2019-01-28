@@ -64,7 +64,7 @@
             <td width="5.6%" colspan="4" class="message tableContentAdjust bkColor1">月结</td>
 
             <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">销售(kg)</td>
-            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">收款金额(元)</td>
+            <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">销售金额(元)</td>
             <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">退余气(kg)</td>
             <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">退款金额(元)</td>
             <td width="2.8%" rowspan="2" class="message tableContentAdjust bkColor1">今均价(元/kg)</td>
@@ -111,70 +111,242 @@
             <td width="2.8%"  class="message tableContentAdjust">{{item.name}}</td>
 
 
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[2][item.code].saleWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[2][item.code].saleSum)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[2][item.code].refoundWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[2][item.code].refoundSum)}}</td>
+
+
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[0][item.code].saleWeight+data.reportDayCash[1][item.code].saleWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[0][item.code].saleSum+data.reportDayCash[1][item.code].saleSum)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[0][item.code].refoundWeight+data.reportDayCash[1][item.code].refoundWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[0][item.code].refoundSum+data.reportDayCash[1][item.code].refoundSum)}}</td>
+
 
             <td width="2.8%" class="message tableContentAdjust"></td>
             <td width="2.8%" class="message tableContentAdjust"></td>
             <td width="2.8%" class="message tableContentAdjust"></td>
             <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
+
+
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[3][item.code].saleWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[3][item.code].saleSum)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[3][item.code].refoundWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[3][item.code].refoundSum)}}</td>
+
+
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[4][item.code].saleWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[4][item.code].saleSum)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[4][item.code].refoundWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[4][item.code].refoundSum)}}</td>
+
+
+
+            <td width="2.8%" class="message tableContentAdjust">
+                {{getFixData(data.reportDayCash[0][item.code].saleWeight
+                +data.reportDayCash[1][item.code].saleWeight
+                +data.reportDayCash[2][item.code].saleWeight
+                +data.reportDayCash[3][item.code].saleWeight
+                +data.reportDayCash[4][item.code].saleWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">
+                {{getFixData(data.reportDayCash[0][item.code].saleSum
+                +data.reportDayCash[1][item.code].saleSum
+                +data.reportDayCash[2][item.code].saleSum
+                +data.reportDayCash[3][item.code].saleSum
+                +data.reportDayCash[4][item.code].saleSum)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">
+                {{getFixData(data.reportDayCash[0][item.code].refoundWeight
+                +data.reportDayCash[1][item.code].refoundWeight
+                +data.reportDayCash[2][item.code].refoundWeight
+                +data.reportDayCash[3][item.code].refoundWeight
+                +data.reportDayCash[4][item.code].refoundWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">
+                {{getFixData(data.reportDayCash[0][item.code].refoundSum
+                +data.reportDayCash[1][item.code].refoundSum
+                +data.reportDayCash[2][item.code].refoundSum
+                +data.reportDayCash[3][item.code].refoundSum
+                +data.reportDayCash[4][item.code].refoundSum)}}</td>
+            <td width="2.8%" class="message tableContentAdjust" ng-if="(data.reportDayCash[0][item.code].saleWeight
+                +data.reportDayCash[1][item.code].saleWeight
+                +data.reportDayCash[2][item.code].saleWeight
+                +data.reportDayCash[3][item.code].saleWeight
+                +data.reportDayCash[4][item.code].saleWeight)!=null">
+                {{getFixData((data.reportDayCash[0][item.code].saleSum
+                +data.reportDayCash[1][item.code].saleSum
+                +data.reportDayCash[2][item.code].saleSum
+                +data.reportDayCash[3][item.code].saleSum
+                +data.reportDayCash[4][item.code].saleSum)/
+                (data.reportDayCash[0][item.code].saleWeight
+                +data.reportDayCash[1][item.code].saleWeight
+                +data.reportDayCash[2][item.code].saleWeight
+                +data.reportDayCash[3][item.code].saleWeight
+                +data.reportDayCash[4][item.code].saleWeight))}}</td>
+            <td width="2.8%" class="message tableContentAdjust" ng-if="(data.reportDayCash[0][item.code].saleWeight
+                +data.reportDayCash[1][item.code].saleWeight
+                +data.reportDayCash[2][item.code].saleWeight
+                +data.reportDayCash[3][item.code].saleWeight
+                +data.reportDayCash[4][item.code].saleWeight)==null"></td>
+            </td>
+
+            <td width="2.8%" class="message tableContentAdjust">
+                {{getFixData(data.reportMonthCash[0][item.code].saleWeight
+                +data.reportMonthCash[1][item.code].saleWeight
+                +data.reportMonthCash[2][item.code].saleWeight
+                +data.reportMonthCash[3][item.code].saleWeight
+                +data.reportMonthCash[4][item.code].saleWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">
+                {{getFixData(data.reportMonthCash[0][item.code].saleSum
+                +data.reportMonthCash[1][item.code].saleSum
+                +data.reportMonthCash[2][item.code].saleSum
+                +data.reportMonthCash[3][item.code].saleSum
+                +data.reportMonthCash[4][item.code].saleSum)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">
+                {{getFixData(data.reportMonthCash[0][item.code].refoundWeight
+                +data.reportMonthCash[1][item.code].refoundWeight
+                +data.reportMonthCash[2][item.code].refoundWeight
+                +data.reportMonthCash[3][item.code].refoundWeight
+                +data.reportMonthCash[4][item.code].refoundWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">
+                {{getFixData(data.reportMonthCash[0][item.code].refoundSum
+                +data.reportMonthCash[1][item.code].refoundSum
+                +data.reportMonthCash[2][item.code].refoundSum
+                +data.reportMonthCash[3][item.code].refoundSum
+                +data.reportMonthCash[4][item.code].refoundSum)}}</td>
+            <td width="2.8%" class="message tableContentAdjust" ng-if="(data.reportMonthCash[0][item.code].saleWeight
+                +data.reportMonthCash[1][item.code].saleWeight
+                +data.reportMonthCash[2][item.code].saleWeight
+                +data.reportMonthCash[3][item.code].saleWeight
+                +data.reportMonthCash[4][item.code].saleWeight)!=null">
+                {{getFixData((data.reportMonthCash[0][item.code].saleSum
+                +data.reportMonthCash[1][item.code].saleSum
+                +data.reportMonthCash[2][item.code].saleSum
+                +data.reportMonthCash[3][item.code].saleSum
+                +data.reportMonthCash[4][item.code].saleSum)/
+                (data.reportMonthCash[0][item.code].saleWeight
+                +data.reportMonthCash[1][item.code].saleWeight
+                +data.reportMonthCash[2][item.code].saleWeight
+                +data.reportMonthCash[3][item.code].saleWeight
+                +data.reportMonthCash[4][item.code].saleWeight))}}</td>
+            <td width="2.8%" class="message tableContentAdjust" ng-if="(data.reportMonthCash[0][item.code].saleWeight
+                +data.reportMonthCash[1][item.code].saleWeight
+                +data.reportMonthCash[2][item.code].saleWeight
+                +data.reportMonthCash[3][item.code].saleWeight
+                +data.reportMonthCash[4][item.code].saleWeight)==null"></td>
         </tr>
         <tr>
             <td width="5.6%" colspan="2" class="message tableContentAdjust">合计</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[2]["sum"].saleWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[2]["sum"].saleSum)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[2]["sum"].refoundWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[2]["sum"].refoundSum)}}</td>
+
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[0]["sum"].saleWeight+data.reportDayCash[1]["sum"].saleWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[0]["sum"].saleSum+data.reportDayCash[1]["sum"].saleSum)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[0]["sum"].refoundWeight+data.reportDayCash[1]["sum"].refoundWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[0]["sum"].refoundSum+data.reportDayCash[1]["sum"].refoundSum)}}</td>
             <td width="2.8%" class="message tableContentAdjust"></td>
             <td width="2.8%" class="message tableContentAdjust"></td>
             <td width="2.8%" class="message tableContentAdjust"></td>
             <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
-            <td width="2.8%" class="message tableContentAdjust"></td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[3]["sum"].saleWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[3]["sum"].saleSum)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[3]["sum"].refoundWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[3]["sum"].refoundSum)}}</td>
+
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[4]["sum"].saleWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[4]["sum"].saleSum)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[4]["sum"].refoundWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">{{getFixData(data.reportDayCash[4]["sum"].refoundSum)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">
+                {{getFixData(data.reportDayCash[0]["sum"].saleWeight
+                +data.reportDayCash[1]["sum"].saleWeight
+                +data.reportDayCash[2]["sum"].saleWeight
+                +data.reportDayCash[3]["sum"].saleWeight
+                +data.reportDayCash[4]["sum"].saleWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">
+                {{getFixData(data.reportDayCash[0]["sum"].saleSum
+                +data.reportDayCash[1]["sum"].saleSum
+                +data.reportDayCash[2]["sum"].saleSum
+                +data.reportDayCash[3]["sum"].saleSum
+                +data.reportDayCash[4]["sum"].saleSum)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">
+                {{getFixData(data.reportDayCash[0]["sum"].refoundWeight
+                +data.reportDayCash[1]["sum"].refoundWeight
+                +data.reportDayCash[2]["sum"].refoundWeight
+                +data.reportDayCash[3]["sum"].refoundWeight
+                +data.reportDayCash[4]["sum"].refoundWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">
+                {{getFixData(data.reportDayCash[0]["sum"].refoundSum
+                +data.reportDayCash[1]["sum"].refoundSum
+                +data.reportDayCash[2]["sum"].refoundSum
+                +data.reportDayCash[3]["sum"].refoundSum
+                +data.reportDayCash[4]["sum"].refoundSum)}}</td>
+            <td width="2.8%" class="message tableContentAdjust" ng-if="(data.reportDayCash[0][item.code].saleWeight
+                +data.reportDayCash[1][&quot;sum&quot;].saleWeight
+                +data.reportDayCash[2][&quot;sum&quot;].saleWeight
+                +data.reportDayCash[3][&quot;sum&quot;].saleWeight
+                +data.reportDayCash[4][&quot;sum&quot;].saleWeight)!=null">
+                {{getFixData((data.reportDayCash[0]["sum"].saleSum
+                +data.reportDayCash[1]["sum"].saleSum
+                +data.reportDayCash[2]["sum"].saleSum
+                +data.reportDayCash[3]["sum"].saleSum
+                +data.reportDayCash[4]["sum"].saleSum)/
+                (data.reportDayCash[0]["sum"].saleWeight
+                +data.reportDayCash[1]["sum"].saleWeight
+                +data.reportDayCash[2]["sum"].saleWeight
+                +data.reportDayCash[3]["sum"].saleWeight
+                +data.reportDayCash[4]["sum"].saleWeight))}}</td>
+            <td width="2.8%" class="message tableContentAdjust" ng-if="(data.reportDayCash[0][item.code].saleWeight
+                +data.reportDayCash[1][&quot;sum&quot;].saleWeight
+                +data.reportDayCash[2][&quot;sum&quot;].saleWeight
+                +data.reportDayCash[3][&quot;sum&quot;].saleWeight
+                +data.reportDayCash[4][&quot;sum&quot;].saleWeight)==null"></td>
+            </td>
+
+            <td width="2.8%" class="message tableContentAdjust">
+                {{getFixData(data.reportMonthCash[0]["sum"].saleWeight
+                +data.reportMonthCash[1]["sum"].saleWeight
+                +data.reportMonthCash[2]["sum"].saleWeight
+                +data.reportMonthCash[3]["sum"].saleWeight
+                +data.reportMonthCash[4]["sum"].saleWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">
+                {{getFixData(data.reportMonthCash[0]["sum"].saleSum
+                +data.reportMonthCash[1]["sum"].saleSum
+                +data.reportMonthCash[2]["sum"].saleSum
+                +data.reportMonthCash[3]["sum"].saleSum
+                +data.reportMonthCash[4]["sum"].saleSum)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">
+                {{getFixData(data.reportMonthCash[0]["sum"].refoundWeight
+                +data.reportMonthCash[1]["sum"].refoundWeight
+                +data.reportMonthCash[2]["sum"].refoundWeight
+                +data.reportMonthCash[3]["sum"].refoundWeight
+                +data.reportMonthCash[4]["sum"].refoundWeight)}}</td>
+            <td width="2.8%" class="message tableContentAdjust">
+                {{getFixData(data.reportMonthCash[0]["sum"].refoundSum
+                +data.reportMonthCash[1]["sum"].refoundSum
+                +data.reportMonthCash[2]["sum"].refoundSum
+                +data.reportMonthCash[3]["sum"].refoundSum
+                +data.reportMonthCash[4]["sum"].refoundSum)}}</td>
+            <td width="2.8%" class="message tableContentAdjust" ng-if="(data.reportMonthCash[0][item.code].saleWeight
+                +data.reportMonthCash[1][&quot;sum&quot;].saleWeight
+                +data.reportMonthCash[2][&quot;sum&quot;].saleWeight
+                +data.reportMonthCash[3][&quot;sum&quot;].saleWeight
+                +data.reportMonthCash[4][&quot;sum&quot;].saleWeight)!=null">
+                {{getFixData((data.reportMonthCash[0][item.code].saleSum
+                +data.reportMonthCash[1]["sum"].saleSum
+                +data.reportMonthCash[2]["sum"].saleSum
+                +data.reportMonthCash[3]["sum"].saleSum
+                +data.reportMonthCash[4]["sum"].saleSum)/
+                (data.reportMonthCash[0]["sum"].saleWeight
+                +data.reportMonthCash[1]["sum"].saleWeight
+                +data.reportMonthCash[2]["sum"].saleWeight
+                +data.reportMonthCash[3]["sum"].saleWeight
+                +data.reportMonthCash[4]["sum"].saleWeight))}}</td>
+            <td width="2.8%" class="message tableContentAdjust" ng-if="(data.reportMonthCash[0][item.code].saleWeight
+                +data.reportMonthCash[1][&quot;sum&quot;].saleWeight
+                +data.reportMonthCash[2][&quot;sum&quot;].saleWeight
+                +data.reportMonthCash[3][&quot;sum&quot;].saleWeight
+                +data.reportMonthCash[4][&quot;sum&quot;].saleWeight)==null"></td>
 
         </tr>
         </tbody>

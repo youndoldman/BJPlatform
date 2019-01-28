@@ -18,6 +18,8 @@ public class GasCynTray implements Serializable
     String timestamp;
     Double longitude;
     Double latitude;
+    Float calibration;//标定
+    Float validWeight;//有效重量
 
     User user;
 
@@ -93,6 +95,16 @@ public class GasCynTray implements Serializable
         return  updateTime;
     }
 
+    public  Float getCalibration()
+    {
+        return  calibration;
+    }
+
+    public  Float getValidWeight()
+    {
+        return  validWeight;
+    }
+
     /*
     * 属性设置
     * */
@@ -145,6 +157,19 @@ public class GasCynTray implements Serializable
     {
         this.note = note;
     }
+
+
+    public void setCalibration(Float calibration)
+    {
+        this.calibration = calibration;
+    }
+
+    public void setValidWeight(Float validWeight)
+    {
+        this.validWeight = validWeight;
+    }
+
+
 
     public void setCreateTime(Date createTime)
     {

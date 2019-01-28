@@ -23,11 +23,12 @@ customServiceApp.controller('CustomerManageCtrl', ['$scope', '$rootScope', '$fil
             customerStatusDesc:["正常","注销"],
             customerList: [],
             gasTicketEditBoolean:true,
-            customerTypeList: [{key:null,value:"全部"},{key:"00001",value:"居民客户"},{key:"00002",value:"餐饮客户"}],
+            customerTypeList: [{key:null,value:"全部"},{key:"00001",value:"居民客户"},{key:"00002",value:"餐饮客户"},{key:"00003",value:"居民客户(托盘)"},{key:"00004",value:"餐饮客户(托盘)"}],
             settlementTypeList: [{key:null,value:"全部"},{key:"00001",value:"普通客户"},{key:"00002",value:"月结客户"},{key:"00003",value:"气票客户"}],
             customerLevelList: [{key:null,value:"全部"},{key:"00001",value:"一级客户"},{key:"00002",value:"二级客户"},{key:"00003",value:"三级客户"}
                 ,{key:"00004",value:"四级客户"},{key:"00005",value:"五级客户"},{key:"00006",value:"六级客户"},{key:"00007",value:"七级客户"}
-                ,{key:"00008",value:"八级客户"},{key:"00009",value:"九级客户"},{key:"00010",value:"十级客户"}],
+                ,{key:"00008",value:"八级客户"},{key:"00009",value:"九级客户"},{key:"00010",value:"十级客户"},{key:"00011",value:"十一级客户"},{key:"00012",value:"十二级客户"}
+                ,{key:"00013",value:"十三级客户"},{key:"00014",value:"十四级客户"},{key:"00015",value:"十无级客户"}],
         };
         $scope.search = function () {
             $scope.pager.setCurPageNo(1);

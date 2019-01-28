@@ -184,7 +184,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             selectedSecurityType:{},//当前选择的安检类型
             complaintTypesList:[],//投诉类型
             selectedComplaintType:{},//当前选择的投诉类型
-            orderTypesConfig: [{key:"OTTNormal",value:"普通订单"},{key:"OTTTrayWarning",value:"托盘告警订单"}],
+            orderTypesConfig: [{key:"OTTNormal",value:"按瓶普通订单"},{key:"OTTTrayWarning",value:"按斤结算订单"}],
         };
         $scope.q = {
             startTime:null,
@@ -195,7 +195,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             dnis:null,//客服号码
             ani1:null,//客户号码
             dnis1:null,//客服号码
-            userIdUninterupt:null//不间断供气报警用户名
+            userIdUninterupt:null,//不间断供气报警用户名
+            userIdUninteruptDealed:null//不间断供气报警处理用户名
         };
         $scope.searchParam = {
             customerID:null,
@@ -383,6 +384,10 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
 
         $scope.searchWaringCustomer = function (userId) {
+
+            $scope.q.userIdUninteruptDealed = userId;
+
+
             $scope.pagerCustomer.setCurPageNo(1);
             $scope.searchParam.customerID = userId;
             $scope.searchParam.customerName = null;
@@ -588,7 +593,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 pageNo: $scope.pagerHistory.getCurPageNo(),
                 pageSize: $scope.pagerHistory.pageSize,
                 orderBy: "id desc"
-            }
+            };
             OrderService.retrieveOrders(queryParams).then(function (orders) {
                 $scope.pagerHistory.update($scope.qHistory, orders.total, queryParams.pageNo);
                 $scope.vm.CustomerOrderHistory = orders.items;
@@ -707,6 +712,17 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             //查询客户建议
             $scope.pagerAdvice.setCurPageNo(1);
             $scope.searchAdvice();
+
+            //删除购物车
+            $scope.currentOrder.orderDetailList = [];
+
+            //托盘用户,更新订单类型为按斤结算
+            if(($scope.vm.currentCustomer.customerType.code=="00003")||($scope.vm.currentCustomer.customerType.code=="00004")){
+                $scope.currentOrder.orderTriggerType = "OTTTrayWarning";
+            }else{
+                $scope.currentOrder.orderTriggerType = "OTTNormal";
+            }
+
         };
 
 //商品类型改变
@@ -751,8 +767,9 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             var queryParams = {
                 userId:$scope.q.userIdUninterupt,
                 warningStatus: 1,
-                page: $scope.pagerGasCynTrayWarning.getCurPageNo(),
-                per_page: $scope.pagerGasCynTrayWarning.pageSize
+                pageNo: $scope.pagerGasCynTrayWarning.getCurPageNo(),
+                pageSize: $scope.pagerGasCynTrayWarning.pageSize,
+                orderBy:'id desc'
             };
             CustomerManageService.retrievePallets(queryParams).then(function (warnings) {
                 $scope.vm.CustomerAutoReportList = warnings.items;
@@ -814,14 +831,13 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 $scope.temp.complaintTypesList = complaintTypes.items;
                 $scope.temp.selectedComplaintType = $scope.temp.complaintTypesList[0];
             });
-            //不间断供气报警客户查询
 
-            $scope.searchUninterruptCustomers();
 
             //启动托盘漏气报警的检查线程
             $scope.timerCheckLeak = $interval( function(){
+                $scope.searchUninterruptCustomers();//不间断供气报警客户查询
                 checkLeak();
-            }, 4000);
+            }, 5000);
 
             //启动未接来电监听线程
             $scope.timerSearchMissedCall = $interval( function(){
@@ -1105,8 +1121,10 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             };
             CustomerManageService.retrievePallets(queryParams).then(function (warnings) {
                 var warningsList = warnings.items;
+
                 for(var i=0; i<warningsList.length; i++){
-                    if(warningsList[i].userId!=null){
+                    if(warningsList[i].user!=null){
+
                         showNotification(warningsList[i]);
                     }
 
@@ -1190,6 +1208,24 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 udcModal.info({"title": "处理结果", "message": "删除客户意见失败 "+value.message});
             })
         };
+
+        //托盘告警解除
+        $scope.GasCynTrayWarningDealed = function (userId) {
+            var queryParams = {
+                userId:userId,
+            };
+
+            CustomerManageService.gasCynTrayWarningStatusDelete(queryParams).then(function () {
+                udcModal.info({"title": "处理结果", "message": "告警处理成功 "});
+                //不间断供气报警客户查询
+
+                $scope.searchUninterruptCustomers();
+            }, function(value) {
+                udcModal.info({"title": "处理结果", "message": "告警处理失败 "+value.message});
+            })
+        };
+
+
 
 
 

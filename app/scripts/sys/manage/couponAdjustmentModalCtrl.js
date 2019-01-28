@@ -60,9 +60,8 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
 
     $scope.vm = {
         discountType:["直减","百分比折扣"],
-        discountConditionType:["用户等级优惠","用户类别优惠"],
-        //discountConditionType:["按用户级别","按用户类型"],
         useType:["排他型","叠加型"],
+        discountConditionType:["用户等级优惠","用户类别优惠"],
 
         discountText:"优惠：",
         currentPriceAdjustment: {
@@ -79,6 +78,7 @@ manageApp.controller('couponAdjustmentModalCtrl', ['$scope', 'close', 'GoodsServ
             }
         },
     };
+
 
     $scope.q={
         startTime:null,

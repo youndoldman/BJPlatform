@@ -81,14 +81,14 @@
                                 <tr ng-repeat="refoundDetail in vm.currentOrder.gasRefoundDetailList">
                                     <td class="message">{{refoundDetail.prevOrder}}</td>
                                     <td class="message">{{refoundDetail.gasCynNumber}}</td>
-                                    <td class="message">{{refoundDetail.dealPrice}}元</td>
-                                    <td class="message">{{refoundDetail.standWeight}}kg</td>
-                                    <td class="message">{{refoundDetail.refoundWeight}}kg</td>
-                                    <td class="message">{{refoundDetail.tareWeight}}kg</td>
-                                    <td class="message">{{refoundDetail.remainGas}}kg</td>
+                                    <td class="message">{{getFixData(refoundDetail.dealPrice)}}元</td>
+                                    <td class="message">{{getFixData(refoundDetail.standWeight)}}kg</td>
+                                    <td class="message">{{getFixData(refoundDetail.refoundWeight)}}kg</td>
+                                    <td class="message">{{getFixData(refoundDetail.tareWeight)}}kg</td>
+                                    <td class="message">{{getFixData(refoundDetail.remainGas)}}kg</td>
                                     <!--<td class="message">{{orderDetail.goods.lifeExpectancy}}</td>-->
-                                    <td class="message">{{refoundDetail.unitPrice}}元/kg</td>
-                                    <td class="message">{{refoundDetail.refoundSum}}元</td>
+                                    <td class="message">{{getFixData(refoundDetail.unitPrice)}}元/kg</td>
+                                    <td class="message">{{getFixData(refoundDetail.refoundSum)}}元</td>
                                     <td class="message" ng-if="refoundDetail.forceCaculate">是</td>
                                     <td class="message" ng-if="!refoundDetail.forceCaculate">否</td>
                                     <td class="message">{{refoundDetail.createTime}}</td>
