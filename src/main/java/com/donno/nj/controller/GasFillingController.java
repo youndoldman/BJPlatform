@@ -129,6 +129,9 @@ public class GasFillingController
                 gasFilling.setResult(jsonObject.getString("GZCW"));
                 gasFilling.setSequence(jsonObject.getInt("BH"));
 
+                String strGasCynNumber = jsonObject.getString("GasCylindersID");
+
+
                 gasFillingService.create(gasFilling);
             }
         }

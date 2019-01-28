@@ -18,7 +18,7 @@
         select t_department.id as department_id, t_department.name as department_name, t_department.code as department_code,
         t_customer_type.code as customer_type_code,t_customer_type.name as customer_type_name,
          t_gas_cylinder_spec.id as spec_id,t_gas_cylinder_spec.name as spec_name,t_gas_cylinder_spec.code as spec_code,
-        sum(t_order_detail.subtotal) as sale_sum ,sum(t_goods.weight) as sale_weight
+        sum(t_order_detail.subtotal) as sale_sum ,sum(t_goods.weight*t_order_detail.quantity) as sale_weight
         from t_order_detail,t_order ,t_order_dispatcher,t_sysuser,t_department,t_customer,t_customer_type,t_goods,t_gas_cylinder_spec
         where
         t_order_detail.order_idx = t_order.id
