@@ -1107,7 +1107,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
         //弹消息
         var showNotification = function (warning) {
             $.notify("漏气提醒！    客户id:"+warning.user.userId+" ｜ 客户姓名:"
-                +warning.user.name+" ｜ 托盘号:"+warning.number, {
+                +warning.user.name+" ｜ 托盘号:"+warning.number+" ｜ "+warning.leakStatus.name, {
                 type: 'danger',
                 newest_on_top: true,
             });
@@ -1115,7 +1115,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
         //漏气报警检查
         var checkLeak = function () {
-            //清空表格
+            //1级告警
             var queryParams = {
                 leakStatus: 1
             };
@@ -1124,12 +1124,25 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
                 for(var i=0; i<warningsList.length; i++){
                     if(warningsList[i].user!=null){
-
                         showNotification(warningsList[i]);
                     }
-
                 }
             });
+
+            //2级告警
+            queryParams = {
+                leakStatus: 2
+            };
+            CustomerManageService.retrievePallets(queryParams).then(function (warnings) {
+                var warningsList = warnings.items;
+
+                for(var i=0; i<warningsList.length; i++){
+                    if(warningsList[i].user!=null){
+                        showNotification(warningsList[i]);
+                    }
+                }
+            });
+
         };
 
         //查询剩余气票张数

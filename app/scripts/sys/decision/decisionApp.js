@@ -4,7 +4,7 @@ var decisionApp = angular.module('DecisionApp', ['ui.router', 'CommonModule', 'a
     .config(['$httpProvider', '$stateProvider', '$urlRouterProvider', function($httpProvider, $stateProvider, $urlRouterProvider) {
 
         // 设置默认显示页面
-        $urlRouterProvider.otherwise('/decision/cost');
+        $urlRouterProvider.otherwise('/decision/statistic');
         $stateProvider
             .state('decision', {
                 url: '/decision',
@@ -15,6 +15,19 @@ var decisionApp = angular.module('DecisionApp', ['ui.router', 'CommonModule', 'a
                         resolve: {}
                     }
                 },
+            })
+            .state('decision.statistic', {
+                url: '/statistic',
+                views: {
+                    "content@decision": {
+                        controller: 'StatisticCtrl',
+                        templateUrl: '../pages/decision/statistic.htm',
+                        resolve: {}
+                    }
+                },
+                onEnter: function (rootService, NavItem) {
+                    rootService.updateActiveNavL2(NavItem.DecisionCenter.menuItems[0]);
+                }
             })
             .state('decision.cost', {
                 url: '/cost',

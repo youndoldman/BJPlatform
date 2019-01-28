@@ -45,6 +45,8 @@ commonModule.constant('URI', {
         'geocode':'https://restapi.amap.com/v3/geocode/geo',//高德地图逆地址解码接口
         'bottle': '../../../api/GasCylinder',//钢瓶接口
         'bottleHandOver': '../../../api/GasCylinder/TakeOver',//钢瓶责任交接
+        'bottleByRange': '../../../api/GasCylinder/GetByRange',//范围获取钢瓶
+        'bottleLocations': '../../../api/GasCylinder/GetLocations',//范围获取钢瓶
         'gpsBind': '../../../api/GasCylinder/Bind',//定位终端绑定接口
         'gpsUnBind': '../../../api/GasCylinder/UnBind',//定位终端解除绑定接口
         'bottleSpecQuery': '../../../api/GasCylinderSpec',//钢瓶规格查询
@@ -453,14 +455,19 @@ commonModule.constant('NavItem', {
         href: "./decisionCenter.htm",
         menuItems: [{
             index: 0,
+            name: "综合监控",
+            href: "./decisionCenter.htm#/decision/statistic",
+            icon: "fa-edit"
+        }, {
+            index: 1,
             name: "成本分析",
             href: "./decisionCenter.htm#/decision/cost",
             icon: "fa-group"
         }, {
-                index: 1,
-                name: "用气统计",
-                href: "./decisionCenter.htm#/decision/gasUsage",
-                icon: "fa-gears"
+            index: 2,
+            name: "用气统计",
+            href: "./decisionCenter.htm#/decision/gasUsage",
+            icon: "fa-gears"
         }
             //{
         //    index: 1,

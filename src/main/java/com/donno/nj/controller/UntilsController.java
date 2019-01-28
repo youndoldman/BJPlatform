@@ -50,7 +50,7 @@ public class UntilsController {
 
 
     @RequestMapping(value = "/api/Untils/SendBatchSms", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity SendBatchSms(HttpServletResponse response, @RequestParam(value = "text") String text,
+    public ResponseEntity SendBatchSms(HttpServletResponse response, @RequestParam(value = "smCode") String smCode,
                                      @RequestParam(value = "province") String province,
                                      @RequestParam(value = "city") String city) throws IOException {
         try {
@@ -71,7 +71,7 @@ public class UntilsController {
                 List<String> subset = null;
                 subset = phones.subList(i * 100, (i + 1) * 100);
 
-                SendBatchSmsResponse sendBatchSmsResponse = smsService.sendBatchSmsCommon(subset, text);
+                SendBatchSmsResponse sendBatchSmsResponse = smsService.sendBatchSmsCommon(subset, smCode);
                 if (sendBatchSmsResponse.getCode() != null && sendBatchSmsResponse.getCode().equals("OK")) {
                     //请求成功
                     sendTotalCount += 100;
@@ -80,7 +80,7 @@ public class UntilsController {
             if (remainder > 0) {
                 List<String> subset = null;
                 subset = phones.subList(size * 100, size * 100 + remainder);
-                SendBatchSmsResponse sendBatchSmsResponse = smsService.sendBatchSmsCommon(subset, text);
+                SendBatchSmsResponse sendBatchSmsResponse = smsService.sendBatchSmsCommon(subset, smCode);
                 if (sendBatchSmsResponse.getCode() != null && sendBatchSmsResponse.getCode().equals("OK")) {
                     //请求成功
                     sendTotalCount += subset.size();

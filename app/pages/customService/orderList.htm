@@ -35,6 +35,9 @@
                         <label class="input">订单客户：</label>
                         <label class="input"><input type="text"  class="form-control" ng-model="q.userId"></label>
                         &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="input">结算方式：</label>
+                        <label class="input"><select  ng-model="q.orderTriggerType" ng-options="orderTriggerType.value for orderTriggerType in vm.orderTypesConfig" class="form-control" ng-selected="" ng-change="orderTrigerTypeSearchChange()"></select></label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <label class="input">配送人员：</label>
                         <label class="input"><input type="text"  class="form-control" ng-model="q.dispatcherId"></label>
                     </div>

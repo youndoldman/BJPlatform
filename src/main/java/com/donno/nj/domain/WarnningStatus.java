@@ -8,7 +8,7 @@ import java.io.Serializable;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum WarnningStatus implements IEnum,Serializable
 {
-    WSNormal("正常", 0), WSWarnning1("告警", 1);
+    WSNormal("正常", 0), WSWarnning1("告警1级", 1), WSWarnning2("告警2级", 2);
 
     // 成员变量
     private String name;

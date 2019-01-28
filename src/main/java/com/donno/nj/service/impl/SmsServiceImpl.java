@@ -162,7 +162,7 @@ public class SmsServiceImpl implements SmsService
 
     //批量发送自定义短信
     @Override
-    public SendBatchSmsResponse sendBatchSmsCommon(List<String> phoneNumberList, String text)
+    public SendBatchSmsResponse sendBatchSmsCommon(List<String> phoneNumberList, String smCode)
             throws ClientException
     {
         //可自助调整超时时间
@@ -195,12 +195,11 @@ public class SmsServiceImpl implements SmsService
         JSONArray jsonArraySignName=new JSONArray(arrayListSignName);
         request.setSignNameJson(jsonArraySignName.toString());
         //必填:短信模板-可在短信控制台中找到
-        request.setTemplateCode("SMS_141720095");
+        request.setTemplateCode(smCode);
         //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
         JSONArray codeJSONArray =new JSONArray();
         for (int i=0; i<phoneNumberList.size(); i++){
             JSONObject tempObject = new JSONObject();
-            tempObject.put("code", text);
             codeJSONArray.put(tempObject);
         }
 

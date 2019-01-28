@@ -42,6 +42,11 @@
         </association>
     </resultMap>
 
+    <resultMap id="LocationResultMap" type="com.donno.nj.domain.Location">
+        <result column="longitude" property="longitude" jdbcType="DOUBLE"/>
+        <result column="latitude" property="latitude" jdbcType="DOUBLE"/>
+    </resultMap>
+
     <sql id="TblGasCylinder">
         t_gas_cylinder
     </sql>
@@ -174,5 +179,37 @@
         FROM <include refid="TblGasCylinder"/>
         WHERE id = #{id}
     </select>
+
+
+    <select id="getListByCenterRange" resultMap="DetailResultMap">
+        SELECT *
+        FROM <include refid="TblGasCylinder"/>
+        WHERE
+        longitude <![CDATA[ > ]]> (#{longitude}-0.3)
+        AND
+        longitude <![CDATA[ < ]]> (#{longitude}+0.3)
+        AND
+        latitude  <![CDATA[ > ]]> (#{latitude}-0.3)
+        AND
+        latitude  <![CDATA[ < ]]> (#{latitude}+0.3)
+    </select>
+
+
+    <select id="getLocations" resultMap="LocationResultMap">
+        SELECT longitude,latitude
+        FROM <include refid="TblGasCylinder"/>
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+
 
 </mapper>

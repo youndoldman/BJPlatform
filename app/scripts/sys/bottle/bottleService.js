@@ -15,11 +15,23 @@ bottleApp.service('BottleService', ['$http', 'URI', 'promiseWrapper', function (
     var gasCylinderWarnUri = URI.resources.GasCylinderWarn;//钢瓶告警信息
     var gasCylinderFillingUri = URI.resources.GasFillingMerge;//充装数据查询
 
+    var bottleByRangeUri = URI.resources.bottleByRange;//范围获取钢瓶
+
+    var bottleLocationsUri = URI.resources.bottleLocations;//获取钢瓶位置
+
 
     this.toViewModel = function (bottleFromApi) {
         return {
             id: bottleFromApi.id,
         }
+    };
+
+    this.retrieveBottlesLocation = function (params) {
+        return promise.wrap($http.get(bottleLocationsUri, {params: params}));
+    };
+
+    this.retrieveBottlesByRange = function (params) {
+        return promise.wrap($http.get(bottleByRangeUri, {params: params}));
     };
 
     this.retrieveBottles = function (params) {
@@ -57,7 +69,6 @@ bottleApp.service('BottleService', ['$http', 'URI', 'promiseWrapper', function (
         return promise.wrap($http.get(departmentUri + "/Lower"+"?code=" +code));
     };
 
-
     //查询钢瓶轨迹
     this.retrieveGasCylinderPosition = function (params) {
         return promise.wrap($http.get(gasCylinderPositionUri,{params: params}));
@@ -77,7 +88,6 @@ bottleApp.service('BottleService', ['$http', 'URI', 'promiseWrapper', function (
     this.modifyGasCylinderWarn = function (warn) {
         return promise.wrap($http.put(gasCylinderWarnUri + "/" + warn.id, warn));
     };
-
 
     //查询钢瓶灌装数据
     this.retrieveGasCylindeFilling = function (params) {

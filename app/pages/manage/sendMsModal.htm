@@ -11,26 +11,27 @@
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label-large">推送省份：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="password" class="form-control" ng-model="vm.province" required/>
+                            <input type="text" name="province" class="form-control" ng-model="vm.province" required/>
                         </div>
                     </div>
                     <div class="input-group pdb15">
                         <label class="col-sm-4 control-label input-label-large">推送城市：</label>
                         <div class="col-sm-8 input-width">
-                            <input type="text" name="password" class="form-control" ng-model="vm.city" required/>
+                            <input type="text" name="city" class="form-control" ng-model="vm.city" required/>
                         </div>
                     </div>
                     <div class="input-group pdb15">
-                        <label class="col-sm-4 control-label input-label-large">推送内容：</label>
+                        <label class="col-sm-4 control-label input-label-large">推送模板：</label>
                         <div class="col-sm-8 input-width">
-                            <textarea type="text" name="password" class="form-control" ng-model="vm.text" required/>
+                            <input type="text" name="smCode" class="form-control" ng-model="vm.smCode" required/>
                         </div>
                     </div>
                 </div>
 
 
                 <div class="modal-footer">
-                    <button type="submit" ng-click="submit();" class="btn btn-primary" data-dismiss="modal">推送</button>
+                    <button type="submit" ng-click="submit();" class="btn btn-primary" ng-disabled="cloudUserForm.province.$error.required
+                     || cloudUserForm.city.$error.required || cloudUserForm.smCode.$error.required" data-dismiss="modal">推送</button>
                     <button type="button" ng-click="close(false)" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </form>

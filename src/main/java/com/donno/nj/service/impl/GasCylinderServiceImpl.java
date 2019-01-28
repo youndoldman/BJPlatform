@@ -571,4 +571,19 @@ public class GasCylinderServiceImpl implements GasCylinderService
         /*钢瓶基础信息表数据删除*/
         gasCylinderDao.deleteByIdx(id);
     }
+
+    @Override
+    @OperationLog(desc = "获取50公里的钢瓶")
+    public List<GasCylinder> getListByCenterRange(Double longitude,Double latitude) {
+        List<GasCylinder> gasCylinderList = gasCylinderDao.getListByCenterRange(longitude,latitude);
+        return gasCylinderList;
+    }
+
+    @Override
+    @OperationLog(desc = "获取钢瓶经纬度")
+    public List<Location> getLocations(Map params) {
+        List<Location> locationList = gasCylinderDao.getLocations(params);
+        return locationList;
+    }
+
 }

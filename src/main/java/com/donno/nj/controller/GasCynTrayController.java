@@ -136,6 +136,7 @@ public class GasCynTrayController
     {
         ResponseEntity responseEntity;
 
+         /*托盘是否存在*/
 
 
         gasCynTrayService.update(number,newGasCynTray);
@@ -195,19 +196,15 @@ public class GasCynTrayController
         {
             throw new ServerSideBusinessException("缺少用户信息！", HttpStatus.NOT_ACCEPTABLE);
         }
-
         if (userId.trim().length() > 0)
         {
             params.putAll(ImmutableMap.of("userId", userId));
         }
-
         List<GasCynTray> gasCynTrays = gasCynTrayService.retrieve(params);
         Integer count = gasCynTrayService.count(params);
 
         for(GasCynTray tempGasCynTray:gasCynTrays){
-            tempGasCynTray.setWarnningStatus(WarnningStatus.WSNormal);
-            gasCynTrayService.update(tempGasCynTray.getNumber(),tempGasCynTray);
-
+            gasCynTrayService.removeWaningStatus(tempGasCynTray.getNumber());
         }
         return ResponseEntity.ok().build();
     }

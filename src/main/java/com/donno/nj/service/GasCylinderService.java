@@ -1,6 +1,7 @@
 package com.donno.nj.service;
 
 import com.donno.nj.domain.GasCylinder;
+import com.donno.nj.domain.Location;
 import com.donno.nj.domain.LocationDevice;
 import com.google.common.base.Optional;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,4 +29,13 @@ public interface GasCylinderService
     void bindLocationDev(String gasCylinderNumber,String locationDeviceNumber);
 
     void unBindLocationDev(String gasCylinderNumber,String locationDeviceNumber);
+
+    //查询50公里内的钢瓶
+    List<GasCylinder> getListByCenterRange(Double longitude,Double latitude);
+
+    //查询钢瓶的经纬度
+    List<Location> getLocations(Map params);
+
+
+
 }
