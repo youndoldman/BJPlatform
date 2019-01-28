@@ -180,6 +180,9 @@
                 AND  access_type = #{accessType.index}
             </if>
 
+            <if test="orderTriggerType != null">
+                AND  order_trigger_type = #{orderTriggerType.index}
+            </if>
 
             <if test="orderServiceQuality != null">
                 AND  service_quality = #{orderServiceQuality.index}

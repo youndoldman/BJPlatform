@@ -125,6 +125,21 @@ comprehensiveQueryApp.controller('GasCynTrayCtrl', ['$scope', '$rootScope', '$fi
             })
         };
 
+        $scope.view = function (gasCynTray) {
+            udcModal.show({
+                templateUrl: "./comprehensiveQuery/gasCynTrayUsage.htm",
+                controller: "GasCynTrayUsageCtrl",
+                inputs: {
+                    title: '气量历史查询',
+                    initVal: gasCynTray
+                }
+            }).then(function (result) {
+                if (result) {
+                }
+            })
+        };
+
+
         $scope.isChaoshi = function (time) {
 
             var date1=new Date(time);  //开始时间

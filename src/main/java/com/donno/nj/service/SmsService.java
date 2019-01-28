@@ -19,7 +19,7 @@ public interface SmsService {
 
     SendSmsResponse sendGasLeakSmsToFireDepartment(String phoneNumber, String userName, String address, String userPhone) throws ClientException;
 
-    SendBatchSmsResponse sendBatchSmsCommon(List<String> phoneNumberList, String text) throws ClientException;
+    SendBatchSmsResponse sendBatchSmsCommon(List<String> phoneNumberList, String smCode) throws ClientException;
 
 
 

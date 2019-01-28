@@ -3,10 +3,7 @@ package com.donno.nj.controller;
 import com.donno.nj.aspect.Auth;
 import com.donno.nj.aspect.OperationLog;
 import com.donno.nj.constant.Constant;
-import com.donno.nj.domain.GasCylinder;
-import com.donno.nj.domain.GasCylinderSvcStatusOpHis;
-import com.donno.nj.domain.LoadStatus;
-import com.donno.nj.domain.ServerConstantValue;
+import com.donno.nj.domain.*;
 import com.donno.nj.logger.DebugLogger;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.GasCylinderService;
@@ -238,6 +235,40 @@ public class GasCylinderController
         responseEntity = ResponseEntity.ok().build();
 
         return responseEntity;
+    }
+
+
+    @RequestMapping(value = "/api/GasCylinder/GetByRange", method = RequestMethod.GET, produces = "application/json")
+    @OperationLog(desc = "获取范围内钢瓶列表")
+    //@Auth(allowedBizOp = {})
+    public ResponseEntity retrieve(@RequestParam(value = "longitude", required = true) Double longitude,
+                                   @RequestParam(value = "latitude", required = true) Double latitude)
+    {
+
+
+        List<GasCylinder> gasCylinders = gasCylinderService.getListByCenterRange(longitude,latitude);
+        Integer count = gasCylinders.size();
+
+
+        return ResponseEntity.ok(ListRep.assemble(gasCylinders, count));
+    }
+
+    @RequestMapping(value = "/api/GasCylinder/GetLocations", method = RequestMethod.GET, produces = "application/json")
+    @OperationLog(desc = "获取钢瓶经纬度")
+    //@Auth(allowedBizOp = {})
+    public ResponseEntity retrieve(@RequestParam(value = "orderBy", defaultValue = "") String orderBy,
+                                   @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
+                                   @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
+    {
+
+        Map params = new HashMap<String,String>();
+        params.putAll(paginationParams(pageNo, pageSize, orderBy));
+
+        List<Location> gasCylinderLocations =   gasCylinderService.getLocations(params);
+        Integer count = gasCylinderService.count(params);
+
+
+        return ResponseEntity.ok(ListRep.assemble(gasCylinderLocations, count));
     }
 
 }

@@ -28,5 +28,8 @@ public interface GasCynTrayService
 
     void unBind(String trayNumber,String userId);
 
+    //消除托盘的报警状态
+    void removeWaningStatus(String number);
+
 
 }

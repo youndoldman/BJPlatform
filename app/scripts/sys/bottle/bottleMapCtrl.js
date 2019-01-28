@@ -8,6 +8,12 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
         $scope.PathSimplifier = null;
         //地图初始化
         $scope.map = null;
+
+        //所有钢瓶的位置
+        $scope.allBottleLocation = [];
+        $scope.allBottleLocationPageSize = 4000;
+        $scope.allBottlePageNo = 1;
+
         $(function () {
             $('#datetimepickerStart').datetimepicker({
                 format: 'YYYY-MM-DD HH:mm',
@@ -200,7 +206,8 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
         var mapInitial = function() {
             $scope.map = new AMap.Map('mapContainer', {
                 center: [102.7278090000, 25.1333240000],
-                zoom: 5
+                zoom: 5,
+                resizeEnable:true
             });
             AMap.plugin(['AMap.ToolBar','AMap.Scale','AMap.OverView'],
                 function(){
@@ -211,44 +218,35 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
                     //$scope.map.addControl(new AMap.OverView({isOpen:true}));
                 });
 
-            var style = [{
-                url: '../images/icon/bottle.ico',
-                anchor: new AMap.Pixel(3, 3),
-                size: new AMap.Size(20, 20)
-            },{
-                url: '../images/icon/bottle.ico',
-                anchor: new AMap.Pixel(3, 3),
-                size: new AMap.Size(20, 20)
-            },{
-                url: '../images/icon/bottle.ico',
-                anchor: new AMap.Pixel(3, 3),
-                size: new AMap.Size(20, 20)
-            }
-            ];
-
-            var mass = new AMap.MassMarks(citys, {
-                opacity:0.8,
-                zIndex: 111,
-                cursor:'pointer',
-                style:style
-            });
-            var marker = new AMap.Marker({content:' ',map:$scope.map})
-            mass.on('mouseover',function(e){
-                marker.setPosition(e.data.lnglat);
-                marker.setLabel({content: e.id})
-            })
-            mass.setMap($scope.map);
-            var setStyle = function(multiIcon) {
-                if(multiIcon){
-                    mass.setStyle(style);
-                }else{
-                    mass.setStyle(style[2]);
-                }
-            }
-
+            // 绑定事件
+            //$scope.map.on('moveend', centerMoveEndHandler);
 
 
         };
+        //绑定中心点移动事件
+        var centerMoveEndHandler = function(e) {
+            $scope.map.clearMap( );
+            var position = $scope.map.getCenter();
+            //var Circle = new AMap.Circle({
+            //    center: position,  // 圆心位置
+            //    radius: 10000, // 圆半径
+            //    fillColor: '#FF0000',   // 圆形填充颜色
+            //    fillOpacity: '0.2',   // 充透明度
+            //    strokeColor: '#fff', // 描边颜色
+            //    strokeWeight: 2, // 描边宽度
+            //});
+            //
+            //$scope.map.add(Circle);
+
+            //searchBottlesByRange(position.lng, position.lat);
+        };
+
+
+
+
+
+
+
         //关键地标标注初始化
         var importantMarksInitial = function() {
         };
@@ -408,22 +406,7 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
         //钢瓶定位
         $scope.location = function (bottle,longitude,latitude) {
 
-            $scope.map.clearMap( );
-            $scope.pathSimplifierIns.setData([]);
-            $scope.pathSimplifierIns.clearPathNavigators();
-            var iconBottle = new AMap.Icon({
-                image : '../images/icon/bottle.ico',//24px*24px
-                //icon可缺省，缺省时为默认的蓝色水滴图标，
-                size : new AMap.Size(50,50),
-                imageSize : new AMap.Size(50,50)
-            });
-            var markerDest = new AMap.Marker({
-                icon : iconBottle,//24px*24px
-                position : [longitude, latitude],
-                offset : new AMap.Pixel(0,0),
-                map : $scope.map
-            });
-            markerDest.setAnimation("AMAP_ANIMATION_BOUNCE");
+
             $scope.map.setCenter([longitude, latitude]);
             gasCylindInfoMark(bottle);
         };
@@ -464,6 +447,7 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
             $scope.q.startTime = curDate.getFullYear()+"-"+month+"-"+day+" "
                 +"00"+":"+"00"+":"+"00";
             searchBottles();
+            MarkAllBottles($scope.allBottlePageNo);
 
         };
 
@@ -562,6 +546,112 @@ bottleApp.controller('BottleMapCtrl', ['$scope', '$rootScope', '$filter', '$loca
             infoWindow.open($scope.map, [bottle.longitude,bottle.latitude]);
 
         };
-        init();
 
+
+        //
+        var searchBottlesByRange = function (longitude, latitude) {
+            var queryParams = {
+                longitude: longitude,
+                latitude: latitude
+            };
+
+            BottleService.retrieveBottlesByRange(queryParams).then(function (bottles) {
+                var bottlesList = bottles.items;
+
+                var styleObject = {
+                    url: '../images/icon/bottle.ico',
+                    anchor: new AMap.Pixel(3, 3),
+                    size: new AMap.Size(20, 20)
+                };
+
+                var mass = new AMap.MassMarks(citys, {
+                    opacity:0.8,
+                    zIndex: 111,
+                    cursor:'pointer',
+                    style:styleObject
+                });
+                var data = [];
+
+                for(var i=0; i<bottlesList.length; i++){
+                    var tempMass = {
+                        lnglat: [bottlesList[i].longitude, bottlesList[i].latitude], //点标记位置
+                        name: bottlesList[i].number,
+                        id:i
+                    };
+                    data.push(tempMass);
+                }
+                mass.setData(data);
+                mass.setMap($scope.map);
+            });
+        };
+
+        var MarkAllBottles = function (pageNo) {
+            var queryParams = {
+                pageNo: pageNo,
+                pageSize: $scope.allBottleLocationPageSize
+            };
+
+            BottleService.retrieveBottlesLocation(queryParams).then(function (bottles) {
+                $scope.allBottleLocation=$scope.allBottleLocation.concat(bottles.items)    ;
+                if(bottles.items.length!=$scope.allBottleLocationPageSize){
+                    searchAllBottles($scope.allBottleLocation);
+                }else{
+                    $scope.allBottlePageNo = $scope.allBottlePageNo+1;
+                    MarkAllBottles($scope.allBottlePageNo);
+                }
+
+            });
+        };
+
+        var searchAllBottles = function (bottles) {
+            var cluster, markers = [];
+            var map = new AMap.Map("container", {
+                resizeEnable: true,
+                center: [105, 34],
+                zoom: 4
+            });
+            for (var i = 0; i < bottles.length; i += 1) {
+                markers.push(new AMap.Marker({
+                    position: [bottles[i].longitude, bottles[i].latitude],
+                    content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
+                    offset: new AMap.Pixel(-15, -15)
+                }))
+            };
+            //for (var i = 0; i < points.length; i += 1) {
+            //    markers.push(new AMap.Marker({
+            //        position: points[i]['lnglat'],
+            //        content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
+            //        offset: new AMap.Pixel(-15, -15)
+            //    }))
+            //};
+
+            var count = markers.length;
+            var sts = [{
+                url: "https://a.amap.com/jsapi_demos/static/images/blue.png",
+                size: new AMap.Size(32, 32),
+                offset: new AMap.Pixel(-16, -16)
+            }, {
+                url: "https://a.amap.com/jsapi_demos/static/images/green.png",
+                size: new AMap.Size(32, 32),
+                offset: new AMap.Pixel(-16, -16)
+            }, {
+                url: "https://a.amap.com/jsapi_demos/static/images/orange.png",
+                size: new AMap.Size(36, 36),
+                offset: new AMap.Pixel(-18, -18)
+            }, {
+                url: "https://a.amap.com/jsapi_demos/static/images/red.png",
+                size: new AMap.Size(48, 48),
+                offset: new AMap.Pixel(-24, -24)
+            }, {
+                url: "https://a.amap.com/jsapi_demos/static/images/darkRed.png",
+                size: new AMap.Size(48, 48),
+                offset: new AMap.Pixel(-24, -24)
+            }];
+            cluster = new AMap.MarkerClusterer($scope.map, markers, {
+                styles: sts,
+                gridSize: 80
+            });
+
+        };
+        init();
     }]);

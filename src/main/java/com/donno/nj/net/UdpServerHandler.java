@@ -102,7 +102,7 @@ public class UdpServerHandler
                 trayService.putRow(gasCynTray);
             }
             //如果发现漏气，立刻短信提醒用户
-            if(target!=null&&gasCynTray.getLeakStatus()==WarnningStatus.WSWarnning1){
+            if(target!=null&&gasCynTray.getLeakStatus()!=WarnningStatus.WSNormal){
 
                 User validUser = target.getUser();
                 if(validUser!=null){
@@ -110,9 +110,15 @@ public class UdpServerHandler
                     if(customerOptional.isPresent()){
                         String address = customerOptional.get().getAddress().getProvince()+customerOptional.get().getAddress().getCity()+customerOptional.get().getAddress().getCounty()
                                 +customerOptional.get().getAddress().getDetail();
-                        smsService.sendGasLeakSms(customerOptional.get().getPhone(), customerOptional.get().getName(), address);
-                        //發送消防部門
-                        smsService.sendGasLeakSmsToFireDepartment("13608851223", customerOptional.get().getName(), address,customerOptional.get().getPhone());
+                        if(gasCynTray.getLeakStatus()==WarnningStatus.WSWarnning1){
+                            smsService.sendGasLeakSms(customerOptional.get().getPhone(), customerOptional.get().getName(), address);
+                        }
+                        if(gasCynTray.getLeakStatus()==WarnningStatus.WSWarnning2){
+                            smsService.sendGasLeakSms(customerOptional.get().getPhone(), customerOptional.get().getName(), address);
+                            //發送消防部門
+                            smsService.sendGasLeakSmsToFireDepartment("13608851223", customerOptional.get().getName(), address,customerOptional.get().getPhone());
+                        }
+
                     }
 
                 }

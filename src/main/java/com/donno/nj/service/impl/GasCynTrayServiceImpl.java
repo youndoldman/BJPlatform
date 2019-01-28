@@ -106,6 +106,8 @@ public class GasCynTrayServiceImpl implements GasCynTrayService
                 throw new ServerSideBusinessException("托盘不存在！", HttpStatus.NOT_ACCEPTABLE);
             }
         }
+
+
         //增加了标定功能
         newGasCynTray.setValidWeight(gasCynTray.getWeight()+newGasCynTray.getCalibration());
         Integer warningWeight = systemParamDao.getTrayWarningWeight();
@@ -228,6 +230,22 @@ public class GasCynTrayServiceImpl implements GasCynTrayService
     public Optional<GasCynTray> findById(Integer id)
     {
         return Optional.fromNullable(gasCynTrayDao.findById(id));
+    }
+
+
+    @Override
+    @OperationLog(desc = "消除托盘的报警状态")
+    public void removeWaningStatus(String number)
+    {
+        /*托盘是否存在*/
+        GasCynTray gasCynTray = gasCynTrayDao.findByNumber(number);
+        if (gasCynTray == null)
+        {
+            throw new ServerSideBusinessException("托盘不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
+        gasCynTray.setWarnningStatus(WarnningStatus.WSNormal);
+        /*更新数据*/
+        gasCynTrayDao.update(gasCynTray);
     }
 
 

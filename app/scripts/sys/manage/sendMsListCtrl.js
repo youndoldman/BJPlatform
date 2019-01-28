@@ -72,7 +72,8 @@ manageApp.controller('SendMsModalCtrl', ['$scope', 'close', 'UntilsService', 'ti
     $scope.vm = {
         sendMs: {},
         province:"",
-        city:""
+        city:"",
+        smCode:""
     };
 
     $scope.close = function (result) {
@@ -82,9 +83,9 @@ manageApp.controller('SendMsModalCtrl', ['$scope', 'close', 'UntilsService', 'ti
     $scope.submit = function (cloudUser) {
         if (!$scope.isModify) {
             var queryParams = {
-                text: $scope.vm.text,
                 province: $scope.vm.province,
                 city: $scope.vm.city,
+                smCode:$scope.vm.smCode
             };
             UntilsService.SendBatchSms(queryParams).then(function (count) {
                 udcModal.info({"title": "推送用户数", "message": count});

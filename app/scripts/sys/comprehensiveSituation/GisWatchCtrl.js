@@ -155,7 +155,7 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
             userList: [],
             gasTrayList: [],
             userGroups:[{name:"配送员",code:"00003"},{name:"调拨员",code:"00007"}],
-            gasTrayLeakStatus:[{name:"漏气报警",code:"1"},{name:"正常运行",code:"0"}]
+            gasTrayLeakStatus:[{name:"1级报警",code:"1"},{name:"2级报警",code:"2"},{name:"正常运行",code:"0"}]
         };
 
         $scope.search = function () {
@@ -271,7 +271,7 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
                 searchGasTray();
                 reflesh();//标注配送工
                 markAllLeakGasTray();//标注漏气托盘
-            }, 8000);
+            }, 5000);
 
             //markPeisong();
             //markDiaobo();
@@ -324,13 +324,23 @@ comprehensiveSituationApp.controller('GisWatchCtrl', ['$scope', '$rootScope', '$
         //标绘所有的报警托盘--有问题，先注释掉
         var markAllLeakGasTray = function(){
 
-            //请求所有在线配送工的经纬度
+            //有两个级别的告警
+            $scope.map.clearMap();
             var queryParams = {
                 leakStatus:1,
             };
 
             GisWatchService.retrieveGasTray(queryParams).then(function (gasTrays) {
-                $scope.map.clearMap();
+                var gasTraysList = gasTrays.items;
+                var imagePath = '../images/icon/gasTrayLeak.png';
+                for (var i = 0; i < gasTraysList.length; i++) {
+                    markOneGasTray(imagePath,gasTraysList[i].longitude,gasTraysList[i].latitude,gasTraysList[i]);
+                }
+            });
+            queryParams = {
+                leakStatus:2,
+            };
+            GisWatchService.retrieveGasTray(queryParams).then(function (gasTrays) {
                 var gasTraysList = gasTrays.items;
                 var imagePath = '../images/icon/gasTrayLeak.png';
                 for (var i = 0; i < gasTraysList.length; i++) {

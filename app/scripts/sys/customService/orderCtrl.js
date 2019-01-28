@@ -70,6 +70,7 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
                 {key:3,value:"已完成"},{key:4,value:"已作废"}],
             orderStatusDisplay:["待派送","派送中","待核单","已完成","已作废"],
             orderServiceQuality:[{key:null,value:"全部评价"},{key:"OSQPositive",value:"不满意"},{key:"OSQNegative",value:"满意"}],
+            orderTypesConfig: [{key:null,value:"全部订单"},{key:"OTTNormal",value:"按瓶订单"},{key:"OTTTrayWarning",value:"按斤订单"}],
         };
         $scope.q = {
             dispatcherId:null,
@@ -83,6 +84,7 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
             payStatus:$scope.vm.payStatus[0],
             payType:$scope.vm.payType[0],
             orderServiceQuality:$scope.vm.orderServiceQuality[0],
+            orderTriggerType:$scope.vm.orderTypesConfig[0],
 
         };
 
@@ -166,6 +168,7 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
                 payStatus:$scope.q.payStatus.key,
                 payType:$scope.q.payType.key,
                 orderServiceQuality:$scope.q.orderServiceQuality.key,
+                orderTriggerType:$scope.q.orderTriggerType.key,
 
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize,
@@ -234,6 +237,18 @@ customServiceApp.controller('OrderCtrl', ['$scope', '$rootScope', '$filter', '$l
             $scope.pager.setCurPageNo(1);
             searchOrder();
         };
+
+        //结算方式改变
+        $scope.orderTrigerTypeSearchChange = function () {
+            if ($scope.q.orderTriggerType==null) {
+                return;
+            };
+            $scope.pager.setCurPageNo(1);
+            searchOrder();
+        };
+
+
+
 
 
         //发表状态改变
