@@ -442,7 +442,6 @@ public class CustomerController
         }
 
         customerService.addReferee(customerId,refereeId);
-
     }
 
 
@@ -462,5 +461,18 @@ public class CustomerController
         }
 
         customerService.removeReferee(customerId,refereeId);
+    }
+
+    @OperationLog(desc = "增加推荐人")
+    @RequestMapping(value = "/api/customers/referee", method = RequestMethod.GET)
+    public void getReferee(@RequestParam("customerId") String customerId)
+    {
+        /*参数校验*/
+        if (customerId == null || customerId.trim().length() == 0 )
+        {
+            throw new ServerSideBusinessException("客户信息不全，缺少客户ID！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        customerService.getReferee(customerId);
     }
 }

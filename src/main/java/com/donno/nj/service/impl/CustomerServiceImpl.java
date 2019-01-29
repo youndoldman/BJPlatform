@@ -628,8 +628,17 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
     }
 
 
+    @Override
+    @OperationLog(desc = "查询客户绑定的推荐人")
+    public List<CstRefereeRel> getReferee(String customerId)
+    {
+        Map params = new HashMap<String,String>();
+        params.putAll(ImmutableMap.of("customerId", customerId));
+        List<CstRefereeRel> cstRefereeRels = cstRefereeRelDao.getList(params);
+        return cstRefereeRels;
+    }
 
-
+    @Override
     public void addReferee(String customerId,String refereeId)
     {
         /*客户是否存在*/
@@ -659,6 +668,7 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
         cstRefereeRelDao.addReferee(customer.getId(),referee.getId());
     }
 
+    @Override
     public void removeReferee(String customerId,String refereeId)
     {
         /*客户是否存在*/

@@ -1,5 +1,6 @@
 package com.donno.nj.service;
 
+import com.donno.nj.domain.CstRefereeRel;
 import com.donno.nj.domain.Customer;
 import com.google.common.base.Optional;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,5 +27,6 @@ public interface CustomerService extends UserService
 
     void addReferee(String customerId,String refereeId);
     void removeReferee(String customerId,String refereeId);
+    List<CstRefereeRel> getReferee(String customerId);
 
 }
