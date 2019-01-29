@@ -105,6 +105,9 @@ public class OrderServiceImpl implements OrderService
     @Autowired
     private OrderGasCynRelDao orderGasCynRelDao;
 
+    @Autowired
+    private CstRefereeRelDao cstRefereeRelDao;
+
     @Override
     public Optional<Order> findBySn(String sn) {
         return Optional.fromNullable(orderDao.findBySn(sn));
@@ -1048,11 +1051,30 @@ public class OrderServiceImpl implements OrderService
             maxDistance = 10;
         }
 
+        /*可以抢单的候选人*/
+        String candUser = "";
+
+        /*订单同时要允许推荐人抢单*/
+        Map refereeParam = new HashMap<String,String>();
+        refereeParam.putAll(ImmutableMap.of("customerId", order.getCustomer().getUserId()));
+        List<CstRefereeRel> cstRefereeRels = cstRefereeRelDao.getList(refereeParam);
+        if (cstRefereeRels.size() > 0)
+        {
+            for (CstRefereeRel refereeRel :cstRefereeRels)
+            {
+                if (candUser.trim().length() > 0 )
+                {
+                    candUser = candUser + ",";
+                }
+                candUser = candUser + refereeRel.getRefereeId();
+            }
+        }
+
         /*指定可办理该流程用户,根据经纬度寻找合适的派送工*/
         Map findDispatchParams = new HashMap<String,String>();
         findDispatchParams.putAll(ImmutableMap.of("groupCode", ServerConstantValue.GP_DISPATCH));
         List<SysUser> sysUsersList = sysUserDao.getList(findDispatchParams);
-        String candUser = "";
+
         if (sysUsersList.size() > 0)
         {
             Integer dispatchRange = sysDispatchRange;
@@ -1062,14 +1084,22 @@ public class OrderServiceImpl implements OrderService
                 {
                     if (sysUser.getUserPosition() != null)
                     {
-                        Double distance = DistanceHelper.Distance(order.getRecvLatitude(),order.getRecvLongitude(),sysUser.getUserPosition().getLatitude(),sysUser.getUserPosition().getLongitude());
-                        if ( distance < dispatchRange)
+                        /*候选人已经包含当前直销员*/
+                        if (candUser.contains(sysUser.getUserId()))
                         {
-                            if (candUser.trim().length() > 0 )
+                            continue;
+                        }
+                        else
+                        {
+                            Double distance = DistanceHelper.Distance(order.getRecvLatitude(),order.getRecvLongitude(),sysUser.getUserPosition().getLatitude(),sysUser.getUserPosition().getLongitude());
+                            if ( distance < dispatchRange)
                             {
-                                candUser = candUser + ",";
+                                if (candUser.trim().length() > 0 )
+                                {
+                                    candUser = candUser + ",";
+                                }
+                                candUser = candUser + sysUser.getUserId();
                             }
-                            candUser = candUser + sysUser.getUserId();
                         }
                     }
                 }
@@ -1103,6 +1133,8 @@ public class OrderServiceImpl implements OrderService
 //            variables.put(ServerConstantValue.ACT_FW_STG_1_CANDI_USERS,candUser);
 //            //throw new ServerSideBusinessException("系统尚无配送人员，无法创建订单！", HttpStatus.NOT_ACCEPTABLE);
 //        }
+
+
 
         variables.put(ServerConstantValue.ACT_FW_STG_1_CANDI_USERS,candUser);
         if (workFlowService.createWorkFlow(WorkFlowTypes.GAS_ORDER_FLOW,order.getCustomer().getUserId(),variables,order.getOrderSn()) < 0)
@@ -1389,16 +1421,27 @@ public class OrderServiceImpl implements OrderService
                 List<Order> orderList = orderDao.getList(params);
                 for (Order dispatchingOrder : orderList)
                 {
-                    Map paramsDispatch = new HashMap<String,String>();
-                    paramsDispatch.putAll(ImmutableMap.of("userId", candiUser));
-                    paramsDispatch.putAll(ImmutableMap.of("orderSn",dispatchingOrder.getOrderSn()));
-                    paramsDispatch.putAll(ImmutableMap.of("orderStatus", OrderStatus.OSDispatching.getIndex()));
-                    List<OrderOpHistory> orderOpHistories = orderOpHistoryDao.getList(paramsDispatch);
-                    for (OrderOpHistory orderOpHistory :orderOpHistories)
+                    /*预约订单*/
+                    if(dispatchingOrder.getReserveTime() != null)
                     {
-                        if ( Clock.differMinute(orderOpHistory.getUpdateTime(),new Date()) >= sysOverTime)
+                        if ( Clock.differMinute(dispatchingOrder.getReserveTime(),new Date()) >= 1)
                         {
                             throw new ServerSideBusinessException("抢单失败，请先完成当前已超时配送的订单！", HttpStatus.FORBIDDEN);
+                        }
+                    }
+                    else//实时订单
+                    {
+                        Map paramsDispatch = new HashMap<String,String>();
+                        paramsDispatch.putAll(ImmutableMap.of("userId", candiUser));
+                        paramsDispatch.putAll(ImmutableMap.of("orderSn",dispatchingOrder.getOrderSn()));
+                        paramsDispatch.putAll(ImmutableMap.of("orderStatus", OrderStatus.OSDispatching.getIndex()));
+                        List<OrderOpHistory> orderOpHistories = orderOpHistoryDao.getList(paramsDispatch);
+                        for (OrderOpHistory orderOpHistory :orderOpHistories)
+                        {
+                            if ( Clock.differMinute(orderOpHistory.getUpdateTime(),new Date()) >= sysOverTime)
+                            {
+                                throw new ServerSideBusinessException("抢单失败，请先完成当前已超时配送的订单！", HttpStatus.FORBIDDEN);
+                            }
                         }
                     }
                 }

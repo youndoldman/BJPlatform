@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--钢瓶与定位终端关系-->
+
+<mapper namespace="com.donno.nj.dao.CstRefereeRelDao">
+
+    <resultMap id="DetailResultMap" type="com.donno.nj.domain.CstRefereeRel">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+
+        <association property="customerId" column="customer_idx" select="com.donno.nj.dao.UserDao.findById"/>
+        <association property="refereeId" column="referee_idx" select="com.donno.nj.dao.UserDao.findById"/>
+
+    </resultMap>
+
+    <sql id="TblCstRefereeRel">
+        t_cst_referee_rel
+    </sql>
+
+
+    <!--绑定-->
+    <insert id="addReferee">
+        INSERT  INTO t_cst_referee_rel(customer_idx,referee_idx,note)
+        VALUES( #{customerIdx},#{refereeIdx}, '')
+    </insert>
+
+    <!--解绑定-->
+    <delete id="removeReferee">
+        DELETE  from t_cst_referee_rel
+        WHERE  customer_idx = #{customerIdx} and   referee_idx = #{refereeIdx}
+    </delete>
+
+
+
+
+    <sql id="getListCondition">
+        WHERE
+        <if test="customerId != null">
+            AND customer_idx = (SELECT  id from t_user WHERE  user_id=#{customerId})
+        </if>
+        <if test="refereeId != null">
+            AND referee_idx = (SELECT  id from t_user WHERE  user_id=#{refereeId})
+        </if>
+    </sql>
+
+    <select id="getList" resultMap="DetailResultMap">
+        SELECT *
+        FROM t_cst_referee_rel
+        <include refid="getListCondition"/>
+
+        <if test="orderBy != null">
+            <if test="orderBy != ''">
+                ORDER BY   ${orderBy}
+            </if>
+        </if>
+
+        <if test="limit != null" >
+            <if test="offset != null" >
+                limit #{limit} offset #{offset};
+            </if>
+        </if>
+    </select>
+
+
+    <select id="count" resultType="Integer">
+        SELECT count(*)
+        FROM t_cst_referee_rel
+        <include refid="getListCondition"/>
+    </select>
+
+
+
+
+
+
+
+
+</mapper>

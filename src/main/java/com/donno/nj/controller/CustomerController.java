@@ -43,6 +43,8 @@ public class CustomerController
     @Autowired
     CustomerDistrictService customerDistrictService ;
 
+
+
     @Autowired
     private WeiXinPayService weiXinPayService;
 
@@ -420,5 +422,45 @@ public class CustomerController
         }
 
         return responseEntity;
+    }
+
+
+
+    @OperationLog(desc = "增加推荐人")
+    @RequestMapping(value = "/api/customers/referee", method = RequestMethod.POST)
+    public void addReferee(@RequestParam("customerId") String customerId,@RequestParam(value = "refereeId", defaultValue = "") String refereeId)
+    {
+        /*参数校验*/
+        if (customerId == null || customerId.trim().length() == 0 )
+        {
+            throw new ServerSideBusinessException("客户信息不全，缺少客户ID！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (refereeId == null || refereeId.trim().length() == 0 )
+        {
+            throw new ServerSideBusinessException("推荐人信息不全，缺少推荐人ID！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        customerService.addReferee(customerId,refereeId);
+
+    }
+
+
+    @OperationLog(desc = "解除推荐人")
+    @RequestMapping(value = "/api/customers/referee", method = RequestMethod.DELETE)
+    public void removeReferee(@RequestParam("customerId") String customerId,@RequestParam(value = "refereeId", defaultValue = "") String refereeId)
+    {
+        /*参数校验*/
+        if (customerId == null || customerId.trim().length() == 0 )
+        {
+            throw new ServerSideBusinessException("客户信息不全，缺少客户ID！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (refereeId == null || refereeId.trim().length() == 0 )
+        {
+            throw new ServerSideBusinessException("推荐人信息不全，缺少推荐人ID！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        customerService.removeReferee(customerId,refereeId);
     }
 }

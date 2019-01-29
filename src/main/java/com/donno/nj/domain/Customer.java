@@ -119,15 +119,6 @@ public class Customer extends User  implements Serializable
         return customerCompany;
     }
 
-//    public String getDistrictCode()
-//    {
-//        return districtCode;
-//    }
-//
-//    public String getGasStoreCode()
-//    {
-//        return gasStoreCode;
-//    }
 
     /**
      * @fn   getAddress

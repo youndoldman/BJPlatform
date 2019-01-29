@@ -57,6 +57,9 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
     @Autowired
     private UserCardDao userCardDao;
 
+    @Autowired
+    private CstRefereeRelDao cstRefereeRelDao;
+
     @Override
     @OperationLog(desc = "查询客户信息")
     public List<Customer> retrieve(Map params)
@@ -627,7 +630,62 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
 
 
 
+    public void addReferee(String customerId,String refereeId)
+    {
+        /*客户是否存在*/
+        User customer = userDao.findByUserId(customerId);
+        if ( customer == null)
+        {
+            throw new ServerSideBusinessException("客户信息不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
 
+        /*推荐人是否存在*/
+        User referee = userDao.findByUserId(refereeId);
+        if ( referee == null)
+        {
+            throw new ServerSideBusinessException("推荐人信息不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
 
+        /*如果推荐人已经被绑定到本客户了，提示*/
+        Map params = new HashMap<String,String>();
+        params.putAll(ImmutableMap.of("userId", customerId));
+        params.putAll(ImmutableMap.of("refereeId", refereeId));
+        if ( cstRefereeRelDao.count(params) > 0)
+        {
+            throw new ServerSideBusinessException("该推荐人已经绑定！", HttpStatus.CONFLICT);
+        }
+
+        /*绑定*/
+        cstRefereeRelDao.addReferee(customer.getId(),referee.getId());
+    }
+
+    public void removeReferee(String customerId,String refereeId)
+    {
+        /*客户是否存在*/
+        User customer = userDao.findByUserId(customerId);
+        if ( customer == null)
+        {
+            throw new ServerSideBusinessException("客户信息不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        /*推荐人是否存在*/
+        User referee = userDao.findByUserId(refereeId);
+        if ( referee == null)
+        {
+            throw new ServerSideBusinessException("推荐人信息不存在！", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        /*如果推荐人已经被绑定到本客户了，提示*/
+        Map params = new HashMap<String,String>();
+        params.putAll(ImmutableMap.of("userId", customerId));
+        params.putAll(ImmutableMap.of("refereeId", refereeId));
+        if ( cstRefereeRelDao.count(params) == 0)
+        {
+            throw new ServerSideBusinessException("该推荐人未绑定！", HttpStatus.CONFLICT);
+        }
+
+        /*解除绑定*/
+        cstRefereeRelDao.removeReferee(customer.getId(),referee.getId());
+    }
 }
 

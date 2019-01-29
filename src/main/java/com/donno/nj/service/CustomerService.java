@@ -24,4 +24,7 @@ public interface CustomerService extends UserService
 
     List<String> getPhones(Map params);
 
+    void addReferee(String customerId,String refereeId);
+    void removeReferee(String customerId,String refereeId);
+
 }
