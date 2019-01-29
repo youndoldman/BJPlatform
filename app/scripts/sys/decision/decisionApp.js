@@ -38,7 +38,7 @@ var decisionApp = angular.module('DecisionApp', ['ui.router', 'CommonModule', 'a
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.DecisionCenter.menuItems[0]);
+                    rootService.updateActiveNavL2(NavItem.DecisionCenter.menuItems[1]);
                 }
             })
             .state('decision.gasUsage', {
@@ -51,7 +51,7 @@ var decisionApp = angular.module('DecisionApp', ['ui.router', 'CommonModule', 'a
                     }
                 },
                 onEnter: function (rootService, NavItem) {
-                    rootService.updateActiveNavL2(NavItem.DecisionCenter.menuItems[1]);
+                    rootService.updateActiveNavL2(NavItem.DecisionCenter.menuItems[2]);
                 }
             });
 

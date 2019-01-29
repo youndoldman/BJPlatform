@@ -40,6 +40,4 @@ public interface OrderService
     void checkOverTime();
 
     void orderBindGasCynNumber(String orderSn,String gasCynNumbers);
-
-
 }

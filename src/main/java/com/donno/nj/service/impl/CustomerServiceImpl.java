@@ -628,6 +628,9 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
     }
 
 
+   public void updateLeakWarningTime(Map params){
+        customerDao.updateLeakWarningTime(params);
+    }
     @Override
     @OperationLog(desc = "查询客户绑定的推荐人")
     public List<CstRefereeRel> getReferee(String customerId)

@@ -31,6 +31,10 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     var userCardUri = URI.resources.UserCard;//用户卡查询
     var userCardUnBindUri = URI.resources.UserCardunBind;//用户卡解绑定
 
+
+    var DevelopUserBindUri = URI.resources.DevelopUserBind;//用户卡绑定
+    var DevelopUserUnBindUri = URI.resources.DevelopUserUnBind;//用户卡解绑定
+
     var sysUserUri = URI.resources.users;
     var sysUserFindByUserIdUri = URI.resources.sysUserFindByUserId;
 
@@ -264,6 +268,18 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     this.deleteAdvice = function (advice) {
         return promise.wrap($http.delete(adviceUri + "/" + advice.id));
     };
+
+
+    //绑定用户卡至客户
+    this.bindDevelopUser = function (customerId, developUserID) {
+        return promise.wrap($http.put(DevelopUserBindUri + "/" + developUserID+"?userId="+customerId));
+    };
+    //解除绑定用户卡
+    this.unBindDevelopUser = function (customerId, developUserID) {
+        return promise.wrap($http.put(DevelopUserUnBindUri + "/" + developUserID+"?userId="+customerId));
+    };
+
+
 
 }]);
 

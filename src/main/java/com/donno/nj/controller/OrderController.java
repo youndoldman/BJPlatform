@@ -560,4 +560,138 @@ public class OrderController
 
         return responseEntity;
     }
+
+
+
+
+    @RequestMapping(value = "/api/Orders/Count", method = RequestMethod.GET, produces = "application/json")
+    @OperationLog(desc = "获取订单数量")
+    public ResponseEntity count(@RequestParam(value = "orderSn", defaultValue = "") String orderSn,
+                                   @RequestParam(value = "callInPhone", defaultValue = "") String callInPhone,
+                                   @RequestParam(value = "userId", defaultValue = "") String userId,
+                                   @RequestParam(value = "orderStatus", required = false) Integer orderStatus,
+                                   @RequestParam(value = "payStatus", required = false) PayStatus payStatus,
+                                   @RequestParam(value = "payType", required = false) PayType payType,
+                                   @RequestParam(value = "orderServiceQuality", required = false) OrderServiceQuality orderServiceQuality,
+                                   @RequestParam(value = "invoiceStatus", required = false) Integer invoiceStatus,
+                                   @RequestParam(value = "accessType", required = false) AccessType accessType,
+                                   @RequestParam(value = "addrProvince", defaultValue = "") String addrProvince,
+                                   @RequestParam(value = "addrCity", defaultValue = "") String addrCity,
+                                   @RequestParam(value = "addrCounty", defaultValue = "") String addrCounty,
+                                   @RequestParam(value = "addrDetail", defaultValue = "") String addrDetail,
+                                   @RequestParam(value = "recvName", defaultValue = "") String recvName,
+                                   @RequestParam(value = "recvPhone", defaultValue = "") String recvPhone,
+                                   @RequestParam(value = "dispatcherId", defaultValue = "") String dispatcherId,
+                                   @RequestParam(value = "startTime", defaultValue = "") String startTime,
+                                   @RequestParam(value = "endTime", defaultValue = "") String endTime,
+                                   @RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
+                                   @RequestParam(value = "orderTriggerType", required = false) OrderTriggerType orderTriggerType)
+    {
+        Map params = new HashMap<String,String>();
+        if (orderSn.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("orderSn", orderSn));
+        }
+
+        if (callInPhone.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("callInPhone", callInPhone));
+        }
+
+        if (userId.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("userId", userId));
+        }
+
+        if (orderStatus != null)
+        {
+            params.putAll(ImmutableMap.of("orderStatus", orderStatus));
+        }
+
+        if (invoiceStatus != null)
+        {
+            params.putAll(ImmutableMap.of("invoiceStatus", invoiceStatus));
+        }
+
+        if (payStatus != null)
+        {
+            params.putAll(ImmutableMap.of("payStatus", payStatus));
+        }
+
+        if (orderServiceQuality != null)
+        {
+            params.putAll(ImmutableMap.of("orderServiceQuality", orderServiceQuality));
+        }
+
+
+
+        if (payType != null)
+        {
+            params.putAll(ImmutableMap.of("payType", payType));
+        }
+
+        if (accessType != null)
+        {
+            params.putAll(ImmutableMap.of("accessType", accessType));
+        }
+
+        if (addrProvince.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("addrProvince", addrProvince));
+        }
+
+        if (addrCity.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("addrCity", addrCity));
+        }
+
+        if (addrCounty.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("addrCounty", addrCounty));
+        }
+
+        if (addrDetail.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("addrDetail", addrDetail));
+        }
+
+        if (recvName.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("recvName", recvName));
+        }
+
+        if (recvPhone.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("recvPhone", recvPhone));
+        }
+
+        if ( startTime != null && startTime.trim().length() > 0 )
+        {
+            params.putAll(ImmutableMap.of("startTime", startTime));
+        }
+
+        if ( endTime != null && endTime.trim().length() > 0 )
+        {
+            params.putAll(ImmutableMap.of("endTime", endTime));
+        }
+
+        if ( dispatcherId != null && dispatcherId.trim().length() > 0 )
+        {
+            params.putAll(ImmutableMap.of("dispatcherId", dispatcherId));
+        }
+
+        if (departmentCode.trim().length() > 0)
+        {
+            params.putAll(ImmutableMap.of("departmentCode", departmentCode));
+        }
+
+        if (orderTriggerType != null)
+        {
+            params.putAll(ImmutableMap.of("orderTriggerType", orderTriggerType));
+        }
+
+
+        Integer count = orderService.count(params);
+        return ResponseEntity.ok(count);
+    }
 }

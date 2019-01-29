@@ -18,5 +18,9 @@ public interface CustomerDao extends BaseDao<Customer>
     Customer findByCstUserId(String userId);
 
 
+    void updateLeakWarningTime(Map params);
+
+
+
     List<String> getPhones(Map m);
 }

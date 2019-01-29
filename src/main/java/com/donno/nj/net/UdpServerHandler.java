@@ -11,7 +11,9 @@ import com.donno.nj.service.CustomerService;
 import com.donno.nj.service.GasCynTrayService;
 import com.donno.nj.service.SmsService;
 import com.donno.nj.service.GasCynTrayTSService;
+import com.donno.nj.util.Clock;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.DatagramPacket;
@@ -24,7 +26,9 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.donno.nj.domain.User;
 
@@ -108,15 +112,16 @@ public class UdpServerHandler
                 if(validUser!=null){
                     Optional<Customer> customerOptional = customerService.findByCstUserId(validUser.getUserId());
                     if(customerOptional.isPresent()){
-                        String address = customerOptional.get().getAddress().getProvince()+customerOptional.get().getAddress().getCity()+customerOptional.get().getAddress().getCounty()
-                                +customerOptional.get().getAddress().getDetail();
+
                         if(gasCynTray.getLeakStatus()==WarnningStatus.WSWarnning1){
-                            smsService.sendGasLeakSms(customerOptional.get().getPhone(), customerOptional.get().getName(), address);
+                            //一级报警间隔大于两分钟再发
+                            leakLevelOneWarning(customerOptional.get());
                         }
                         if(gasCynTray.getLeakStatus()==WarnningStatus.WSWarnning2){
-                            smsService.sendGasLeakSms(customerOptional.get().getPhone(), customerOptional.get().getName(), address);
-                            //發送消防部門
-                            smsService.sendGasLeakSmsToFireDepartment("13608851223", customerOptional.get().getName(), address,customerOptional.get().getPhone());
+
+                            //二级报警發送消防部門,大于1分钟再发
+                            leakLevelTwoWarning(customerOptional.get());
+
                         }
 
                     }
@@ -129,6 +134,67 @@ public class UdpServerHandler
             exception.printStackTrace();
         }
     }
+
+    public void leakLevelOneWarning(Customer customer)
+    {
+        try
+        {
+            String address = customer.getAddress().getProvince()+customer.getAddress().getCity()+customer.getAddress().getCounty()
+                    +customer.getAddress().getDetail();
+            if(customer.getLeakLevelOneWanningTime()!=null){
+                if(Clock.differMinute(customer.getLeakLevelOneWanningTime(),new Date())>2)
+                {
+                    Map params = new HashMap<String,String>();
+                    params.putAll(ImmutableMap.of("leakLevelOneWanningTime", new Date()));
+                    params.putAll(ImmutableMap.of("id", customer.getId()));
+                    smsService.sendGasLeakSms(customer.getPhone(), customer.getName(), address);
+                    customerService.updateLeakWarningTime(params);
+                }
+            }else{
+                Map params = new HashMap<String,String>();
+                params.putAll(ImmutableMap.of("leakLevelOneWanningTime", new Date()));
+                params.putAll(ImmutableMap.of("id", customer.getId()));
+                smsService.sendGasLeakSms(customer.getPhone(), customer.getName(), address);
+                customerService.updateLeakWarningTime(params);
+            }
+        }
+        catch (Exception exception)
+        {
+            exception.printStackTrace();
+        }
+    }
+
+    public void leakLevelTwoWarning(Customer customer)
+    {
+        try
+        {
+            String address = customer.getAddress().getProvince()+customer.getAddress().getCity()+customer.getAddress().getCounty()
+                    +customer.getAddress().getDetail();
+            if(customer.getLeakLevelTwoWanningTime()!=null){
+                if(Clock.differMinute(customer.getLeakLevelTwoWanningTime(),new Date())>1)
+                {
+                    Map params = new HashMap<String,String>();
+                    params.putAll(ImmutableMap.of("leakLevelTwoWanningTime", new Date()));
+                    params.putAll(ImmutableMap.of("id", customer.getId()));
+                    smsService.sendGasLeakSms(customer.getPhone(), customer.getName(), address);
+                    smsService.sendGasLeakSmsToFireDepartment("13608851223", customer.getName(), address,customer.getPhone());
+                    customerService.updateLeakWarningTime(params);
+                }
+            }else{
+                Map params = new HashMap<String,String>();
+                params.putAll(ImmutableMap.of("leakLevelTwoWanningTime", new Date()));
+                params.putAll(ImmutableMap.of("id", customer.getId()));
+                smsService.sendGasLeakSmsToFireDepartment("13608851223", customer.getName(), address,customer.getPhone());
+                smsService.sendGasLeakSms(customer.getPhone(), customer.getName(), address);
+                customerService.updateLeakWarningTime(params);
+            }
+        }
+        catch (Exception exception)
+        {
+            exception.printStackTrace();
+        }
+    }
+
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx,Throwable cause)throws Exception{
