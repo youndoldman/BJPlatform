@@ -313,5 +313,33 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
         })
     };
 
+
+    //开发客户绑定
+    $scope.developedUserBind = function (developedUserId) {
+        if(developedUserId==null){
+            udcModal.info({"title": "错误信息", "message": "请输入推荐直销员编号"});
+            return;
+        }
+        CustomerManageService.bindDevelopUser($scope.vm.currentCustomer.userId, developedUserId).then(function () {
+            udcModal.info({"title": "处理结果", "message": "推荐直销员绑定成功 "});
+            $scope.retrieveUserCards();
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": "推荐直销员绑定失败:  "+value.message});
+        })
+    };
+
+
+    //开发客户解除绑定
+    $scope.developedUserUnBind = function (developedUserId) {
+        CustomerManageService.unBindDevelopUser($scope.vm.currentCustomer.userId, developedUserId).then(function () {
+            udcModal.info({"title": "处理结果", "message": "推荐直销员解除绑定成功 "});
+            $scope.retrieveUserCards();
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": "推荐直销员解除绑定失败:  "+value.message});
+        })
+    };
+
+
+
     init();
 }]);

@@ -1,26 +1,27 @@
 
-/** 
-* @file Customer.java
-* @brief  客户实体信息
-* @author wyb
-* @date  2017/11/25 0025 下午 3:02
-* @version  1.00
-* <pre>company: CETC28</pre> 
-* <pre><b>All rights reserved.</b></pre> 
-*/ 
+/**
+ * @file Customer.java
+ * @brief  客户实体信息
+ * @author wyb
+ * @date  2017/11/25 0025 下午 3:02
+ * @version  1.00
+ * <pre>company: CETC28</pre>
+ * <pre><b>All rights reserved.</b></pre>
+ */
 
 package com.donno.nj.domain;
 import com.donno.nj.service.CustomerService;
 import com.google.common.base.MoreObjects;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 
 /**
-* @class Customer
-* @brief   客户实体信息类
-*/
+ * @class Customer
+ * @brief   客户实体信息类
+ */
 public class Customer extends User  implements Serializable
 {
     private String number;        /**< 客户编号*/
@@ -36,10 +37,15 @@ public class Customer extends User  implements Serializable
     private CustomerAddress address;   /**<客户地址信息，只能修改，不能删除*/
     private String phone;              /**<客户电话信息*/
 
+
+    private Date leakLevelOneWanningTime;/*一级报警时间 */
+    private Date leakLevelTwoWanningTime;/*二级报警时间 */
+
+
     /**
-    * @fn   Customer
-    * @brief 构造函数
-    */
+     * @fn   Customer
+     * @brief 构造函数
+     */
     public Customer()
     {
     }
@@ -150,6 +156,18 @@ public class Customer extends User  implements Serializable
     }
 
 
+    public Date getLeakLevelOneWanningTime()
+    {
+        return leakLevelOneWanningTime;
+    }
+
+    public Date getLeakLevelTwoWanningTime()
+    {
+        return leakLevelTwoWanningTime;
+    }
+
+
+
     /**
      * @fn  setNumber
      * @brief    设置客户编号信息
@@ -250,6 +268,16 @@ public class Customer extends User  implements Serializable
 
 
 
+    public void setLeakLevelOneWarningTime(Date leakLevelOneWanningTime)
+    {
+        this.leakLevelOneWanningTime = leakLevelOneWanningTime;
+    }
+
+    public void setLeakLevelTwoWarningTime(Date leakLevelTwoWanningTime)
+    {
+        this.leakLevelTwoWanningTime = leakLevelTwoWanningTime;
+    }
+
     @Override
     public String toString()
     {
@@ -263,6 +291,8 @@ public class Customer extends User  implements Serializable
                 .add("address",address)
                 .add("phone", phone)
                 .add("note", note)
+                .add("leakLevelOneWanningTime", leakLevelOneWanningTime)
+                .add("leakLevelTwoWanningTime", leakLevelTwoWanningTime)
                 .add("createTime", createTime)
                 .add("updateTime", updateTime)
                 .toString();

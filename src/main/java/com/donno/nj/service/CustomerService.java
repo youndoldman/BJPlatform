@@ -24,4 +24,6 @@ public interface CustomerService extends UserService
 
     List<String> getPhones(Map params);
 
+    void updateLeakWarningTime(Map params);
+
 }

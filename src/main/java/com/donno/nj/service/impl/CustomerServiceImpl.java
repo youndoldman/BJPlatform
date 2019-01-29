@@ -625,7 +625,9 @@ public class CustomerServiceImpl extends UserServiceImpl implements CustomerServ
     }
 
 
-
+    public void updateLeakWarningTime(Map params){
+        customerDao.updateLeakWarningTime(params);
+    }
 
 
 

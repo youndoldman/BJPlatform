@@ -3,7 +3,9 @@
 decisionApp.controller('StatisticCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
     'rootService', 'pager', 'udcModal', 'DecisionService','sessionStorage', '$interval',function ($scope, $rootScope, $filter, $location, Constants,
 
-                                                                      rootService, pager, udcModal, DecisionService, sessionStorage,$interval) {
+                                                                                                  rootService, pager, udcModal, DecisionService, sessionStorage,$interval) {
+
+
         $scope.q = {
             code: null,
             startTime:"",
@@ -13,18 +15,123 @@ decisionApp.controller('StatisticCtrl', ['$scope', '$rootScope', '$filter', '$lo
 
         $scope.vm = {
             dataDealed:[],
-            unitData : {legend:null, items:[]}
+            unitData : {legend:null, items:[]},
+
+            //订单来源图表
+            orderAccessTypeChart:null,
+            orderAccessTypeOption:{
+                title: {
+                    text: '订单来源统计'
+                },
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{b} : {c} ({d}%)"
+                },
+                "textStyle": {
+                    "fontSize": 18
+                },
+                series : [
+                    {
+                        type: 'pie',
+                        radius : '65%',
+                        center: ['50%', '50%'],
+                        data:[],
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            },
+            //订单支付方式图表
+            orderPayTypeChart:null,
+            orderPayTypeOption:{
+                title: {
+                    text: '支付方式统计'
+                },
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{b} : {c} ({d}%)"
+                },
+                "textStyle": {
+                    "fontSize": 18
+                },
+                series : [
+                    {
+                        type: 'pie',
+                        radius : '65%',
+                        center: ['50%', '50%'],
+                        data:[],
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            },
+            //日订单数量统计图表
+            orderDayCountChart:null,
+            orderDayCountOption: {
+                title: {
+                    text: '日订单统计'
+                },
+                toolbox: {
+                    show : true,
+                    feature : {
+                        dataView : {show: true, readOnly: false},
+                        magicType : {show: true, type: ['line', 'bar']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: function (params) {
+                        params = params[0];
+                        return params.value[0] + ' : ' + params.value[1];
+                    },
+                    axisPointer: {
+                        animation: true
+                    }
+                },
+                xAxis: {
+                    type: 'time',
+                    splitLine: {
+                        show: true
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    boundaryGap: [0, '100%'],
+                    splitLine: {
+                        show: true
+                    }
+                },
+                // 数据内容数组
+                series:[{
+                    legend:"订单统计",
+                    name: "订单统计",
+                    type: 'bar',
+                    data: [],
+                    showSymbol: false,
+                    hoverAnimation: false
+                }]
+            }
+
+
+
+
+
         };
-        $scope.search = function () {
-            //启动绘制托盘重量的定时器
-            $scope.vm.dataDealed = [];//结果数据
-            $scope.vm.unitData = {legend:null, items:[]};
-            retrieveGasCynTrayHistory($scope.q.startTime, $scope.q.endTime,$scope.q.code);
-            //$interval.cancel($scope.timer);
-            //$scope.timer = $interval( function(){
-            //    retrieveGasCynTrayHistory();
-            //}, 1000);
-        };
+
+
+
         $(function () {
             $('#datetimepickerStart').datetimepicker({
                 format: 'YYYY-MM-DD HH:mm',
@@ -63,190 +170,151 @@ decisionApp.controller('StatisticCtrl', ['$scope', '$rootScope', '$filter', '$lo
                         +p(date.getHours())+":"+p(date.getMinutes())+":"+p(date.getSeconds());
                 });
         });
-        var drawChart = function(dataDealed) {
-            var weatherIcons = {
-                'Sunny': './data/asset/img/weather/sunny_128.png',
-                'Cloudy': './data/asset/img/weather/cloudy_128.png',
-                'Showers': './data/asset/img/weather/showers_128.png'
-            };
+        //查询订单来源进行统计
+        var searchOrderAccessType = function () {
+            //微信
+            orderAccessQuery("ATWeixin", "微信");
+            //客服
+            orderAccessQuery("ATCustomService", "客服");
+        };
 
-            var option = {
-                title: {
-                    text: '天气情况统计',
-                    subtext: '虚构数据',
-                    left: 'center'
-                },
-                tooltip : {
-                    trigger: 'item',
-                    formatter: "{a} <br/>{b} : {c} ({d}%)"
-                },
-                legend: {
-                    // orient: 'vertical',
-                    // top: 'middle',
-                    bottom: 10,
-                    left: 'center',
-                    data: ['西凉', '益州','兖州','荆州','幽州']
-                },
-                series : [
-                    {
-                        type: 'pie',
-                        radius : '65%',
-                        center: ['50%', '50%'],
-                        selectedMode: 'single',
-                        data:[
-                            {
-                                value:1548,
-                                name: '幽州',
-                                label: {
-                                    normal: {
-                                        formatter: [
-                                            '{title|{b}}{abg|}',
-                                            '  {weatherHead|天气}{valueHead|天数}{rateHead|占比}',
-                                            '{hr|}',
-                                            '  {Sunny|}{value|202}{rate|55.3%}',
-                                            '  {Cloudy|}{value|142}{rate|38.9%}',
-                                            '  {Showers|}{value|21}{rate|5.8%}'
-                                        ].join('\n'),
-                                        backgroundColor: '#eee',
-                                        borderColor: '#777',
-                                        borderWidth: 1,
-                                        borderRadius: 4,
-                                        rich: {
-                                            title: {
-                                                color: '#eee',
-                                                align: 'center'
-                                            },
-                                            abg: {
-                                                backgroundColor: '#333',
-                                                width: '100%',
-                                                align: 'right',
-                                                height: 25,
-                                                borderRadius: [4, 4, 0, 0]
-                                            },
-                                            Sunny: {
-                                                height: 30,
-                                                align: 'left',
-                                                backgroundColor: {
-                                                    image: weatherIcons.Sunny
-                                                }
-                                            },
-                                            Cloudy: {
-                                                height: 30,
-                                                align: 'left',
-                                                backgroundColor: {
-                                                    image: weatherIcons.Cloudy
-                                                }
-                                            },
-                                            Showers: {
-                                                height: 30,
-                                                align: 'left',
-                                                backgroundColor: {
-                                                    image: weatherIcons.Showers
-                                                }
-                                            },
-                                            weatherHead: {
-                                                color: '#333',
-                                                height: 24,
-                                                align: 'left'
-                                            },
-                                            hr: {
-                                                borderColor: '#777',
-                                                width: '100%',
-                                                borderWidth: 0.5,
-                                                height: 0
-                                            },
-                                            value: {
-                                                width: 20,
-                                                padding: [0, 20, 0, 30],
-                                                align: 'left'
-                                            },
-                                            valueHead: {
-                                                color: '#333',
-                                                width: 20,
-                                                padding: [0, 20, 0, 30],
-                                                align: 'center'
-                                            },
-                                            rate: {
-                                                width: 40,
-                                                align: 'right',
-                                                padding: [0, 10, 0, 0]
-                                            },
-                                            rateHead: {
-                                                color: '#333',
-                                                width: 40,
-                                                align: 'center',
-                                                padding: [0, 10, 0, 0]
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            {value:535, name: '荆州'},
-                            {value:510, name: '兖州'},
-                            {value:634, name: '益州'},
-                            {value:735, name: '西凉'}
-                        ],
-                        itemStyle: {
-                            emphasis: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
-                        }
-                    }
-                ]
-            };
-            var myChart = echarts.init(document.getElementById('id0001'));//p 标签id
-            myChart.setOption(option);
+        //查询订单结算进行统计
+        var searchOrderPayType = function () {
+
+            //微信线上支付
+            orderPayQuery("PTOnLine", "微信线上支付");
+            orderPayQuery("PTCash", "现金支付");
+            orderPayQuery("PTDebtCredit", "赊销支付");
+            orderPayQuery("PTMonthlyCredit", "月结支付");
+            orderPayQuery("PTTicket", "气票支付");
+            orderPayQuery("PTWxOffLine", "微信线下支付");
+        };
+
+        //查询日订单数量进行统计
+        var searchOrderDayCount = function () {
+            var dateStart = new Date($scope.q.startTime);
+            var dateEnd = new Date($scope.q.endTime);
+
+            var tempDate =  new Date(dateStart);
+            while(1){
+                var month = tempDate.getMonth()+1;
+                var startTime = tempDate.getFullYear()+"-"+month+"-"+tempDate.getDate()+" 00:00:00";
+                var endTime = tempDate.getFullYear()+"-"+month+"-"+tempDate.getDate()+" 23:59:59";
+
+                orderDayCountQuery(startTime, endTime);
+                if((tempDate.getFullYear()==dateEnd.getFullYear())&&
+                    (tempDate.getMonth()==dateEnd.getMonth())&&
+                    (tempDate.getDate()==dateEnd.getDate())){
+                    return;
+
+                }
+                tempDate.setDate(tempDate.getDate()+1);
+            }
+
+
+            //微信线上支付
+            orderPayQuery("PTOnLine", "微信线上支付");
+            orderPayQuery("PTCash", "现金支付");
+            orderPayQuery("PTDebtCredit", "赊销支付");
+            orderPayQuery("PTMonthlyCredit", "月结支付");
+            orderPayQuery("PTTicket", "气票支付");
+            orderPayQuery("PTWxOffLine", "微信线下支付");
+        };
+
+        var init = function () {
+            //初始化为当前时间
+            //初始化时间为当天
+            var date = new Date();
+            var month = date.getMonth()+1;
+            $scope.q.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" 00:00:00";
+            $scope.q.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" 23:59:59";
+            chartInitial();
+
+            $scope.search();
+        };
+
+        var chartInitial = function () {
+            $scope.vm.orderAccessTypeChart = echarts.init(document.getElementById('orderAccessTypeChart'));//p 标签id
+            $scope.vm.orderPayTypeChart = echarts.init(document.getElementById('orderPayTypeChart'));//p 标签id
+            $scope.vm.orderAccessTypeChart.setOption($scope.vm.orderAccessTypeOption);
+            $scope.vm.orderPayTypeChart.setOption($scope.vm.orderPayTypeOption);
+
+            $scope.vm.orderDayCountChart = echarts.init(document.getElementById('orderDayCountChart'));//p 标签id
+            $scope.vm.orderDayCountChart.setOption($scope.vm.orderDayCountOption);
+
 
             $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-                myChart.resize();
+                $scope.vm.orderAccessTypeChart.resize();
+                $scope.vm.orderPayTypeChart.resize();
+                $scope.vm.orderDayCountChart.resize();
             });
         };
-        var retrieveGasCynTrayHistory = function (startTime, endTime, code) {
-            var gasCynTrayHistoryList = [];
+        $scope.search = function () {
+            $scope.vm.orderPayTypeOption.series[0].data = [];
+            $scope.vm.orderAccessTypeOption.series[0].data = [];
+            $scope.vm.orderDayCountOption.series[0].data = [];
+
+
+            searchOrderAccessType();
+            searchOrderPayType();
+            searchOrderDayCount();
+        };
+
+        var orderAccessReflesh = function () {
+            $scope.vm.orderAccessTypeChart.setOption($scope.vm.orderAccessTypeOption);
+        };
+        var orderPayReflesh = function () {
+            $scope.vm.orderPayTypeChart.setOption($scope.vm.orderPayTypeOption);
+        };
+        var orderDayCountReflesh = function () {
+            $scope.vm.orderDayCountChart.setOption($scope.vm.orderDayCountOption);
+        };
+
+        //订单来源查询
+        var orderAccessQuery = function (AccessType, name) {
             var queryParams = {
-                startTime: startTime,
-                endTime: endTime,
-                number: code
+                accessType:AccessType,
+                startTime:$scope.q.startTime,
+                endTime:$scope.q.endTime
             };
-            DecisionService.retrieveGasCynTrayHistory(queryParams).then(function (gasCynTrayHistory) {
-
-                //加工数据，按商品号分开
-                gasCynTrayHistoryList = gasCynTrayHistory.items;
-                var name = null;
-
-                if(gasCynTrayHistoryList.length==0){
-                    //$interval.cancel($scope.timer);
-                    udcModal.info({"title": "查询结果", "message": "无数据"});
-                }
-                for (var i=0;i<gasCynTrayHistoryList.length;i++){
-                    var code = gasCynTrayHistoryList[i].number;
-
-                    var tempData = {name:null,value:null};
-                    var date = new Date(gasCynTrayHistoryList[i].timestamp);
-                    tempData.name = date.toString();
-                    tempData.value = [gasCynTrayHistoryList[i].timestamp,gasCynTrayHistoryList[i].weight];
-                    $scope.vm.unitData.items.push(tempData);
-                    name = gasCynTrayHistoryList[i].number;
-                }
-
-                if(gasCynTrayHistory.items.length == 5000){
-                    retrieveGasCynTrayHistory(gasCynTrayHistoryList[gasCynTrayHistoryList.length-1].timestamp, $scope.q.endTime, code);
-                }else{
-                    if($scope.vm.unitData.items.length!=0){
-                        $scope.vm.unitData.legend = name;
-                        $scope.vm.dataDealed.push($scope.vm.unitData);
-                    }
-                    console.log($scope.vm.dataDealed);
-                    drawChart($scope.vm.dataDealed);
-                }
+            DecisionService.retrieveOrdersCount(queryParams).then(function (count) {
+                var tempData = {value:count, name: name};
+                $scope.vm.orderAccessTypeOption.series[0].data.push(tempData);
+                orderAccessReflesh();
             });
         };
-        var init = function () {
-            var dataDealed = [];//结果数据
-            drawChart(dataDealed);
+
+        //订单支付情况查询
+        var orderPayQuery = function (PayType, name) {
+            var queryParams = {
+                payType:PayType,
+                startTime:$scope.q.startTime,
+                endTime:$scope.q.endTime
+            };
+            DecisionService.retrieveOrdersCount(queryParams).then(function (count) {
+                var tempData = {value:count, name: name};
+                $scope.vm.orderPayTypeOption.series[0].data.push(tempData);
+                orderPayReflesh();
+            });
         };
+        //日订单数量查询
+        var orderDayCountQuery = function (startTime, endTime) {
+            var queryParams = {
+                startTime:startTime,
+                endTime:endTime
+            };
+            DecisionService.retrieveOrdersCount(queryParams).then(function (count) {
+                var tempData = {name:null,value:null};
+                var date = new Date(queryParams.startTime);
+                tempData.name = date.toString();
+                tempData.value = [queryParams.startTime,count];
+
+
+                $scope.vm.orderDayCountOption.series[0].data.push(tempData);
+                orderDayCountReflesh();
+            });
+        };
+
 
         init();
 

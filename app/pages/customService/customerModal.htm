@@ -151,6 +151,25 @@
                 </div>
 
                 <div class="input-group pdb15" ng-if="isModify">
+                    <label class="col-sm-4 control-label input-label-large">推荐人ID：</label>
+                    <div class="col-sm-8 input-width">
+                        <input type="text" name="developedUserId" class="form-control" ng-model="vm.currentDevelopedUserId"  required>
+                    </div>
+                    <!--<button ng-if="isBinded" type="button" class="btn btn-sm btn-danger" ng-click="unBind()"><i class="fa fa-plus"></i> 解绑 </button>-->
+                    <button type="button" class="btn btn-sm btn-success" ng-click="developedUserBind(vm.currentDevelopedUserId)"><i class="fa fa-plus"></i> 绑定 </button>
+                </div>
+                <div class="input-group pdb15" ng-repeat="developedUser in vm.developedUserList" ng-if="isModify">
+                    <label class="col-sm-4 control-label input-label-large">推荐人ID：</label>
+                    <div class="col-sm-8 input-width">
+                        <input type="text" name="developedUserId" class="form-control" ng-model="developedUser.userId"  required>
+                    </div>
+                    <!--<button ng-if="isBinded" type="button" class="btn btn-sm btn-danger" ng-click="unBind()"><i class="fa fa-plus"></i> 解绑 </button>-->
+                    <button type="button" class="btn btn-sm btn-danger" ng-click="developedUserUnBind(developedUser.userId)"><i class="fa fa-minus"></i> 解绑 </button>
+                </div>
+
+
+
+                <div class="input-group pdb15" ng-if="isModify">
                     <label class="col-sm-4 control-label input-label-large">托盘编码：</label>
                     <div class="col-sm-8 input-width">
                         <input type="text" name="palletNumber" class="form-control" ng-model="vm.currentPalletNumber"  required>

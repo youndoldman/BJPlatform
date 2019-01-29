@@ -19,6 +19,8 @@
         <result column="addr_detail" property="address.detail" jdbcType="VARCHAR"/>
 
         <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="leak_level_one_wanning_time" property="leakLevelOneWanningTime" jdbcType="TIMESTAMP"/>
+        <result column="leak_level_two_wanning_time" property="leakLevelTwoWanningTime" jdbcType="TIMESTAMP"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
 
@@ -102,7 +104,7 @@
     <sql id="JoinSelectColumn">
         t_user.id, t_user.user_id,t_user.name,t_user.identity,left(t_user.wx_open_id,3) as wx_open_id,t_user.group_idx,  t_user.note,t_user.create_time,t_user.update_time,
         t_customer.cst_number,t_customer.have_cylinder,t_customer.status, t_customer.settlement_type as  settlement_type_idx  , t_customer.cst_type as customer_type_idx,t_customer.cst_source as customer_source_idx,t_customer.cst_level as customer_level_idx,
-         t_customer.cst_company_name as customer_company_idx,t_customer.phone,t_customer.addr_province,t_customer.addr_city,t_customer.addr_county,t_customer.addr_detail
+         t_customer.cst_company_name as customer_company_idx,t_customer.phone,t_customer.addr_province,t_customer.addr_city,t_customer.addr_county,t_customer.addr_detail,t_customer.leak_level_one_wanning_time,t_customer.leak_level_two_wanning_time
     </sql>
 
     <sql id="JoinWhereCondition">
@@ -257,4 +259,13 @@
         addr_city = #{city}
     </select>
 
+
+    <update id="updateLeakWarningTime">
+        UPDATE <include refid="TblCustomer"/>
+        <set>
+            <if test="leakLevelOneWanningTime != null">leak_level_one_wanning_time = #{leakLevelOneWanningTime},</if>
+            <if test="leakLevelTwoWanningTime != null">leak_level_two_wanning_time = #{leakLevelTwoWanningTime},</if>
+        </set>
+        WHERE user_idx = #{id}
+    </update>
 </mapper>

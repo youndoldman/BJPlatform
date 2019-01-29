@@ -30,6 +30,7 @@ commonModule.constant('URI', {
         'login':'../../../api/sysusers/login',//系统用户登录接口
         'logout':'../../../api/sysusers/logout',//系统用户登出接口
         'orders':'../../../api/Orders',　　　　　//订气订单接口
+        'ordersCount':'../../../api/Orders/Count',　　　　　//订气订单数量接口
         'orderCancel':'../../../api/CancelOrder',　　　　　//订气作废接口
 
         'taskOrders':'../../../api/TaskOrders',//任务订单接口
@@ -100,7 +101,12 @@ commonModule.constant('URI', {
         'UserCard':'../../../api/UserCard',//用户卡查询
         'UserCardBind':'../../../api/UserCard/Bind',//用户卡绑定
         'UserCardunBind':'../../../api/UserCard/unBind',//用户卡解绑定
+
+        'DevelopUserBind':'../../../api/UserCard/Bind',//开发直销员绑定
+        'DevelopUserUnBind':'../../../api/UserCard/unBind',//开发直销员解绑定
+
         'GasFillingMerge':'../../../api/GasFillingMerge',//8.3.	充装数据查询
+
 
         'sysUserFindByUserId':'../../../api/sysusers/FindByUserId',//系统用户精确查询
         'DiscountStrategiesCancel':'../../../api/DiscountStrategies/Cancel',//10.8.	作废优惠方案
