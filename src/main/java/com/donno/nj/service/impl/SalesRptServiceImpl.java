@@ -104,19 +104,44 @@ public class SalesRptServiceImpl implements SalesRptService
     {
         if (params.containsKey("payType"))
         {
-            List<SalesRpt> getSaleRpt = salesByPayTypeRptDao.getSaleRptByPayType(params);
+            if (params.get("payType").equals(PayType.PTOnLine.getIndex()))
+            {
+                /*wx线上支付*/
+                List<SalesRpt> salesOnlineRptList = salesByPayTypeRptDao.getSaleRptByPayType(params);
+                mergeSaleRpt(salesOnlineRptList,salesRptList);
 
-            salesRptList.addAll(getSaleRpt);
+                /*wx线下支付*/
+                Map rptParams = new HashMap<String,String>();
+                rptParams.putAll(params);
+                rptParams.remove("payType");
+                rptParams.putAll(ImmutableMap.of("payType", PayType.PTWxOffLine.getIndex()));
+                List<SalesRpt> salesOfflineRptList = salesByPayTypeRptDao.getSaleRptByPayType(rptParams);
+
+                mergeSaleRpt(salesOfflineRptList,salesRptList);
+            }
+            else
+            {
+                List<SalesRpt> getSaleRpt = salesByPayTypeRptDao.getSaleRptByPayType(params);
+                salesRptList.addAll(getSaleRpt);
+            }
         }
         else //无paytype 计算 和值
         {
-            /*电子*/
+            /*wx线上支付*/
             Map rptParams = new HashMap<String,String>();
             rptParams.putAll(params);
             rptParams.putAll(ImmutableMap.of("payType", PayType.PTOnLine.getIndex()));
             List<SalesRpt> salesOnlineRptList = salesByPayTypeRptDao.getSaleRptByPayType(rptParams);
 
             mergeSaleRpt(salesOnlineRptList,salesRptList);
+
+            /*wx线下支付*/
+            Map rptOfflineParams = new HashMap<String,String>();
+            rptOfflineParams.putAll(params);
+            rptOfflineParams.putAll(ImmutableMap.of("payType", PayType.PTWxOffLine.getIndex()));
+            List<SalesRpt> salesOfflineRptList = salesByPayTypeRptDao.getSaleRptByPayType(rptOfflineParams);
+
+            mergeSaleRpt(salesOfflineRptList,salesRptList);
 
             /*现金*/
             rptParams.remove("payType");
