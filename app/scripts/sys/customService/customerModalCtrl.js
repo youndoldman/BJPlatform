@@ -16,7 +16,9 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
         currentPalletNumber:null,
         palletList:[],
         userCard:null,
-        isBindedUserCard:false
+        isBindedUserCard:false,
+        developedUserList:[],
+        currentDevelopedUserId:null
     };
 
 
@@ -226,6 +228,7 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
         if($scope.isModify){
             $scope.retrievePallets();
             $scope.retrieveUserCards();
+            $scope.retrieveDevelopedUsers();
         }
 
     };
@@ -322,7 +325,7 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
         }
         CustomerManageService.bindDevelopUser($scope.vm.currentCustomer.userId, developedUserId).then(function () {
             udcModal.info({"title": "处理结果", "message": "推荐直销员绑定成功 "});
-            $scope.retrieveUserCards();
+            $scope.retrieveDevelopedUsers();
         }, function(value) {
             udcModal.info({"title": "错误信息", "message": "推荐直销员绑定失败:  "+value.message});
         })
@@ -333,9 +336,22 @@ customServiceApp.controller('CustomerModalCtrl', ['$scope', 'close', 'CustomerMa
     $scope.developedUserUnBind = function (developedUserId) {
         CustomerManageService.unBindDevelopUser($scope.vm.currentCustomer.userId, developedUserId).then(function () {
             udcModal.info({"title": "处理结果", "message": "推荐直销员解除绑定成功 "});
-            $scope.retrieveUserCards();
+            $scope.retrieveDevelopedUsers();
         }, function(value) {
             udcModal.info({"title": "错误信息", "message": "推荐直销员解除绑定失败:  "+value.message});
+        })
+    };
+
+    //开发客户直销员查询　
+    $scope.retrieveDevelopedUsers = function () {
+        var queryParams = {
+            customerId:$scope.vm.currentCustomer.userId,
+        };
+        CustomerManageService.retrieveDevelopUser(queryParams).then(function (developedUser) {
+            $scope.vm.developedUserList = developedUser.items;
+
+        }, function(value) {
+            udcModal.info({"title": "错误信息", "message": "查询推荐直销员信息失败:  "+value.message});
         })
     };
 

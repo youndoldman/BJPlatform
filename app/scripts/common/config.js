@@ -102,8 +102,7 @@ commonModule.constant('URI', {
         'UserCardBind':'../../../api/UserCard/Bind',//用户卡绑定
         'UserCardunBind':'../../../api/UserCard/unBind',//用户卡解绑定
 
-        'DevelopUserBind':'../../../api/UserCard/Bind',//开发直销员绑定
-        'DevelopUserUnBind':'../../../api/UserCard/unBind',//开发直销员解绑定
+        'DevelopUser':'../../../api/customers/referee',//客户推荐人接口
 
         'GasFillingMerge':'../../../api/GasFillingMerge',//8.3.	充装数据查询
 

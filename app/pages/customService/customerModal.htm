@@ -161,10 +161,10 @@
                 <div class="input-group pdb15" ng-repeat="developedUser in vm.developedUserList" ng-if="isModify">
                     <label class="col-sm-4 control-label input-label-large">推荐人ID：</label>
                     <div class="col-sm-8 input-width">
-                        <input type="text" name="developedUserId" class="form-control" ng-model="developedUser.userId"  required>
+                        <input type="text" name="developedUserId" class="form-control" ng-model="developedUser.referee.userId"  required>
                     </div>
                     <!--<button ng-if="isBinded" type="button" class="btn btn-sm btn-danger" ng-click="unBind()"><i class="fa fa-plus"></i> 解绑 </button>-->
-                    <button type="button" class="btn btn-sm btn-danger" ng-click="developedUserUnBind(developedUser.userId)"><i class="fa fa-minus"></i> 解绑 </button>
+                    <button type="button" class="btn btn-sm btn-danger" ng-click="developedUserUnBind(developedUser.referee.userId)"><i class="fa fa-minus"></i> 解绑 </button>
                 </div>
 
 

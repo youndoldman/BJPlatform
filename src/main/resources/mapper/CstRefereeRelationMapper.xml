@@ -11,8 +11,8 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
 
-        <association property="customerId" column="customer_idx" select="com.donno.nj.dao.UserDao.findById"/>
-        <association property="refereeId" column="referee_idx" select="com.donno.nj.dao.UserDao.findById"/>
+        <association property="customer" column="customer_idx" select="com.donno.nj.dao.UserDao.findById"/>
+        <association property="referee" column="referee_idx" select="com.donno.nj.dao.UserDao.findById"/>
 
     </resultMap>
 
@@ -34,10 +34,9 @@
     </delete>
 
 
-
-
     <sql id="getListCondition">
         WHERE
+        id > 0
         <if test="customerId != null">
             AND customer_idx = (SELECT  id from t_user WHERE  user_id=#{customerId})
         </if>

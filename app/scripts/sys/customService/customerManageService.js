@@ -32,8 +32,8 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     var userCardUnBindUri = URI.resources.UserCardunBind;//用户卡解绑定
 
 
-    var DevelopUserBindUri = URI.resources.DevelopUserBind;//用户卡绑定
-    var DevelopUserUnBindUri = URI.resources.DevelopUserUnBind;//用户卡解绑定
+    var DevelopUserUri = URI.resources.DevelopUser;//客户推荐人接口
+
 
     var sysUserUri = URI.resources.users;
     var sysUserFindByUserIdUri = URI.resources.sysUserFindByUserId;
@@ -270,15 +270,19 @@ customServiceApp.service('CustomerManageService', ['$http', 'URI', 'promiseWrapp
     };
 
 
-    //绑定用户卡至客户
-    this.bindDevelopUser = function (customerId, developUserID) {
-        return promise.wrap($http.put(DevelopUserBindUri + "/" + developUserID+"?userId="+customerId));
+    //绑定推荐人
+    this.bindDevelopUser = function (customerId, refereeId) {
+        return promise.wrap($http.post(DevelopUserUri +"?customerId=" + customerId+"&refereeId="+refereeId));
     };
-    //解除绑定用户卡
-    this.unBindDevelopUser = function (customerId, developUserID) {
-        return promise.wrap($http.put(DevelopUserUnBindUri + "/" + developUserID+"?userId="+customerId));
+    //解除推荐人
+    this.unBindDevelopUser = function (customerId, refereeId) {
+        return promise.wrap($http.delete(DevelopUserUri +"?customerId=" + customerId+"&refereeId="+refereeId));
     };
 
+    //推荐人查询
+    this.retrieveDevelopUser = function (params) {
+        return promise.wrap($http.get(DevelopUserUri, {params: params}));
+    };
 
 
 }]);

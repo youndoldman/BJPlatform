@@ -7,6 +7,7 @@ import com.donno.nj.exception.ServerSideBusinessException;
 import com.donno.nj.representation.ListRep;
 import com.donno.nj.service.OrderService;
 import com.donno.nj.service.SmsService;
+import com.donno.nj.service.SysUserService;
 import com.donno.nj.service.WorkFlowService;
 import com.donno.nj.util.AppUtil;
 import com.donno.nj.util.DistanceHelper;
@@ -257,7 +258,7 @@ public class OrderServiceImpl implements OrderService
 
             /*查询优惠,计算满足条件的每件商品优惠后价格，及订单总金额*/
             if (customer.getSettlementType().getCode().equals(ServerConstantValue.SETTLEMENT_TYPE_COMMON_USER) ||
-            customer.getSettlementType().getCode().equals(ServerConstantValue.SETTLEMENT_TYPE_MONTHLY_CREDIT   ))//普通用户,月结用户 可以享受优惠
+                    customer.getSettlementType().getCode().equals(ServerConstantValue.SETTLEMENT_TYPE_MONTHLY_CREDIT   ))//普通用户,月结用户 可以享受优惠
             {
                 dealPrice = discount(orderDetail,customer);
             }
@@ -292,7 +293,7 @@ public class OrderServiceImpl implements OrderService
 //        }
 //        else
 //        {
-            orderUpdateAmount.setOrderAmount(dealAmount);
+        orderUpdateAmount.setOrderAmount(dealAmount);
 //        }
 
         orderDao.update(orderUpdateAmount);
@@ -1062,62 +1063,75 @@ public class OrderServiceImpl implements OrderService
         {
             for (CstRefereeRel refereeRel :cstRefereeRels)
             {
-                if (candUser.trim().length() > 0 )
-                {
-                    candUser = candUser + ",";
+                SysUser RefereeUser = sysUserDao.findBySysUserId(refereeRel.getReferee().getUserId());
+
+                if(RefereeUser==null||RefereeUser.getAliveStatus()==AliveStatus.ASOffline){
+                    continue;
                 }
-                candUser = candUser + refereeRel.getRefereeId();
+                Double distance = DistanceHelper.Distance(order.getRecvLatitude(),order.getRecvLongitude(),
+                        RefereeUser.getUserPosition().getLatitude(),RefereeUser.getUserPosition().getLongitude());
+                if ( distance < sysDispatchRange)
+                {
+                    if (candUser.trim().length() > 0 )
+                    {
+                        candUser = candUser + ",";
+                    }
+                    candUser = candUser + refereeRel.getReferee().getUserId();
+                }
             }
         }
+        if(candUser.trim().length() == 0){
+             /*指定可办理该流程用户,根据经纬度寻找合适的派送工*/
+            Map findDispatchParams = new HashMap<String,String>();
+            findDispatchParams.putAll(ImmutableMap.of("groupCode", ServerConstantValue.GP_DISPATCH));
+            List<SysUser> sysUsersList = sysUserDao.getList(findDispatchParams);
 
-        /*指定可办理该流程用户,根据经纬度寻找合适的派送工*/
-        Map findDispatchParams = new HashMap<String,String>();
-        findDispatchParams.putAll(ImmutableMap.of("groupCode", ServerConstantValue.GP_DISPATCH));
-        List<SysUser> sysUsersList = sysUserDao.getList(findDispatchParams);
-
-        if (sysUsersList.size() > 0)
-        {
-            Integer dispatchRange = sysDispatchRange;
-            while (candUser.trim().length() == 0)
+            if (sysUsersList.size() > 0)
             {
-                for (SysUser sysUser:sysUsersList)
+                Integer dispatchRange = sysDispatchRange;
+                while (candUser.trim().length() == 0)
                 {
-                    if (sysUser.getUserPosition() != null)
+                    for (SysUser sysUser:sysUsersList)
                     {
+                        if (sysUser.getUserPosition() != null)
+                        {
                         /*候选人已经包含当前直销员*/
-                        if (candUser.contains(sysUser.getUserId()))
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            Double distance = DistanceHelper.Distance(order.getRecvLatitude(),order.getRecvLongitude(),sysUser.getUserPosition().getLatitude(),sysUser.getUserPosition().getLongitude());
-                            if ( distance < dispatchRange)
+                            if (candUser.contains(sysUser.getUserId()))
                             {
-                                if (candUser.trim().length() > 0 )
+                                continue;
+                            }
+                            else
+                            {
+                                Double distance = DistanceHelper.Distance(order.getRecvLatitude(),order.getRecvLongitude(),sysUser.getUserPosition().getLatitude(),sysUser.getUserPosition().getLongitude());
+                                if ( distance < dispatchRange)
                                 {
-                                    candUser = candUser + ",";
+                                    if (candUser.trim().length() > 0 )
+                                    {
+                                        candUser = candUser + ",";
+                                    }
+                                    candUser = candUser + sysUser.getUserId();
                                 }
-                                candUser = candUser + sysUser.getUserId();
                             }
                         }
                     }
-                }
 
-                if (candUser.trim().length() > 0)
-                {
-                    break;
-                }
-                else
-                {
-                    dispatchRange = dispatchRange +  1;
-                }
+                    if (candUser.trim().length() > 0)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        dispatchRange = dispatchRange +  1;
+                    }
 
-                if (dispatchRange > maxDistance)
-                {
-                    break;
+                    if (dispatchRange > maxDistance)
+                    {
+                        break;
+                    }
                 }
             }
+
+
 
 //            if (candUser.trim().length() > 0 )
 //            {
@@ -1682,7 +1696,7 @@ public class OrderServiceImpl implements OrderService
             }
             else if (orderStatus == OrderStatus.OSSigned.getIndex())
             {
-                    opLog = "已签收";
+                opLog = "已签收";
             }
             else if (orderStatus == OrderStatus.OSCompleted.getIndex())
             {

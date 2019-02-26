@@ -12,9 +12,9 @@ public class CstRefereeRel implements Serializable
 {
     private Integer id;
 
-    private String customerId;//客户userID
-    private String refereeId;//关联推荐人
-
+    private User customer;//客户
+    private User referee;//关联推荐人
+    protected String  note;
     private Date createTime;
     private Date updateTime;
 
@@ -23,12 +23,12 @@ public class CstRefereeRel implements Serializable
         return id;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public User getCustomer() {
+        return customer;
     }
 
-    public String getRefereeId() {
-        return refereeId;
+    public User getReferee() {
+        return referee;
     }
 
     public  Date getCreateTime()
@@ -41,17 +41,22 @@ public class CstRefereeRel implements Serializable
         return  updateTime;
     }
 
+    public String getNote()
+    {
+        return note;
+    }
+
     public void setId(Integer id)
     {
         this.id = id;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setCustomer(User customer) {
+        this.customer = customer;
     }
 
-    public void setRefereeId(String refereeId) {
-        this.refereeId = refereeId;
+    public void setReferee(User referee) {
+        this.referee = referee;
     }
 
     public void setCreateTime(Date createTime)
@@ -64,6 +69,10 @@ public class CstRefereeRel implements Serializable
         this.updateTime = updateTime;
     }
 
+    public void setNote(String note)
+    {
+        this.note = note;
+    }
 
     @Override
     public String toString()
