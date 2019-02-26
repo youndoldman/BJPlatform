@@ -198,6 +198,9 @@
             <when test=" payType == 5 ">
                 <include refid="qryCoupon"/>
             </when>
+            <when test=" payType == 7">
+                <include refid="qryNoneTicketCoupon"/>
+            </when >
         </choose>
     </sql>
 
