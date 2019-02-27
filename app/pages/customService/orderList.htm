@@ -37,12 +37,10 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <label class="input">结算方式：</label>
                         <label class="input"><select  ng-model="q.orderTriggerType" ng-options="orderTriggerType.value for orderTriggerType in vm.orderTypesConfig" class="form-control" ng-selected="" ng-change="orderTrigerTypeSearchChange()"></select></label>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <label class="input">配送人员：</label>
-                        <label class="input"><input type="text"  class="form-control" ng-model="q.dispatcherId"></label>
+
                     </div>
                     <div class="col-md-4">
-                        <label class="input">时间：</label>
+                        <label class="input">时间范围：</label>
                         <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>
                         <label class="input">—</label>
                         <label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control" ng-model="q.endTime"></label>
@@ -50,6 +48,9 @@
                             <i class="fa fa-trash-o"></i>
                         </button>
                         <button  ng-click="search()" class="btn btn-md btn-primary pull-right"><i class="fa fa-search"></i> 搜索 </button>
+
+                        <label class="input">配送人员：</label>
+                        <label class="input"><input type="text"  class="form-control" ng-model="q.dispatcherId"></label>
                     </div>
                 </div>
 

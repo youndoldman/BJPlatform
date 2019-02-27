@@ -64,7 +64,7 @@
             <td class="message">{{complaint.reserveTime}}</td>
             <td class="message">{{complaint.processStatus.name}}</td>
             <td class="message">{{complaint.department.name}}</td>
-            <td class="message">{{complaint.dealedUser.userId}}</td>
+            <td class="message">{{complaint.dealedUser.userId}}|{{complaint.dealedUser.name}}</td>
             <td class="message">{{complaint.createTime}}</td>
             <td class="operate">
                 <button title="详情" ng-click="viewDetails(complaint)" type="button" class="btn btn-primary btn-outline btn-xs">

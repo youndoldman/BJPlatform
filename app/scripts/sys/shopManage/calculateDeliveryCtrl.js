@@ -232,6 +232,15 @@ shopManageApp.controller('CalculateDeliveryCtrl', ['$scope', '$rootScope', '$fil
             //权限控制代码
             rolesControl();
 
+            //初始化时间为当天
+            var date = new Date();
+            var month = date.getMonth()+1;
+            $scope.dailyData.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" 00:00:00";
+            $scope.dailyData.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" 23:59:59";
+
+            $scope.monthlyData.startTime = date.getFullYear()+"-"+month+"-"+"01"+" 00:00:00";
+            $scope.monthlyData.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" 23:59:59";
+
         };
 
         //权限控制代码

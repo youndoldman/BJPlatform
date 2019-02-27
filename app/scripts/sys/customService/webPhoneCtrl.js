@@ -28,6 +28,7 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
         };
 
         var init = function () {
+            //document.getElementById('callnumber').innerHTML = "13913015340";
             searchCloudUsers();
         };
         $timeout(function(){

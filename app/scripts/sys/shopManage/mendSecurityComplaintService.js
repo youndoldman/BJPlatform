@@ -11,6 +11,8 @@ shopManageApp.service('MendSecurityComplaintService', ['$http', 'URI', 'promiseW
 
     var departmentUri = URI.resources.department;
 
+    var usersUri = URI.resources.users;//用户信息查询接口
+
 
 
     //请求报修的类型
@@ -85,6 +87,10 @@ shopManageApp.service('MendSecurityComplaintService', ['$http', 'URI', 'promiseW
     //修改投诉订单
     this.modifyComplaint = function (complaint) {
         return promise.wrap($http.put(complaintUri + "/" + complaint.complaintSn, complaint));
+    };
+    //查询用户　
+    this.retrieveUsers = function (params) {
+        return promise.wrap($http.get(usersUri, {params: params}));
     };
 
 

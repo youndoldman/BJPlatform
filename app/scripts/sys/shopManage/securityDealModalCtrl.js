@@ -2,6 +2,8 @@
 shopManageApp.controller('SecurityDealModalCtrl', ['$scope', 'close', 'MendSecurityComplaintService', 'title', 'initVal','udcModal', 'sessionStorage',function ($scope, close, MendSecurityComplaintService, title, initVal,udcModal,sessionStorage) {
     $scope.modalTitle = title;
     $scope.vm = {
+        selectedUser:null,
+        userList:[],
         security: {}
     };
 
@@ -15,8 +17,7 @@ shopManageApp.controller('SecurityDealModalCtrl', ['$scope', 'close', 'MendSecur
         if ((security.resloveInfo != null) && (security.resloveInfo != "")) {
 
             security.processStatus = "PTSolved";//将安检单标记成已处理
-            var curUser = sessionStorage.getCurUser();
-            security.dealedUser = {userId:curUser.userId};//本登陆用户处理
+            security.dealedUser = {userId:$scope.vm.selectedUser};//本登陆用户处理
             MendSecurityComplaintService.modifySecurity(security).then(function () {
                 udcModal.info({"title": "处理结果", "message": "安检单处理成功 "});
                 $scope.close(true);
@@ -34,7 +35,21 @@ shopManageApp.controller('SecurityDealModalCtrl', ['$scope', 'close', 'MendSecur
             else {
                 $scope.isModify = false;
             }
+
+            searchUsers();
         };
 
-        init();
+    //查询本部门员工
+    var searchUsers = function () {
+        var searchParam = {
+            departmentCode:$scope.vm.security.department.code
+        };
+        MendSecurityComplaintService.retrieveUsers(searchParam).then(function (users) {
+            $scope.vm.userList = users.items;
+            $scope.vm.selectedUser = $scope.vm.userList[0].userId;
+        });
+    };
+
+
+    init();
     }]);

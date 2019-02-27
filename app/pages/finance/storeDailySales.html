@@ -42,7 +42,7 @@
                 <div class="col-md-2">
                     <span style="color:red">*</span>
                     <label class="input"><input type="text" class="form-control input-md" ng-model="q.liableDepartmentName" ng-change="search()" placeholder="编报部门" ng-disabled="q.isControled"> </label>
-                    <span class="glyphicon glyphicon-calendar" ng-click="initDepartmentSelect()" ng-disabled="q.isControled"></span>
+                    <span class="glyphicon glyphicon-calendar" ng-click="initDepartmentSelect()" ng-if="!q.isControled"></span>
 
                 </div>
                 <div class="col-md-4">

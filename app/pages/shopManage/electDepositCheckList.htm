@@ -10,11 +10,26 @@
     <div class="toolbar">
         <form role="form">
             <div class="">
+                <label class="input">押金单状态：</label>
+                <label class="input"><select  ng-model="q.electDepositStatus" ng-options="electDepositStatus.value for electDepositStatus in vm.electDepositStatusList" class="form-control" ng-selected="" ng-change="electDepositStatusSearchChange()"></select></label>
 
-                <div class="col-sm-8 input-width">
-                    <label class="input">押金单状态：</label>
-                    <label class="input"><select  ng-model="q.electDepositStatus" ng-options="electDepositStatus.value for electDepositStatus in vm.electDepositStatusList" class="form-control" ng-selected="" ng-change="electDepositStatusSearchChange()"></select></label>
-                </div>
+                <label class="input">客户编号：</label>
+                <label class="input"><input type="text"  class="form-control" ng-model="q.customerId"></label>
+
+                <label class="input">时间范围：</label>
+                <label class="input"><input type="text"  id="datetimepickerStart"  class="form-control" ng-model="q.startTime"></label>
+                <label class="input">—</label>
+                <label class="input"><input type="text"  id="datetimepickerEnd"  class="form-control" ng-model="q.endTime"></label>
+                <button title="删除时间" ng-click="deleteTimeRange()" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <i class="fa fa-trash-o"></i>
+                </button>
+
+                <label class="input">责任部门：</label>
+                <label class="input"><input type="text" class="form-control input-md" ng-model="q.department.name" ng-change="search()" placeholder="选择部门" ng-disabled="q.isControled"></label>
+                <span class="glyphicon glyphicon-calendar" ng-click="initDepartmentSelect()" ng-if="!q.isControled"></span>
+
+
+                <button  ng-click="search()" class="btn btn-md btn-primary pull-right"><i class="fa fa-search"></i> 搜索 </button>
             </div>
         </form>
     </div>

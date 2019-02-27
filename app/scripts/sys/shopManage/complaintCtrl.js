@@ -81,7 +81,7 @@ shopManageApp.controller('ComplaintCtrl', ['$scope', '$rootScope', '$filter', '$
 
         $scope.viewDetails = function (complaint) {
             udcModal.show({
-                templateUrl: "./customService/complaintDealModal.htm",
+                templateUrl: "./shopManage/complaintDealModal.htm",
                 controller: "ComplaintDealModalCtrl",
                 inputs: {
                     title: '投诉单详情',
@@ -93,7 +93,7 @@ shopManageApp.controller('ComplaintCtrl', ['$scope', '$rootScope', '$filter', '$
         //指派投诉单
         $scope.assign = function (complaint) {
             udcModal.show({
-                templateUrl: "./customService/complaintAssignModal.htm",
+                templateUrl: "./shopManage/complaintAssignModal.htm",
                 controller: "ComplaintAssignModalCtrl",
                 inputs: {
                     title: '投诉单指派',
@@ -109,7 +109,7 @@ shopManageApp.controller('ComplaintCtrl', ['$scope', '$rootScope', '$filter', '$
         //处理投诉单
         $scope.deal = function (complaint) {
             udcModal.show({
-                templateUrl: "./customService/complaintDealModal.htm",
+                templateUrl: "./shopManage/complaintDealModal.htm",
                 controller: "ComplaintDealModalCtrl",
                 inputs: {
                     title: '投诉单处理',

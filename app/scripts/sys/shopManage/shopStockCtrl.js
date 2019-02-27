@@ -15,11 +15,22 @@ shopManageApp.controller('ShopStockCtrl', ['$scope', '$rootScope', '$filter', '$
         var historyQ = $scope.pager.getQ();
 
         $scope.q = {
-            bottleNumber: historyQ.bottleNumber || ""
+            bottleNumber: historyQ.bottleNumber || "",
+            spec: null,
+            loadStatus: null
         };
 
         $scope.vm = {
-            bottleList: []
+            bottleList: [],
+            specList:[{value:null,name:"全部规格"},
+                {value:"0001",name:"5公斤"},
+                {value:"0002",name:"15公斤"},
+                {value:"0003",name:"50公斤"}
+            ],
+            loadStatusList:[{value:null,name:"空重瓶"},
+                {value:"LSEmpty",name:"空瓶"},
+                {value:"LSHeavy",name:"重瓶"}
+            ],
         };
 
         $scope.search = function () {
@@ -68,7 +79,9 @@ shopManageApp.controller('ShopStockCtrl', ['$scope', '$rootScope', '$filter', '$
                 pageNo: $scope.pager.getCurPageNo(),
                 pageSize: $scope.pager.pageSize,
                 liableDepartmentCode:currentUser.department.code,
-                serviceStatus:2
+                serviceStatus:2,
+                specCode:$scope.q.spec.value,
+                loadStatus:$scope.q.loadStatus.value
             };
 
             ShopStockService.retrieveBottles(queryParams).then(function (bottles) {
@@ -81,10 +94,14 @@ shopManageApp.controller('ShopStockCtrl', ['$scope', '$rootScope', '$filter', '$
 
         var init = function () {
             //查询钢瓶
+            $scope.q.spec = $scope.vm.specList[0];
+            $scope.q.loadStatus = $scope.vm.loadStatusList[0];
             searchBottles();
         };
 
         init();
+
+
 
 
 

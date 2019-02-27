@@ -637,7 +637,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                     $scope.showDetail($scope.vm.currentCustomer);
                 }
 
-                console.info($scope.vm.currentCustomer);
+
 
                 var queryParams1 = {
                     typeCode: $scope.temp.selectedGoodsType.code,
@@ -647,12 +647,13 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                     county:$scope.vm.currentCustomer.address.county,
                     cstUserId:$scope.vm.currentCustomer.userId,
                 };
-                console.info(queryParams1);
+
                 CustomerManageService.retrieveGoods(queryParams1).then(function (goods) {
                     $scope.temp.goodsList = goods.items;
-                    console.info(goods.items)
+
                     $scope.temp.selectedGoods = $scope.temp.goodsList[0];
-                    console.info($scope.temp.selectedGoods)
+                    $scope.temp.selectedQuantity = 1;
+
                 });
             });
 
@@ -715,6 +716,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
             //删除购物车
             $scope.currentOrder.orderDetailList = [];
+            $scope.temp.selectedQuantity = 1;
 
             //托盘用户,更新订单类型为按斤结算
             if(($scope.vm.currentCustomer.customerType.code=="00003")||($scope.vm.currentCustomer.customerType.code=="00004")){
@@ -785,6 +787,8 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 {
                     //获取token
                     getToken();
+                    //查询通话记录
+                    $scope.searchReport();
                     $interval.cancel($scope.timerGetClouderUser);
                 }
             }, 1000);
@@ -846,9 +850,28 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             //初始化订单类型为普通订单
             $scope.currentOrder.orderTriggerType = "OTTNormal";
 
+
+            //查询电话条是否处于接入状态
+            var call_phone = document.getElementById('callnumber').innerHTML;
+            if(call_phone.length>7){
+                $scope.clearWindow();
+                $scope.vm.callInPhone = call_phone;
+                //查询相关联的客户
+                $scope.pagerCustomer.setCurPageNo(1);
+                searchCallInCustomer($scope.vm.callInPhone);
+            }
+
+            //通话记录初始化为当天时间
+            //初始化时间为当天
+            var date = new Date();
+            var month = date.getMonth()+1;
+            $scope.q.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" 00:00:00";
+            $scope.q.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" 23:59:59";
+
+
         };
 
-        init();
+
 
 //刷新维修订单的数据
         var refleshMend = function() {
@@ -1238,8 +1261,11 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             })
         };
 
+        init();
 
 
-
+        $scope.timeStrCut = function (timeStr) {
+            return timeStr.substr(11, 18);
+        };
 
     }]);

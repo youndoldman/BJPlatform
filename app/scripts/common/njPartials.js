@@ -41,3 +41,17 @@ commonModule.directive('njMenu', ['rootService', function (rootService) {
         }
     }
 }]);
+
+
+commonModule.directive('njPhone', ['NavItem', 'rootService', function (NavItem, rootService) {
+    return {
+        restrict: 'AE',
+        templateUrl: '../pages/customService/webphone.htm',
+        link: function ($scope, $element, $attrs) {
+
+            $scope.navItems = _.values(NavItem);
+            $scope.activeNav = rootService.getActiveNav();
+
+        }
+    }
+}]);

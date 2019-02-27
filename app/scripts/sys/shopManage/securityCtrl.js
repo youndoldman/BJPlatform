@@ -108,7 +108,7 @@ shopManageApp.controller('SecurityCtrl', ['$scope', '$rootScope', '$filter', '$l
         //处理安检单
         $scope.deal = function (security) {
             udcModal.show({
-                templateUrl: "./customService/securityDealModal.htm",
+                templateUrl: "./shopManage/securityDealModal.htm",
                 controller: "SecurityDealModalCtrl",
                 inputs: {
                     title: '安检单处理',

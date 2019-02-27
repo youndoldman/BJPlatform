@@ -3,6 +3,49 @@
 shopManageApp.controller('ElectDepositCheckCtrl', ['$scope', '$rootScope', '$filter', '$location', 'Constants',
     'rootService', 'pager', 'udcModal', 'OrderCheckService', 'sessionStorage',function ($scope, $rootScope, $filter, $location, Constants,
                                                           rootService, pager, udcModal, OrderCheckService,sessionStorage) {
+
+
+        $(function () {
+
+            $('#datetimepickerStart').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+            });
+            $('#datetimepickerEnd').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                //sideBySide:true,
+                showTodayButton:true,
+                toolbarPlacement:'top',
+
+            });
+        });
+        $(function () {
+            $('#datetimepickerStart').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+
+                });
+            $('#datetimepickerEnd').datetimepicker()
+                .on('dp.change', function (ev) {
+                    var date = ev.date._d;
+                    var month = date.getMonth()+1;
+                    $scope.q.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" "
+                        +date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                });
+        });
+        //清除时间范围
+        $scope.deleteTimeRange = function () {
+            $scope.q.startTime = null;
+            $scope.q.endTime = null;
+        };
+
         var gotoPage = function (pageNo) {
             $scope.pager.setCurPageNo(pageNo);
                 //查询需要进行确认的订单
@@ -10,7 +53,9 @@ shopManageApp.controller('ElectDepositCheckCtrl', ['$scope', '$rootScope', '$fil
         };
 
 
-
+        $scope.search = function () {
+            searchElectDeposit();
+        };
         $scope.pager = pager.init('OrderCtrl', gotoPage);
         var historyQ = $scope.pager.getQ();
 
@@ -22,7 +67,10 @@ shopManageApp.controller('ElectDepositCheckCtrl', ['$scope', '$rootScope', '$fil
         };
         $scope.q = {
             electDepositStatus:null,
-            department:null
+            department:{"code":null},
+            customerId:null,
+            startTime:null,
+            endTime:null,
         };
 
 
@@ -50,6 +98,9 @@ shopManageApp.controller('ElectDepositCheckCtrl', ['$scope', '$rootScope', '$fil
         var searchElectDeposit = function () {
             //查询需要进行核单的电子押金单
             var queryParams = {
+                startTime:$scope.q.startTime,
+                endTime:$scope.q.endTime,
+                customerId:$scope.q.customerId,
                 electDepositStatus:$scope.q.electDepositStatus.key,
                 departmentCode:$scope.q.department.code,
                 pageNo: $scope.pager.getCurPageNo(),
@@ -80,10 +131,22 @@ shopManageApp.controller('ElectDepositCheckCtrl', ['$scope', '$rootScope', '$fil
 
 
         var init = function () {
+
+            //初始化时间为当天
+            var date = new Date();
+            var month = date.getMonth()+1;
+            $scope.q.startTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" 00:00:00";
+            $scope.q.endTime = date.getFullYear()+"-"+month+"-"+date.getDate()+" 23:59:59";
+
             var curUser = sessionStorage.getCurUser();
-            $scope.q.department = curUser.department;
             $scope.q.electDepositStatus = $scope.vm.electDepositStatusList[1];
+
             searchElectDeposit();
+
+
+            //权限控制代码
+            rolesControl();
+
         };
 
         //押金单状态查询改变
@@ -92,7 +155,32 @@ shopManageApp.controller('ElectDepositCheckCtrl', ['$scope', '$rootScope', '$fil
         };
 
 
+
+        //权限控制代码
+        var rolesControl = function () {
+            //初始化当前用户
+            var curUser = sessionStorage.getCurUser();
+            if(curUser.userGroup.id==5){
+                $scope.q.isControled = true;
+                $scope.q.department = curUser.department;
+
+            }
+        };
+
+        $scope.initDepartmentSelect = function () {
+            udcModal.show({
+                templateUrl: "./finance/departmentSelectModal.htm",
+                controller: "DepartmentSelectModalCtrl",
+                inputs: {
+                    title: '百江燃气组织架构',
+                    initVal: {}
+                }
+            }).then(function (result) {
+                if (result!=null) {
+                    $scope.q.department = result
+                    searchElectDeposit();
+                }
+            })
+        };
         init();
-
-
     }]);
