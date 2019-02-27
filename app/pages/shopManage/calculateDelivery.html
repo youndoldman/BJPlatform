@@ -35,8 +35,8 @@
                 <div class="col-md-11">
                     <div class="col-md-12">
                         <label class="input">责任部门：</label>
-                        <label class="input"><input type="text" class="form-control input-md" ng-model="q.liableDepartmentName" ng-change="search()" placeholder="选择部门"></label>
-                        <span class="glyphicon glyphicon-calendar" ng-click="initDepartmentSelect()"></span>
+                        <label class="input"><input type="text" class="form-control input-md" ng-model="q.liableDepartmentName" ng-change="search()" placeholder="选择部门" ng-disabled="q.isControled"></label>
+                        <span class="glyphicon glyphicon-calendar" ng-click="initDepartmentSelect()" ng-disabled="q.isControled"></span>
 
                         <label class="input" >选择配送工:</label>
                         <label class="input">
@@ -75,9 +75,9 @@
         </tr>
         </thead>
 
-        <tbody  ng-repeat="firstArray in data.goodsList">
-            <tr  ng-repeat="item in firstArray.detail track by $index">
-                <td width="10%" ng-if="$index ==0" rowspan={{firstArray.detail.length}}>{{item.goodsType.name}}</td>
+        <tbody>
+            <tr  ng-repeat="item in data.gasCylinderSpecsList track by $index">
+                <td width="10%" ng-if="$index ==0" rowspan={{data.gasCylinderSpecsList.length}}>液化气</td>
                 <td width="10%"  class="message tableContentAdjust">{{item.name}}</td>
                 <td width="40%"  class="message tableContentAdjust">{{item.salesByPayDaily.count}}</td>
                 <td width="40%"  class="message tableContentAdjust">{{item.salesByPayMonthly.count}}</td>

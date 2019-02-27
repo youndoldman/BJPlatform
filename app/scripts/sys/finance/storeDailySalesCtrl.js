@@ -166,6 +166,8 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
             sumCurrentKucun:null,sumTodayIn:null,sumTodayOut:null,
             sumMonthlyIn:null,
 
+            isControled:false
+
 
         };
 
@@ -200,7 +202,6 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                 monthStartTime:$scope.monthlyData.startTime,
                 monthEndTime:$scope.monthlyData.endTime,
             };
-            console.log(queryParamsDailySales);
             emitDailySalesQuery(queryParamsDailySales);
         };
 
@@ -533,8 +534,7 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
                     startTime:$scope.dailyData.startTime,
                     endTime:$scope.dailyData.endTime,
                 };
-                console.info("今日现金销售");
-                console.info(paramsCash1);
+
                 FinanceService.searchSalesCash(paramsCash1).then(function (salesCash) {
 
                     $scope.data.todaySalesCash = salesCash;
@@ -584,16 +584,30 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
             })
         };
 
+        //权限控制代码
+        var rolesControl = function () {
+            //初始化当前用户
+            var curUser = sessionStorage.getCurUser();
+            if(curUser.userGroup.id==5){
+                $scope.q.liableDepartmentCode = curUser.department.code;
+
+                $scope.q.liableDepartmentName = curUser.department.name;
+                $scope.q.isControled = true;
+            }
+        };
+
         var init = function () {
             var queryParams = {};
             FinanceService.retrieveGasCylinderSpecUri(queryParams).then(function (specTypes) {
                 $scope.data.specTypesList = specTypes.items;
-                console.log($scope.data.specTypesList);
             });
 
             $scope.timer = $interval(function(){
                 calculateCountSumSum()
             }, 50);
+
+            //权限控制代码
+            rolesControl();
 
         };
         init();
@@ -628,6 +642,8 @@ financeApp.controller('storeDailySalesCtrl', ['$scope', '$rootScope', '$filter',
             //传递门店日报表查询事件
             $rootScope.$broadcast("Event_DailySalesQuery", queryParamsDailySales);
         };
+
+
 
 
     }]);

@@ -141,10 +141,11 @@ public class GasCylinderController
                                              @RequestParam(value = "targetUserId", defaultValue = "",required = true) String targetUserId,
                                              @RequestParam(value = "serviceStatus", required = true) Integer serviceStatus,
                                              @RequestParam(value = "enableForce", required = true) Boolean enableForce,
-                                             @RequestParam(value = "note", defaultValue = "")  String note)
+                                             @RequestParam(value = "note", defaultValue = "")  String note,
+                                             @RequestParam(value = "isChangeFillingStatus", defaultValue = "true")  Boolean isChangeFillingStatus)
     {
         ResponseEntity responseEntity;
-        gasCylinderService.updateSvcStatus(number,serviceStatus,srcUserId,targetUserId,enableForce,note);
+        gasCylinderService.updateSvcStatus(number,serviceStatus,srcUserId,targetUserId,enableForce,note,isChangeFillingStatus);
         responseEntity = ResponseEntity.ok().build();
 
         return responseEntity;

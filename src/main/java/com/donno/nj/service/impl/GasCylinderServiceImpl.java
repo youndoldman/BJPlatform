@@ -320,7 +320,7 @@ public class GasCylinderServiceImpl implements GasCylinderService
 
     @Override
     @OperationLog(desc = "修改钢瓶业务状态信息")
-    public void updateSvcStatus(String number,Integer serviceStatus,String srcUserId,String targetUserId,Boolean enableForce ,String note)
+    public void updateSvcStatus(String number,Integer serviceStatus,String srcUserId,String targetUserId,Boolean enableForce ,String note,Boolean isChangeFillingStatus)
     {
        /*参数校验*/
         if (number == null || number.trim().length() == 0 )
@@ -382,9 +382,11 @@ public class GasCylinderServiceImpl implements GasCylinderService
             /* 出入库*/
             GasCylinderInOut(gasCylinderOptional.get(),serviceStatus,srcUser,targetUser);
 
-            /*空重瓶状态更改*/
-            UpdGasCynLoadStatus(gasCylinderOptional.get(),serviceStatus);
-
+            //退货，不需要修改
+            if(isChangeFillingStatus){
+                 /*空重瓶状态更改*/
+                UpdGasCynLoadStatus(gasCylinderOptional.get(),serviceStatus);
+            }
              /*操作历史*/
             SvcStatusOpHis(srcUser,targetUser,serviceStatus,gasCylinderOptional.get(),enableForce,note);
         }

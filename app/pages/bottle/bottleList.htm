@@ -73,9 +73,9 @@
             <td class="message text-center" ng-if="bottle.user.userGroup.code==0004">客户</td>
             <td class="message text-center" ng-if="bottle.user.userGroup.code!=0004">{{bottle.userDepartment.name}}</td>
             <td class="operate text-center">
-                <!--<button title="详情" ng-click="location(bottle.location|lonFilter, bottle.location|lanFilter)" type="button" class="btn btn-primary btn-outline btn-xs">-->
-                    <!--<i class="fa fa-info-circle"></i>-->
-                <!--</button>-->
+                <button title="详情" ng-click="viewTakeOverHistory(bottle)" type="button" class="btn btn-primary btn-outline btn-xs">
+                    <i class="fa fa-info-circle"></i>
+                </button>
                 <button title="修改" ng-click="modify(bottle)" type="button" class="btn btn-primary btn-outline btn-xs">
                     <i class="fa fa-edit"></i>
                 </button>

@@ -33,8 +33,12 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 @RestController
@@ -61,11 +65,18 @@ public class UntilsController {
             params.putAll(ImmutableMap.of("city", city));
 
             List<String> phones = customerService.getPhones(params);
+            //剔除所有非法手机号,未测试
+            Iterator<String> it = phones.iterator();
+            while(it.hasNext()){
+                String x = it.next();
+                if(!isMobiPhoneNum(x)){
+                    it.remove();
+                }
+            }
 
 
             int remainder = phones.size() % 100;  //(先计算出余数)
             int size = (phones.size() / 100);
-            int offset = 0;//偏移量
             int sendTotalCount = 0;
             for (int i = 0; i < size; i++) {
                 List<String> subset = null;
@@ -90,6 +101,20 @@ public class UntilsController {
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
         }
+    }
+
+
+
+    /**
+     * 通用判断
+     * @param telNum
+     * @return
+     */
+    public static boolean isMobiPhoneNum(String telNum) {
+        String regex = "^((13[0-9])|(15[0-9])|(18[0-9]))\\d{8}$";
+        Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(telNum);
+        return m.matches();
     }
 
 

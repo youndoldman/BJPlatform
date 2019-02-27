@@ -29,44 +29,7 @@ comprehensiveQueryApp.controller('GasCynTrayUsageCtrl', ['$scope', '$rootScope',
             //    retrieveGasCynTrayHistory();
             //}, 1000);
         };
-        $(function () {
-            $('#datetimepickerStart').datetimepicker({
-                format: 'YYYY-MM-DD HH:mm',
-                locale: moment.locale('zh-cn'),
-                //sideBySide:true,
-                showTodayButton:true,
-                toolbarPlacement:'top',
-            });
 
-            $('#datetimepickerEnd').datetimepicker({
-                format: 'YYYY-MM-DD HH:mm',
-                locale: moment.locale('zh-cn'),
-                //sideBySide:true,
-                showTodayButton:true,
-                toolbarPlacement:'top',
-
-            });
-        });
-        $(function () {
-            function p(s) {
-                return s < 10 ? '0' + s: s;
-            }
-
-            $('#datetimepickerStart').datetimepicker()
-                .on('dp.change', function (ev) {
-                    var date = ev.date._d;
-                    var month = date.getMonth()+1;
-                    $scope.q.startTime = date.getFullYear()+"-"+p(month)+"-"+p(date.getDate())+" "
-                        +p(date.getHours())+":"+p(date.getMinutes())+":"+p(date.getSeconds());
-                });
-            $('#datetimepickerEnd').datetimepicker()
-                .on('dp.change', function (ev) {
-                    var date = ev.date._d;
-                    var month = date.getMonth()+1;
-                    $scope.q.endTime = date.getFullYear()+"-"+p(month)+"-"+p(date.getDate())+" "
-                        +p(date.getHours())+":"+p(date.getMinutes())+":"+p(date.getSeconds());
-                });
-        });
         var drawChart = function(dataDealed) {
             var legend = [];
             for (var i=0;i<dataDealed.length;i++) {
@@ -181,6 +144,15 @@ comprehensiveQueryApp.controller('GasCynTrayUsageCtrl', ['$scope', '$rootScope',
                 }
             });
         };
+
+        var dateFillZero = function (number) {
+            if(number < 10){
+                return '0'+number;
+            }else{
+                return number;
+            }
+
+        };
         var init = function () {
             $scope.vm.GasCynTray = _.clone(initVal);
 
@@ -189,10 +161,11 @@ comprehensiveQueryApp.controller('GasCynTrayUsageCtrl', ['$scope', '$rootScope',
             var month1 = date1.getMonth()+1;
 
 
+
             var date2= new Date(new Date().setDate(new Date().getDate() - 30)); //30天前的日期
             var month2 = date2.getMonth()+1;
-            $scope.q.endTime = date1.getFullYear()+"-"+month1+"-"+date1.getDate()+" 23:59:59";
-            $scope.q.startTime = date2.getFullYear()+"-"+month2+"-"+date2.getDate()+" 00:00:00";
+            $scope.q.endTime = date1.getFullYear()+"-"+dateFillZero(month1)+"-"+dateFillZero(date1.getDate())+" 23:59:59";
+            $scope.q.startTime = date2.getFullYear()+"-"+dateFillZero(month2)+"-"+dateFillZero(date2.getDate())+" 00:00:00";
             $scope.search();
 
         };
@@ -200,6 +173,7 @@ comprehensiveQueryApp.controller('GasCynTrayUsageCtrl', ['$scope', '$rootScope',
 
             close(result, 500);
         };
+
 
 
 

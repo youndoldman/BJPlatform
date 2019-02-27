@@ -135,6 +135,21 @@ bottleApp.controller('BottleListCtrl', ['$scope', '$rootScope', '$filter', '$loc
         };
 
 
+        $scope.viewTakeOverHistory = function (bottle) {
+            udcModal.show({
+                templateUrl: "./bottle/bottleTakeOverModal.htm",
+                controller: "BottleTakeOverModalCtrl",
+                inputs: {
+                    title: '交接记录',
+                    initVal: bottle
+                }
+            }).then(function (result) {
+                if (result) {
+                }
+            })
+        };
+
+
 
         var init = function () {
             //查询钢瓶

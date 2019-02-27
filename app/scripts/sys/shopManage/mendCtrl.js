@@ -165,4 +165,6 @@ shopManageApp.controller('MendCtrl', ['$scope', '$rootScope', '$filter', '$locat
             $scope.pager.setCurPageNo(1);
             searchMend();
         };
+
+
     }]);

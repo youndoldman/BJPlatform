@@ -1,8 +1,8 @@
-<aside class="" ng-mouseover="hover = true" ng-mouseleave="hover = false">
-    <nav >
-        <ul>
-            <li ng-repeat="item in activeNav.lv1.menuItems" ng-class="getMenuItemClass(item, activeNav)"
-                ng-init="shouldDisplaySubMenu = hasSubMenuItems(item)">
+<aside class="" ng-mouseover="hover = true" ng-mouseleave="hover = false" ng-controller="CommonModuleCtrl">
+    <nav>
+        <ul ng-init="swtchFirstHref()">
+            <li ng-repeat="item in activeNav.lv1.menuItems track by $index" ng-class="getMenuItemClass(item, activeNav)"
+                ng-init="shouldDisplaySubMenu = hasSubMenuItems(item)" ng-if="inRoles(item.roles)" >
                 <a ng-href="{{item.href}}" ng-click="shouldDisplaySubMenu = !shouldDisplaySubMenu;">
                     <i class="fa fa-lg fa-fw" ng-class="item.icon"></i>
                     <span class="menu-item-parent" ng-if="hover">{{item.name}}</span>

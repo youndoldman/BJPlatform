@@ -131,7 +131,7 @@ public class UdpServerHandler
         }
         catch (Exception exception)
         {
-            exception.printStackTrace();
+            //exception.printStackTrace();
         }
     }
 

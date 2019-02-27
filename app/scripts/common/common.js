@@ -153,7 +153,7 @@ commonModule.service('promiseWrapper', ['$q', '$rootScope', function ($q, $rootS
 }]);
 
 
-commonModule.controller('CommonModuleCtrl', ['$rootScope','$scope', '$interval','$timeout','sessionStorage', 'URI', 'promiseWrapper','$window','$http',function ($rootScope,$scope,$interval,$timeout,sessionStorage,URI,promise,$window,$http) {
+commonModule.controller('CommonModuleCtrl', ['$rootScope','$scope', '$interval','$timeout','sessionStorage', 'URI', 'promiseWrapper','$window','$http','rootService',function ($rootScope,$scope,$interval,$timeout,sessionStorage,URI,promise,$window,$http,rootService) {
     $scope.currentTime = "";
     $scope.currentUser = {};
     $scope.currentUserPhoto = "";
@@ -218,6 +218,20 @@ commonModule.controller('CommonModuleCtrl', ['$rootScope','$scope', '$interval',
     var updateHeartBit = function () {
         var user = sessionStorage.getCurUser();
         promise.wrap($http.get(sysUserKeepAliveUri+"/"+user.userId));
+
+    };
+
+    //第一个菜单跳转
+    $scope.swtchFirstHref = function (){
+        var activeNav = rootService.getActiveNav();
+        for(var i = 0; i< activeNav.lv1.menuItems.length; i++)
+        {
+            var item = activeNav.lv1.menuItems[i];
+            if($scope.inRoles(item.roles)){
+                $window.location.href = item.href;
+                break;
+            }
+        }
 
     };
 

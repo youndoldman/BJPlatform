@@ -82,12 +82,11 @@ shopManageApp.controller('CalculateDeliveryCtrl', ['$scope', '$rootScope', '$fil
             liableDepartmentName:null,
             sumDailyCount:null,
             sumMonthlyCount:null,
+            isControled:false
 
         };
         $scope.data = {
             currentTime:null,
-            selectedGoodsType:{},
-            selectedGoods:{},
             goodsTypesList:[],
 
             goodsList:[],
@@ -153,20 +152,20 @@ shopManageApp.controller('CalculateDeliveryCtrl', ['$scope', '$rootScope', '$fil
                     var salesByPayList = salesByPay.items;
                     if(salesByPay.items.length>0)
                     {
-                        for(var i = 0; i < $scope.data.goodsList.length; i++) {
-                            for(var j = 0; j < $scope.data.goodsList[i].detail.length; j++) {
+                        for(var i = 0; i < $scope.data.gasCylinderSpecsList.length; i++) {
+
                                 for (var k = 0; k < salesByPayList.length; k++) {
-                                    if ($scope.data.goodsList[i].detail[j].code==salesByPayList[k].specCode) {
-                                        $scope.data.goodsList[i].detail[j].salesByPayDaily = salesByPayList[k];
+                                    if ($scope.data.gasCylinderSpecsList[i].code==salesByPayList[k].specCode) {
+                                        $scope.data.gasCylinderSpecsList[i].salesByPayDaily = salesByPayList[k];
                                         //数量
-                                        $scope.q.sumDailyCount +=  $scope.data.goodsList[i].detail[j].salesByPayDaily.count;
+                                        $scope.q.sumDailyCount +=  $scope.data.gasCylinderSpecsList[i].salesByPayDaily.count;
                                     }
                                 }
-                            }
+
                         }
                     }
-                    //console.log($scope.data.goodsList);
-                })
+
+                });
 
                 //查询配送工月累计配送量
                 var queryParams2 = {
@@ -182,17 +181,16 @@ shopManageApp.controller('CalculateDeliveryCtrl', ['$scope', '$rootScope', '$fil
                     var salesByPayList = salesByPay.items;
                     if(salesByPay.items.length>0)
                     {
-                        for(var i = 0; i < $scope.data.goodsList.length; i++) {
-                            for(var j = 0; j < $scope.data.goodsList[i].detail.length; j++) {
+                        for(var i = 0; i < $scope.data.gasCylinderSpecsList.length; i++) {
                                 for (var k = 0; k < salesByPayList.length; k++) {
-                                    if ($scope.data.goodsList[i].detail[j].code==salesByPayList[k].specCode) {
-                                        $scope.data.goodsList[i].detail[j].salesByPayMonthly = salesByPayList[k];
+                                    if ($scope.data.gasCylinderSpecsList[i].code==salesByPayList[k].specCode) {
+                                        $scope.data.gasCylinderSpecsList[i].salesByPayMonthly = salesByPayList[k];
                                         //数量
-                                        $scope.q.sumMonthlyCount +=  $scope.data.goodsList[i].detail[j].salesByPayMonthly.count;
+                                        $scope.q.sumMonthlyCount +=  $scope.data.gasCylinderSpecsList[i].salesByPayMonthly.count;
 
                                     }
                                 }
-                            }
+
                         }
                     }
                    // console.log($scope.data.goodsList);
@@ -225,32 +223,27 @@ shopManageApp.controller('CalculateDeliveryCtrl', ['$scope', '$rootScope', '$fil
             $scope.q.liableDepartmentName = $scope.vm.curUser.department.name;
 
             var queryParams = {};
-            ShopStockService.retrieveGoodsTypes(queryParams).then(function (goodsTypes) {
-                $scope.data.goodsTypesList = goodsTypes.items;
-                $scope.data.selectedGoodsType = $scope.data.goodsTypesList[0];
-                //console.info($scope.data.goodsTypesList);
-
-                for(var i = 0; i < $scope.data.goodsTypesList.length; i++)
-                {
-                    var queryParams = {
-                        typeCode: $scope.data.goodsTypesList[i].code,
-                    };
-                    ShopStockService.retrieveGoods(queryParams).then(function (goods) {
-                        var tempList = {type:null,detail:[]};
-                        tempList.detail = goods.items;
-                        if(goods.items.length > 0){
-                            tempList.type = goods.items[0].goodsType.name;
-                        }
-                        $scope.data.goodsList.push(tempList);
-                       // console.info($scope.data.goodsList)
-                    });
-                }
-                //console.log($scope.data.goodsList);
-            })
+            ShopStockService.retrieveGasCylinderSpecUri(queryParams).then(function (gasCylinderSpecs) {
+                $scope.data.gasCylinderSpecsList = gasCylinderSpecs.items;
+            });
 
             searchUsers($scope.q.liableDepartmentCode);
 
+            //权限控制代码
+            rolesControl();
+
         };
+
+        //权限控制代码
+        var rolesControl = function () {
+            //初始化当前用户
+            var curUser = sessionStorage.getCurUser();
+            if(curUser.userGroup.id==5){
+                $scope.q.isControled = true;
+            }
+        };
+
+
         init();
 
 

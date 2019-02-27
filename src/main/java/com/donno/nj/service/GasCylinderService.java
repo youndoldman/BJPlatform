@@ -22,7 +22,7 @@ public interface GasCylinderService
 
     void update(String number, GasCylinder newGasCylinder);
 
-    void updateSvcStatus(String number,Integer serviceStatus,String srcUserId,String targetUserId,Boolean enableForce,String note);
+    void updateSvcStatus(String number,Integer serviceStatus,String srcUserId,String targetUserId,Boolean enableForce,String note,Boolean isChangeFillingStatus);
 
     void deleteById(Integer id);
 
