@@ -253,7 +253,6 @@ public class OrderController
                                    @RequestParam(value = "endTime", defaultValue = "") String endTime,
                                    @RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
                                    @RequestParam(value = "orderTriggerType", required = false) OrderTriggerType orderTriggerType,
-
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
@@ -293,8 +292,6 @@ public class OrderController
         {
             params.putAll(ImmutableMap.of("orderServiceQuality", orderServiceQuality));
         }
-
-
 
         if (payType != null)
         {
@@ -543,14 +540,15 @@ public class OrderController
 
     @OperationLog(desc = "订单作废")
     @RequestMapping(value = "/api/CancelOrder/{orderSn}", method = RequestMethod.PUT)
-    public ResponseEntity cancelOrder(@PathVariable("orderSn") String orderSn)
+    public ResponseEntity cancelOrder(@PathVariable("orderSn") String orderSn,
+                                      @RequestParam(value = "description", defaultValue = "") String description)
     {
         ResponseEntity responseEntity;
 
         Optional<Order> orderOptional = orderService.findBySn(orderSn);
         if (orderOptional.isPresent())
         {
-            orderService.cancelOrder(orderSn);
+            orderService.cancelOrder(orderSn,description);
             responseEntity = ResponseEntity.noContent().build();
         }
         else

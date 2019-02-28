@@ -253,6 +253,7 @@
         <include refid="getListCondition"/>
     </select>
 
+
     <update id="update">
     UPDATE <include refid="TblOrder"/>
     <set>
@@ -386,4 +387,10 @@
         order_idx = #{id}
     </select>
 
+    <select id="sleepDaysByUserIdx" resultType="java.lang.Integer">
+        SELECT to_days(now()) - to_days(t_order.create_time) as sleepDays from t_order
+        WHERE
+         customer_idx = #{id}
+         order by t_order.create_time desc limit 1
+    </select>
 </mapper>

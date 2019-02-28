@@ -12,6 +12,7 @@ public class OrderOpHistory
 
     private OrderStatus orderStatus;
     private String opLog;
+    private String description;//描述信息
     private Date updateTime;
 
     public Integer getId()
@@ -38,6 +39,10 @@ public class OrderOpHistory
     public String getOpLog()
     {
         return opLog;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public OrderStatus getOrderStatus() {
@@ -76,6 +81,10 @@ public class OrderOpHistory
     public void setOpLog(String opLog)
     {
         this.opLog = opLog;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setUpdateTime(Date updateTime)

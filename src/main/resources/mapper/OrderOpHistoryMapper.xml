@@ -8,6 +8,7 @@
         <result column="user_id" property="userId" jdbcType="INTEGER"/>
         <result column="order_status" property="orderStatus" typeHandler="com.donno.nj.domain.EnumKeyTypeHandler"/>
         <result column="oper_log" property="opLog" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
@@ -17,11 +18,11 @@
 
 
     <select id="getList" resultMap="BaseResultMap">
-        SELECT t_order_op_his.id,t_order_op_his.order_status, t_order_op_his.oper_log,t_order.order_sn as order_sn,t_user.user_id as user_id,t_order_op_his.update_time
+        SELECT t_order_op_his.id,t_order_op_his.order_status, t_order_op_his.oper_log,t_order_op_his.description,
+        t_order.order_sn as order_sn,t_user.user_id as user_id,t_order_op_his.update_time
         FROM  t_order_op_his,t_order,t_user
         WHERE
         (t_order_op_his.order_idx = t_order.id and t_order_op_his.oper_idx = t_user.id)
-
         <if test="orderSn != null">
             AND  t_order_op_his.order_idx = (select id from t_order where order_sn = #{orderSn})
         </if>
@@ -67,7 +68,7 @@
 
 
     <sql id="InsertColumnList">
-        order_idx, oper_idx, order_status,oper_log
+        order_idx, oper_idx, order_status,oper_log,description
     </sql>
 
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
@@ -76,12 +77,12 @@
         #{orderIdx},
         (select id from t_user where user_id = #{userId}),
         #{orderStatus.index},
-        #{opLog})
+        #{opLog},#{description})
     </insert>
 
 
     <select id="findByOrderIdx" resultMap="BaseResultMap">
-        SELECT t_order_op_his.id,t_order_op_his.order_status, t_order_op_his.oper_log,
+        SELECT t_order_op_his.id,t_order_op_his.order_status, t_order_op_his.oper_log,t_order_op_his.description,
         t_order.order_sn as order_sn,t_user.user_id as user_id,t_order_op_his.update_time
         FROM  t_order_op_his,t_order,t_user
         WHERE

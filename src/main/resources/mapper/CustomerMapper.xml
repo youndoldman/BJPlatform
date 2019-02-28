@@ -42,7 +42,8 @@
         <association property="customerCompany" column="customer_company_idx" select="com.donno.nj.dao.CustomerCompanyDao.selectById">
         </association>
 
-
+        <association property="sleepDays" column="id" select="com.donno.nj.dao.OrderDao.sleepDaysByUserIdx">
+        </association>
     </resultMap>
 
 
@@ -192,7 +193,17 @@
         </if>
 
         <if test="customerLevelCode != null">
-            AND  cst_level = ( select id from t_customer_level where code =#{customerLevelCode} )
+            AND  cst_level = ( select id from t_customer_level where code = #{customerLevelCode} )
+        </if>
+
+        <if test="sleepDays != null">
+            AND
+            (
+            t_customer.user_idx not in
+              (
+                SELECT t_order.customer_idx  FROM t_order,t_customer WHERE t_order.customer_idx = t_customer.user_idx and  #{sleepDays} > ( to_days(now()) - to_days(t_order.create_time)  )
+              )
+            )
         </if>
 
         <if test="customerSourceCode != null">

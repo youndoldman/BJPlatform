@@ -245,6 +245,7 @@ public class CustomerController
                                             @RequestParam(value = "addrCity", defaultValue = "") String addrCity,
                                             @RequestParam(value = "addrCounty", defaultValue = "") String addrCounty,
                                             @RequestParam(value = "addrDetail", defaultValue = "") String addrDetail,
+                                            @RequestParam(value = "sleepDays", required = false) Integer sleepDays,
                                             @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                             @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                             @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
@@ -281,6 +282,11 @@ public class CustomerController
         if (status.trim().length() > 0)
         {
             params.putAll(ImmutableMap.of("status", status));
+        }
+
+        if (sleepDays != null)
+        {
+            params.putAll(ImmutableMap.of("sleepDays", sleepDays));
         }
 
         if (settlementTypeCode.trim().length() > 0)

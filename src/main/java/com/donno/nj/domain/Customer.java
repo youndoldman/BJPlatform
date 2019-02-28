@@ -37,6 +37,8 @@ public class Customer extends User  implements Serializable
     private CustomerAddress address;   /**<客户地址信息，只能修改，不能删除*/
     private String phone;              /**<客户电话信息*/
 
+    private Integer sleepDays;//沉睡天数
+
 
     private Date leakLevelOneWanningTime;/*一级报警时间 */
     private Date leakLevelTwoWanningTime;/*二级报警时间 */
@@ -134,6 +136,10 @@ public class Customer extends User  implements Serializable
     public CustomerAddress getAddress()
     {
         return address;
+    }
+
+    public Integer getSleepDays() {
+        return sleepDays;
     }
 
     /**
@@ -236,6 +242,10 @@ public class Customer extends User  implements Serializable
 //        this.gasStoreCode = gasStoreCode;
 //    }
 
+
+    public void setSleepDays(Integer sleepDays) {
+        this.sleepDays = sleepDays;
+    }
 
     /**
      * @fn  setAddress

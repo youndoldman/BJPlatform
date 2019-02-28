@@ -305,7 +305,7 @@ public class OrderServiceImpl implements OrderService
         addCallIn(customer,order);
 
         /*订单创建日志*/
-        OrderOperHistory(order,order.getOrderStatus());
+        OrderOperHistory(order,order.getOrderStatus(),"创建订单");
     }
 
     void addCallIn(Customer customer,Order order)
@@ -1222,6 +1222,13 @@ public class OrderServiceImpl implements OrderService
             updatePayStatus(newOrder.getPayStatus(),payType,srcOrder.getCustomer(),srcOrder);
         }
 
+        /*订单状态修改*/
+        if(newOrder.getOrderStatus() != null)
+        {
+            /*订单变更历史记录*/
+            OrderOperHistory(srcOrder,newOrder.getOrderStatus(),newOrder.getNote());
+        }
+
         /*更新数据*/
         newOrder.setId(srcOrder.getId());
         orderDao.update(newOrder);
@@ -1546,9 +1553,7 @@ public class OrderServiceImpl implements OrderService
         }
 
         /*订单变更历史记录*/
-        OrderOperHistory(newOrder,newOrder.getOrderStatus());
-
-
+        OrderOperHistory(newOrder,newOrder.getOrderStatus(),"");
     }
 
 
@@ -1644,7 +1649,7 @@ public class OrderServiceImpl implements OrderService
 
     @Override
     @OperationLog(desc = "订单作废")
-    public void cancelOrder(String orderSn)
+    public void cancelOrder(String orderSn,String description)
     {
         Order order = orderDao.findBySn(orderSn);
 
@@ -1661,8 +1666,12 @@ public class OrderServiceImpl implements OrderService
 
         order.setOrderStatus( OrderStatus.OSCanceled.getIndex());
 
+
         /*更新订单状态为作废*/
         orderDao.update(order);
+
+        /*订单变更历史记录*/
+        OrderOperHistory(order,OrderStatus.OSCanceled.getIndex(),description);
 
         /*结束订单流程*/
         if(workFlowService.deleteProcess(orderSn) != 0)
@@ -1674,7 +1683,7 @@ public class OrderServiceImpl implements OrderService
     }
 
     @OperationLog(desc = "订单修改历史信息")
-    public void OrderOperHistory(Order order,Integer orderStatus)
+    public void OrderOperHistory(Order order,Integer orderStatus,String description)
     {
         Optional<User> user = AppUtil.getCurrentLoginUser();
         if (user.isPresent())
@@ -1684,6 +1693,7 @@ public class OrderServiceImpl implements OrderService
             orderOpHistory.setOrderIdx(order.getId());
             orderOpHistory.setOrderStatus(OrderStatus.values()[orderStatus]);
             orderOpHistory.setUserId(user.get().getUserId());
+            orderOpHistory.setDescription(description);
 
             String opLog = "";
             if (orderStatus == OrderStatus.OSUnprocessed.getIndex()) {
@@ -1711,6 +1721,12 @@ public class OrderServiceImpl implements OrderService
                 else
                 {
                     opLog = "已作废";
+                }
+
+                if(description == null )
+                {
+                    description = "已作废";
+                    orderOpHistory.setDescription(description);
                 }
             }
 
