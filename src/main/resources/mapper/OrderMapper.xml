@@ -164,6 +164,12 @@
                 AND  status = #{orderStatus}
             </if>
 
+            <if test="creatorOpUId != null">
+                AND  ( t_order.id in (SELECT order_idx FROM  t_order_op_his WHERE
+                order_status = 0 and
+                oper_idx = (  SELECT id FROM t_user WHERE user_id = #{creatorOpUId} )))
+            </if>
+
             <if test="invoiceStatus != null">
                 AND  invoice_status = #{invoiceStatus}
             </if>

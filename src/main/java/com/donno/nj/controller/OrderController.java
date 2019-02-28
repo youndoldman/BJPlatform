@@ -253,6 +253,7 @@ public class OrderController
                                    @RequestParam(value = "endTime", defaultValue = "") String endTime,
                                    @RequestParam(value = "departmentCode", defaultValue = "") String departmentCode,
                                    @RequestParam(value = "orderTriggerType", required = false) OrderTriggerType orderTriggerType,
+                                   @RequestParam(value = "creatorOpUId", required = false) String creatorOpUId,
                                    @RequestParam(value = "orderBy", defaultValue = "") String orderBy,
                                    @RequestParam(value = "pageSize", defaultValue = Constant.PAGE_SIZE) Integer pageSize,
                                    @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo)
@@ -341,6 +342,11 @@ public class OrderController
         if ( endTime != null && endTime.trim().length() > 0 )
         {
             params.putAll(ImmutableMap.of("endTime", endTime));
+        }
+
+        if ( creatorOpUId != null && creatorOpUId.trim().length() > 0 )
+        {
+            params.putAll(ImmutableMap.of("creatorOpUId", creatorOpUId));
         }
 
         if ( dispatcherId != null && dispatcherId.trim().length() > 0 )

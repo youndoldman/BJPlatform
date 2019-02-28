@@ -15,6 +15,6 @@ public class OrderOvertimeJobs extends QuartzJobBean
 
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException
     {
-       // orderService.checkOverTime();
+        orderService.checkOverTime();
     }
 }
