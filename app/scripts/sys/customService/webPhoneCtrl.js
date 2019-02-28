@@ -367,7 +367,7 @@ customServiceApp.controller('WebPhoneCtrl', ['$scope', '$rootScope', '$filter', 
             setButtonDisabled('threeway');
 
             document.getElementById('callstate').innerHTML = '挂机';
-            document.getElementById('callnumber').innerHTML = '&nbsp;';
+            document.getElementById('callnumber').innerHTML = '';
             document.getElementById('ringAudio').pause();
             time_stop();
         }

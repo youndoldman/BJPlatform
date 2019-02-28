@@ -734,7 +734,6 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 return;
             };
             if($scope.vm.currentCustomer == null){
-
                 return;
             }
             else {
@@ -815,7 +814,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
             CustomerManageService.retrieveGoodsTypes(queryParams).then(function (goodsTypes) {
                 $scope.temp.goodsTypesList = goodsTypes.items;
                 $scope.temp.selectedGoodsType = $scope.temp.goodsTypesList[0];
-                $scope.goodsTypeChange();
+                //$scope.goodsTypeChange();;
             });
             //查询报修类型
             queryParams = {};
@@ -835,8 +834,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
                 $scope.temp.complaintTypesList = complaintTypes.items;
                 $scope.temp.selectedComplaintType = $scope.temp.complaintTypesList[0];
             });
-
-
+            
             //启动托盘漏气报警的检查线程
             $scope.timerCheckLeak = $interval( function(){
                 $scope.searchUninterruptCustomers();//不间断供气报警客户查询
@@ -853,7 +851,7 @@ customServiceApp.controller('CallCenterCtrl', ['$scope', '$rootScope', '$filter'
 
             //查询电话条是否处于接入状态
             var call_phone = document.getElementById('callnumber').innerHTML;
-            if(call_phone.length>7){
+            if(call_phone.length>6){
                 $scope.clearWindow();
                 $scope.vm.callInPhone = call_phone;
                 //查询相关联的客户
