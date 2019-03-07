@@ -102,7 +102,7 @@
         AND   t_order_dispatcher.dispatcher_idx = t_sysuser.user_idx
         and  t_ticket_order.order_idx = t_order.id
         and t_ticket_order.ticket_idx = t_ticket.id
-        AND t_ticket.spec_idx = t_goods.id
+        AND t_ticket.spec_idx = t_goods.spec_idx
         and   t_gas_cylinder_spec.id = t_goods.spec_idx
         and t_order.order_trigger_type = 0
 
